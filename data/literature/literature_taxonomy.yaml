@@ -1,0 +1,262 @@
+version: "1.0"
+description: >
+  Machine-readable FSM literature taxonomy used by FSMRepairBench to relate
+  benchmark families to classical formalisms. Generation support values describe
+  the current toolkit, not theoretical expressiveness.
+entries:
+  - id: dfa
+    name: DFA
+    category: automata
+    description: >
+      Deterministic finite automaton with a finite state set, initial state,
+      and a transition function that maps each state/input symbol pair to at
+      most one successor state.
+    formal_definition: >
+      M = (Q, Sigma, delta, q0, F) where delta: Q x Sigma -> Q is a total or
+      partial function and F subseteq Q is the set of accepting states when
+      language recognition is considered.
+    references:
+      - "Hopcroft, Motwani, Ullman (2006). Introduction to Automata Theory, Languages, and Computation."
+      - "Sipser (2012). Introduction to the Theory of Computation."
+    features:
+      - finite_states
+      - deterministic
+      - explicit_transitions
+    repair_relevance: >
+      Baseline reference family for deterministic structural repair; missing or
+      wrong transitions map directly to benchmark bug types.
+    generation_support: full
+
+  - id: nfa
+    name: NFA
+    category: automata
+    description: >
+      Nondeterministic finite automaton allowing multiple successor states for
+      the same state/input pair; often used before determinisation.
+    formal_definition: >
+      M = (Q, Sigma, delta, q0, F) where delta: Q x Sigma -> 2^Q.
+    references:
+      - "Hopcroft, Motwani, Ullman (2006). Introduction to Automata Theory, Languages, and Computation."
+      - "Rabin & Scott (1959). Finite Automata and Their Decision Problems."
+    features:
+      - finite_states
+      - nondeterministic
+      - explicit_transitions
+    repair_relevance: >
+      Stress-tests repair under ambiguous transition resolution and duplicate
+      matching edges; relevant for nondeterminism_intro bugs.
+    generation_support: partial
+
+  - id: mealy
+    name: Mealy
+    category: transducer
+    description: >
+      Mealy machine attaches outputs to transitions, so output can change with
+      both state and input.
+    formal_definition: >
+      M = (Q, q0, Sigma, Lambda, delta, lambda) with delta: Q x Sigma -> Q and
+      lambda: Q x Sigma -> Lambda defining transition outputs.
+    references:
+      - "Mealy (1955). A Method for Synthesizing Sequential Circuits."
+      - "Gill (1962). Introduction to the Theory of Finite-State Machines."
+    features:
+      - transition_outputs
+      - finite_states
+      - explicit_transitions
+    repair_relevance: >
+      Output-bearing transitions require repair prompts and patches to preserve
+      observable behaviour on transition outputs as well as state reachability.
+    generation_support: full
+
+  - id: moore
+    name: Moore
+    category: transducer
+    description: >
+      Moore machine attaches outputs to states, so output depends on the current
+      state rather than the triggering transition alone.
+    formal_definition: >
+      M = (Q, q0, Sigma, Lambda, delta, lambda) with delta: Q x Sigma -> Q and
+      lambda: Q -> Lambda defining state outputs.
+    references:
+      - "Moore (1956). Gedanken-Experiments on Sequential Machines."
+      - "Gill (1962). Introduction to the Theory of Finite-State Machines."
+    features:
+      - state_outputs
+      - finite_states
+      - explicit_transitions
+    repair_relevance: >
+      State-local output corruption and wrong-state bugs are common in Moore-style
+      behavioural models used in embedded control and protocol abstractions.
+    generation_support: full
+
+  - id: efsm
+    name: EFSM
+    category: extended
+    description: >
+      Extended finite-state machine enriches transitions with variables,
+      guards, and actions over a shared data store.
+    formal_definition: >
+      M = (S, s0, V, T) where transitions in T are tuples (source, guard(V),
+      event, action(V), target) over finite symbolic state set S and variables V.
+    references:
+      - "Chow (1978). Testing Software Design Modeled by Finite-State Machines."
+      - "Bjorner et al. (2005). Abstract State Machines."
+    features:
+      - guards
+      - variables
+      - actions
+      - explicit_transitions
+    repair_relevance: >
+      Guard and action corruption are first-class repair targets; benchmark cases
+      use symbolic guards to approximate EFSM transition enabling conditions.
+    generation_support: full
+
+  - id: timed_fsm
+    name: Timed FSM
+    category: timed
+    description: >
+      Finite-state machine extended with timeout or delay annotations on
+      transitions for time-aware behavioural models.
+    formal_definition: >
+      M = (Q, q0, Sigma, delta, kappa) where kappa annotates transitions with
+      timeout/delay constraints interpreted over a timed execution semantics.
+    references:
+      - "Merlin & Farber (1976). Recovering from Delayed Processes."
+      - "Alur & Dill (1994). A Theory of Timed Automata."
+    features:
+      - timeouts
+      - delays
+      - explicit_transitions
+    repair_relevance: >
+      Timeout and delay corruption bugs evaluate whether repair methods preserve
+      timed behaviour under oracle execution.
+    generation_support: partial
+
+  - id: timed_automata
+    name: Timed Automata
+    category: timed
+    description: >
+      Timed automata extend finite automata with real-valued clocks and clock
+      constraints on transitions; a core model in timed model checking.
+    formal_definition: >
+      A = (L, L0, Sigma, C, E, I) with clock set C, invariants I, and edges E
+      labelled by actions/guards over clock constraints.
+    references:
+      - "Alur & Dill (1994). A Theory of Timed Automata."
+      - "Bengtsson & Yi (2004). Timed Automata: Semantics, Algorithms and Tools."
+    features:
+      - clocks
+      - guards
+      - invariants
+      - dense_time
+    repair_relevance: >
+      Provides the theoretical backdrop for timed benchmark cases; full clock
+      polyhedron semantics are not yet generated natively in FSMRepairBench.
+    generation_support: partial
+
+  - id: interface_automata
+    name: Interface Automata
+    category: compositional
+    description: >
+      Interface automata model component interfaces with input/output actions
+      and compatibility assumptions for compositional verification.
+    formal_definition: >
+      A = (Q, q0, delta, in, out) where transitions are typed as input or
+      output actions and compatibility is defined by alternating simulation.
+    references:
+      - "de Alfaro & Henzinger (2001). Interface Automata."
+    features:
+      - input_output_actions
+      - compositional
+      - explicit_transitions
+    repair_relevance: >
+      Useful reference for interface-compatible repair and missing/wrong action
+      bugs, although compositional compatibility is not yet benchmarked end-to-end.
+    generation_support: reference_only
+
+  - id: register_automata
+    name: Register Automata
+    category: data_aware
+    description: >
+      Register automata extend finite automata with registers that store and
+      compare data values from an infinite domain.
+    formal_definition: >
+      Automata with registers r1..rk updated on transitions and guards comparing
+      register contents to input data values.
+    references:
+      - "Figueira, Segoufin, Vaucargne (2002). Register Automata."
+      - "Demri, Lazic (2009). LTL with the Freeze Quantifier."
+    features:
+      - registers
+      - data_values
+      - guards
+    repair_relevance: >
+      Informs data-aware repair scenarios where guards compare symbolic data;
+      full register semantics are documented but not fully generated.
+    generation_support: reference_only
+
+  - id: statecharts
+    name: Statecharts
+    category: hierarchical
+    description: >
+      Statecharts extend state machines with hierarchy, concurrency, history,
+      and broadcast communication for reactive system design.
+    formal_definition: >
+      Hierarchical state tree with OR/AND decomposition, nested states,
+      entry/exit actions, and history vertices as in Harel's original model.
+    references:
+      - "Harel (1987). Statecharts: A Visual Formalism for Complex Systems."
+      - "Harel & Gery (1998). Executable Object Modeling with Statecharts."
+    features:
+      - hierarchy
+      - concurrency
+      - history
+      - entry_exit_actions
+    repair_relevance: >
+      Guides future hierarchical repair benchmarks; current flat FSM cases only
+      approximate selected statechart features.
+    generation_support: reference_only
+
+  - id: hierarchical_fsm
+    name: Hierarchical FSM
+    category: hierarchical
+    description: >
+      Hierarchical finite-state machine with nested states and refined
+      transition scopes, often used as a simplified statechart fragment.
+    formal_definition: >
+      Flattenable state hierarchy where transitions may cross composite state
+      boundaries and inherit entry/exit behaviour from parent states.
+    references:
+      - "Harel (1987). Statecharts: A Visual Formalism for Complex Systems."
+      - "Samek (2008). Practical UML Statecharts in C/C++."
+    features:
+      - hierarchy
+      - nested_states
+      - explicit_transitions
+    repair_relevance: >
+      Relevant for repair of nested-state reachability and boundary-crossing
+      transitions once hierarchical generation is added to the benchmark.
+    generation_support: planned
+
+  - id: uml_state_machines
+    name: UML State Machines
+    category: modeling
+    description: >
+      UML state machines combine hierarchical states, transitions, guards,
+      actions, and pseudostates as used in software and systems modeling.
+    formal_definition: >
+      UML 2.x state machine semantics with states, transitions, triggers,
+      guards, effects, regions, and optional entry/do/exit behaviours.
+    references:
+      - "OMG (2017). Unified Modeling Language Specification."
+      - "Samek (2008). Practical UML Statecharts in C/C++."
+    features:
+      - hierarchy
+      - guards
+      - actions
+      - pseudostates
+      - regions
+    repair_relevance: >
+      Primary industrial source of faulty behavioural models; FSMRepairBench
+      currently captures a practical flat subset aligned with repair oracles.
+    generation_support: partial

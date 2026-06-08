@@ -48,6 +48,14 @@ from fsmrepairbench.generators.synthetic_factory import (
 )
 from fsmrepairbench.hf_export import HuggingFaceExportError, export_huggingface_dataset
 from fsmrepairbench.leaderboard import LeaderboardError, generate_leaderboard
+from fsmrepairbench.literature import (
+    GenerationSupport,
+    LiteratureError,
+    build_literature_index,
+    filter_literature_entries,
+    get_literature_entry,
+    literature_index_to_dict,
+)
 from fsmrepairbench.llm.ollama import OllamaError, run_llm_repair_case
 from fsmrepairbench.mutators import MUTATION_OPERATORS, MutatorError, mutate
 from fsmrepairbench.oracle_generator import (
@@ -781,6 +789,96 @@ def subset_overlap_cmd(
         f"intersection={overlap.count_intersection}, jaccard={overlap.jaccard:.4f}"
     )
     console.print(f"Report: {out}")
+    raise typer.Exit(code=0)
+
+
+@app.command("literature-index")
+def literature_index_cmd(
+    taxonomy_path: Path | None = typer.Argument(
+        None,
+        help="Optional path to literature_taxonomy.yaml (defaults to bundled data).",
+    ),
+    entry_id: str | None = typer.Option(None, "--id", help="Show one literature entry."),
+    category: str | None = typer.Option(None, "--category", help="Filter by category."),
+    generation_support: GenerationSupport | None = typer.Option(
+        None,
+        "--generation-support",
+        help="Filter by FSMRepairBench generation support level.",
+    ),
+    as_json: bool = typer.Option(False, "--json", help="Print machine-readable JSON."),
+    out: Path | None = typer.Option(None, "--out", help="Write JSON index to this path."),
+) -> None:
+    """Index the FSM literature knowledge base."""
+    try:
+        if entry_id is not None:
+            entry = get_literature_entry(entry_id, taxonomy_path)
+            if as_json or out is not None:
+                payload = entry.model_dump(mode="json")
+                if out is not None:
+                    out.parent.mkdir(parents=True, exist_ok=True)
+                    out.write_text(json.dumps(payload, indent=2) + "\n", encoding="utf-8")
+                    console.print(f"[green]OK[/green] Wrote literature entry to {out}")
+                else:
+                    console.print(json.dumps(payload, indent=2))
+                raise typer.Exit(code=0)
+
+            console.print(f"[bold]{entry.name}[/bold] ({entry.id})")
+            console.print(f"Category: {entry.category}")
+            console.print(f"Generation support: {entry.generation_support.value}")
+            console.print(entry.description.strip())
+            console.print(f"Repair relevance: {entry.repair_relevance.strip()}")
+            raise typer.Exit(code=0)
+
+        result = build_literature_index(taxonomy_path)
+        entries = list(result.entries)
+        if category is not None or generation_support is not None:
+            entries = filter_literature_entries(
+                category=category,
+                generation_support=generation_support,
+                path=result.taxonomy_path,
+            )
+
+        if as_json or out is not None:
+            if entries != list(result.entries):
+                payload = {
+                    "version": result.taxonomy.version,
+                    "description": result.taxonomy.description,
+                    "taxonomy_path": str(result.taxonomy_path),
+                    "entry_count": len(entries),
+                    "entries": [entry.model_dump(mode="json") for entry in entries],
+                }
+            else:
+                payload = literature_index_to_dict(result)
+
+            if out is not None:
+                out.parent.mkdir(parents=True, exist_ok=True)
+                out.write_text(json.dumps(payload, indent=2) + "\n", encoding="utf-8")
+                console.print(f"[green]OK[/green] Wrote literature index to {out}")
+            else:
+                console.print(json.dumps(payload, indent=2))
+            raise typer.Exit(code=0)
+
+        table = Table(title="FSM Literature Taxonomy")
+        table.add_column("ID")
+        table.add_column("Name")
+        table.add_column("Category")
+        table.add_column("Generation")
+        table.add_column("Features")
+        for entry in entries:
+            table.add_row(
+                entry.id,
+                entry.name,
+                entry.category,
+                entry.generation_support.value,
+                ", ".join(entry.features[:3]),
+            )
+        console.print(table)
+        console.print(f"Source: {result.taxonomy_path}")
+        console.print(f"Entries: {len(entries)}")
+    except LiteratureError as exc:
+        console.print(f"[red]ERROR[/red] {exc}")
+        raise typer.Exit(code=1) from exc
+
     raise typer.Exit(code=0)
 
 
