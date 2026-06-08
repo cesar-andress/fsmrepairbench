@@ -22,6 +22,7 @@ from fsmrepairbench.case_filter import (
     write_overlap_json,
 )
 from fsmrepairbench.coverage_optimizer import CoverageOptimizerError, generate_coverage_report
+from fsmrepairbench.gap_detection import GapDetectionError, detect_benchmark_gaps
 from fsmrepairbench.dataset_builder import (
     DEFAULT_OUTPUT_DIR,
     DatasetBuilderError,
@@ -833,6 +834,55 @@ def coverage_optimizer_cmd(
     console.print(f"Missing core combinations: {report['missing_combinations']['missing_count']}")
     console.print(f"Suggestion: {suggestions['message']}")
     console.print(f"Recommended regions: {len(suggestions['regions'])}")
+    raise typer.Exit(code=0)
+
+
+@app.command("detect-gaps")
+def detect_gaps_cmd(
+    dataset_dir: Path,
+    output_dir: Path | None = typer.Option(
+        None,
+        "--output-dir",
+        help="Directory for missing_cells.csv and gap_fill_plan.yaml.",
+    ),
+    expected_count: int | None = typer.Option(
+        None,
+        "--expected-count",
+        min=1,
+        help="Target cases per feature-space cell.",
+    ),
+    max_plan_cells: int = typer.Option(
+        200,
+        "--max-plan-cells",
+        min=1,
+        help="Maximum generation cells in the automatic gap-fill plan.",
+    ),
+) -> None:
+    """Detect underrepresented benchmark regions and write gap-fill artifacts."""
+    try:
+        result = detect_benchmark_gaps(
+            dataset_dir,
+            expected_count=expected_count,
+            max_plan_cells=max_plan_cells,
+            output_dir=output_dir,
+        )
+    except (GapDetectionError, CoverageOptimizerError) as exc:
+        console.print(f"[red]ERROR[/red] {exc}")
+        raise typer.Exit(code=1) from exc
+
+    report = result.report
+    console.print(
+        f"[green]OK[/green] Detected {report['total_gaps']} low-density cells "
+        f"({report['missing_cells']} missing, {report['underrepresented_cells']} underrepresented)"
+    )
+    console.print(f"Missing cells CSV: {result.missing_cells_path}")
+    console.print(f"Gap-fill plan: {result.gap_fill_plan_path}")
+    console.print(f"Report: {result.report_path}")
+    console.print(
+        f"Suggested additional cases: {report['suggested_additional_cases']} "
+        f"(plan covers {report['generation_plan_cases']} cases in "
+        f"{report['generation_plan_cells']} cells)"
+    )
     raise typer.Exit(code=0)
 
 
