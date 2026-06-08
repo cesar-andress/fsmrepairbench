@@ -101,6 +101,15 @@ from fsmrepairbench.repair_engines.baselines import (
     BaselineEngineError,
     propose_baseline_patch,
 )
+from fsmrepairbench.metamorphic import (
+    SUPPORTED_RELATIONS,
+    MetamorphicError,
+    MetamorphicRelationId,
+    check_metamorphic_relation,
+    generate_metamorphic_cases,
+    load_score_result,
+    write_metamorphic_check_json,
+)
 from fsmrepairbench.selective_mutation import (
     SUPPORTED_STRATEGIES,
     MutationStrategy,
@@ -340,6 +349,126 @@ def plan_mutations_cmd(
         console.print(f"Plan: {out}")
 
     raise typer.Exit(code=0)
+
+
+@app.command("generate-metamorphic-cases")
+def generate_metamorphic_cases_cmd(
+    case_dir: Path,
+    out: Path = typer.Option(..., "--out", help="Write metamorphic follow-up cases here."),
+    relations: str | None = typer.Option(
+        None,
+        "--relations",
+        help="Comma-separated metamorphic relations (default: all supported).",
+    ),
+    quiet: bool = typer.Option(False, "--quiet", help="Print a short summary only."),
+) -> None:
+    """Generate metamorphic follow-up benchmark cases from a source case directory."""
+    selected: tuple[MetamorphicRelationId, ...] | None = None
+    if relations is not None:
+        selected_tuple = tuple(item.strip() for item in relations.split(",") if item.strip())
+        unknown = [item for item in selected_tuple if item not in SUPPORTED_RELATIONS]
+        if unknown:
+            console.print(
+                f"[red]ERROR[/red] Unknown relation(s): {', '.join(unknown)}. "
+                f"Supported: {', '.join(SUPPORTED_RELATIONS)}"
+            )
+            raise typer.Exit(code=1)
+        selected = cast(tuple[MetamorphicRelationId, ...], selected_tuple)
+
+    try:
+        report = generate_metamorphic_cases(case_dir, out, relations=selected)
+    except MetamorphicError as exc:
+        console.print(f"[red]ERROR[/red] {exc}")
+        raise typer.Exit(code=1) from exc
+
+    if quiet:
+        console.print(
+            f"[green]OK[/green] generated={len(report.generated)}, "
+            f"skipped={len(report.skipped)}"
+        )
+    else:
+        console.print(
+            f"[green]OK[/green] Generated {len(report.generated)} metamorphic follow-up cases "
+            f"from '{case_dir.name}'"
+        )
+        for bundle in report.generated:
+            console.print(
+                f"  - {bundle.relation_id}: {bundle.followup_case_dir} "
+                f"({bundle.expected_relation.kind})"
+            )
+        if report.skipped:
+            console.print(f"Skipped {len(report.skipped)} relation(s)")
+        console.print(f"Manifest: {out / 'metamorphic_manifest.json'}")
+
+    raise typer.Exit(code=0)
+
+
+@app.command("check-metamorphic")
+def check_metamorphic_cmd(
+    source_result: Path,
+    followup_result: Path,
+    relation: str = typer.Option(..., "--relation", help="Metamorphic relation identifier."),
+    out: Path | None = typer.Option(
+        None,
+        "--out",
+        help="Optional path to write the metamorphic check report JSON.",
+    ),
+    quiet: bool = typer.Option(False, "--quiet", help="Print a short summary only."),
+) -> None:
+    """Check whether two score results satisfy a metamorphic relation."""
+    if relation not in SUPPORTED_RELATIONS:
+        console.print(
+            f"[red]ERROR[/red] Unknown relation '{relation}'. "
+            f"Supported: {', '.join(SUPPORTED_RELATIONS)}"
+        )
+        raise typer.Exit(code=1)
+
+    try:
+        source_score = load_score_result(source_result)
+        followup_score = load_score_result(followup_result)
+    except (OSError, json.JSONDecodeError, ValidationError) as exc:
+        console.print(f"[red]ERROR[/red] Failed to load score result: {exc}")
+        raise typer.Exit(code=1) from exc
+
+    try:
+        report = check_metamorphic_relation(
+            source_score,
+            followup_score,
+            relation=cast(MetamorphicRelationId, relation),
+        )
+    except MetamorphicError as exc:
+        console.print(f"[red]ERROR[/red] {exc}")
+        raise typer.Exit(code=1) from exc
+
+    if out is not None:
+        write_metamorphic_check_json(out, report)
+
+    if quiet:
+        status = "holds" if report.holds else "violated"
+        console.print(
+            f"[green]OK[/green] relation={relation} status={status} "
+            f"source_bpr={report.source_score.bpr:.4f} "
+            f"followup_bpr={report.followup_score.bpr:.4f}"
+        )
+    else:
+        if report.holds:
+            console.print(
+                f"[green]OK[/green] Metamorphic relation '{relation}' holds "
+                f"(source_bpr={report.source_score.bpr:.4f}, "
+                f"followup_bpr={report.followup_score.bpr:.4f})"
+            )
+        else:
+            console.print(
+                f"[red]VIOLATION[/red] Metamorphic relation '{relation}' violated "
+                f"(source_bpr={report.source_score.bpr:.4f}, "
+                f"followup_bpr={report.followup_score.bpr:.4f})"
+            )
+            for violation in report.violations[:3]:
+                console.print(f"  - {violation.message}")
+        if out is not None:
+            console.print(f"Report: {out}")
+
+    raise typer.Exit(code=0 if report.holds else 1)
 
 
 @app.command("coverage")

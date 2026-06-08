@@ -173,6 +173,24 @@ fsmrepairbench calibrate-difficulty DATASET_DIR
 | `output_dir` | `Path | None` | `--output-dir` | None | Directory for difficulty_calibration.csv and report JSON. |
 | `bucket_method` | `str` | `--bucket-method` | 'quantile' | Bucket assignment strategy: quantile (dataset-calibrated) or fixed. |
 
+### `check-metamorphic`
+
+Check whether two score results satisfy a metamorphic relation.
+
+**Usage**
+
+```bash
+fsmrepairbench check-metamorphic PATH PATH --out PATH
+```
+
+| Parameter | Type | Flags | Default | Description |
+|-----------|------|-------|---------|-------------|
+| `source_result` | `Path` | positional | required |  |
+| `followup_result` | `Path` | positional | required |  |
+| `relation` | `str` | `--relation` | required | Metamorphic relation identifier. |
+| `out` | `Path | None` | `--out` | None | Optional path to write the metamorphic check report JSON. |
+| `quiet` | `bool` | `--quiet` | False | Print a short summary only. |
+
 ### `coupling-analysis`
 
 Estimate whether oracles detecting first-order faults also detect higher-order faults.
@@ -416,6 +434,23 @@ fsmrepairbench generate-hierarchical-oracle PATH
 | `out_csv` | `Path | None` | `--out-csv` | None |  |
 | `depth` | `str` | `--depth` | 'medium' |  |
 | `quiet` | `bool` | `--quiet` | False |  |
+
+### `generate-metamorphic-cases`
+
+Generate metamorphic follow-up benchmark cases from a source case directory.
+
+**Usage**
+
+```bash
+fsmrepairbench generate-metamorphic-cases PATH --out PATH
+```
+
+| Parameter | Type | Flags | Default | Description |
+|-----------|------|-------|---------|-------------|
+| `case_dir` | `Path` | positional | required |  |
+| `out` | `Path` | `--out` | required | Write metamorphic follow-up cases here. |
+| `relations` | `str | None` | `--relations` | None | Comma-separated metamorphic relations (default: all supported). |
+| `quiet` | `bool` | `--quiet` | False | Print a short summary only. |
 
 ### `generate-oracles`
 
