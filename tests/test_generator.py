@@ -13,7 +13,9 @@ from fsmrepairbench.generator import (
     SUMMARY_COLUMNS,
     BenchmarkGenerationError,
     discover_oracle_suites,
+    discover_reference_fsm_files,
     discover_reference_fsm_paths,
+    discover_reference_fsms,
     generate_benchmark,
 )
 from fsmrepairbench.mutators import MUTATION_OPERATORS
@@ -41,6 +43,43 @@ def test_discover_reference_and_oracle_paths(tmp_path: Path) -> None:
     assert reference_paths == [input_dir / "valid_fsm.json"]
     assert set(oracle_suites) == {"parking_gate_001"}
     assert oracle_suites["parking_gate_001"].id == "parking_gate_oracles"
+
+
+def test_discover_reference_fsms_skips_oracle_json(tmp_path: Path) -> None:
+    input_dir = tmp_path / "input"
+    input_dir.mkdir()
+    shutil.copy(FIXTURES / "valid_fsm.json", input_dir / "valid_fsm.json")
+    shutil.copy(FIXTURES / "valid_oracle.json", input_dir / "valid_oracle.json")
+
+    discovery = discover_reference_fsm_files(input_dir)
+
+    assert discovery.reference_paths == (input_dir / "valid_fsm.json",)
+    assert len(discovery.skipped_files) == 1
+    assert discovery.skipped_files[0][0].name == "valid_oracle.json"
+    assert discover_reference_fsms(input_dir) == [input_dir / "valid_fsm.json"]
+
+
+def test_discover_reference_fsms_on_fixtures_directory() -> None:
+    discovery = discover_reference_fsm_files(FIXTURES)
+
+    reference_names = {path.name for path in discovery.reference_paths}
+    skipped_names = {path.name for path, _ in discovery.skipped_files}
+
+    assert reference_names == {"simple_fsm.json", "valid_fsm.json"}
+    assert "valid_oracle.json" in skipped_names
+    assert "simple_oracle.json" in skipped_names
+    assert "invalid_fsm.json" in skipped_names
+
+
+def test_generate_benchmark_on_fixtures_directory(tmp_path: Path) -> None:
+    output_dir = tmp_path / "generated_smoke"
+
+    result = generate_benchmark(FIXTURES, output_dir, bugs_per_fsm=3, seed=42)
+
+    assert len(result.cases) == 6
+    assert result.skipped_input_files
+    assert (output_dir / "summary.csv").is_file()
+    assert (output_dir / "cases" / "case_000001").is_dir()
 
 
 def test_generate_benchmark_writes_case_structure(tmp_path: Path) -> None:
@@ -165,6 +204,32 @@ def test_generate_benchmark_rejects_non_positive_bug_count(tmp_path: Path) -> No
 
     with pytest.raises(BenchmarkGenerationError, match="bugs_per_fsm"):
         generate_benchmark(input_dir, tmp_path / "generated", bugs_per_fsm=0)
+
+
+def test_cli_generate_benchmark_on_fixtures(tmp_path: Path) -> None:
+    from typer.testing import CliRunner
+
+    from fsmrepairbench.cli import app
+
+    output_dir = tmp_path / "generated_smoke"
+    runner = CliRunner()
+
+    result = runner.invoke(
+        app,
+        [
+            "generate-benchmark",
+            str(FIXTURES),
+            str(output_dir),
+            "--bugs-per-fsm",
+            "3",
+            "--seed",
+            "42",
+        ],
+    )
+
+    assert result.exit_code == 0
+    assert (output_dir / "summary.csv").exists()
+    assert "Skipped" in result.stdout
 
 
 def test_cli_generate_benchmark(tmp_path: Path) -> None:

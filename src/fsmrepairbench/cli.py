@@ -282,6 +282,11 @@ def generate_benchmark_cmd(
         f"[green]OK[/green] Generated {len(result.cases)} cases in {result.output_dir}"
     )
     console.print(f"Summary written to {result.summary_path}")
+    if result.skipped_input_files:
+        console.print(
+            f"Skipped {len(result.skipped_input_files)} non-FSM input file(s): "
+            + ", ".join(path.name for path, _ in result.skipped_input_files)
+        )
     raise typer.Exit(code=0)
 
 

@@ -3,14 +3,17 @@
 from __future__ import annotations
 
 import csv
+import json
 import shutil
 from dataclasses import dataclass
 from pathlib import Path
 
+from pydantic import ValidationError
+
 from fsmrepairbench.models import FSM, BugMetadata, OracleSuite
 from fsmrepairbench.mutators import MUTATION_OPERATORS, MutatorError, mutate
 from fsmrepairbench.scorer import score_oracle_suite
-from fsmrepairbench.validators import is_valid_fsm, load_fsm_json, load_oracle_suite
+from fsmrepairbench.validators import is_valid_fsm, load_fsm_json, load_oracle_suite, validate_fsm
 
 SUMMARY_COLUMNS: tuple[str, ...] = (
     "case_id",
@@ -22,6 +25,14 @@ SUMMARY_COLUMNS: tuple[str, ...] = (
     "bpr_delta",
     "valid_reference",
     "valid_faulty",
+)
+
+REQUIRED_FSM_KEYS: tuple[str, ...] = (
+    "id",
+    "states",
+    "initial_state",
+    "events",
+    "transitions",
 )
 
 MAX_MUTATION_RETRIES = 32
@@ -53,11 +64,79 @@ class BenchmarkGenerationResult:
     output_dir: Path
     summary_path: Path
     cases: tuple[BenchmarkCaseSummary, ...]
+    skipped_input_files: tuple[tuple[Path, str], ...] = ()
+
+
+@dataclass(frozen=True)
+class ReferenceFsmDiscovery:
+    """Reference FSM discovery outcome for one input directory."""
+
+    reference_paths: tuple[Path, ...]
+    skipped_files: tuple[tuple[Path, str], ...]
+
+
+def _looks_like_fsm_document(payload: object) -> bool:
+    if not isinstance(payload, dict):
+        return False
+    return all(key in payload for key in REQUIRED_FSM_KEYS)
+
+
+def discover_reference_fsm_files(input_dir: Path) -> ReferenceFsmDiscovery:
+    """Scan *input_dir* for valid reference FSM JSON files and skipped entries."""
+    if not input_dir.is_dir():
+        msg = f"Input directory not found: {input_dir}"
+        raise BenchmarkGenerationError(msg)
+
+    reference_paths: list[Path] = []
+    skipped_files: list[tuple[Path, str]] = []
+
+    for path in sorted(input_dir.glob("*.json")):
+        if not path.is_file():
+            continue
+
+        try:
+            payload = json.loads(path.read_text(encoding="utf-8"))
+        except (OSError, json.JSONDecodeError) as exc:
+            skipped_files.append((path, f"invalid JSON: {exc}"))
+            continue
+
+        if not _looks_like_fsm_document(payload):
+            skipped_files.append((path, "missing required FSM fields"))
+            continue
+
+        try:
+            fsm = load_fsm_json(path)
+        except ValidationError as exc:
+            skipped_files.append((path, f"invalid FSM schema: {exc}"))
+            continue
+
+        validation_errors = validate_fsm(fsm)
+        if validation_errors:
+            skipped_files.append((path, validation_errors[0]))
+            continue
+
+        reference_paths.append(path)
+
+    return ReferenceFsmDiscovery(
+        reference_paths=tuple(reference_paths),
+        skipped_files=tuple(skipped_files),
+    )
+
+
+def discover_reference_fsms(input_dir: Path) -> list[Path]:
+    """Return valid reference FSM JSON paths directly under *input_dir*."""
+    discovery = discover_reference_fsm_files(input_dir)
+    if not discovery.reference_paths:
+        skipped_count = len(discovery.skipped_files)
+        suffix = f" ({skipped_count} file(s) skipped)" if skipped_count else ""
+        msg = f"No reference FSM JSON files found in {input_dir}{suffix}"
+        raise BenchmarkGenerationError(msg)
+    return list(discovery.reference_paths)
 
 
 def discover_reference_fsm_paths(input_dir: Path) -> list[Path]:
     """Return reference FSM JSON paths directly under *input_dir*."""
-    return sorted(path for path in input_dir.glob("*.json") if path.is_file())
+    return discover_reference_fsms(input_dir)
 
 
 def discover_oracle_suites(input_dir: Path) -> dict[str, OracleSuite]:
@@ -165,9 +244,12 @@ def generate_benchmark(
     if bugs_per_fsm <= 0:
         raise BenchmarkGenerationError("bugs_per_fsm must be greater than zero")
 
-    reference_paths = discover_reference_fsm_paths(input_dir)
+    discovery = discover_reference_fsm_files(input_dir)
+    reference_paths = list(discovery.reference_paths)
     if not reference_paths:
-        raise BenchmarkGenerationError(f"No reference FSM JSON files found in {input_dir}")
+        skipped_count = len(discovery.skipped_files)
+        suffix = f" ({skipped_count} file(s) skipped)" if skipped_count else ""
+        raise BenchmarkGenerationError(f"No reference FSM JSON files found in {input_dir}{suffix}")
 
     oracle_suites = discover_oracle_suites(input_dir)
     cases_root = output_dir / "cases"
@@ -244,4 +326,5 @@ def generate_benchmark(
         output_dir=output_dir,
         summary_path=summary_path,
         cases=tuple(summaries),
+        skipped_input_files=discovery.skipped_files,
     )
