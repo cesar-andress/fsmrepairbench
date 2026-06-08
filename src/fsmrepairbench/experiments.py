@@ -12,9 +12,9 @@ from typing import Any
 import yaml
 from pydantic import BaseModel, Field, field_validator
 
-from fsmrepairbench.llm.ollama import run_llm_repair_case
+from fsmrepairbench.llm.clients.base import ModelBackend
+from fsmrepairbench.llm.clients.registry import create_model_client
 from fsmrepairbench.models import FSM, BugMetadata, OracleSuite, RepairResult
-from fsmrepairbench.scorer import score_oracle_suite
 from fsmrepairbench.validators import load_fsm_json, load_model, load_oracle_suite
 
 RepairRunner = Callable[[FSM, OracleSuite, str, int, float], RepairResult]
@@ -45,17 +45,27 @@ class ExperimentConfigError(ValueError):
 class ExperimentConfig(BaseModel):
     """YAML experiment configuration."""
 
-    models: list[str]
+    models: list[str | dict[str, Any]]
     cases_dir: Path
     iterations: int = Field(default=3, ge=1)
     temperature: float = 0.0
     output_dir: Path
     resume: bool = True
+    workers: int = Field(default=4, ge=1)
+    checkpoint_interval: int = Field(default=100, ge=1)
+    default_backend: ModelBackend = ModelBackend.OLLAMA
 
     @field_validator("cases_dir", "output_dir", mode="before")
     @classmethod
     def _coerce_path(cls, value: str | Path) -> Path:
         return Path(value)
+
+    @field_validator("default_backend", mode="before")
+    @classmethod
+    def _coerce_backend(cls, value: str | ModelBackend) -> ModelBackend:
+        if isinstance(value, ModelBackend):
+            return value
+        return ModelBackend(str(value))
 
 
 @dataclass(frozen=True)
@@ -334,71 +344,18 @@ def run_experiment(
     resume: bool | None = None,
 ) -> ExperimentResult:
     """Run all case/model repair experiments defined by *config*."""
-    runner = repair_runner or _default_repair_runner
-    should_resume = config.resume if resume is None else resume
-    cases = discover_experiment_cases(config.cases_dir)
+    from fsmrepairbench.experiment.executor import ExecutorConfig, ExperimentExecutor
 
-    config.output_dir.mkdir(parents=True, exist_ok=True)
-    progress_path = config.output_dir / "progress.csv"
-    summary_path = config.output_dir / "summary.csv"
-    rows: list[ExperimentSummaryRow] = []
-
-    for case in cases:
-        for model in config.models:
-            result_file = result_path(config.output_dir, case.case_id, model)
-            if should_resume:
-                existing = load_existing_summary_row(result_file)
-                if existing is not None:
-                    rows.append(existing)
-                    _write_csv(
-                        progress_path,
-                        PROGRESS_COLUMNS,
-                        [row.to_progress_dict() for row in rows],
-                    )
-                    continue
-
-            initial_bpr = score_oracle_suite(case.faulty_fsm, case.oracle_suite).bpr
-            repair_result = runner(
-                case.faulty_fsm,
-                case.oracle_suite,
-                model,
-                config.iterations,
-                config.temperature,
-            )
-            summary_row = build_summary_row(
-                case=case,
-                model=model,
-                initial_bpr=initial_bpr,
-                repair_result=repair_result,
-                status="completed",
-            )
-            write_case_result(
-                result_file,
-                case=case,
-                model=model,
-                initial_bpr=initial_bpr,
-                repair_result=repair_result,
-                summary_row=summary_row,
-            )
-            rows.append(summary_row)
-            _write_csv(
-                progress_path,
-                PROGRESS_COLUMNS,
-                [row.to_progress_dict() for row in rows],
-            )
-
-    _write_csv(
-        summary_path,
-        SUMMARY_COLUMNS,
-        [row.to_summary_dict() for row in rows],
+    executor = ExperimentExecutor(
+        config,
+        executor_config=ExecutorConfig(
+            workers=config.workers,
+            checkpoint_interval=config.checkpoint_interval,
+            default_backend=config.default_backend,
+        ),
+        repair_runner=repair_runner,
     )
-
-    return ExperimentResult(
-        output_dir=config.output_dir,
-        progress_path=progress_path,
-        summary_path=summary_path,
-        rows=tuple(rows),
-    )
+    return executor.run(resume=resume)
 
 
 def _default_repair_runner(
@@ -408,10 +365,15 @@ def _default_repair_runner(
     max_iterations: int,
     temperature: float,
 ) -> RepairResult:
-    return run_llm_repair_case(
+    from fsmrepairbench.llm.clients.base import ModelSpec
+    from fsmrepairbench.llm.repair import run_llm_repair_with_client
+
+    client = create_model_client(ModelSpec(name=model, backend=ModelBackend.OLLAMA))
+    return run_llm_repair_with_client(
         faulty_fsm,
         oracle_suite,
         model=model,
         max_iterations=max_iterations,
         temperature=temperature,
+        client=client,
     )
