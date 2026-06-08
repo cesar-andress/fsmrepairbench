@@ -739,6 +739,28 @@ fsmrepairbench score tests/fixtures/valid_fsm.json tests/fixtures/valid_oracle.j
 | `out_csv` | `Path | None` | `--out-csv` | None | Write scenario-level score rows as CSV to this path. |
 | `quiet` | `bool` | `--quiet` | False | Suppress detailed table output; print a short summary only. |
 
+### `select-oracles`
+
+Select a compact oracle suite using information-theoretic criteria.
+
+**Usage**
+
+```bash
+fsmrepairbench select-oracles tests/fixtures/valid_fsm.json tests/fixtures/valid_oracle.json PATH --out PATH
+```
+
+| Parameter | Type | Flags | Default | Description |
+|-----------|------|-------|---------|-------------|
+| `fsm_path` | `Path` | positional | required |  |
+| `oracle_path` | `Path` | positional | required |  |
+| `mutants_dir` | `Path` | positional | required |  |
+| `strategy` | `str` | `--strategy` | 'mutual_information' | Oracle selection strategy. |
+| `budget` | `int` | `--budget` | 50 |  |
+| `out` | `Path` | `--out` | required | Write selected oracle suite JSON here. |
+| `report` | `Path` | `--report` | required | Write oracle selection report JSON here. |
+| `seed` | `int` | `--seed` | 42 | Seed for random strategy. |
+| `quiet` | `bool` | `--quiet` | False | Print a short summary only. |
+
 ### `spec-coverage`
 
 Compute specification-based transition, pair, and sequence coverage.

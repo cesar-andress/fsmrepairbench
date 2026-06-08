@@ -117,6 +117,15 @@ from fsmrepairbench.metamorphic import (
     load_score_result,
     write_metamorphic_check_json,
 )
+from fsmrepairbench.oracle_selection import (
+    SUPPORTED_ORACLE_SELECTION_STRATEGIES,
+    OracleSelectionError,
+    OracleSelectionStrategy,
+    load_mutant_pool,
+    select_oracle_suite,
+    write_oracle_selection_report_json,
+    write_selected_oracle_json,
+)
 from fsmrepairbench.selective_mutation import (
     SUPPORTED_STRATEGIES,
     MutationStrategy,
@@ -432,6 +441,85 @@ def plan_mutations_cmd(
             f"diversity={plan.expected_diversity:.2f}"
         )
         console.print(f"Plan: {out}")
+
+    raise typer.Exit(code=0)
+
+
+@app.command("select-oracles")
+def select_oracles_cmd(
+    fsm_path: Path,
+    oracle_path: Path,
+    mutants_dir: Path,
+    strategy: str = typer.Option(
+        "mutual_information",
+        "--strategy",
+        help="Oracle selection strategy.",
+    ),
+    budget: int = typer.Option(50, "--budget", min=1),
+    out: Path = typer.Option(..., "--out", help="Write selected oracle suite JSON here."),
+    report: Path = typer.Option(
+        ...,
+        "--report",
+        help="Write oracle selection report JSON here.",
+    ),
+    seed: int = typer.Option(42, "--seed", help="Seed for random strategy."),
+    quiet: bool = typer.Option(False, "--quiet", help="Print a short summary only."),
+) -> None:
+    """Select a compact oracle suite using information-theoretic criteria."""
+    if strategy not in SUPPORTED_ORACLE_SELECTION_STRATEGIES:
+        console.print(
+            f"[red]ERROR[/red] Unknown strategy '{strategy}'. "
+            f"Supported: {', '.join(SUPPORTED_ORACLE_SELECTION_STRATEGIES)}"
+        )
+        raise typer.Exit(code=1)
+
+    try:
+        reference = load_fsm_json(fsm_path)
+        suite = load_oracle_suite(oracle_path)
+        mutants = load_mutant_pool(mutants_dir)
+    except (OSError, json.JSONDecodeError, ValidationError) as exc:
+        console.print(f"[red]ERROR[/red] Failed to load input: {exc}")
+        raise typer.Exit(code=1) from exc
+    except OracleSelectionError as exc:
+        console.print(f"[red]ERROR[/red] {exc}")
+        raise typer.Exit(code=1) from exc
+
+    if not is_oracle_compatible(reference, suite):
+        console.print(f"[red]ERROR[/red] {oracle_incompatibility_message(reference, suite)}")
+        raise typer.Exit(code=1)
+
+    try:
+        selection = select_oracle_suite(
+            reference,
+            suite,
+            mutants,
+            strategy=cast(OracleSelectionStrategy, strategy),
+            budget=budget,
+            seed=seed,
+        )
+    except OracleSelectionError as exc:
+        console.print(f"[red]ERROR[/red] {exc}")
+        raise typer.Exit(code=1) from exc
+
+    write_selected_oracle_json(out, selection)
+    write_oracle_selection_report_json(report, selection)
+
+    if quiet:
+        console.print(
+            f"[green]OK[/green] selected={len(selection.selected_scenarios)}, "
+            f"mutation_retained={selection.mutation_score_retained:.2f}"
+        )
+    else:
+        console.print(
+            f"[green]OK[/green] Selected {len(selection.selected_scenarios)} of "
+            f"{len(suite.scenarios)} scenarios using {strategy}"
+        )
+        console.print(
+            f"Coverage retained={selection.coverage_retained:.2%}, "
+            f"mutation score retained={selection.mutation_score_retained:.2%}"
+        )
+        console.print(f"Selected oracle: {out}")
+        console.print(f"Report: {report}")
 
     raise typer.Exit(code=0)
 
