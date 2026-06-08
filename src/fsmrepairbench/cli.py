@@ -27,6 +27,12 @@ from fsmrepairbench.generators.synthetic_factory import (
 )
 from fsmrepairbench.llm.ollama import OllamaError, run_llm_repair_case
 from fsmrepairbench.mutators import MUTATION_OPERATORS, MutatorError, mutate
+from fsmrepairbench.oracle_generator import (
+    DepthLevel,
+    OracleGeneratorError,
+    export_oracle_json,
+    generate_oracle_suite,
+)
 from fsmrepairbench.patch import PatchError, apply_patch, load_patch_json, validate_patch
 from fsmrepairbench.repair_engines.baselines import (
     BASELINE_ENGINE_NAMES,
@@ -413,6 +419,45 @@ def generate_fsm_cmd(
     console.print(
         f"[green]OK[/green] Generated FSM '{fsm.id}' with "
         f"{len(fsm.states)} states and {len(fsm.transitions)} transitions at {out}"
+    )
+    raise typer.Exit(code=0)
+
+
+@app.command("generate-oracles")
+def generate_oracles_cmd(
+    fsm_path: Path,
+    out: Path = typer.Option(..., "--out", help="Output path for oracle suite JSON."),
+    depth: DepthLevel = typer.Option("medium", "--depth"),
+) -> None:
+    """Generate behavioural oracle scenarios from a reference FSM."""
+    try:
+        fsm = load_fsm_json(fsm_path)
+    except (OSError, json.JSONDecodeError, ValidationError) as exc:
+        console.print(f"[red]ERROR[/red] Failed to load FSM: {exc}")
+        raise typer.Exit(code=1) from exc
+
+    fsm_errors = validate_fsm(fsm)
+    if fsm_errors:
+        console.print(f"[red]ERROR[/red] Invalid FSM: {fsm_errors[0]}")
+        raise typer.Exit(code=1)
+
+    try:
+        result = generate_oracle_suite(fsm, depth=depth)
+        export_oracle_json(result.suite, out)
+    except OracleGeneratorError as exc:
+        console.print(f"[red]ERROR[/red] {exc}")
+        raise typer.Exit(code=1) from exc
+
+    coverage = result.coverage
+    console.print(
+        f"[green]OK[/green] Generated oracle suite '{result.suite.id}' with "
+        f"{len(result.suite.scenarios)} scenarios at {out}"
+    )
+    console.print(
+        "Coverage: "
+        f"states={coverage.state_coverage:.2%}, "
+        f"transitions={coverage.transition_coverage:.2%}, "
+        f"events={coverage.event_coverage:.2%}"
     )
     raise typer.Exit(code=0)
 
