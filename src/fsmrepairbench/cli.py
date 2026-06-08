@@ -117,6 +117,11 @@ from fsmrepairbench.metamorphic import (
     load_score_result,
     write_metamorphic_check_json,
 )
+from fsmrepairbench.error_propagation import (
+    ErrorPropagationError,
+    analyze_error_propagation,
+    write_error_propagation_report_json,
+)
 from fsmrepairbench.oracle_selection import (
     SUPPORTED_ORACLE_SELECTION_STRATEGIES,
     OracleSelectionError,
@@ -520,6 +525,43 @@ def select_oracles_cmd(
         )
         console.print(f"Selected oracle: {out}")
         console.print(f"Report: {report}")
+
+    raise typer.Exit(code=0)
+
+
+@app.command("analyze-error-propagation")
+def analyze_error_propagation_cmd(
+    case_dir: Path,
+    out: Path = typer.Option(..., "--out", help="Write propagation report JSON to this path."),
+    quiet: bool = typer.Option(False, "--quiet", help="Print a short summary only."),
+) -> None:
+    """Analyze fault activation, propagation, and masking for a benchmark case."""
+    try:
+        report = analyze_error_propagation(case_dir)
+    except ErrorPropagationError as exc:
+        console.print(f"[red]ERROR[/red] {exc}")
+        raise typer.Exit(code=1) from exc
+
+    write_error_propagation_report_json(out, report)
+
+    if quiet:
+        console.print(
+            f"[green]OK[/green] detected={report.summary.detected_count}, "
+            f"masked={report.summary.masked_count}"
+        )
+    else:
+        console.print(
+            f"[green]OK[/green] Analyzed {report.summary.scenarios_analyzed} scenarios "
+            f"for '{report.case_id}'"
+        )
+        console.print(
+            "Classification: "
+            f"easy={report.summary.easy_mutant}, "
+            f"hard_to_kill={report.summary.hard_to_kill_mutant}, "
+            f"masked={report.summary.masked_mutant}, "
+            f"equivalent={report.summary.equivalent_or_near_equivalent}"
+        )
+        console.print(f"Report: {out}")
 
     raise typer.Exit(code=0)
 

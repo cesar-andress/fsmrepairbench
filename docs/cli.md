@@ -14,6 +14,22 @@ fsmrepairbench build-dataset --size 10 --seed 42 --output OUTPUT_DIR
 
 ## Commands
 
+### `analyze-error-propagation`
+
+Analyze fault activation, propagation, and masking for a benchmark case.
+
+**Usage**
+
+```bash
+fsmrepairbench analyze-error-propagation PATH --out PATH
+```
+
+| Parameter | Type | Flags | Default | Description |
+|-----------|------|-------|---------|-------------|
+| `case_dir` | `Path` | positional | required |  |
+| `out` | `Path` | `--out` | required | Write propagation report JSON to this path. |
+| `quiet` | `bool` | `--quiet` | False | Print a short summary only. |
+
 ### `analyze-novelty`
 
 Analyze benchmark novelty and detect synthetic dataset collapse.
