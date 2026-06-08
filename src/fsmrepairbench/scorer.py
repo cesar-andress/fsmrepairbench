@@ -60,7 +60,11 @@ def write_score_csv(
 
 def score_oracle_suite(fsm: FSM, suite: OracleSuite) -> ScoreResult:
     """Score *fsm* against all scenarios in *suite*."""
-    scenario_results = [execute_scenario(fsm, scenario) for scenario in suite.scenarios]
+    semantics_mode = suite.semantics_mode or fsm.semantics_mode
+    scenario_results = [
+        execute_scenario(fsm, scenario, semantics_mode=semantics_mode)
+        for scenario in suite.scenarios
+    ]
 
     passed_steps = sum(result.passed_steps for result in scenario_results)
     total_steps = sum(result.total_steps for result in scenario_results)

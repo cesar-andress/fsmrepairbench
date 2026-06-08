@@ -13,6 +13,7 @@ from fsmrepairbench.difficulty import (
     reachable_state_ids,
 )
 from fsmrepairbench.models import FSM, OracleSuite
+from fsmrepairbench.semantics import infer_structural_features
 
 
 class MachineType(StrEnum):
@@ -22,6 +23,8 @@ class MachineType(StrEnum):
     EFSM = "efsm"
     TIMED_FSM = "timed_fsm"
     TIMED_EFSM = "timed_efsm"
+    PROBABILISTIC_FSM = "probabilistic_fsm"
+    NONDETERMINISTIC_FSM = "nondeterministic_fsm"
 
 
 class Determinism(StrEnum):
@@ -74,6 +77,15 @@ class GraphStructure(StrEnum):
     LAYERED = "layered"
 
 
+class SemanticsFeature(StrEnum):
+    NONDETERMINISM = "nondeterminism"
+    PROBABILITY = "probability"
+    REFUSAL = "refusal"
+    QUIESCENCE = "quiescence"
+    DISCRETE_TIME = "discrete_time"
+    CYCLES = "cycles"
+
+
 class OracleDepth(StrEnum):
     SHALLOW = "shallow"
     MEDIUM = "medium"
@@ -123,6 +135,14 @@ class CaseFeatures(BaseModel):
     num_timeouts: int
     num_cycles: int | None
     scc_count: int | None
+    has_nondeterminism: bool = False
+    has_probabilities: bool = False
+    has_cycles: bool = False
+    has_refusals: bool = False
+    has_discrete_time: bool = False
+    cycle_count: int | None = None
+    strongly_connected_component_count: int | None = None
+    semantics_features: list[SemanticsFeature] = Field(default_factory=list)
     seed: int
 
 
@@ -287,6 +307,12 @@ def _looks_layered(fsm: FSM, reachable: set[str]) -> bool:
 
 def infer_machine_type(fsm: FSM) -> MachineType:
     """Infer the machine family from optional schema fields."""
+    structural = infer_structural_features(fsm)
+    if structural.has_probabilities:
+        return MachineType.PROBABILISTIC_FSM
+    if structural.has_nondeterminism:
+        return MachineType.NONDETERMINISTIC_FSM
+
     has_timeout = any(transition.timeout is not None for transition in fsm.transitions)
     has_delay = any(transition.delay is not None for transition in fsm.transitions)
     has_variables = bool(fsm.variables)
@@ -322,6 +348,27 @@ def infer_oracle_depth(oracle_suite: OracleSuite | None) -> OracleDepth:
     return OracleDepth.EXHAUSTIVE_LIKE
 
 
+def infer_semantics_features(fsm: FSM) -> list[SemanticsFeature]:
+    """Infer semantics-oriented taxonomy tags for benchmark slicing."""
+    structural = infer_structural_features(fsm)
+    tags: list[SemanticsFeature] = []
+    if structural.has_nondeterminism:
+        tags.append(SemanticsFeature.NONDETERMINISM)
+    if structural.has_probabilities:
+        tags.append(SemanticsFeature.PROBABILITY)
+    if structural.has_refusals:
+        tags.append(SemanticsFeature.REFUSAL)
+    if structural.has_discrete_time:
+        tags.append(SemanticsFeature.DISCRETE_TIME)
+    if structural.has_cycles:
+        tags.append(SemanticsFeature.CYCLES)
+    if any(state.quiescence for state in fsm.states) or any(
+        transition.quiescence for transition in fsm.transitions
+    ):
+        tags.append(SemanticsFeature.QUIESCENCE)
+    return tags
+
+
 def compute_case_features(
     fsm: FSM,
     oracle_suite: OracleSuite | None,
@@ -345,6 +392,7 @@ def compute_case_features(
         and any(token in transition.guard.lower() for token in ("time", "t >", "t <"))
     )
     num_timeouts = sum(1 for transition in fsm.transitions if transition.timeout is not None)
+    structural = infer_structural_features(fsm)
 
     return CaseFeatures(
         case_id=case_id,
@@ -368,5 +416,13 @@ def compute_case_features(
         num_timeouts=num_timeouts,
         num_cycles=metrics.cycles,
         scc_count=metrics.strongly_connected_components,
+        has_nondeterminism=structural.has_nondeterminism,
+        has_probabilities=structural.has_probabilities,
+        has_cycles=structural.has_cycles,
+        has_refusals=structural.has_refusals,
+        has_discrete_time=structural.has_discrete_time,
+        cycle_count=structural.cycle_count,
+        strongly_connected_component_count=structural.strongly_connected_component_count,
+        semantics_features=infer_semantics_features(fsm),
         seed=seed,
     )

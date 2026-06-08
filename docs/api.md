@@ -241,6 +241,18 @@ Metadata describing an injected bug used in a benchmark instance.
 | `is_higher_order` | `bool` | no | False |  |
 | `coupled_to_simple_faults` | `list[str] | None` | no | None |  |
 
+### `CyclicStructureMetadata`
+
+Module: `fsmrepairbench.models`
+
+Cyclic graph metadata for benchmark slicing.
+
+| Field | Type | Required | Default | Description |
+|-------|------|----------|---------|-------------|
+| `cycle_count` | `int` | no | 0 |  |
+| `strongly_connected_component_count` | `int` | no | 0 |  |
+| `is_cyclic` | `bool` | no | False |  |
+
 ### `FSM`
 
 Module: `fsmrepairbench.models`
@@ -259,6 +271,9 @@ Behavioural finite-state machine definition.
 | `variables` | `dict[str, str]` | no | PydanticUndefined |  |
 | `parent_fsm_id` | `str | None` | no | None |  |
 | `reference_fsm_id` | `str | None` | no | None |  |
+| `discrete_time_step` | `float | None` | no | None |  |
+| `semantics_mode` | `Optional[Literal['deterministic', 'nondeterministic_accepting', 'probabilistic_threshold', 'refusal_aware', 'timed_discrete']]` | no | None |  |
+| `cyclic_metadata` | `fsmrepairbench.models.CyclicStructureMetadata | None` | no | None |  |
 
 ### `OracleScenario`
 
@@ -283,6 +298,11 @@ One step in an oracle scenario: apply an event and expect a state.
 | `event` | `str` | yes | — |  |
 | `expected_state` | `str` | yes | — |  |
 | `guard` | `str | None` | no | None |  |
+| `accepting_states` | `list[str]` | no | PydanticUndefined |  |
+| `probability_threshold` | `float | None` | no | None |  |
+| `refusal_expected` | `bool` | no | False |  |
+| `quiescence_expected` | `bool` | no | False |  |
+| `discrete_time` | `int | None` | no | None |  |
 
 ### `OracleSuite`
 
@@ -295,6 +315,8 @@ Collection of oracle scenarios for validating FSM behaviour.
 | `id` | `str` | yes | — |  |
 | `fsm_id` | `str | None` | no | None |  |
 | `scenarios` | `list[fsmrepairbench.models.OracleScenario]` | no | PydanticUndefined |  |
+| `semantics_mode` | `Optional[Literal['deterministic', 'nondeterministic_accepting', 'probabilistic_threshold', 'refusal_aware', 'timed_discrete']]` | no | None |  |
+| `probability_threshold` | `float | None` | no | None |  |
 
 ### `RepairResult`
 
@@ -348,6 +370,8 @@ A single state in a finite-state machine.
 |-------|------|----------|---------|-------------|
 | `id` | `str` | yes | — |  |
 | `state_output` | `str | None` | no | None |  |
+| `refusal` | `bool` | no | False |  |
+| `quiescence` | `bool` | no | False |  |
 
 ### `StepResult`
 
@@ -383,6 +407,11 @@ A directed edge triggered by an event.
 | `timeout` | `float | None` | no | None |  |
 | `delay` | `float | None` | no | None |  |
 | `requirements` | `list[str]` | no | PydanticUndefined |  |
+| `probability` | `float | None` | no | None |  |
+| `is_nondeterministic` | `bool` | no | False |  |
+| `refusal` | `bool` | no | False |  |
+| `quiescence` | `bool` | no | False |  |
+| `discrete_time` | `int | None` | no | None |  |
 
 ## `fsmrepairbench.patch`
 
@@ -528,6 +557,14 @@ Machine-readable taxonomic features for one benchmark case.
 | `num_timeouts` | `int` | yes | — |  |
 | `num_cycles` | `int | None` | yes | — |  |
 | `scc_count` | `int | None` | yes | — |  |
+| `has_nondeterminism` | `bool` | no | False |  |
+| `has_probabilities` | `bool` | no | False |  |
+| `has_cycles` | `bool` | no | False |  |
+| `has_refusals` | `bool` | no | False |  |
+| `has_discrete_time` | `bool` | no | False |  |
+| `cycle_count` | `int | None` | no | None |  |
+| `strongly_connected_component_count` | `int | None` | no | None |  |
+| `semantics_features` | `list[fsmrepairbench.taxonomy.SemanticsFeature]` | no | PydanticUndefined |  |
 | `seed` | `int` | yes | — |  |
 
 ## `fsmrepairbench.tool_runner`

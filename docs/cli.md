@@ -817,3 +817,21 @@ fsmrepairbench validate-oracle tests/fixtures/valid_fsm.json
 | Parameter | Type | Flags | Default | Description |
 |-----------|------|-------|---------|-------------|
 | `path` | `Path` | positional | required |  |
+
+### `validate-semantics`
+
+Validate FSM and optional oracle semantics for advanced system families.
+
+**Usage**
+
+```bash
+fsmrepairbench validate-semantics tests/fixtures/valid_fsm.json --out PATH
+```
+
+| Parameter | Type | Flags | Default | Description |
+|-----------|------|-------|---------|-------------|
+| `fsm_path` | `Path` | positional | required |  |
+| `mode` | `str` | `--mode` | required | Oracle semantics mode to validate. |
+| `oracle_path` | `Path | None` | `--oracle` | None | Optional oracle suite used to validate mode-specific step requirements. |
+| `out` | `Path | None` | `--out` | None | Optional path to write the semantics validation report JSON. |
+| `quiet` | `bool` | `--quiet` | False | Print a short summary only. |

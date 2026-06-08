@@ -116,6 +116,9 @@ Behavioural finite-state machine definition.
 | `variables` | `dict[str, str]` | no | PydanticUndefined |  |
 | `parent_fsm_id` | `str | None` | no | None |  |
 | `reference_fsm_id` | `str | None` | no | None |  |
+| `discrete_time_step` | `float | None` | no | None |  |
+| `semantics_mode` | `Optional[Literal['deterministic', 'nondeterministic_accepting', 'probabilistic_threshold', 'refusal_aware', 'timed_discrete']]` | no | None |  |
+| `cyclic_metadata` | `fsmrepairbench.models.CyclicStructureMetadata | None` | no | None |  |
 
 ### `OracleScenario`
 
@@ -140,6 +143,11 @@ One step in an oracle scenario: apply an event and expect a state.
 | `event` | `str` | yes | — |  |
 | `expected_state` | `str` | yes | — |  |
 | `guard` | `str | None` | no | None |  |
+| `accepting_states` | `list[str]` | no | PydanticUndefined |  |
+| `probability_threshold` | `float | None` | no | None |  |
+| `refusal_expected` | `bool` | no | False |  |
+| `quiescence_expected` | `bool` | no | False |  |
+| `discrete_time` | `int | None` | no | None |  |
 
 ### `OracleSuite`
 
@@ -152,6 +160,8 @@ Collection of oracle scenarios for validating FSM behaviour.
 | `id` | `str` | yes | — |  |
 | `fsm_id` | `str | None` | no | None |  |
 | `scenarios` | `list[fsmrepairbench.models.OracleScenario]` | no | PydanticUndefined |  |
+| `semantics_mode` | `Optional[Literal['deterministic', 'nondeterministic_accepting', 'probabilistic_threshold', 'refusal_aware', 'timed_discrete']]` | no | None |  |
+| `probability_threshold` | `float | None` | no | None |  |
 
 ### `State`
 
@@ -163,6 +173,8 @@ A single state in a finite-state machine.
 |-------|------|----------|---------|-------------|
 | `id` | `str` | yes | — |  |
 | `state_output` | `str | None` | no | None |  |
+| `refusal` | `bool` | no | False |  |
+| `quiescence` | `bool` | no | False |  |
 
 ### `Transition`
 
@@ -182,6 +194,11 @@ A directed edge triggered by an event.
 | `timeout` | `float | None` | no | None |  |
 | `delay` | `float | None` | no | None |  |
 | `requirements` | `list[str]` | no | PydanticUndefined |  |
+| `probability` | `float | None` | no | None |  |
+| `is_nondeterministic` | `bool` | no | False |  |
+| `refusal` | `bool` | no | False |  |
+| `quiescence` | `bool` | no | False |  |
+| `discrete_time` | `int | None` | no | None |  |
 
 ### `FSMPatch`
 

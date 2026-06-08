@@ -43,6 +43,12 @@ from fsmrepairbench.difficulty_calibration import (
     DifficultyCalibrationError,
     calibrate_benchmark_difficulty,
 )
+from fsmrepairbench.semantics import (
+    SUPPORTED_SEMANTICS_MODES,
+    SemanticsError,
+    validate_semantics,
+    write_semantics_report_json,
+)
 from fsmrepairbench.tool_runner import ToolRunnerError, load_tool_configs, run_tools
 from fsmrepairbench.experiments import (
     ExperimentConfigError,
@@ -77,7 +83,7 @@ from fsmrepairbench.literature import (
 )
 from fsmrepairbench.llm.ollama import OllamaError, run_llm_repair_case
 from fsmrepairbench.mutators import MUTATION_OPERATORS, MutatorError, mutate
-from fsmrepairbench.models import BugMetadata
+from fsmrepairbench.models import BugMetadata, OracleSemanticsMode
 from fsmrepairbench.oracle_generator import (
     DepthLevel,
     OracleGeneratorError,
@@ -212,6 +218,84 @@ def validate_oracle(path: Path) -> None:
 
     console.print(f"[red]ERROR[/red] {message}")
     raise typer.Exit(code=1)
+
+
+@app.command("validate-semantics")
+def validate_semantics_cmd(
+    fsm_path: Path,
+    mode: str = typer.Option(..., "--mode", help="Oracle semantics mode to validate."),
+    oracle_path: Path | None = typer.Option(
+        None,
+        "--oracle",
+        help="Optional oracle suite used to validate mode-specific step requirements.",
+    ),
+    out: Path | None = typer.Option(
+        None,
+        "--out",
+        help="Optional path to write the semantics validation report JSON.",
+    ),
+    quiet: bool = typer.Option(False, "--quiet", help="Print a short summary only."),
+) -> None:
+    """Validate FSM and optional oracle semantics for advanced system families."""
+    if mode not in SUPPORTED_SEMANTICS_MODES:
+        console.print(
+            f"[red]ERROR[/red] Unknown mode '{mode}'. "
+            f"Supported: {', '.join(SUPPORTED_SEMANTICS_MODES)}"
+        )
+        raise typer.Exit(code=1)
+
+    try:
+        fsm = load_fsm_json(fsm_path)
+    except (OSError, json.JSONDecodeError, ValidationError) as exc:
+        console.print(f"[red]ERROR[/red] Failed to load FSM: {exc}")
+        raise typer.Exit(code=1) from exc
+
+    oracle_suite = None
+    if oracle_path is not None:
+        try:
+            oracle_suite = load_oracle_suite(oracle_path)
+        except (OSError, json.JSONDecodeError, ValidationError) as exc:
+            console.print(f"[red]ERROR[/red] Failed to load oracle: {exc}")
+            raise typer.Exit(code=1) from exc
+
+    try:
+        report = validate_semantics(
+            fsm,
+            mode=cast(OracleSemanticsMode, mode),
+            oracle_suite=oracle_suite,
+        )
+    except SemanticsError as exc:
+        console.print(f"[red]ERROR[/red] {exc}")
+        raise typer.Exit(code=1) from exc
+
+    if out is not None:
+        write_semantics_report_json(out, report)
+
+    if quiet:
+        status = "valid" if report.valid else "invalid"
+        console.print(f"[green]OK[/green] mode={mode} status={status} fsm={fsm.id}")
+    else:
+        features = report.structural_features
+        console.print(
+            f"FSM '{fsm.id}' semantics mode '{mode}': "
+            f"{'valid' if report.valid else 'invalid'}"
+        )
+        console.print(
+            "Features: "
+            f"nondeterminism={features.has_nondeterminism}, "
+            f"probabilities={features.has_probabilities}, "
+            f"cycles={features.has_cycles}, "
+            f"refusals={features.has_refusals}, "
+            f"discrete_time={features.has_discrete_time}"
+        )
+        if report.issues:
+            for issue in report.issues[:5]:
+                prefix = "WARN" if issue.severity == "warning" else "ERR"
+                console.print(f"  [{prefix}] {issue.message}")
+        if out is not None:
+            console.print(f"Report: {out}")
+
+    raise typer.Exit(code=0 if report.valid else 1)
 
 
 @app.command("score")

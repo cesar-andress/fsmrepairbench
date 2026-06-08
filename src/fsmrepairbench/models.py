@@ -2,9 +2,24 @@
 
 from __future__ import annotations
 
-from typing import Any
+from typing import Any, Literal
 
 from pydantic import BaseModel, Field
+
+OracleSemanticsMode = Literal[
+    "deterministic",
+    "nondeterministic_accepting",
+    "probabilistic_threshold",
+    "refusal_aware",
+    "timed_discrete",
+]
+
+REFUSAL_EVENTS: frozenset[str] = frozenset(
+    {"$refusal", "__refusal__", "refusal", "delta", "δ"}
+)
+QUIESCENCE_EVENTS: frozenset[str] = frozenset(
+    {"$quiescence", "__quiescence__", "quiescence", "tau", "τ"}
+)
 
 
 class State(BaseModel):
@@ -12,6 +27,8 @@ class State(BaseModel):
 
     id: str
     state_output: str | None = None
+    refusal: bool = False
+    quiescence: bool = False
 
 
 class Transition(BaseModel):
@@ -27,6 +44,19 @@ class Transition(BaseModel):
     timeout: float | None = None
     delay: float | None = None
     requirements: list[str] = Field(default_factory=list)
+    probability: float | None = Field(default=None, ge=0.0, le=1.0)
+    is_nondeterministic: bool = False
+    refusal: bool = False
+    quiescence: bool = False
+    discrete_time: int | None = Field(default=None, ge=0)
+
+
+class CyclicStructureMetadata(BaseModel):
+    """Cyclic graph metadata for benchmark slicing."""
+
+    cycle_count: int = Field(default=0, ge=0)
+    strongly_connected_component_count: int = Field(default=0, ge=0)
+    is_cyclic: bool = False
 
 
 class FSM(BaseModel):
@@ -42,6 +72,9 @@ class FSM(BaseModel):
     variables: dict[str, str] = Field(default_factory=dict)
     parent_fsm_id: str | None = None
     reference_fsm_id: str | None = None
+    discrete_time_step: float | None = Field(default=None, gt=0.0)
+    semantics_mode: OracleSemanticsMode | None = None
+    cyclic_metadata: CyclicStructureMetadata | None = None
 
 
 class OracleStep(BaseModel):
@@ -50,6 +83,11 @@ class OracleStep(BaseModel):
     event: str
     expected_state: str
     guard: str | None = None
+    accepting_states: list[str] = Field(default_factory=list)
+    probability_threshold: float | None = Field(default=None, ge=0.0, le=1.0)
+    refusal_expected: bool = False
+    quiescence_expected: bool = False
+    discrete_time: int | None = Field(default=None, ge=0)
 
 
 class OracleScenario(BaseModel):
@@ -66,6 +104,8 @@ class OracleSuite(BaseModel):
     id: str
     fsm_id: str | None = None
     scenarios: list[OracleScenario] = Field(default_factory=list)
+    semantics_mode: OracleSemanticsMode | None = None
+    probability_threshold: float | None = Field(default=None, ge=0.0, le=1.0)
 
 
 class StepResult(BaseModel):
