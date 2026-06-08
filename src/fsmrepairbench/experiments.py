@@ -332,6 +332,7 @@ def write_case_result(
         "patch_validation_failures": summary_row.patch_validation_failures,
         "patch_application_failures": summary_row.patch_application_failures,
         "iterations_completed": summary_row.iterations_completed,
+        "runtime_seconds": float(repair_result.details.get("runtime_seconds", 0.0)),
         "repair_result": repair_result.model_dump(),
     }
     path.write_text(json.dumps(payload, indent=2) + "\n", encoding="utf-8")

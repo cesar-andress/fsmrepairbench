@@ -37,6 +37,7 @@ from fsmrepairbench.generators.synthetic_factory import (
     params_from_complexity,
 )
 from fsmrepairbench.hf_export import HuggingFaceExportError, export_huggingface_dataset
+from fsmrepairbench.leaderboard import LeaderboardError, generate_leaderboard
 from fsmrepairbench.llm.ollama import OllamaError, run_llm_repair_case
 from fsmrepairbench.mutators import MUTATION_OPERATORS, MutatorError, mutate
 from fsmrepairbench.oracle_generator import (
@@ -577,6 +578,40 @@ def export_hf_cmd(dataset_dir: Path) -> None:
         f"test={result.split_counts['test']})"
     )
     console.print(f"Dataset card: {result.dataset_card_path}")
+    raise typer.Exit(code=0)
+
+
+@app.command("leaderboard")
+def leaderboard_cmd(results_dir: Path) -> None:
+    """Generate leaderboard CSV and Markdown from experiment results."""
+    try:
+        result = generate_leaderboard(results_dir)
+    except LeaderboardError as exc:
+        console.print(f"[red]ERROR[/red] {exc}")
+        raise typer.Exit(code=1) from exc
+
+    console.print(
+        f"[green]OK[/green] Generated leaderboard for {len(result.entries)} models in "
+        f"{result.results_dir}"
+    )
+    console.print(f"CSV: {result.csv_path}")
+    console.print(f"Markdown: {result.markdown_path}")
+
+    table = Table(title="Leaderboard")
+    table.add_column("Rank")
+    table.add_column("Model")
+    table.add_column("Complete Repair")
+    table.add_column("Repair Success")
+    table.add_column("Avg BPR Δ")
+    for entry in result.entries:
+        table.add_row(
+            str(entry.rank),
+            entry.model,
+            f"{entry.complete_repair_rate:.2%}",
+            f"{entry.repair_success_rate:.2%}",
+            f"{entry.avg_bpr_improvement:.4f}",
+        )
+    console.print(table)
     raise typer.Exit(code=0)
 
 

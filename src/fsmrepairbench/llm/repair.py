@@ -2,6 +2,7 @@
 
 from __future__ import annotations
 
+import time
 from collections.abc import Callable
 from typing import Any
 
@@ -43,6 +44,7 @@ def run_llm_repair_with_client(
 
         generate_fn = _generate
 
+    started_at = time.perf_counter()
     current_fsm = faulty_fsm.model_copy(deep=True)
     iterations: list[dict[str, Any]] = []
 
@@ -96,6 +98,7 @@ def run_llm_repair_with_client(
             break
 
     final_score = score_oracle_suite(current_fsm, oracle_suite)
+    runtime_seconds = round(time.perf_counter() - started_at, 4)
     backend = client.backend.value if client is not None else "custom"
     return RepairResult(
         bug_id=faulty_fsm.id,
@@ -106,6 +109,7 @@ def run_llm_repair_with_client(
             "backend": backend,
             "temperature": temperature,
             "max_iterations": max_iterations,
+            "runtime_seconds": runtime_seconds,
             "iterations": iterations,
             "final_fsm": current_fsm.model_dump(),
             "passed_steps": final_score.passed_steps,
