@@ -101,3 +101,12 @@ def test_cli_export_hf(tmp_path: Path) -> None:
     assert (dataset_dir / "dataset" / "train.jsonl").is_file()
     assert (dataset_dir / "dataset" / "README.md").is_file()
     assert "Exported HuggingFace dataset" in result.stdout
+
+
+def test_cli_export_hf_missing_dataset_reports_error(tmp_path: Path) -> None:
+    missing_dir = tmp_path / "missing_dataset"
+    result = runner.invoke(app, ["export-hf", str(missing_dir)])
+
+    assert result.exit_code == 1
+    assert "ERROR" in result.stdout
+    assert "Dataset directory not found" in result.stdout

@@ -118,7 +118,6 @@ from fsmrepairbench.higher_order_mutation import (
     mutate_higher_order,
     write_dataset_coupling_report,
 )
-from fsmrepairbench.hf_export import HuggingFaceExportError, export_huggingface_dataset
 from fsmrepairbench.leaderboard import LeaderboardError, generate_leaderboard
 from fsmrepairbench.literature import (
     GenerationSupport,
@@ -2780,6 +2779,8 @@ def benchmark_report_cmd(dataset_dir: Path) -> None:
 @app.command("export-hf")
 def export_hf_cmd(dataset_dir: Path) -> None:
     """Export a benchmark dataset to HuggingFace JSONL splits."""
+    from fsmrepairbench.hf_export import HuggingFaceExportError, export_huggingface_dataset
+
     try:
         result = export_huggingface_dataset(dataset_dir)
     except HuggingFaceExportError as exc:
