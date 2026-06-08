@@ -9,7 +9,8 @@ from dataclasses import dataclass
 from pathlib import Path
 from typing import Literal
 
-from fsmrepairbench.models import FSM, OracleScenario, OracleStep, OracleSuite, Transition
+from fsmrepairbench.models import FSM, OracleScenario, OracleSemanticsMode, OracleSuite, Transition
+from fsmrepairbench.oracle import execute_scenario, trace_scenario_transitions
 from fsmrepairbench.oracle_generator import reachable_state_ids
 
 SuspiciousnessMethod = Literal["ochiai", "tarantula", "jaccard"]
@@ -36,7 +37,7 @@ class SuspiciousElement:
 
     element_type: ElementType
     element_id: str
-    score: float
+    suspiciousness: float
     failed_cover_count: int
     passed_cover_count: int
 
@@ -48,45 +49,43 @@ class FaultLocalizationReport:
     fsm_id: str
     oracle_suite_id: str
     method: SuspiciousnessMethod
-    total_passed_scenarios: int
-    total_failed_scenarios: int
-    scenario_spectra: tuple[ScenarioSpectrum, ...]
-    rankings: tuple[SuspiciousElement, ...]
+    ranked_elements: tuple[SuspiciousElement, ...]
 
 
-def _find_transition(
+def _transition_lookup(fsm: FSM) -> dict[str, Transition]:
+    return {transition.id: transition for transition in fsm.transitions}
+
+
+def _resolve_semantics_mode(
     fsm: FSM,
-    current_state: str,
-    step: OracleStep,
-) -> Transition | None:
-    for transition in fsm.transitions:
-        if transition.source != current_state:
-            continue
-        if transition.event != step.event:
-            continue
-        if step.guard != transition.guard:
-            continue
-        return transition
-    return None
+    suite: OracleSuite,
+) -> OracleSemanticsMode | None:
+    return suite.semantics_mode or fsm.semantics_mode
 
 
-def trace_scenario_spectrum(fsm: FSM, scenario: OracleScenario) -> ScenarioSpectrum:
-    """Record passed/failed status and covered FSM elements for *scenario*."""
-    current_state = fsm.initial_state
-    covered_states: set[str] = {current_state}
+def trace_scenario_spectrum(
+    fsm: FSM,
+    scenario: OracleScenario,
+    *,
+    semantics_mode: OracleSemanticsMode | None = None,
+) -> ScenarioSpectrum:
+    """Record pass/fail and covered FSM elements using oracle execution traces."""
+    mode = semantics_mode
+    result = execute_scenario(fsm, scenario, semantics_mode=mode)
+    transition_ids = trace_scenario_transitions(fsm, scenario, semantics_mode=mode)
+    by_id = _transition_lookup(fsm)
+
+    covered_states: set[str] = {fsm.initial_state}
     covered_transitions: set[str] = set()
     covered_guards: set[str] = set()
     covered_actions: set[str] = set()
     covered_timeouts: set[str] = set()
-    scenario_passed = True
 
-    for step in scenario.steps:
-        transition = _find_transition(fsm, current_state, step)
-        if transition is None:
-            scenario_passed = False
-            break
-
-        covered_transitions.add(transition.id)
+    for transition_id in transition_ids:
+        transition = by_id[transition_id]
+        covered_transitions.add(transition_id)
+        covered_states.add(transition.source)
+        covered_states.add(transition.target)
         if transition.guard is not None and transition.guard.strip():
             covered_guards.add(transition.guard)
         if transition.action is not None and transition.action.strip():
@@ -94,15 +93,9 @@ def trace_scenario_spectrum(fsm: FSM, scenario: OracleScenario) -> ScenarioSpect
         if transition.timeout is not None:
             covered_timeouts.add(str(transition.timeout))
 
-        current_state = transition.target
-        covered_states.add(current_state)
-        if current_state != step.expected_state:
-            scenario_passed = False
-            break
-
     return ScenarioSpectrum(
         scenario_id=scenario.id,
-        passed=scenario_passed,
+        passed=result.passed,
         covered_states=frozenset(covered_states),
         covered_transitions=frozenset(covered_transitions),
         covered_guards=frozenset(covered_guards),
@@ -111,17 +104,20 @@ def trace_scenario_spectrum(fsm: FSM, scenario: OracleScenario) -> ScenarioSpect
     )
 
 
-def collect_scenario_spectra(fsm: FSM, suite: OracleSuite) -> tuple[ScenarioSpectrum, ...]:
+def collect_scenario_spectra(
+    fsm: FSM,
+    suite: OracleSuite,
+) -> tuple[ScenarioSpectrum, ...]:
     """Collect execution spectra for all scenarios in *suite*."""
-    return tuple(trace_scenario_spectrum(fsm, scenario) for scenario in suite.scenarios)
-
-
-def _reachable_state_ids(fsm: FSM) -> set[str]:
-    return reachable_state_ids(fsm)
+    semantics_mode = _resolve_semantics_mode(fsm, suite)
+    return tuple(
+        trace_scenario_spectrum(fsm, scenario, semantics_mode=semantics_mode)
+        for scenario in suite.scenarios
+    )
 
 
 def _all_fsm_elements(fsm: FSM) -> dict[ElementType, set[str]]:
-    reachable = _reachable_state_ids(fsm)
+    reachable = reachable_state_ids(fsm)
     states = {state.id for state in fsm.states if state.id in reachable}
     transitions: set[str] = set()
     guards: set[str] = set()
@@ -221,7 +217,7 @@ def rank_suspicious_elements(
     total_passed = sum(1 for spectrum in spectrum_list if spectrum.passed)
     elements = _all_fsm_elements(fsm)
 
-    rankings: list[SuspiciousElement] = []
+    ranked: list[SuspiciousElement] = []
     for element_type, element_ids in elements.items():
         for element_id in sorted(element_ids):
             failed_cover = sum(
@@ -234,25 +230,32 @@ def rank_suspicious_elements(
                 for spectrum in spectrum_list
                 if spectrum.passed and _element_in_spectrum(element_type, element_id, spectrum)
             )
-            score = suspiciousness_score(
+            suspiciousness = suspiciousness_score(
                 method=method,
                 failed_cover_count=failed_cover,
                 passed_cover_count=passed_cover,
                 total_failed_scenarios=total_failed,
                 total_passed_scenarios=total_passed,
             )
-            rankings.append(
+            ranked.append(
                 SuspiciousElement(
                     element_type=element_type,
                     element_id=element_id,
-                    score=score,
+                    suspiciousness=suspiciousness,
                     failed_cover_count=failed_cover,
                     passed_cover_count=passed_cover,
                 )
             )
 
-    rankings.sort(key=lambda item: (-item.score, -item.failed_cover_count, item.element_type, item.element_id))
-    return tuple(rankings)
+    ranked.sort(
+        key=lambda item: (
+            -item.suspiciousness,
+            -item.failed_cover_count,
+            item.element_type,
+            item.element_id,
+        )
+    )
+    return tuple(ranked)
 
 
 def localize_fault(
@@ -267,21 +270,18 @@ def localize_fault(
         raise ValueError(msg)
 
     spectra = collect_scenario_spectra(fsm, suite)
-    passed_count = sum(1 for spectrum in spectra if spectrum.passed)
-    failed_count = len(spectra) - passed_count
+    failed_count = sum(1 for spectrum in spectra if not spectrum.passed)
     if failed_count == 0:
         msg = "Fault localization requires at least one failing oracle scenario"
         raise ValueError(msg)
-    rankings = rank_suspicious_elements(fsm, spectra, method=method)
+
+    ranked_elements = rank_suspicious_elements(fsm, spectra, method=method)
 
     return FaultLocalizationReport(
         fsm_id=fsm.id,
         oracle_suite_id=suite.id,
         method=method,
-        total_passed_scenarios=passed_count,
-        total_failed_scenarios=failed_count,
-        scenario_spectra=spectra,
-        rankings=rankings,
+        ranked_elements=ranked_elements,
     )
 
 
@@ -291,29 +291,15 @@ def fault_localization_to_dict(report: FaultLocalizationReport) -> dict[str, obj
         "fsm_id": report.fsm_id,
         "oracle_suite_id": report.oracle_suite_id,
         "method": report.method,
-        "total_passed_scenarios": report.total_passed_scenarios,
-        "total_failed_scenarios": report.total_failed_scenarios,
-        "scenario_spectra": [
-            {
-                "scenario_id": spectrum.scenario_id,
-                "passed": spectrum.passed,
-                "covered_states": sorted(spectrum.covered_states),
-                "covered_transitions": sorted(spectrum.covered_transitions),
-                "covered_guards": sorted(spectrum.covered_guards),
-                "covered_actions": sorted(spectrum.covered_actions),
-                "covered_timeouts": sorted(spectrum.covered_timeouts),
-            }
-            for spectrum in report.scenario_spectra
-        ],
-        "rankings": [
+        "ranked_elements": [
             {
                 "element_type": element.element_type,
                 "element_id": element.element_id,
-                "score": element.score,
+                "suspiciousness": element.suspiciousness,
                 "failed_cover_count": element.failed_cover_count,
                 "passed_cover_count": element.passed_cover_count,
             }
-            for element in report.rankings
+            for element in report.ranked_elements
         ],
     }
 

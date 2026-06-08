@@ -775,24 +775,23 @@ def localize_fault_cmd(
     write_localization_json(out, report)
 
     if quiet:
-        top = report.rankings[0] if report.rankings else None
+        top = report.ranked_elements[0] if report.ranked_elements else None
         if top is None:
             console.print("[green]OK[/green] No ranked elements")
         else:
             console.print(
                 f"[green]OK[/green] top={top.element_type}:{top.element_id} "
-                f"score={top.score:.4f}"
+                f"suspiciousness={top.suspiciousness:.4f}"
             )
     else:
         console.print(
-            f"[green]OK[/green] Ranked {len(report.rankings)} elements using {method} "
-            f"({report.total_failed_scenarios} failed scenarios)"
+            f"[green]OK[/green] Ranked {len(report.ranked_elements)} elements using {method}"
         )
         console.print(f"Report: {out}")
-        for element in report.rankings[:5]:
+        for element in report.ranked_elements[:5]:
             console.print(
                 f"  {element.element_type}:{element.element_id} "
-                f"score={element.score:.4f} "
+                f"suspiciousness={element.suspiciousness:.4f} "
                 f"(failed={element.failed_cover_count}, passed={element.passed_cover_count})"
             )
 

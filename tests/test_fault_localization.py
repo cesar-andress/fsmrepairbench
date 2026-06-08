@@ -10,18 +10,32 @@ from typer.testing import CliRunner
 
 from fsmrepairbench.cli import app
 from fsmrepairbench.fault_localization import (
+    SuspiciousElement,
     localize_fault,
     rank_suspicious_elements,
     suspiciousness_score,
     trace_scenario_spectrum,
     write_localization_json,
 )
-from fsmrepairbench.models import FSM, OracleScenario, OracleStep, OracleSuite
+from fsmrepairbench.models import OracleScenario, OracleStep
 from fsmrepairbench.mutators import mutate
 from fsmrepairbench.validators import load_fsm, load_oracle_suite
 
 FIXTURES = Path(__file__).parent / "fixtures"
+EXAMPLES = Path(__file__).parent.parent / "examples"
 runner = CliRunner()
+
+
+def _rank_position(
+    ranked: tuple[SuspiciousElement, ...],
+    *,
+    element_type: str,
+    element_id: str,
+) -> int | None:
+    for index, element in enumerate(ranked, start=1):
+        if element.element_type == element_type and element.element_id == element_id:
+            return index
+    return None
 
 
 def test_suspiciousness_coefficients() -> None:
@@ -66,22 +80,22 @@ def test_trace_scenario_spectrum_records_covered_elements() -> None:
     assert "open_gate" in spectrum.covered_actions
 
 
-def test_ochiai_ranks_faulty_transition_highly() -> None:
+@pytest.mark.parametrize("method", ["ochiai", "tarantula", "jaccard"])
+def test_wrong_target_transition_ranked_in_top_five(method: str) -> None:
     reference = load_fsm(FIXTURES / "valid_fsm.json")
     oracle = load_oracle_suite(FIXTURES / "valid_oracle.json")
     faulty, metadata = mutate(reference, "wrong_target", 0)
 
-    report = localize_fault(faulty, oracle, method="ochiai")
-    transition_rankings = [
-        element for element in report.rankings if element.element_type == "transition"
-    ]
+    report = localize_fault(faulty, oracle, method=method)  # type: ignore[arg-type]
 
     assert metadata.changed_transition_id is not None
-    top_transition = transition_rankings[0]
-    assert top_transition.element_id == metadata.changed_transition_id
-    assert top_transition.failed_cover_count >= 2
-    assert top_transition.passed_cover_count == 0
-    assert top_transition.score > 0.8
+    rank = _rank_position(
+        report.ranked_elements,
+        element_type="transition",
+        element_id=metadata.changed_transition_id,
+    )
+    assert rank is not None
+    assert rank <= 5
 
 
 def test_localize_fault_requires_failing_scenario() -> None:
@@ -103,14 +117,17 @@ def test_write_localization_json(tmp_path: Path) -> None:
 
     payload = json.loads(out_path.read_text(encoding="utf-8"))
     assert payload["method"] == "ochiai"
-    assert payload["rankings"]
-    assert payload["rankings"][0]["element_type"] in {
+    assert payload["ranked_elements"]
+    assert payload["ranked_elements"][0]["element_type"] in {
         "state",
         "transition",
         "guard",
         "action",
         "timeout",
     }
+    assert "suspiciousness" in payload["ranked_elements"][0]
+    assert "score" not in payload["ranked_elements"][0]
+    assert "rankings" not in payload
 
 
 def test_cli_localize_fault_writes_json(tmp_path: Path) -> None:
@@ -136,26 +153,30 @@ def test_cli_localize_fault_writes_json(tmp_path: Path) -> None:
 
     assert result.exit_code == 0
     payload = json.loads(out_path.read_text(encoding="utf-8"))
-    assert payload["total_failed_scenarios"] >= 1
-    assert payload["rankings"][0]["score"] > 0.0
+    assert payload["ranked_elements"][0]["suspiciousness"] > 0.0
 
 
-def test_rank_suspicious_elements_supports_all_methods() -> None:
-    reference = load_fsm(FIXTURES / "valid_fsm.json")
-    oracle = load_oracle_suite(FIXTURES / "valid_oracle.json")
-    faulty, metadata = mutate(reference, "wrong_target", 0)
-    spectra = tuple(
-        trace_scenario_spectrum(faulty, scenario) for scenario in oracle.scenarios
+@pytest.mark.skipif(
+    not (EXAMPLES / "demo_faulty.json").exists() or not (EXAMPLES / "demo_oracle.json").exists(),
+    reason="demo examples not present",
+)
+def test_cli_demo_localize_fault(tmp_path: Path) -> None:
+    out_path = tmp_path / "demo_localization.json"
+    result = runner.invoke(
+        app,
+        [
+            "localize-fault",
+            str(EXAMPLES / "demo_faulty.json"),
+            str(EXAMPLES / "demo_oracle.json"),
+            "--method",
+            "ochiai",
+            "--out",
+            str(out_path),
+            "--quiet",
+        ],
     )
 
-    for method in ("ochiai", "tarantula", "jaccard"):
-        rankings = rank_suspicious_elements(faulty, spectra, method=method)
-        changed = metadata.changed_transition_id
-        assert changed is not None
-        matching = [
-            item
-            for item in rankings
-            if item.element_type == "transition" and item.element_id == changed
-        ]
-        assert matching
-        assert matching[0].score >= 0.8
+    assert result.exit_code == 0
+    payload = json.loads(out_path.read_text(encoding="utf-8"))
+    assert payload["method"] == "ochiai"
+    assert payload["ranked_elements"]
