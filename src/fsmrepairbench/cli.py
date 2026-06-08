@@ -33,6 +33,7 @@ from fsmrepairbench.dataset_builder import (
     build_dataset,
 )
 from fsmrepairbench.dataset_quality import DatasetQualityError, validate_dataset
+from fsmrepairbench.novelty_analysis import NoveltyAnalysisError, analyze_novelty
 from fsmrepairbench.difficulty import (
     DifficultyError,
     estimate_difficulty_from_path,
@@ -1147,6 +1148,57 @@ def validate_dataset_cmd(
     if failed_checks:
         console.print(f"Checks with findings: {', '.join(sorted(failed_checks))}")
     raise typer.Exit(code=0 if result.passed else 1)
+
+
+@app.command("analyze-novelty")
+def analyze_novelty_cmd(
+    dataset_dir: Path,
+    output_path: Path | None = typer.Option(
+        None,
+        "--output",
+        help="Path for novelty_report.json (defaults to DATASET_DIR/novelty_report.json).",
+    ),
+    cluster_threshold: float = typer.Option(
+        0.85,
+        "--cluster-threshold",
+        min=0.0,
+        max=1.0,
+        help="Combined similarity threshold for high-similarity clusters.",
+    ),
+) -> None:
+    """Analyze benchmark novelty and detect synthetic dataset collapse."""
+    try:
+        result = analyze_novelty(
+            dataset_dir,
+            output_path=output_path,
+            cluster_threshold=cluster_threshold,
+        )
+    except NoveltyAnalysisError as exc:
+        console.print(f"[red]ERROR[/red] {exc}")
+        raise typer.Exit(code=1) from exc
+
+    summary = result.report["novelty_summary"]
+    risk = summary["collapse_risk"]
+    risk_color = {"low": "green", "medium": "yellow", "high": "red"}.get(risk, "white")
+    console.print(
+        f"[{risk_color}]Novelty report[/{risk_color}] "
+        f"(collapse risk: {risk.upper()}) for {result.report['case_count']} cases"
+    )
+    console.print(f"Report: {result.report_path}")
+    console.print(
+        "Summary: "
+        f"novelty_score={summary['novelty_score']:.4f}, "
+        f"clusters={summary['high_similarity_cluster_count']}, "
+        f"largest_cluster={summary['largest_cluster_size']}"
+    )
+    if result.report["high_similarity_clusters"]:
+        largest = result.report["high_similarity_clusters"][0]
+        console.print(
+            "Largest cluster: "
+            f"{largest['size']} cases "
+            f"(mean similarity={largest['mean_combined_similarity']:.4f})"
+        )
+    raise typer.Exit(code=0 if not result.collapsed else 1)
 
 
 @app.command("mine-failure-patterns")
