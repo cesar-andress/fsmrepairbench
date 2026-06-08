@@ -43,6 +43,7 @@ from fsmrepairbench.difficulty_calibration import (
     DifficultyCalibrationError,
     calibrate_benchmark_difficulty,
 )
+from fsmrepairbench.tool_runner import ToolRunnerError, load_tool_configs, run_tools
 from fsmrepairbench.experiments import (
     ExperimentConfigError,
     load_experiment_config,
@@ -1028,6 +1029,50 @@ def run_experiment_cmd(
     )
     console.print(f"Progress: {result.progress_path}")
     console.print(f"Summary: {result.summary_path}")
+    raise typer.Exit(code=0)
+
+
+@app.command("run-tools")
+def run_tools_cmd(
+    dataset_dir: Path,
+    tools_dir: Path,
+    out: Path = typer.Option(..., "--out", help="Write tool run results to this directory."),
+    resume: bool = typer.Option(True, "--resume/--no-resume"),
+    workers: int = typer.Option(1, "--workers", min=1),
+    quiet: bool = typer.Option(False, "--quiet", help="Print a short summary only."),
+) -> None:
+    """Run multiple repair tools reproducibly on an FSMRepairBench dataset."""
+    try:
+        load_tool_configs(tools_dir)
+    except ToolRunnerError as exc:
+        console.print(f"[red]ERROR[/red] {exc}")
+        raise typer.Exit(code=1) from exc
+
+    try:
+        result = run_tools(
+            dataset_dir,
+            tools_dir,
+            out,
+            resume=resume,
+            workers=workers,
+        )
+    except ToolRunnerError as exc:
+        console.print(f"[red]ERROR[/red] {exc}")
+        raise typer.Exit(code=1) from exc
+
+    if quiet:
+        console.print(
+            f"[green]OK[/green] runs={len(result.rows)} summary={result.summary_path.name}"
+        )
+    else:
+        console.print(
+            f"[green]OK[/green] Completed {len(result.rows)} case/tool runs "
+            f"from '{dataset_dir}'"
+        )
+        console.print(f"Summary: {result.summary_path}")
+        console.print(f"Leaderboard: {result.leaderboard_path}")
+        console.print(f"Manifest: {result.output_dir / 'tool_run_manifest.json'}")
+
     raise typer.Exit(code=0)
 
 

@@ -1,0 +1,11 @@
+tool_id: llama_ollama
+tool_type: llm
+command: llama3
+timeout_seconds: 300
+environment:
+  FSMREPAIRBENCH_BACKEND: ollama
+  OLLAMA_HOST: http://127.0.0.1:11434
+input_format: fsmrepairbench_case_v1
+output_format: fsmrepairbench_repair_result_v1
+iterations: 3
+temperature: 0.0

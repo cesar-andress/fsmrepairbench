@@ -529,3 +529,23 @@ Machine-readable taxonomic features for one benchmark case.
 | `num_cycles` | `int | None` | yes | — |  |
 | `scc_count` | `int | None` | yes | — |  |
 | `seed` | `int` | yes | — |  |
+
+## `fsmrepairbench.tool_runner`
+
+### `ToolConfig`
+
+Module: `fsmrepairbench.tool_runner`
+
+YAML configuration for one repair tool.
+
+| Field | Type | Required | Default | Description |
+|-------|------|----------|---------|-------------|
+| `tool_id` | `str` | yes | — |  |
+| `tool_type` | `Literal['llm', 'baseline', 'external']` | yes | — |  |
+| `command` | `str` | yes | — |  |
+| `timeout_seconds` | `int` | no | 300 |  |
+| `environment` | `dict[str, str]` | no | PydanticUndefined |  |
+| `input_format` | `str` | no | 'fsmrepairbench_case_v1' |  |
+| `output_format` | `str` | no | 'fsmrepairbench_repair_result_v1' |  |
+| `iterations` | `int` | no | 3 |  |
+| `temperature` | `float` | no | 0.0 |  |

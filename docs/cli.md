@@ -702,6 +702,25 @@ fsmrepairbench run-experiment configs/experiment.yaml
 | `config_path` | `Path` | positional | required |  |
 | `resume` | `bool` | `--resume/--no-resume` | True |  |
 
+### `run-tools`
+
+Run multiple repair tools reproducibly on an FSMRepairBench dataset.
+
+**Usage**
+
+```bash
+fsmrepairbench run-tools DATASET_DIR PATH --out PATH
+```
+
+| Parameter | Type | Flags | Default | Description |
+|-----------|------|-------|---------|-------------|
+| `dataset_dir` | `Path` | positional | required |  |
+| `tools_dir` | `Path` | positional | required |  |
+| `out` | `Path` | `--out` | required | Write tool run results to this directory. |
+| `resume` | `bool` | `--resume/--no-resume` | True |  |
+| `workers` | `int` | `--workers` | 1 |  |
+| `quiet` | `bool` | `--quiet` | False | Print a short summary only. |
+
 ### `score`
 
 Score an FSM against an oracle suite.
