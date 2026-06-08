@@ -2,6 +2,7 @@
 
 from __future__ import annotations
 
+import contextvars
 import json
 import re
 from typing import Any
@@ -14,10 +15,49 @@ FENCED_JSON_PATTERN = re.compile(
     re.DOTALL | re.IGNORECASE,
 )
 
+DEFAULT_REPAIR_PROMPT_TEMPLATE = """\
+You are repairing a behavioural finite-state machine (FSM).
+Return ONLY one valid JSON object matching the FSMPatch schema below.
+Do not include markdown fences, commentary, or extra text.
 
-def build_repair_prompt(fsm: FSM, oracle_suite: OracleSuite, score_result: ScoreResult) -> str:
-    """Build a repair prompt that asks for FSMPatch JSON only."""
-    failures = _format_failures(score_result)
+Current BPR: {bpr:.4f} ({passed_steps}/{total_steps} steps passed)
+
+Oracle failures:
+{failures}
+
+Current FSM JSON:
+{fsm_json}
+
+Oracle suite JSON:
+{oracle_json}
+
+FSMPatch schema example:
+{patch_schema}
+"""
+
+_active_prompt_template: contextvars.ContextVar[str | None] = contextvars.ContextVar(
+    "repair_prompt_template",
+    default=None,
+)
+
+
+def set_active_prompt_template(template: str | None) -> contextvars.Token[str | None]:
+    """Install a prompt template for the current execution context."""
+    return _active_prompt_template.set(template)
+
+
+def reset_active_prompt_template(token: contextvars.Token[str | None]) -> None:
+    """Restore the previous prompt template."""
+    _active_prompt_template.reset(token)
+
+
+def render_repair_prompt(
+    template: str,
+    fsm: FSM,
+    oracle_suite: OracleSuite,
+    score_result: ScoreResult,
+) -> str:
+    """Render a repair prompt from *template* and runtime values."""
     patch_schema = {
         "patch_id": "string",
         "target_fsm_id": fsm.id,
@@ -32,21 +72,29 @@ def build_repair_prompt(fsm: FSM, oracle_suite: OracleSuite, score_result: Score
             {"op": "replace_action", "transition_id": "t1", "action": "a"},
         ],
     }
+    return template.format(
+        bpr=score_result.bpr,
+        passed_steps=score_result.passed_steps,
+        total_steps=score_result.total_steps,
+        failures=_format_failures(score_result),
+        fsm_json=fsm.model_dump_json(indent=2),
+        oracle_json=oracle_suite.model_dump_json(indent=2),
+        patch_schema=json.dumps(patch_schema, indent=2),
+        target_fsm_id=fsm.id,
+    )
 
-    return (
-        "You are repairing a behavioural finite-state machine (FSM).\n"
-        "Return ONLY one valid JSON object matching the FSMPatch schema below.\n"
-        "Do not include markdown fences, commentary, or extra text.\n\n"
-        f"Current BPR: {score_result.bpr:.4f} "
-        f"({score_result.passed_steps}/{score_result.total_steps} steps passed)\n\n"
-        "Oracle failures:\n"
-        f"{failures}\n\n"
-        "Current FSM JSON:\n"
-        f"{fsm.model_dump_json(indent=2)}\n\n"
-        "Oracle suite JSON:\n"
-        f"{oracle_suite.model_dump_json(indent=2)}\n\n"
-        "FSMPatch schema example:\n"
-        f"{json.dumps(patch_schema, indent=2)}\n"
+
+def build_repair_prompt(fsm: FSM, oracle_suite: OracleSuite, score_result: ScoreResult) -> str:
+    """Build a repair prompt that asks for FSMPatch JSON only."""
+    template = _active_prompt_template.get()
+    if template is not None:
+        return render_repair_prompt(template, fsm, oracle_suite, score_result)
+
+    return render_repair_prompt(
+        DEFAULT_REPAIR_PROMPT_TEMPLATE,
+        fsm,
+        oracle_suite,
+        score_result,
     )
 
 

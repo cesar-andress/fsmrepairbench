@@ -1,0 +1,12 @@
+artifact_id: icse2027
+title: FSMRepairBench ICSE 2027 Artifact Evaluation Package
+fsmrepairbench_version: "0.1.0"
+dataset: dataset/version.yaml
+seeds: seeds/seeds.yaml
+models: models/models.yaml
+prompts: prompts/prompts.yaml
+experiment: configs/experiment.yaml
+postprocess:
+  freeze: true
+  release_dir: releases/icse2027
+  leaderboard: true

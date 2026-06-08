@@ -11,6 +11,7 @@ from rich.console import Console
 from rich.table import Table
 
 from fsmrepairbench.analytics import AnalyticsError, generate_benchmark_report
+from fsmrepairbench.artifact import ArtifactError, load_artifact_bundle, reproduce_artifact
 from fsmrepairbench.dataset_builder import (
     DEFAULT_OUTPUT_DIR,
     DatasetBuilderError,
@@ -693,6 +694,48 @@ def release_manifest_cmd(dataset_dir: Path) -> None:
         raise typer.Exit(code=1) from exc
 
     console.print(f"[green]OK[/green] Wrote release manifest to {manifest_path}")
+    raise typer.Exit(code=0)
+
+
+@app.command("reproduce")
+def reproduce_cmd(
+    artifact_path: Path,
+    resume: bool = typer.Option(True, "--resume/--no-resume"),
+) -> None:
+    """Reproduce a published experiment from an artifact manifest."""
+    try:
+        bundle = load_artifact_bundle(artifact_path)
+    except ArtifactError as exc:
+        console.print(f"[red]ERROR[/red] {exc}")
+        raise typer.Exit(code=1) from exc
+
+    console.print(
+        f"Reproducing artifact [bold]{bundle.manifest.artifact_id}[/bold]: "
+        f"{bundle.manifest.title}"
+    )
+    console.print(
+        f"Dataset {bundle.dataset.benchmark_version.value} "
+        f"(size={bundle.dataset.size}, seed={bundle.dataset.seed})"
+    )
+    console.print(f"Models: {', '.join(str(model) for model in bundle.models.models)}")
+
+    try:
+        result = reproduce_artifact(artifact_path, resume=resume)
+    except ArtifactError as exc:
+        console.print(f"[red]ERROR[/red] {exc}")
+        raise typer.Exit(code=1) from exc
+
+    console.print(
+        f"[green]OK[/green] Reproduced {result.artifact_id} with "
+        f"{len(result.experiment.rows)} case/model results"
+    )
+    console.print(f"Dataset: {result.dataset_dir}")
+    console.print(f"Results: {result.experiment.output_dir}")
+    console.print(f"Report: {result.report_path}")
+    if result.freeze is not None:
+        console.print(f"Frozen release: {result.freeze.release_dir}")
+    if result.leaderboard is not None:
+        console.print(f"Leaderboard: {result.leaderboard.markdown_path}")
     raise typer.Exit(code=0)
 
 

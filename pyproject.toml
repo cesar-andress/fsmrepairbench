@@ -32,6 +32,9 @@ fsmrepairbench = "fsmrepairbench.cli:app"
 [tool.hatch.build]
 sources = ["src"]
 
+[tool.hatch.build.targets.wheel.force-include]
+"artifacts" = "artifacts"
+
 [tool.pytest.ini_options]
 testpaths = ["tests"]
 pythonpath = ["src"]
