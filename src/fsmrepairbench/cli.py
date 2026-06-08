@@ -10,6 +10,7 @@ from pydantic import ValidationError
 from rich.console import Console
 from rich.table import Table
 
+from fsmrepairbench.analytics import AnalyticsError, generate_benchmark_report
 from fsmrepairbench.dataset_builder import (
     DEFAULT_OUTPUT_DIR,
     DatasetBuilderError,
@@ -536,6 +537,26 @@ def estimate_difficulty_cmd(
 
     if out is not None:
         console.print(f"[green]OK[/green] Wrote difficulty metadata to {out}")
+    raise typer.Exit(code=0)
+
+
+@app.command("benchmark-report")
+def benchmark_report_cmd(dataset_dir: Path) -> None:
+    """Generate diversity analytics for a benchmark dataset."""
+    try:
+        result = generate_benchmark_report(dataset_dir)
+    except AnalyticsError as exc:
+        console.print(f"[red]ERROR[/red] {exc}")
+        raise typer.Exit(code=1) from exc
+
+    analytics = result.analytics
+    console.print(
+        f"[green]OK[/green] Generated analytics for {analytics.case_count} cases in "
+        f"{result.analytics_dir}"
+    )
+    console.print(f"Summary: {result.summary_path}")
+    console.print(f"Report: {result.report_path}")
+    console.print(f"Plots: {result.plots_dir}")
     raise typer.Exit(code=0)
 
 
