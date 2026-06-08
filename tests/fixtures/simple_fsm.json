@@ -1,0 +1,15 @@
+{
+  "id": "toggle_001",
+  "name": "Toggle",
+  "description": "Simple two-state toggle machine.",
+  "states": [
+    {"id": "off"},
+    {"id": "on"}
+  ],
+  "initial_state": "off",
+  "events": ["toggle"],
+  "transitions": [
+    {"id": "t1", "source": "off", "event": "toggle", "target": "on"},
+    {"id": "t2", "source": "on", "event": "toggle", "target": "off"}
+  ]
+}

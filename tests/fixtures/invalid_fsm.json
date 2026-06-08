@@ -1,0 +1,12 @@
+{
+  "id": "broken_fsm",
+  "name": "Broken FSM",
+  "description": "Missing initial state reference.",
+  "states": [
+    {"id": "closed"},
+    {"id": "open"}
+  ],
+  "initial_state": "unknown",
+  "events": ["car_arrives"],
+  "transitions": []
+}

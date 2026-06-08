@@ -1,0 +1,369 @@
+"""Command-line interface for FSMRepairBench."""
+
+from __future__ import annotations
+
+import json
+from pathlib import Path
+
+import typer
+from pydantic import ValidationError
+from rich.console import Console
+from rich.table import Table
+
+from fsmrepairbench.experiments import (
+    ExperimentConfigError,
+    load_experiment_config,
+    run_experiment,
+)
+from fsmrepairbench.freeze import FreezeError, freeze_release
+from fsmrepairbench.generator import BenchmarkGenerationError, generate_benchmark
+from fsmrepairbench.llm.ollama import OllamaError, run_llm_repair_case
+from fsmrepairbench.mutators import MUTATION_OPERATORS, MutatorError, mutate
+from fsmrepairbench.patch import PatchError, apply_patch, load_patch_json, validate_patch
+from fsmrepairbench.repair_engines.baselines import (
+    BASELINE_ENGINE_NAMES,
+    BaselineEngineError,
+    propose_baseline_patch,
+)
+from fsmrepairbench.scorer import score_oracle_suite
+from fsmrepairbench.validators import (
+    load_fsm_json,
+    load_oracle_suite,
+    validate_fsm,
+    validate_fsm_document,
+    validate_oracle_document,
+)
+
+app = typer.Typer(
+    name="fsmrepairbench",
+    help="Benchmark toolkit for LLM-based repair of behavioural FSMs.",
+    no_args_is_help=True,
+)
+console = Console()
+
+
+@app.command("validate-fsm")
+def validate_fsm_cmd(path: Path) -> None:
+    """Validate an FSM JSON document."""
+    ok, message, _ = validate_fsm_document(path)
+    if ok:
+        console.print(f"[green]OK[/green] {message}")
+        raise typer.Exit(code=0)
+
+    console.print(f"[red]ERROR[/red] {message}")
+    raise typer.Exit(code=1)
+
+
+@app.command("validate-oracle")
+def validate_oracle(path: Path) -> None:
+    """Validate an oracle suite JSON document."""
+    ok, message, _ = validate_oracle_document(path)
+    if ok:
+        console.print(f"[green]OK[/green] {message}")
+        raise typer.Exit(code=0)
+
+    console.print(f"[red]ERROR[/red] {message}")
+    raise typer.Exit(code=1)
+
+
+@app.command("score")
+def score(fsm_path: Path, oracle_path: Path) -> None:
+    """Score an FSM against an oracle suite."""
+    fsm_errors = []
+    try:
+        fsm = load_fsm_json(fsm_path)
+        fsm_errors = validate_fsm(fsm)
+    except (OSError, json.JSONDecodeError, ValidationError) as exc:
+        console.print(f"[red]ERROR[/red] Failed to load FSM: {exc}")
+        raise typer.Exit(code=1) from exc
+
+    if fsm_errors:
+        console.print(f"[red]ERROR[/red] {fsm_errors[0]}")
+        raise typer.Exit(code=1)
+
+    try:
+        suite = load_oracle_suite(oracle_path)
+    except (OSError, json.JSONDecodeError, ValidationError) as exc:
+        console.print(f"[red]ERROR[/red] Failed to load oracle: {exc}")
+        raise typer.Exit(code=1) from exc
+
+    if suite.fsm_id is not None and suite.fsm_id != fsm.id:
+        console.print(
+            "[red]ERROR[/red] Oracle fsm_id "
+            f"'{suite.fsm_id}' does not match FSM id '{fsm.id}'"
+        )
+        raise typer.Exit(code=1)
+
+    result = score_oracle_suite(fsm, suite)
+
+    console.print(f"[bold]BPR[/bold]: {result.bpr:.2%}")
+    console.print(
+        f"Steps: {result.passed_steps}/{result.total_steps} | "
+        f"Scenarios: {result.passed_scenarios}/{result.total_scenarios}"
+    )
+
+    table = Table(title="Scenario Results")
+    table.add_column("Scenario")
+    table.add_column("Passed")
+    table.add_column("Steps")
+    for scenario in result.scenarios:
+        table.add_row(
+            scenario.scenario_id,
+            "yes" if scenario.passed else "no",
+            f"{scenario.passed_steps}/{scenario.total_steps}",
+        )
+    console.print(table)
+
+    raise typer.Exit(code=0 if result.bpr == 1.0 else 1)
+
+
+@app.command("mutate")
+def mutate_cmd(
+    ref_fsm_path: Path,
+    operator: str = typer.Option(..., "--operator", help="Mutation operator name."),
+    seed: int = typer.Option(..., "--seed", help="Deterministic seed."),
+    out: Path = typer.Option(..., "--out", help="Output path for faulty FSM JSON."),
+    meta: Path = typer.Option(..., "--meta", help="Output path for bug metadata JSON."),
+) -> None:
+    """Generate a faulty FSM from a reference FSM."""
+    if operator not in MUTATION_OPERATORS:
+        console.print(
+            f"[red]ERROR[/red] Unknown operator '{operator}'. "
+            f"Known: {', '.join(MUTATION_OPERATORS)}"
+        )
+        raise typer.Exit(code=1)
+
+    try:
+        reference = load_fsm_json(ref_fsm_path)
+    except (OSError, json.JSONDecodeError, ValidationError) as exc:
+        console.print(f"[red]ERROR[/red] Failed to load reference FSM: {exc}")
+        raise typer.Exit(code=1) from exc
+
+    reference_errors = validate_fsm(reference)
+    if reference_errors:
+        console.print(f"[red]ERROR[/red] Invalid reference FSM: {reference_errors[0]}")
+        raise typer.Exit(code=1)
+
+    try:
+        faulty_fsm, bug_metadata = mutate(reference, operator, seed)
+    except MutatorError as exc:
+        console.print(f"[red]ERROR[/red] {exc}")
+        raise typer.Exit(code=1) from exc
+
+    out.write_text(
+        faulty_fsm.model_dump_json(indent=2) + "\n",
+        encoding="utf-8",
+    )
+    meta.write_text(
+        bug_metadata.model_dump_json(indent=2) + "\n",
+        encoding="utf-8",
+    )
+
+    console.print(
+        f"[green]OK[/green] Wrote faulty FSM '{faulty_fsm.id}' to {out} "
+        f"and metadata '{bug_metadata.bug_id}' to {meta}"
+    )
+    raise typer.Exit(code=0)
+
+
+@app.command("generate-benchmark")
+def generate_benchmark_cmd(
+    input_dir: Path,
+    output_dir: Path,
+    bugs_per_fsm: int = typer.Option(10, "--bugs-per-fsm", min=1),
+    seed: int = typer.Option(123, "--seed"),
+) -> None:
+    """Generate benchmark cases from reference FSMs."""
+    if not input_dir.is_dir():
+        console.print(f"[red]ERROR[/red] Input directory not found: {input_dir}")
+        raise typer.Exit(code=1)
+
+    try:
+        result = generate_benchmark(
+            input_dir,
+            output_dir,
+            bugs_per_fsm=bugs_per_fsm,
+            seed=seed,
+        )
+    except BenchmarkGenerationError as exc:
+        console.print(f"[red]ERROR[/red] {exc}")
+        raise typer.Exit(code=1) from exc
+
+    console.print(
+        f"[green]OK[/green] Generated {len(result.cases)} cases in {result.output_dir}"
+    )
+    console.print(f"Summary written to {result.summary_path}")
+    raise typer.Exit(code=0)
+
+
+@app.command("apply-patch")
+def apply_patch_cmd(
+    fsm_path: Path,
+    patch_path: Path,
+    out: Path = typer.Option(..., "--out", help="Output path for patched FSM JSON."),
+    allow_nondeterminism: bool = typer.Option(
+        False,
+        "--allow-nondeterminism",
+        help="Allow non-deterministic resulting FSMs.",
+    ),
+) -> None:
+    """Apply a repair patch to an FSM."""
+    try:
+        fsm = load_fsm_json(fsm_path)
+        patch = load_patch_json(patch_path)
+    except (OSError, json.JSONDecodeError, ValidationError) as exc:
+        console.print(f"[red]ERROR[/red] Failed to load input: {exc}")
+        raise typer.Exit(code=1) from exc
+
+    errors = validate_patch(fsm, patch, allow_nondeterminism=allow_nondeterminism)
+    if errors:
+        console.print(f"[red]ERROR[/red] {errors[0]}")
+        raise typer.Exit(code=1)
+
+    try:
+        repaired = apply_patch(fsm, patch)
+    except PatchError as exc:
+        console.print(f"[red]ERROR[/red] {exc}")
+        raise typer.Exit(code=1) from exc
+
+    out.write_text(repaired.model_dump_json(indent=2) + "\n", encoding="utf-8")
+    console.print(f"[green]OK[/green] Wrote patched FSM to {out}")
+    raise typer.Exit(code=0)
+
+
+@app.command("baseline-repair")
+def baseline_repair_cmd(
+    fsm_path: Path,
+    oracle_path: Path,
+    engine: str = typer.Option(..., "--engine", help="Baseline repair engine name."),
+    out: Path = typer.Option(..., "--out", help="Output path for proposed patch JSON."),
+    seed: int = typer.Option(0, "--seed", help="Seed for random baseline repair."),
+) -> None:
+    """Propose a baseline repair patch for an FSM using oracle guidance."""
+    if engine not in BASELINE_ENGINE_NAMES:
+        console.print(
+            f"[red]ERROR[/red] Unknown engine '{engine}'. "
+            f"Known: {', '.join(BASELINE_ENGINE_NAMES)}"
+        )
+        raise typer.Exit(code=1)
+
+    try:
+        fsm = load_fsm_json(fsm_path)
+        oracle_suite = load_oracle_suite(oracle_path)
+    except (OSError, json.JSONDecodeError, ValidationError) as exc:
+        console.print(f"[red]ERROR[/red] Failed to load input: {exc}")
+        raise typer.Exit(code=1) from exc
+
+    if oracle_suite.fsm_id is not None and oracle_suite.fsm_id != fsm.id:
+        console.print(
+            "[red]ERROR[/red] Oracle fsm_id "
+            f"'{oracle_suite.fsm_id}' does not match FSM id '{fsm.id}'"
+        )
+        raise typer.Exit(code=1)
+
+    try:
+        patch = propose_baseline_patch(fsm, oracle_suite, engine=engine, seed=seed)
+    except BaselineEngineError as exc:
+        console.print(f"[red]ERROR[/red] {exc}")
+        raise typer.Exit(code=1) from exc
+
+    out.write_text(patch.model_dump_json(indent=2) + "\n", encoding="utf-8")
+    console.print(
+        f"[green]OK[/green] Wrote baseline patch '{patch.patch_id}' "
+        f"with {len(patch.operations)} operations to {out}"
+    )
+    raise typer.Exit(code=0)
+
+
+@app.command("llm-repair")
+def llm_repair_cmd(
+    fsm_path: Path,
+    oracle_path: Path,
+    model: str = typer.Option(..., "--model", help="Ollama model name."),
+    out: Path = typer.Option(..., "--out", help="Output path for repair result JSON."),
+    iterations: int = typer.Option(3, "--iterations", min=1),
+    temperature: float = typer.Option(0.0, "--temperature"),
+) -> None:
+    """Run an iterative Ollama repair loop against an oracle suite."""
+    try:
+        fsm = load_fsm_json(fsm_path)
+        oracle_suite = load_oracle_suite(oracle_path)
+    except (OSError, json.JSONDecodeError, ValidationError) as exc:
+        console.print(f"[red]ERROR[/red] Failed to load input: {exc}")
+        raise typer.Exit(code=1) from exc
+
+    if oracle_suite.fsm_id is not None and oracle_suite.fsm_id != fsm.id:
+        console.print(
+            "[red]ERROR[/red] Oracle fsm_id "
+            f"'{oracle_suite.fsm_id}' does not match FSM id '{fsm.id}'"
+        )
+        raise typer.Exit(code=1)
+
+    try:
+        result = run_llm_repair_case(
+            fsm,
+            oracle_suite,
+            model=model,
+            max_iterations=iterations,
+            temperature=temperature,
+        )
+    except (OllamaError, ValueError) as exc:
+        console.print(f"[red]ERROR[/red] {exc}")
+        raise typer.Exit(code=1) from exc
+
+    out.write_text(result.model_dump_json(indent=2) + "\n", encoding="utf-8")
+    console.print(
+        f"[green]OK[/green] LLM repair finished with BPR {result.score:.2%}. "
+        f"Wrote result to {out}"
+    )
+    raise typer.Exit(code=0 if result.passed else 1)
+
+
+@app.command("run-experiment")
+def run_experiment_cmd(
+    config_path: Path,
+    resume: bool = typer.Option(True, "--resume/--no-resume"),
+) -> None:
+    """Run a batch repair experiment from a YAML config file."""
+    try:
+        config = load_experiment_config(config_path)
+    except ExperimentConfigError as exc:
+        console.print(f"[red]ERROR[/red] {exc}")
+        raise typer.Exit(code=1) from exc
+
+    try:
+        result = run_experiment(config, resume=resume)
+    except ExperimentConfigError as exc:
+        console.print(f"[red]ERROR[/red] {exc}")
+        raise typer.Exit(code=1) from exc
+
+    console.print(
+        f"[green]OK[/green] Experiment finished with {len(result.rows)} case/model results"
+    )
+    console.print(f"Progress: {result.progress_path}")
+    console.print(f"Summary: {result.summary_path}")
+    raise typer.Exit(code=0)
+
+
+@app.command("freeze")
+def freeze_cmd(results_dir: Path, release_dir: Path) -> None:
+    """Freeze experiment results into an auditable release directory."""
+    try:
+        result = freeze_release(results_dir, release_dir)
+    except FreezeError as exc:
+        console.print(f"[red]ERROR[/red] {exc}")
+        raise typer.Exit(code=1) from exc
+
+    console.print(f"[green]OK[/green] Frozen release written to {result.release_dir}")
+    console.print(f"Manifest: {result.manifest_path}")
+    console.print(f"Files checksummed: {len(result.files)}")
+    raise typer.Exit(code=0)
+
+
+def main() -> None:
+    """Entry point for the console script."""
+    app()
+
+
+if __name__ == "__main__":
+    main()

@@ -1,0 +1,21 @@
+{
+  "id": "toggle_oracles",
+  "fsm_id": "toggle_001",
+  "scenarios": [
+    {
+      "id": "turn_on",
+      "description": "Toggle once to turn on.",
+      "steps": [
+        {"event": "toggle", "expected_state": "on"}
+      ]
+    },
+    {
+      "id": "turn_on_then_off",
+      "description": "Toggle twice to return to off.",
+      "steps": [
+        {"event": "toggle", "expected_state": "on"},
+        {"event": "toggle", "expected_state": "off"}
+      ]
+    }
+  ]
+}
