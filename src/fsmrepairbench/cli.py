@@ -55,8 +55,27 @@ from fsmrepairbench.experiments import (
     load_experiment_config,
     run_experiment,
 )
+from fsmrepairbench.experiment_pipeline import (
+    ExperimentPipelineConfig,
+    ExperimentPipelineError,
+    run_experiment_pipeline,
+)
+from fsmrepairbench.smoke_test_pipeline import (
+    SmokeTestPipelineConfig,
+    SmokeTestPipelineError,
+    prepare_smoke_test_input,
+    run_smoke_test_pipeline,
+    validate_smoke_test_outputs,
+)
 from fsmrepairbench.freeze import FreezeError, freeze_release
 from fsmrepairbench.generator import BenchmarkGenerationError, generate_benchmark
+from fsmrepairbench.generators.fsm_benchmark_dataset import (
+    FSMBenchmarkDatasetError,
+    FSMBenchmarkGenerationConfig,
+    SUPPORTED_FSM_TYPES,
+    dataset_type_distribution,
+    generate_fsm_benchmark_dataset,
+)
 from fsmrepairbench.generators.synthetic_factory import (
     ComplexityLevel,
     SyntheticFactoryError,
@@ -64,6 +83,33 @@ from fsmrepairbench.generators.synthetic_factory import (
     export_fsm_json,
     generate_synthetic_fsm,
     params_from_complexity,
+)
+from fsmrepairbench.bpr_engine import (
+    BPREngineError,
+    BPRScoreInput,
+    CandidatePrediction,
+    load_candidate_prediction,
+    load_mutants_from_directory,
+    load_mutants_from_json,
+    score_bpr_benchmark,
+    write_bpr_csv_summaries,
+    write_bpr_score_json,
+)
+from fsmrepairbench.coverage_oracle_generator import (
+    CoverageOracleGeneratorError,
+    SUPPORTED_COVERAGE_SUITE_TYPES,
+    export_coverage_oracles_directory,
+    export_coverage_oracles_json,
+    generate_all_coverage_oracle_suites,
+    generate_coverage_oracles_for_directory,
+)
+from fsmrepairbench.literature_mutation import (
+    LITERATURE_MUTATION_OPERATORS,
+    LiteratureMutationError,
+    generate_literature_mutants,
+    generate_literature_mutants_for_directory,
+    generate_literature_mutants_for_path,
+    write_mutant_report_json,
 )
 from fsmrepairbench.higher_order_mutation import (
     HigherOrderMutationError,
@@ -109,13 +155,19 @@ from fsmrepairbench.repair_engines.baselines import (
     propose_baseline_patch,
 )
 from fsmrepairbench.metamorphic import (
+    CORE_METAMORPHIC_RELATIONS,
     SUPPORTED_RELATIONS,
     MetamorphicError,
     MetamorphicRelationId,
     check_metamorphic_relation,
+    export_metamorphic_verification_report,
     generate_metamorphic_cases,
+    generate_metamorphic_relation_catalog,
     load_score_result,
+    verify_metamorphic_case,
+    verify_metamorphic_relations,
     write_metamorphic_check_json,
+    write_metamorphic_relation_catalog,
 )
 from fsmrepairbench.error_propagation import (
     ErrorPropagationError,
@@ -130,6 +182,36 @@ from fsmrepairbench.oracle_selection import (
     select_oracle_suite,
     write_oracle_selection_report_json,
     write_selected_oracle_json,
+)
+from fsmrepairbench.fsm_tagging import (
+    FSMTaggingError,
+    SUPPORTED_FSM_TAGS,
+    tag_fsm_directory,
+)
+from fsmrepairbench.adversarial_fsm import (
+    AdversarialFSMError,
+    SUPPORTED_ADVERSARIAL_PATTERNS,
+    AdversarialPattern,
+    generate_adversarial_dataset,
+    generate_adversarial_fsm,
+    write_adversarial_fsm,
+    build_metadata_record,
+)
+from fsmrepairbench.llm_evaluation_tasks import (
+    LLMEvaluationTaskError,
+    SUPPORTED_LLM_TASK_TYPES,
+    TASK_TYPE_NAMES,
+    LLMTaskType,
+    write_llm_evaluation_tasks,
+)
+from fsmrepairbench.oracle_generator import DepthLevel
+from fsmrepairbench.test_suite_optimizer import (
+    SUPPORTED_OPTIMIZER_ALGORITHMS,
+    TestSuiteOptimizerError,
+    OptimizerAlgorithm,
+    optimize_test_suites,
+    visualize_pareto_results,
+    write_optimization_report_json,
 )
 from fsmrepairbench.selective_mutation import (
     SUPPORTED_STRATEGIES,
@@ -391,6 +473,86 @@ def score(
     raise typer.Exit(code=0 if result.bpr == 1.0 else 1)
 
 
+@app.command("score-bpr")
+def score_bpr_cmd(
+    reference_path: Path,
+    oracle_path: Path,
+    candidate_path: Path,
+    out: Path = typer.Option(..., "--out", help="Output JSON file or directory for CSV summaries."),
+    mutants_path: Path | None = typer.Option(
+        None,
+        "--mutants",
+        help="Mutants JSON file or directory (optional).",
+    ),
+    path_length: int = typer.Option(3, "--path-length", min=1),
+    quiet: bool = typer.Option(False, "--quiet", help="Print a short summary only."),
+) -> None:
+    """Score candidate predictions with BPR, coverage, mutation score, and oracle accuracy."""
+    try:
+        reference = load_fsm_json(reference_path)
+        oracle = load_oracle_suite(oracle_path)
+        candidate = load_candidate_prediction(candidate_path)
+    except (OSError, json.JSONDecodeError, ValidationError, BPREngineError) as exc:
+        console.print(f"[red]ERROR[/red] Failed to load input: {exc}")
+        raise typer.Exit(code=1) from exc
+
+    if not is_oracle_compatible(reference, oracle):
+        console.print(f"[red]ERROR[/red] {oracle_incompatibility_message(reference, oracle)}")
+        raise typer.Exit(code=1)
+
+    mutants = ()
+    if mutants_path is not None:
+        try:
+            mutants = (
+                load_mutants_from_directory(mutants_path)
+                if mutants_path.is_dir()
+                else load_mutants_from_json(mutants_path)
+            )
+        except (OSError, json.JSONDecodeError, BPREngineError) as exc:
+            console.print(f"[red]ERROR[/red] Failed to load mutants: {exc}")
+            raise typer.Exit(code=1) from exc
+
+    try:
+        report = score_bpr_benchmark(
+            BPRScoreInput(
+                reference=reference,
+                oracle=oracle,
+                candidate=candidate,
+                mutants=mutants,
+                path_length=path_length,
+            )
+        )
+    except BPREngineError as exc:
+        console.print(f"[red]ERROR[/red] {exc}")
+        raise typer.Exit(code=1) from exc
+
+    if out.suffix == ".json":
+        write_bpr_score_json(out, report)
+        target = out
+    else:
+        write_bpr_score_json(out / "bpr_score.json", report)
+        write_bpr_csv_summaries(out, report)
+        target = out / "bpr_summary.csv"
+
+    if quiet:
+        console.print(f"[green]OK[/green] BPR={report.bpr:.2%} -> {target}")
+    else:
+        console.print(f"[green]OK[/green] BPR={report.bpr:.2%}")
+        console.print(
+            f"Coverage state={report.coverage.state:.2%}, "
+            f"transition={report.coverage.transition:.2%}, "
+            f"path={report.coverage.path:.2%}"
+        )
+        console.print(
+            f"Mutation score={report.mutation_score:.2%}, "
+            f"oracle accuracy={report.oracle_accuracy:.2%}, "
+            f"execution cost={report.execution_cost}"
+        )
+        console.print(f"Output: {target}")
+
+    raise typer.Exit(code=0)
+
+
 @app.command("plan-mutations")
 def plan_mutations_cmd(
     fsm_path: Path,
@@ -525,6 +687,188 @@ def select_oracles_cmd(
         )
         console.print(f"Selected oracle: {out}")
         console.print(f"Report: {report}")
+
+    raise typer.Exit(code=0)
+
+
+@app.command("optimize-test-suite")
+def optimize_test_suite_cmd(
+    fsm_path: Path,
+    oracle_path: Path,
+    mutants_path: Path,
+    out: Path = typer.Option(..., "--out", help="Write optimization report JSON here."),
+    plots_dir: Path | None = typer.Option(
+        None,
+        "--plots-dir",
+        help="Optional directory for Pareto front plots.",
+    ),
+    algorithm: list[str] | None = typer.Option(
+        None,
+        "--algorithm",
+        help=(
+            "Optimizer to run (repeatable). "
+            f"Supported: {', '.join(SUPPORTED_OPTIMIZER_ALGORITHMS)}"
+        ),
+    ),
+    seed: int = typer.Option(42, "--seed", help="Random seed for search algorithms."),
+    iterations: int = typer.Option(200, "--iterations", min=1, help="Iterations for local/random search."),
+    population_size: int = typer.Option(
+        40,
+        "--population-size",
+        min=2,
+        help="Population size for GA and NSGA-II.",
+    ),
+    generations: int = typer.Option(
+        30,
+        "--generations",
+        min=1,
+        help="Generations for GA and NSGA-II.",
+    ),
+    quiet: bool = typer.Option(False, "--quiet", help="Print a short summary only."),
+) -> None:
+    """Optimize test suites with multi-objective search and Pareto fronts."""
+    selected = tuple(algorithm or SUPPORTED_OPTIMIZER_ALGORITHMS)
+    unknown = [item for item in selected if item not in SUPPORTED_OPTIMIZER_ALGORITHMS]
+    if unknown:
+        console.print(
+            f"[red]ERROR[/red] Unknown algorithm(s): {', '.join(unknown)}. "
+            f"Supported: {', '.join(SUPPORTED_OPTIMIZER_ALGORITHMS)}"
+        )
+        raise typer.Exit(code=1)
+
+    try:
+        reference = load_fsm_json(fsm_path)
+        suite = load_oracle_suite(oracle_path)
+        mutants = (
+            load_mutant_pool(mutants_path)
+            if mutants_path.is_dir()
+            else load_mutants_from_json(mutants_path)
+        )
+    except (OSError, json.JSONDecodeError, ValidationError) as exc:
+        console.print(f"[red]ERROR[/red] Failed to load input: {exc}")
+        raise typer.Exit(code=1) from exc
+    except (OracleSelectionError, BPREngineError) as exc:
+        console.print(f"[red]ERROR[/red] {exc}")
+        raise typer.Exit(code=1) from exc
+
+    if not is_oracle_compatible(reference, suite):
+        console.print(f"[red]ERROR[/red] {oracle_incompatibility_message(reference, suite)}")
+        raise typer.Exit(code=1)
+
+    try:
+        report = optimize_test_suites(
+            reference,
+            suite,
+            mutants,
+            algorithms=cast(tuple[OptimizerAlgorithm, ...], selected),
+            seed=seed,
+            iterations=iterations,
+            population_size=population_size,
+            generations=generations,
+        )
+    except TestSuiteOptimizerError as exc:
+        console.print(f"[red]ERROR[/red] {exc}")
+        raise typer.Exit(code=1) from exc
+
+    write_optimization_report_json(out, report)
+    plot_paths: list[Path] = []
+    if plots_dir is not None:
+        try:
+            plot_paths = visualize_pareto_results(report, plots_dir)
+        except TestSuiteOptimizerError as exc:
+            console.print(f"[red]ERROR[/red] {exc}")
+            raise typer.Exit(code=1) from exc
+
+    if quiet:
+        console.print(
+            f"[green]OK[/green] pareto={len(report.combined_pareto_front)}, "
+            f"algorithms={len(report.algorithms)} -> {out}"
+        )
+    else:
+        console.print(
+            f"[green]OK[/green] Optimized '{suite.id}' with {len(selected)} algorithm(s)"
+        )
+        console.print(
+            f"Scenarios={report.scenario_count}, mutants={report.mutant_count}, "
+            f"combined Pareto size={len(report.combined_pareto_front)}"
+        )
+        for name, result in report.algorithms.items():
+            console.print(
+                f"  {name}: evaluations={result.evaluations}, "
+                f"pareto_front={len(result.pareto_front)}"
+            )
+        console.print(f"Report: {out}")
+        if plot_paths:
+            console.print(f"Plots: {plots_dir} ({len(plot_paths)} files)")
+
+    raise typer.Exit(code=0)
+
+
+@app.command("generate-llm-tasks")
+def generate_llm_tasks_cmd(
+    source_path: Path,
+    out: Path = typer.Option(..., "--out", help="Write LLM evaluation tasks JSONL here."),
+    task_type: list[str] | None = typer.Option(
+        None,
+        "--task-type",
+        help=(
+            "Task type letter to include (repeatable: A-G). "
+            f"Supported: {', '.join(SUPPORTED_LLM_TASK_TYPES)}"
+        ),
+    ),
+    seed: int = typer.Option(42, "--seed", help="Seed for synthetic repair tasks."),
+    oracle_depth: str = typer.Option(
+        "medium",
+        "--oracle-depth",
+        help="Oracle depth for generated test tasks (shallow, medium, deep, exhaustive_like).",
+    ),
+    quiet: bool = typer.Option(False, "--quiet", help="Print a short summary only."),
+) -> None:
+    """Generate LLM evaluation tasks (A-G) for every FSM and write JSONL."""
+    selected = tuple(task_type or SUPPORTED_LLM_TASK_TYPES)
+    unknown = [item for item in selected if item not in SUPPORTED_LLM_TASK_TYPES]
+    if unknown:
+        console.print(
+            f"[red]ERROR[/red] Unknown task type(s): {', '.join(unknown)}. "
+            f"Supported: {', '.join(SUPPORTED_LLM_TASK_TYPES)}"
+        )
+        raise typer.Exit(code=1)
+
+    if oracle_depth not in {"shallow", "medium", "deep", "exhaustive_like"}:
+        console.print(
+            "[red]ERROR[/red] Invalid --oracle-depth. "
+            "Use shallow, medium, deep, or exhaustive_like."
+        )
+        raise typer.Exit(code=1)
+
+    try:
+        result = write_llm_evaluation_tasks(
+            source_path,
+            out,
+            task_types=cast(tuple[LLMTaskType, ...], selected),
+            seed=seed,
+            oracle_depth=cast(DepthLevel, oracle_depth),
+        )
+    except LLMEvaluationTaskError as exc:
+        console.print(f"[red]ERROR[/red] {exc}")
+        raise typer.Exit(code=1) from exc
+
+    if quiet:
+        console.print(
+            f"[green]OK[/green] tasks={result.task_count}, "
+            f"sources={result.source_count} -> {out}"
+        )
+    else:
+        console.print(
+            f"[green]OK[/green] Generated {result.task_count} tasks "
+            f"from {result.source_count} FSM source(s)"
+        )
+        for letter in SUPPORTED_LLM_TASK_TYPES:
+            count = result.task_counts_by_type.get(letter, 0)
+            if count:
+                console.print(f"  {letter} ({TASK_TYPE_NAMES.get(letter, letter)}): {count}")
+        console.print(f"Tasks: {out}")
+        console.print(f"Manifest: {out.with_name(out.stem + '_manifest.json')}")
 
     raise typer.Exit(code=0)
 
@@ -684,6 +1028,119 @@ def check_metamorphic_cmd(
             console.print(f"Report: {out}")
 
     raise typer.Exit(code=0 if report.holds else 1)
+
+
+@app.command("verify-metamorphic-relations")
+def verify_metamorphic_relations_cmd(
+    source_path: Path,
+    out: Path = typer.Option(..., "--out", help="Directory for pass/fail verification reports."),
+    oracle_path: Path | None = typer.Option(
+        None,
+        "--oracle",
+        help="Oracle suite JSON when *source_path* is an FSM file rather than a case directory.",
+    ),
+    relations: str | None = typer.Option(
+        None,
+        "--relations",
+        help="Comma-separated relation ids (default: all supported relations).",
+    ),
+    core_only: bool = typer.Option(
+        False,
+        "--core-only",
+        help="Verify only core MR1-MR4 relations.",
+    ),
+    catalog: Path | None = typer.Option(
+        None,
+        "--catalog",
+        help="Optional path to write the metamorphic relation catalog JSON.",
+    ),
+    quiet: bool = typer.Option(False, "--quiet", help="Print a short summary only."),
+) -> None:
+    """Verify all metamorphic relations and export pass/fail reports."""
+    selected: tuple[MetamorphicRelationId, ...] | None
+    if core_only:
+        selected = CORE_METAMORPHIC_RELATIONS
+    elif relations is not None:
+        selected_tuple = tuple(item.strip() for item in relations.split(",") if item.strip())
+        unknown = [item for item in selected_tuple if item not in SUPPORTED_RELATIONS]
+        if unknown:
+            console.print(
+                f"[red]ERROR[/red] Unknown relation(s): {', '.join(unknown)}. "
+                f"Supported: {', '.join(SUPPORTED_RELATIONS)}"
+            )
+            raise typer.Exit(code=1)
+        selected = cast(tuple[MetamorphicRelationId, ...], selected_tuple)
+    else:
+        selected = None
+
+    try:
+        if source_path.is_dir() and (source_path / "reference_fsm.json").is_file():
+            report = verify_metamorphic_case(source_path, relations=selected)
+        else:
+            if oracle_path is None:
+                console.print(
+                    "[red]ERROR[/red] --oracle is required when SOURCE is an FSM JSON file"
+                )
+                raise typer.Exit(code=1)
+            reference = load_fsm_json(source_path)
+            oracle = load_oracle_suite(oracle_path)
+            if not is_oracle_compatible(reference, oracle):
+                console.print(
+                    f"[red]ERROR[/red] {oracle_incompatibility_message(reference, oracle)}"
+                )
+                raise typer.Exit(code=1)
+            report = verify_metamorphic_relations(
+                reference,
+                oracle,
+                relations=selected,
+                source_path=str(source_path),
+            )
+    except MetamorphicError as exc:
+        console.print(f"[red]ERROR[/red] {exc}")
+        raise typer.Exit(code=1) from exc
+    except (OSError, json.JSONDecodeError, ValidationError) as exc:
+        console.print(f"[red]ERROR[/red] Failed to load input: {exc}")
+        raise typer.Exit(code=1) from exc
+
+    json_path, csv_path = export_metamorphic_verification_report(out, report)
+    if catalog is not None:
+        write_metamorphic_relation_catalog(catalog)
+
+    if quiet:
+        console.print(
+            f"[green]OK[/green] status={report.overall_status} "
+            f"pass={report.passed} fail={report.failed} skip={report.skipped}"
+        )
+    else:
+        status_color = "green" if report.overall_status == "pass" else "red"
+        console.print(
+            f"[{status_color}]"
+            f"{report.overall_status.upper()}[/{status_color}] "
+            f"Verified {len(report.verifications)} relation(s) for '{report.fsm_id}'"
+        )
+        console.print(
+            f"Passed={report.passed}, failed={report.failed}, skipped={report.skipped}"
+        )
+        for item in report.verifications:
+            if item.status == "pass":
+                label = f"{item.mr_label} " if item.mr_label else ""
+                console.print(
+                    f"  [green]PASS[/green] {label}{item.relation_id} "
+                    f"(bpr={item.source_bpr:.4f})"
+                )
+            elif item.status == "fail":
+                label = f"{item.mr_label} " if item.mr_label else ""
+                console.print(
+                    f"  [red]FAIL[/red] {label}{item.relation_id}: {item.rationale}"
+                )
+            else:
+                console.print(f"  [yellow]SKIP[/yellow] {item.relation_id}: {item.skip_reason}")
+        console.print(f"Report: {json_path}")
+        console.print(f"CSV: {csv_path}")
+        if catalog is not None:
+            console.print(f"Catalog: {catalog}")
+
+    raise typer.Exit(code=0 if report.overall_status == "pass" else 1)
 
 
 @app.command("coverage")
@@ -1245,6 +1702,179 @@ def run_experiment_cmd(
     raise typer.Exit(code=0)
 
 
+@app.command("run-experiment-pipeline")
+def run_experiment_pipeline_cmd(
+    output_root: Path = typer.Option(
+        Path("experiment_output"),
+        "--output-root",
+        help="Root directory for results/, figures/, tables/, and reports/.",
+    ),
+    seed: int = typer.Option(42, "--seed", help="Random seed for generation and search."),
+    fsm_count: int = typer.Option(6, "--fsm-count", min=1, help="Number of synthetic FSMs."),
+    num_states: int = typer.Option(8, "--num-states", min=2, help="States per synthetic FSM."),
+    num_events: int = typer.Option(4, "--num-events", min=1, help="Events per synthetic FSM."),
+    mutants_per_fsm: int = typer.Option(5, "--mutants-per-fsm", min=1, help="First-order mutants per FSM."),
+    optimizer: list[str] | None = typer.Option(
+        None,
+        "--optimizer",
+        help="Optimizer algorithms to run (repeatable).",
+    ),
+    optimizer_iterations: int = typer.Option(40, "--optimizer-iterations", min=1),
+    optimizer_population_size: int = typer.Option(12, "--optimizer-population-size", min=2),
+    optimizer_generations: int = typer.Option(8, "--optimizer-generations", min=1),
+    alpha: float = typer.Option(0.05, "--alpha", help="Significance level for statistical tests."),
+    skip_plots: bool = typer.Option(False, "--skip-plots", help="Skip matplotlib figure generation."),
+    quiet: bool = typer.Option(False, "--quiet", help="Print a short summary only."),
+) -> None:
+    """Run the full seven-step FSMRepairBench experiment pipeline."""
+    from fsmrepairbench.test_suite_optimizer import SUPPORTED_OPTIMIZER_ALGORITHMS
+
+    selected_optimizers = tuple(optimizer or ("random_search", "nsga2"))
+    unknown = [item for item in selected_optimizers if item not in SUPPORTED_OPTIMIZER_ALGORITHMS]
+    if unknown:
+        console.print(
+            f"[red]ERROR[/red] Unknown optimizer(s): {', '.join(unknown)}. "
+            f"Supported: {', '.join(SUPPORTED_OPTIMIZER_ALGORITHMS)}"
+        )
+        raise typer.Exit(code=1)
+
+    config = ExperimentPipelineConfig(
+        output_root=output_root,
+        seed=seed,
+        fsm_count=fsm_count,
+        num_states=num_states,
+        num_events=num_events,
+        mutants_per_fsm=mutants_per_fsm,
+        optimizers=cast(tuple[str, ...], selected_optimizers),
+        optimizer_iterations=optimizer_iterations,
+        optimizer_population_size=optimizer_population_size,
+        optimizer_generations=optimizer_generations,
+        generate_plots=not skip_plots,
+        alpha=alpha,
+    )
+    try:
+        result = run_experiment_pipeline(config)
+    except ExperimentPipelineError as exc:
+        console.print(f"[red]ERROR[/red] {exc}")
+        raise typer.Exit(code=1) from exc
+
+    if quiet:
+        console.print(
+            f"[green]OK[/green] instances={result.instance_count} "
+            f"tables={result.tables_dir.name} figures={result.figures_dir.name}"
+        )
+    else:
+        console.print(
+            f"[green]OK[/green] Experiment pipeline finished with "
+            f"{result.instance_count} FSM instances"
+        )
+        console.print(f"Results: {result.results_dir}")
+        console.print(f"Tables: {result.tables_dir}")
+        console.print(f"Figures: {result.figures_dir}")
+        console.print(f"Reports: {result.reports_dir}")
+        console.print(f"Metrics CSV: {result.metrics_csv}")
+        console.print(f"Statistical tests CSV: {result.statistics_csv}")
+    raise typer.Exit(code=0)
+
+
+@app.command("run-smoke-test")
+def run_smoke_test_cmd(
+    input_dir: Path = typer.Option(
+        Path("data/smoke_test_input"),
+        "--input-dir",
+        help="Directory with fsms/ and oracles/ subdirectories.",
+    ),
+    output_dir: Path = typer.Option(
+        Path("results/smoke_test"),
+        "--output-dir",
+        help="Consolidated smoke-test output directory.",
+    ),
+    seed: int = typer.Option(42, "--seed", help="Fixed random seed for reproducibility."),
+    fsm_count: int = typer.Option(15, "--fsm-count", min=10, max=20),
+    prepare_input: bool = typer.Option(
+        False,
+        "--prepare-input",
+        help="Generate a deterministic input dataset before running the pipeline.",
+    ),
+    use_cli: bool = typer.Option(
+        True,
+        "--use-cli/--no-use-cli",
+        help="Invoke existing CLI commands for scoring, coverage, and localization.",
+    ),
+    quiet: bool = typer.Option(False, "--quiet", help="Suppress per-FSM progress logging."),
+) -> None:
+    """Run the end-to-end smoke-test validation pipeline on 10-20 FSMs."""
+    if prepare_input:
+        try:
+            prepare_smoke_test_input(input_dir, seed=seed, fsm_count=fsm_count)
+        except SmokeTestPipelineError as exc:
+            console.print(f"[red]ERROR[/red] {exc}")
+            raise typer.Exit(code=1) from exc
+
+    config = SmokeTestPipelineConfig(
+        input_dir=input_dir,
+        output_dir=output_dir,
+        seed=seed,
+        fsm_count=fsm_count,
+        prepare_input=False,
+        use_cli=use_cli,
+    )
+    try:
+        if quiet:
+            import io
+            import contextlib
+
+            buffer = io.StringIO()
+            with contextlib.redirect_stdout(buffer):
+                result = run_smoke_test_pipeline(config)
+        else:
+            result = run_smoke_test_pipeline(config)
+        validation = validate_smoke_test_outputs(result.output_dir)
+    except SmokeTestPipelineError as exc:
+        console.print(f"[red]ERROR[/red] {exc}")
+        raise typer.Exit(code=1) from exc
+
+    console.print(
+        f"[green]OK[/green] Smoke test finished: "
+        f"{result.fsm_count} FSMs, {result.mutant_count} mutants, "
+        f"mean BPR={result.mean_bpr:.2%}"
+    )
+    console.print(f"Output: {result.output_dir}")
+    console.print(f"Summary: {result.summary_path}")
+    if not validation.passed:
+        console.print("[yellow]WARN[/yellow] Post-run validation thresholds were not all met")
+        if validation.unscored_mutants:
+            console.print(f"  Unscored mutants: {len(validation.unscored_mutants)}")
+        if validation.low_coverage_fsms:
+            console.print(f"  Low coverage FSMs: {', '.join(validation.low_coverage_fsms)}")
+        console.print(
+            f"  Localization top-5 rate: {validation.localization_top5_rate:.2%} "
+            f"(required >= 80%)"
+        )
+    raise typer.Exit(code=0 if validation.passed else 1)
+
+
+@app.command("prepare-smoke-test-input")
+def prepare_smoke_test_input_cmd(
+    output_dir: Path = typer.Option(
+        Path("data/smoke_test_input"),
+        "--output-dir",
+        help="Directory for generated FSM and oracle inputs.",
+    ),
+    seed: int = typer.Option(42, "--seed"),
+    fsm_count: int = typer.Option(15, "--fsm-count", min=10, max=20),
+) -> None:
+    """Generate a deterministic smoke-test input dataset with high oracle coverage."""
+    try:
+        path = prepare_smoke_test_input(output_dir, seed=seed, fsm_count=fsm_count)
+    except SmokeTestPipelineError as exc:
+        console.print(f"[red]ERROR[/red] {exc}")
+        raise typer.Exit(code=1) from exc
+
+    console.print(f"[green]OK[/green] Prepared {fsm_count} FSM/oracle pairs in {path}")
+    raise typer.Exit(code=0)
+
+
 @app.command("run-tools")
 def run_tools_cmd(
     dataset_dir: Path,
@@ -1346,6 +1976,98 @@ def mutate_higher_order_cmd(
     raise typer.Exit(code=0)
 
 
+@app.command("generate-literature-mutants")
+def generate_literature_mutants_cmd(
+    fsm_path: Path,
+    out: Path = typer.Option(..., "--out", help="Write mutant report JSON to this path."),
+    seed: int = typer.Option(42, "--seed", help="Deterministic generation seed."),
+    include_fsm: bool = typer.Option(
+        True,
+        "--include-fsm/--no-include-fsm",
+        help="Embed full mutant FSM JSON in the report.",
+    ),
+    quiet: bool = typer.Option(False, "--quiet", help="Print a short summary only."),
+) -> None:
+    """Generate literature-inspired first-, second-, and higher-order FSM mutants."""
+    try:
+        report = generate_literature_mutants_for_path(
+            fsm_path,
+            seed=seed,
+            include_fsm=include_fsm,
+        )
+    except (OSError, json.JSONDecodeError, ValidationError) as exc:
+        console.print(f"[red]ERROR[/red] Failed to load FSM: {exc}")
+        raise typer.Exit(code=1) from exc
+    except LiteratureMutationError as exc:
+        console.print(f"[red]ERROR[/red] {exc}")
+        raise typer.Exit(code=1) from exc
+
+    write_mutant_report_json(out, report, include_fsm=include_fsm)
+
+    if quiet:
+        console.print(
+            f"[green]OK[/green] {report.statistics.total_mutants} mutants -> {out}"
+        )
+    else:
+        stats = report.statistics
+        console.print(
+            f"[green]OK[/green] Generated {stats.total_mutants} mutants for "
+            f"'{report.parent_fsm_id}'"
+        )
+        console.print(
+            f"  first-order={stats.first_order_count}, "
+            f"second-order={stats.second_order_count}, "
+            f"higher-order={stats.higher_order_count}"
+        )
+        console.print(f"Report: {out}")
+
+    raise typer.Exit(code=0)
+
+
+@app.command("generate-literature-mutants-dir")
+def generate_literature_mutants_dir_cmd(
+    input_dir: Path,
+    out: Path = typer.Option(..., "--out", help="Output directory for mutant reports."),
+    seed: int = typer.Option(42, "--seed", help="Deterministic generation seed."),
+    include_fsm: bool = typer.Option(
+        True,
+        "--include-fsm/--no-include-fsm",
+        help="Embed full mutant FSM JSON in each report.",
+    ),
+    quiet: bool = typer.Option(False, "--quiet", help="Print a short summary only."),
+) -> None:
+    """Generate literature mutants for every fsm_*.json file in a dataset directory."""
+    try:
+        summary = generate_literature_mutants_for_directory(
+            input_dir,
+            out,
+            seed=seed,
+            include_fsm=include_fsm,
+        )
+    except LiteratureMutationError as exc:
+        console.print(f"[red]ERROR[/red] {exc}")
+        raise typer.Exit(code=1) from exc
+
+    if quiet:
+        console.print(
+            f"[green]OK[/green] {summary.total_mutants} mutants for "
+            f"{summary.fsm_count} FSMs -> {out}"
+        )
+    else:
+        console.print(
+            f"[green]OK[/green] Generated {summary.total_mutants} mutants "
+            f"for {summary.fsm_count} FSMs"
+        )
+        console.print(
+            f"  first-order={summary.first_order_count}, "
+            f"second-order={summary.second_order_count}, "
+            f"higher-order={summary.higher_order_count}"
+        )
+        console.print(f"Statistics: {out / 'statistics.json'}")
+
+    raise typer.Exit(code=0)
+
+
 @app.command("coupling-analysis")
 def coupling_analysis_cmd(
     dataset_dir: Path,
@@ -1430,6 +2152,314 @@ def generate_fsm_cmd(
         f"[green]OK[/green] Generated FSM '{fsm.id}' with "
         f"{len(fsm.states)} states and {len(fsm.transitions)} transitions at {out}"
     )
+    raise typer.Exit(code=0)
+
+
+@app.command("generate-adversarial-fsm")
+def generate_adversarial_fsm_cmd(
+    out: Path = typer.Option(..., "--out", help="Output path for adversarial FSM JSON."),
+    metadata: Path = typer.Option(
+        ...,
+        "--metadata",
+        help="Output path for difficulty metadata JSON.",
+    ),
+    pattern: str = typer.Option(
+        "highly_symmetric",
+        "--pattern",
+        help=f"Adversarial pattern. Supported: {', '.join(SUPPORTED_ADVERSARIAL_PATTERNS)}",
+    ),
+    seed: int = typer.Option(42, "--seed", help="Deterministic generation seed."),
+    quiet: bool = typer.Option(False, "--quiet", help="Print a short summary only."),
+) -> None:
+    """Generate one adversarial FSM designed to challenge LLM reasoning."""
+    if pattern not in SUPPORTED_ADVERSARIAL_PATTERNS:
+        console.print(
+            f"[red]ERROR[/red] Unknown pattern '{pattern}'. "
+            f"Supported: {', '.join(SUPPORTED_ADVERSARIAL_PATTERNS)}"
+        )
+        raise typer.Exit(code=1)
+
+    try:
+        fsm, difficulty = generate_adversarial_fsm(
+            cast(AdversarialPattern, pattern),
+            seed=seed,
+        )
+        record = build_metadata_record(
+            fsm,
+            difficulty,
+            pattern=cast(AdversarialPattern, pattern),
+            seed=seed,
+            filename=out.name,
+            metadata_filename=metadata.name,
+        )
+        out.parent.mkdir(parents=True, exist_ok=True)
+        metadata.parent.mkdir(parents=True, exist_ok=True)
+        out.write_text(fsm.model_dump_json(indent=2, exclude_none=True) + "\n", encoding="utf-8")
+        metadata.write_text(record.model_dump_json(indent=2) + "\n", encoding="utf-8")
+    except AdversarialFSMError as exc:
+        console.print(f"[red]ERROR[/red] {exc}")
+        raise typer.Exit(code=1) from exc
+
+    if quiet:
+        console.print(
+            f"[green]OK[/green] rank={difficulty.rank}/10 pattern={pattern} -> {out}"
+        )
+    else:
+        console.print(
+            f"[green]OK[/green] Generated adversarial FSM '{fsm.id}' "
+            f"(pattern={pattern}, rank={difficulty.rank}/10, label={difficulty.label})"
+        )
+        console.print(f"FSM: {out}")
+        console.print(f"Metadata: {metadata}")
+
+    raise typer.Exit(code=0)
+
+
+@app.command("generate-adversarial-fsms")
+def generate_adversarial_fsms_cmd(
+    out: Path = typer.Option(Path("adversarial_dataset"), "--out", help="Output dataset directory."),
+    count: int | None = typer.Option(
+        None,
+        "--count",
+        min=1,
+        help="Number of adversarial FSMs (defaults to one per selected pattern).",
+    ),
+    seed: int = typer.Option(42, "--seed", help="Global random seed."),
+    pattern: list[str] | None = typer.Option(
+        None,
+        "--pattern",
+        help="Adversarial pattern to include (repeatable). Defaults to all patterns.",
+    ),
+    quiet: bool = typer.Option(False, "--quiet", help="Print a short summary only."),
+) -> None:
+    """Generate a dataset of adversarial FSMs with difficulty metadata."""
+    selected = tuple(pattern or SUPPORTED_ADVERSARIAL_PATTERNS)
+    unknown = [item for item in selected if item not in SUPPORTED_ADVERSARIAL_PATTERNS]
+    if unknown:
+        console.print(
+            f"[red]ERROR[/red] Unknown pattern(s): {', '.join(unknown)}. "
+            f"Supported: {', '.join(SUPPORTED_ADVERSARIAL_PATTERNS)}"
+        )
+        raise typer.Exit(code=1)
+
+    try:
+        result = generate_adversarial_dataset(
+            output_dir=out,
+            count=count,
+            seed=seed,
+            patterns=cast(tuple[AdversarialPattern, ...], selected),
+        )
+    except AdversarialFSMError as exc:
+        console.print(f"[red]ERROR[/red] {exc}")
+        raise typer.Exit(code=1) from exc
+
+    ranks = [record.difficulty.rank for record in result.records]
+    if quiet:
+        console.print(
+            f"[green]OK[/green] fsms={len(result.records)} "
+            f"rank={min(ranks)}-{max(ranks)} -> {out}"
+        )
+    else:
+        console.print(
+            f"[green]OK[/green] Generated {len(result.records)} adversarial FSMs under {out}"
+        )
+        console.print(
+            f"Difficulty ranks: min={min(ranks)}, max={max(ranks)}, "
+            f"mean={sum(ranks) / len(ranks):.1f}"
+        )
+        console.print(f"Metadata CSV: {result.metadata_csv_path}")
+        console.print(f"Manifest: {out / 'dataset_manifest.json'}")
+
+    raise typer.Exit(code=0)
+
+
+@app.command("tag-fsms")
+def tag_fsms_cmd(
+    source_path: Path,
+    out: Path | None = typer.Option(
+        None,
+        "--out",
+        help="Output metadata.csv path (defaults to SOURCE/metadata.csv).",
+    ),
+    seed: int = typer.Option(42, "--seed", help="Seed for mutation-resistance sampling."),
+    skip_mutation_score: bool = typer.Option(
+        False,
+        "--skip-mutation-score",
+        help="Skip mutation-score analysis for faster tagging.",
+    ),
+    quiet: bool = typer.Option(False, "--quiet", help="Print a short summary only."),
+) -> None:
+    """Analyze every FSM and assign structural tags into metadata.csv."""
+    try:
+        result = tag_fsm_directory(
+            source_path,
+            output_path=out,
+            compute_mutation_score=not skip_mutation_score,
+            seed=seed,
+        )
+    except FSMTaggingError as exc:
+        console.print(f"[red]ERROR[/red] {exc}")
+        raise typer.Exit(code=1) from exc
+
+    tag_counts: dict[str, int] = dict.fromkeys(SUPPORTED_FSM_TAGS, 0)
+    for record in result.records:
+        for tag, enabled in record.tag_flags.items():
+            if enabled:
+                tag_counts[tag] += 1
+
+    if quiet:
+        console.print(
+            f"[green]OK[/green] tagged={len(result.records)} -> {result.metadata_csv_path}"
+        )
+    else:
+        console.print(
+            f"[green]OK[/green] Tagged {len(result.records)} FSM(s) from '{source_path}'"
+        )
+        if result.skipped_files:
+            console.print(f"Skipped {len(result.skipped_files)} invalid or unreadable file(s)")
+        for tag in SUPPORTED_FSM_TAGS:
+            if tag_counts[tag]:
+                console.print(f"  {tag}: {tag_counts[tag]}")
+        console.print(f"Metadata CSV: {result.metadata_csv_path}")
+        manifest = result.metadata_csv_path.with_name("tagging_manifest.json")
+        console.print(f"Manifest: {manifest}")
+
+    raise typer.Exit(code=0)
+
+
+@app.command("generate-fsm-dataset")
+def generate_fsm_dataset_cmd(
+    out: Path = typer.Option(Path("dataset"), "--out", help="Output dataset directory."),
+    count: int = typer.Option(10_000, "--count", min=1, help="Number of FSMs to generate."),
+    seed: int = typer.Option(42, "--seed", help="Global random seed for reproducible generation."),
+    quiet: bool = typer.Option(False, "--quiet", help="Print a short summary only."),
+) -> None:
+    """Generate a reproducible FSM benchmark dataset (DFA, NFA, Mealy, Moore, EFSM, timed)."""
+    try:
+        records = generate_fsm_benchmark_dataset(
+            FSMBenchmarkGenerationConfig(count=count, seed=seed, output_dir=out)
+        )
+    except FSMBenchmarkDatasetError as exc:
+        console.print(f"[red]ERROR[/red] {exc}")
+        raise typer.Exit(code=1) from exc
+
+    distribution = dataset_type_distribution(records)
+    if quiet:
+        console.print(
+            f"[green]OK[/green] Generated {len(records)} FSMs in {out} "
+            f"(seed={seed}, types={len(SUPPORTED_FSM_TYPES)})"
+        )
+    else:
+        console.print(
+            f"[green]OK[/green] Generated {len(records)} FSMs under {out} "
+            f"with seed={seed}"
+        )
+        console.print(f"Metadata: {out / 'metadata.csv'}")
+        table = Table(title="Machine type distribution")
+        table.add_column("Type")
+        table.add_column("Count", justify="right")
+        for fsm_type in SUPPORTED_FSM_TYPES:
+            table.add_row(fsm_type, str(distribution[fsm_type]))
+        console.print(table)
+
+    raise typer.Exit(code=0)
+
+
+@app.command("generate-coverage-oracles")
+def generate_coverage_oracles_cmd(
+    fsm_path: Path,
+    out: Path = typer.Option(..., "--out", help="Output JSON file or directory."),
+    seed: int = typer.Option(42, "--seed", help="Deterministic generation seed."),
+    max_depth: int = typer.Option(25, "--max-depth", min=1),
+    path_length: int = typer.Option(3, "--path-length", min=1),
+    mutant_count: int = typer.Option(10, "--mutant-count", min=1),
+    quiet: bool = typer.Option(False, "--quiet", help="Print a short summary only."),
+) -> None:
+    """Generate minimized transition/state/path/boundary/mutation-killing oracle suites."""
+    try:
+        fsm = load_fsm_json(fsm_path)
+    except (OSError, json.JSONDecodeError, ValidationError) as exc:
+        console.print(f"[red]ERROR[/red] Failed to load FSM: {exc}")
+        raise typer.Exit(code=1) from exc
+
+    fsm_errors = validate_fsm(fsm)
+    if fsm_errors:
+        console.print(f"[red]ERROR[/red] Invalid FSM: {fsm_errors[0]}")
+        raise typer.Exit(code=1)
+
+    try:
+        export = generate_all_coverage_oracle_suites(
+            fsm,
+            seed=seed,
+            max_depth=max_depth,
+            path_length=path_length,
+            mutant_count=mutant_count,
+        )
+    except CoverageOracleGeneratorError as exc:
+        console.print(f"[red]ERROR[/red] {exc}")
+        raise typer.Exit(code=1) from exc
+
+    if out.suffix == ".json":
+        export_coverage_oracles_json(out, export)
+        target = out
+    else:
+        export_coverage_oracles_directory(out, export)
+        target = out / "manifest.json"
+
+    if quiet:
+        total_sequences = sum(suite.sequence_count for suite in export.suites.values())
+        console.print(
+            f"[green]OK[/green] {total_sequences} sequences across "
+            f"{len(SUPPORTED_COVERAGE_SUITE_TYPES)} suites -> {target}"
+        )
+    else:
+        table = Table(title=f"Coverage oracle suites for '{fsm.id}'")
+        table.add_column("Suite")
+        table.add_column("Sequences", justify="right")
+        table.add_column("Coverage", justify="right")
+        for suite_type in SUPPORTED_COVERAGE_SUITE_TYPES:
+            suite = export.suites[suite_type]
+            table.add_row(
+                suite_type,
+                str(suite.sequence_count),
+                f"{suite.coverage_ratio:.2%}",
+            )
+        console.print(table)
+        console.print(f"Export: {target}")
+
+    raise typer.Exit(code=0)
+
+
+@app.command("generate-coverage-oracles-dir")
+def generate_coverage_oracles_dir_cmd(
+    input_dir: Path,
+    out: Path = typer.Option(..., "--out", help="Output directory for oracle suites."),
+    seed: int = typer.Option(42, "--seed", help="Deterministic generation seed."),
+    max_depth: int = typer.Option(25, "--max-depth", min=1),
+    path_length: int = typer.Option(3, "--path-length", min=1),
+    quiet: bool = typer.Option(False, "--quiet", help="Print a short summary only."),
+) -> None:
+    """Generate coverage oracle suites for every FSM JSON file in a dataset directory."""
+    try:
+        manifests = generate_coverage_oracles_for_directory(
+            input_dir,
+            out,
+            seed=seed,
+            max_depth=max_depth,
+            path_length=path_length,
+        )
+    except CoverageOracleGeneratorError as exc:
+        console.print(f"[red]ERROR[/red] {exc}")
+        raise typer.Exit(code=1) from exc
+
+    if quiet:
+        console.print(f"[green]OK[/green] {len(manifests)} FSM oracle bundles -> {out}")
+    else:
+        console.print(
+            f"[green]OK[/green] Generated coverage oracle suites for {len(manifests)} FSMs"
+        )
+        console.print(f"Output root: {out}")
+
     raise typer.Exit(code=0)
 
 

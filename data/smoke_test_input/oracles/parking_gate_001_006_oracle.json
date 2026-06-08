@@ -1,0 +1,66 @@
+{
+  "id": "parking_gate_001_006_oracle",
+  "fsm_id": "parking_gate_001_006",
+  "scenarios": [
+    {
+      "id": "invalid_ticket_stays_closed_006",
+      "description": "An invalid ticket keeps the gate closed.",
+      "steps": [
+        {
+          "event": "car_arrives",
+          "expected_state": "closed_006",
+          "guard": "ticket_invalid",
+          "accepting_states": [],
+          "probability_threshold": null,
+          "refusal_expected": false,
+          "quiescence_expected": false,
+          "discrete_time": null
+        }
+      ]
+    },
+    {
+      "id": "valid_ticket_opens_gate_006",
+      "description": "A valid ticket opens the gate.",
+      "steps": [
+        {
+          "event": "car_arrives",
+          "expected_state": "open_006",
+          "guard": "ticket_valid",
+          "accepting_states": [],
+          "probability_threshold": null,
+          "refusal_expected": false,
+          "quiescence_expected": false,
+          "discrete_time": null
+        }
+      ]
+    },
+    {
+      "id": "open_then_timeout_closes_006",
+      "description": "The gate closes automatically after a timeout.",
+      "steps": [
+        {
+          "event": "car_arrives",
+          "expected_state": "open_006",
+          "guard": "ticket_valid",
+          "accepting_states": [],
+          "probability_threshold": null,
+          "refusal_expected": false,
+          "quiescence_expected": false,
+          "discrete_time": null
+        },
+        {
+          "event": "timeout",
+          "expected_state": "closed_006",
+          "guard": null,
+          "accepting_states": [],
+          "probability_threshold": null,
+          "refusal_expected": false,
+          "quiescence_expected": false,
+          "discrete_time": null
+        }
+      ]
+    }
+  ],
+  "semantics_mode": null,
+  "probability_threshold": null
+}

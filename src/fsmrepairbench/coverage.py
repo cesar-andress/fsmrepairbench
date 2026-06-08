@@ -165,7 +165,9 @@ def compute_coverage_report(
 
     covered_sequences = _sequence_set(paths, max_length=sequence_depth)
     total_sequences = _all_feasible_sequences(fsm, max_length=sequence_depth)
+    covered_sequences &= total_sequences
     total_pairs = _all_feasible_adjacent_pairs(fsm, max_length=sequence_depth)
+    covered_pairs &= total_pairs
 
     guarded = _guarded_transitions(fsm)
     guarded_ids = {transition.id for transition in guarded}

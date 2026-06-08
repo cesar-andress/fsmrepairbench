@@ -1,0 +1,50 @@
+{
+  "bpr": 0.25,
+  "candidate_fsm_id": "parking_gate_001_003__mut__second_order__state_deletion__state_insertion__13069",
+  "coverage": {
+    "aggregate": 0.766667,
+    "path": 0.3,
+    "state": 1.0,
+    "transition": 1.0
+  },
+  "execution_cost": 4,
+  "mutant_count": 0,
+  "mutants": [],
+  "mutation_score": 1.0,
+  "oracle_accuracy": 0.25,
+  "oracle_agreement": 0.25,
+  "oracle_suite_id": "parking_gate_001_003_oracle",
+  "reference_fsm_id": "parking_gate_001_003",
+  "scenario_count": 3,
+  "scenarios": [
+    {
+      "execution_cost": 1,
+      "oracle_agreement": 1.0,
+      "passed": true,
+      "passed_steps": 1,
+      "scenario_bpr": 1.0,
+      "scenario_id": "invalid_ticket_stays_closed_003",
+      "total_steps": 1
+    },
+    {
+      "execution_cost": 1,
+      "oracle_agreement": 0.0,
+      "passed": false,
+      "passed_steps": 0,
+      "scenario_bpr": 0.0,
+      "scenario_id": "valid_ticket_opens_gate_003",
+      "total_steps": 1
+    },
+    {
+      "execution_cost": 2,
+      "oracle_agreement": 0.0,
+      "passed": false,
+      "passed_steps": 0,
+      "scenario_bpr": 0.0,
+      "scenario_id": "open_then_timeout_closes_003",
+      "total_steps": 2
+    }
+  ],
+  "seed": 42,
+  "timestamp": "2026-06-08T21:53:16Z"
+}

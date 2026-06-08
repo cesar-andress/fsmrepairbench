@@ -1,0 +1,61 @@
+{
+  "criteria": {
+    "guard": {
+      "coverage": 1.0,
+      "covered": 2,
+      "covered_items": [
+        "t1_010",
+        "t2_010"
+      ],
+      "name": "guard",
+      "total": 2
+    },
+    "state": {
+      "coverage": 1.0,
+      "covered": 2,
+      "covered_items": [
+        "closed_010",
+        "open_010"
+      ],
+      "name": "state",
+      "total": 2
+    },
+    "transition": {
+      "coverage": 1.0,
+      "covered": 3,
+      "covered_items": [
+        "t1_010",
+        "t2_010",
+        "t3_010"
+      ],
+      "name": "transition",
+      "total": 3
+    },
+    "transition_pair": {
+      "coverage": 0.2,
+      "covered": 1,
+      "covered_items": [
+        "t2_010->t3_010"
+      ],
+      "name": "transition_pair",
+      "total": 5
+    },
+    "transition_sequence": {
+      "coverage": 0.3,
+      "covered": 3,
+      "covered_items": [
+        "t1_010",
+        "t2_010",
+        "t2_010->t3_010"
+      ],
+      "name": "transition_sequence",
+      "total": 10
+    }
+  },
+  "fsm_id": "parking_gate_001_010",
+  "machine_type": "plain_fsm",
+  "oracle_suite_id": "parking_gate_001_010_oracle",
+  "seed": 42,
+  "sequence_depth": 3,
+  "timestamp": "2026-06-08T21:53:16Z"
+}

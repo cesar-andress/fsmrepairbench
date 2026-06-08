@@ -1,0 +1,50 @@
+{
+  "id": "parking_gate_001_014__mut__higher_order__state_deletion__state_insertion__transition_deletion__34168",
+  "name": "Parking Gate #14",
+  "description": "Controls access to a parking lot based on ticket validation.",
+  "states": [
+    {
+      "id": "closed_014",
+      "state_output": null,
+      "refusal": false,
+      "quiescence": false
+    },
+    {
+      "id": "state_insert_35165",
+      "state_output": null,
+      "refusal": false,
+      "quiescence": false
+    }
+  ],
+  "initial_state": "closed_014",
+  "events": [
+    "car_arrives",
+    "ticket_valid",
+    "timeout"
+  ],
+  "transitions": [
+    {
+      "id": "t_insert_35165",
+      "source": "closed_014",
+      "event": "car_arrives",
+      "target": "state_insert_35165",
+      "guard": null,
+      "action": null,
+      "output": null,
+      "timeout": null,
+      "delay": null,
+      "requirements": [],
+      "probability": null,
+      "is_nondeterministic": false,
+      "refusal": false,
+      "quiescence": false,
+      "discrete_time": null
+    }
+  ],
+  "variables": {},
+  "parent_fsm_id": "parking_gate_001_014",
+  "reference_fsm_id": "parking_gate_001_014",
+  "discrete_time_step": null,
+  "semantics_mode": null,
+  "cyclic_metadata": null
+}

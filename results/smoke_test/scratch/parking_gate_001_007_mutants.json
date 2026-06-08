@@ -1,0 +1,233 @@
+{
+  "generation_seed": 7105,
+  "mutants": [
+    {
+      "fsm": {
+        "cyclic_metadata": null,
+        "description": "Controls access to a parking lot based on ticket validation.",
+        "discrete_time_step": null,
+        "events": [
+          "car_arrives",
+          "ticket_valid",
+          "timeout"
+        ],
+        "id": "parking_gate_001_007__mut__first_order__state_deletion__7105",
+        "initial_state": "closed_007",
+        "name": "Parking Gate #7",
+        "parent_fsm_id": "parking_gate_001_007",
+        "reference_fsm_id": "parking_gate_001_007",
+        "semantics_mode": null,
+        "states": [
+          {
+            "id": "closed_007",
+            "quiescence": false,
+            "refusal": false,
+            "state_output": null
+          }
+        ],
+        "transitions": [
+          {
+            "action": "display_error",
+            "delay": null,
+            "discrete_time": null,
+            "event": "car_arrives",
+            "guard": "ticket_invalid",
+            "id": "t1_007",
+            "is_nondeterministic": false,
+            "output": null,
+            "probability": null,
+            "quiescence": false,
+            "refusal": false,
+            "requirements": [
+              "R1"
+            ],
+            "source": "closed_007",
+            "target": "closed_007",
+            "timeout": null
+          }
+        ],
+        "variables": {}
+      },
+      "mutant_id": "parking_gate_001_007__mut__first_order__state_deletion__7105",
+      "mutation_description": "Deleted state 'open_007' and incident transitions",
+      "mutation_order": 1,
+      "mutation_type": "state_deletion",
+      "operators": [
+        "state_deletion"
+      ],
+      "order_class": "first_order",
+      "parent_id": "parking_gate_001_007",
+      "seed": 7105
+    },
+    {
+      "fsm": {
+        "cyclic_metadata": null,
+        "description": "Controls access to a parking lot based on ticket validation.",
+        "discrete_time_step": null,
+        "events": [
+          "car_arrives",
+          "ticket_valid",
+          "timeout"
+        ],
+        "id": "parking_gate_001_007__mut__second_order__state_deletion__state_insertion__17105",
+        "initial_state": "closed_007",
+        "name": "Parking Gate #7",
+        "parent_fsm_id": "parking_gate_001_007",
+        "reference_fsm_id": "parking_gate_001_007",
+        "semantics_mode": null,
+        "states": [
+          {
+            "id": "closed_007",
+            "quiescence": false,
+            "refusal": false,
+            "state_output": null
+          },
+          {
+            "id": "state_insert_18102",
+            "quiescence": false,
+            "refusal": false,
+            "state_output": null
+          }
+        ],
+        "transitions": [
+          {
+            "action": "display_error",
+            "delay": null,
+            "discrete_time": null,
+            "event": "car_arrives",
+            "guard": "ticket_invalid",
+            "id": "t1_007",
+            "is_nondeterministic": false,
+            "output": null,
+            "probability": null,
+            "quiescence": false,
+            "refusal": false,
+            "requirements": [
+              "R1"
+            ],
+            "source": "closed_007",
+            "target": "closed_007",
+            "timeout": null
+          },
+          {
+            "action": null,
+            "delay": null,
+            "discrete_time": null,
+            "event": "ticket_valid",
+            "guard": null,
+            "id": "t_insert_18102",
+            "is_nondeterministic": false,
+            "output": null,
+            "probability": null,
+            "quiescence": false,
+            "refusal": false,
+            "requirements": [],
+            "source": "closed_007",
+            "target": "state_insert_18102",
+            "timeout": null
+          }
+        ],
+        "variables": {}
+      },
+      "mutant_id": "parking_gate_001_007__mut__second_order__state_deletion__state_insertion__17105",
+      "mutation_description": "Deleted state 'open_007' and incident transitions; Inserted state 'state_insert_18102' with incoming transition from 'closed_007'",
+      "mutation_order": 2,
+      "mutation_type": "state_deletion, state_insertion",
+      "operators": [
+        "state_deletion",
+        "state_insertion"
+      ],
+      "order_class": "second_order",
+      "parent_id": "parking_gate_001_007",
+      "seed": 17105
+    },
+    {
+      "fsm": {
+        "cyclic_metadata": null,
+        "description": "Controls access to a parking lot based on ticket validation.",
+        "discrete_time_step": null,
+        "events": [
+          "car_arrives",
+          "ticket_valid",
+          "timeout"
+        ],
+        "id": "parking_gate_001_007__mut__higher_order__state_deletion__state_insertion__transition_deletion__27105",
+        "initial_state": "closed_007",
+        "name": "Parking Gate #7",
+        "parent_fsm_id": "parking_gate_001_007",
+        "reference_fsm_id": "parking_gate_001_007",
+        "semantics_mode": null,
+        "states": [
+          {
+            "id": "closed_007",
+            "quiescence": false,
+            "refusal": false,
+            "state_output": null
+          },
+          {
+            "id": "state_insert_28102",
+            "quiescence": false,
+            "refusal": false,
+            "state_output": null
+          }
+        ],
+        "transitions": [
+          {
+            "action": "display_error",
+            "delay": null,
+            "discrete_time": null,
+            "event": "car_arrives",
+            "guard": "ticket_invalid",
+            "id": "t1_007",
+            "is_nondeterministic": false,
+            "output": null,
+            "probability": null,
+            "quiescence": false,
+            "refusal": false,
+            "requirements": [
+              "R1"
+            ],
+            "source": "closed_007",
+            "target": "closed_007",
+            "timeout": null
+          }
+        ],
+        "variables": {}
+      },
+      "mutant_id": "parking_gate_001_007__mut__higher_order__state_deletion__state_insertion__transition_deletion__27105",
+      "mutation_description": "Deleted state 'open_007' and incident transitions; Inserted state 'state_insert_28102' with incoming transition from 'closed_007'; Deleted transition 't_insert_28102'",
+      "mutation_order": 3,
+      "mutation_type": "state_deletion, state_insertion, transition_deletion",
+      "operators": [
+        "state_deletion",
+        "state_insertion",
+        "transition_deletion"
+      ],
+      "order_class": "higher_order",
+      "parent_id": "parking_gate_001_007",
+      "seed": 27105
+    }
+  ],
+  "parent_fsm_id": "parking_gate_001_007",
+  "statistics": {
+    "by_mutation_type": {
+      "state_deletion": 1,
+      "state_deletion, state_insertion": 1,
+      "state_deletion, state_insertion, transition_deletion": 1
+    },
+    "by_operator": {
+      "state_deletion": 3,
+      "state_insertion": 2,
+      "transition_deletion": 1
+    },
+    "by_order_class": {
+      "first_order": 1,
+      "higher_order": 1,
+      "second_order": 1
+    },
+    "first_order_count": 1,
+    "higher_order_count": 1,
+    "second_order_count": 1,
+    "total_mutants": 3
+  }
+}

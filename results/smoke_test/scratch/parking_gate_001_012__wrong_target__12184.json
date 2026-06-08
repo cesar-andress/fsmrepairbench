@@ -1,0 +1,86 @@
+{
+  "id": "parking_gate_001_012__faulty__wrong_target__12184",
+  "name": "Parking Gate #12 (faulty: wrong_target)",
+  "description": "Controls access to a parking lot based on ticket validation.",
+  "states": [
+    {
+      "id": "closed_012",
+      "state_output": null,
+      "refusal": false,
+      "quiescence": false
+    },
+    {
+      "id": "open_012",
+      "state_output": null,
+      "refusal": false,
+      "quiescence": false
+    }
+  ],
+  "initial_state": "closed_012",
+  "events": [
+    "car_arrives",
+    "ticket_valid",
+    "timeout"
+  ],
+  "transitions": [
+    {
+      "id": "t1_012",
+      "source": "closed_012",
+      "event": "car_arrives",
+      "target": "closed_012",
+      "guard": "ticket_invalid",
+      "action": "display_error",
+      "output": null,
+      "timeout": null,
+      "delay": null,
+      "requirements": [
+        "R1"
+      ],
+      "probability": null,
+      "is_nondeterministic": false,
+      "refusal": false,
+      "quiescence": false,
+      "discrete_time": null
+    },
+    {
+      "id": "t2_012",
+      "source": "closed_012",
+      "event": "car_arrives",
+      "target": "open_012",
+      "guard": "ticket_valid",
+      "action": "open_gate",
+      "output": null,
+      "timeout": null,
+      "delay": null,
+      "requirements": [],
+      "probability": null,
+      "is_nondeterministic": false,
+      "refusal": false,
+      "quiescence": false,
+      "discrete_time": null
+    },
+    {
+      "id": "t3_012",
+      "source": "open_012",
+      "event": "timeout",
+      "target": "open_012",
+      "guard": null,
+      "action": "close_gate",
+      "output": null,
+      "timeout": null,
+      "delay": null,
+      "requirements": [],
+      "probability": null,
+      "is_nondeterministic": false,
+      "refusal": false,
+      "quiescence": false,
+      "discrete_time": null
+    }
+  ],
+  "variables": {},
+  "parent_fsm_id": "parking_gate_001_012",
+  "reference_fsm_id": "parking_gate_001_012",
+  "discrete_time_step": null,
+  "semantics_mode": null,
+  "cyclic_metadata": null
+}
