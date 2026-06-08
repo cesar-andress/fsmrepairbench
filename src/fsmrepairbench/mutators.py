@@ -19,7 +19,13 @@ MUTATION_OPERATORS: tuple[str, ...] = (
     "duplicate_transition",
     "dead_state_intro",
     "guard_flip",
+    "guard_weaken",
+    "guard_strengthen",
     "action_corruption",
+    "timeout_corruption",
+    "delay_corruption",
+    "nondeterminism_intro",
+    "unreachable_state_intro",
 )
 
 T = TypeVar("T")
@@ -301,6 +307,140 @@ def _mutate_action_corruption(
     return faulty, metadata
 
 
+def _mutate_guard_weaken(
+    reference: FSM,
+    rng: random.Random,
+    seed: int,
+) -> tuple[FSM, BugMetadata]:
+    index, transition = _pick_transition(reference, rng)
+    new_guard = "true"
+    faulty = _clone_fsm(reference, "guard_weaken", seed)
+    updated = faulty.transitions[index].model_copy(update={"guard": new_guard})
+    faulty.transitions[index] = updated
+    metadata = _build_metadata(
+        reference=reference,
+        operator="guard_weaken",
+        seed=seed,
+        description=f"Weakened guard on transition '{transition.id}' to '{new_guard}'",
+        changed_transition_id=transition.id,
+    )
+    return faulty, metadata
+
+
+def _mutate_guard_strengthen(
+    reference: FSM,
+    rng: random.Random,
+    seed: int,
+) -> tuple[FSM, BugMetadata]:
+    index, transition = _pick_transition(reference, rng)
+    new_guard = transition.guard or "cond"
+    new_guard = f"({new_guard}) and strict_check"
+    faulty = _clone_fsm(reference, "guard_strengthen", seed)
+    updated = faulty.transitions[index].model_copy(update={"guard": new_guard})
+    faulty.transitions[index] = updated
+    metadata = _build_metadata(
+        reference=reference,
+        operator="guard_strengthen",
+        seed=seed,
+        description=f"Strengthened guard on transition '{transition.id}'",
+        changed_transition_id=transition.id,
+    )
+    return faulty, metadata
+
+
+def _mutate_timeout_corruption(
+    reference: FSM,
+    rng: random.Random,
+    seed: int,
+) -> tuple[FSM, BugMetadata]:
+    index, transition = _pick_transition(reference, rng)
+    new_timeout = (transition.timeout or 1.0) * 2.0
+    faulty = _clone_fsm(reference, "timeout_corruption", seed)
+    updated = faulty.transitions[index].model_copy(update={"timeout": new_timeout})
+    faulty.transitions[index] = updated
+    metadata = _build_metadata(
+        reference=reference,
+        operator="timeout_corruption",
+        seed=seed,
+        description=f"Corrupted timeout on transition '{transition.id}' to {new_timeout}",
+        changed_transition_id=transition.id,
+    )
+    return faulty, metadata
+
+
+def _mutate_delay_corruption(
+    reference: FSM,
+    rng: random.Random,
+    seed: int,
+) -> tuple[FSM, BugMetadata]:
+    index, transition = _pick_transition(reference, rng)
+    new_delay = (transition.delay or 0.5) + 1.0
+    faulty = _clone_fsm(reference, "delay_corruption", seed)
+    updated = faulty.transitions[index].model_copy(update={"delay": new_delay})
+    faulty.transitions[index] = updated
+    metadata = _build_metadata(
+        reference=reference,
+        operator="delay_corruption",
+        seed=seed,
+        description=f"Corrupted delay on transition '{transition.id}' to {new_delay}",
+        changed_transition_id=transition.id,
+    )
+    return faulty, metadata
+
+
+def _mutate_nondeterminism_intro(
+    reference: FSM,
+    rng: random.Random,
+    seed: int,
+) -> tuple[FSM, BugMetadata]:
+    index, transition = _pick_transition(reference, rng)
+    alternate_target = _pick_other(rng, _state_ids(reference), transition.target)
+    faulty = _clone_fsm(reference, "nondeterminism_intro", seed)
+    duplicate = transition.model_copy(
+        update={
+            "id": f"{transition.id}__nd__{seed}",
+            "target": alternate_target,
+            "guard": transition.guard,
+        }
+    )
+    faulty.transitions.append(duplicate)
+    metadata = _build_metadata(
+        reference=reference,
+        operator="nondeterminism_intro",
+        seed=seed,
+        description=(
+            f"Added nondeterministic duplicate for event '{transition.event}' "
+            f"from '{transition.source}'"
+        ),
+        changed_transition_id=transition.id,
+    )
+    return faulty, metadata
+
+
+def _mutate_unreachable_state_intro(
+    reference: FSM,
+    rng: random.Random,
+    seed: int,
+) -> tuple[FSM, BugMetadata]:
+    _ = rng
+    state_id = f"unreachable_{seed}"
+    existing = set(_state_ids(reference))
+    suffix = 0
+    while state_id in existing:
+        suffix += 1
+        state_id = f"unreachable_{seed}_{suffix}"
+    faulty = _clone_fsm(reference, "unreachable_state_intro", seed)
+    faulty.states.append(State(id=state_id))
+    metadata = _build_metadata(
+        reference=reference,
+        operator="unreachable_state_intro",
+        seed=seed,
+        description=f"Added unreachable state '{state_id}'",
+        changed_transition_id=None,
+    )
+    return faulty, metadata
+
+
 _OPERATOR_IMPL: dict[str, MutationFn] = {
     "missing_transition": _mutate_missing_transition,
     "wrong_target": _mutate_wrong_target,
@@ -310,7 +450,13 @@ _OPERATOR_IMPL: dict[str, MutationFn] = {
     "duplicate_transition": _mutate_duplicate_transition,
     "dead_state_intro": _mutate_dead_state_intro,
     "guard_flip": _mutate_guard_flip,
+    "guard_weaken": _mutate_guard_weaken,
+    "guard_strengthen": _mutate_guard_strengthen,
     "action_corruption": _mutate_action_corruption,
+    "timeout_corruption": _mutate_timeout_corruption,
+    "delay_corruption": _mutate_delay_corruption,
+    "nondeterminism_intro": _mutate_nondeterminism_intro,
+    "unreachable_state_intro": _mutate_unreachable_state_intro,
 }
 
 
@@ -328,7 +474,12 @@ def mutate(reference: FSM, operator: str, seed: int) -> tuple[FSM, BugMetadata]:
         "wrong_event",
         "duplicate_transition",
         "guard_flip",
+        "guard_weaken",
+        "guard_strengthen",
         "action_corruption",
+        "timeout_corruption",
+        "delay_corruption",
+        "nondeterminism_intro",
     } and not reference.transitions:
         raise MutatorError(f"{operator} requires at least one transition")
 

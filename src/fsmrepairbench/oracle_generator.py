@@ -10,12 +10,13 @@ from typing import Literal
 
 from fsmrepairbench.models import FSM, OracleScenario, OracleStep, OracleSuite, Transition
 
-DepthLevel = Literal["shallow", "medium", "deep"]
+DepthLevel = Literal["shallow", "medium", "deep", "exhaustive_like"]
 
 DEPTH_MAX_STEPS: dict[DepthLevel, int] = {
     "shallow": 5,
     "medium": 12,
     "deep": 25,
+    "exhaustive_like": 40,
 }
 
 

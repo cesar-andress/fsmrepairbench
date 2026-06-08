@@ -11,6 +11,7 @@ class State(BaseModel):
     """A single state in a finite-state machine."""
 
     id: str
+    state_output: str | None = None
 
 
 class Transition(BaseModel):
@@ -22,6 +23,9 @@ class Transition(BaseModel):
     target: str
     guard: str | None = None
     action: str | None = None
+    output: str | None = None
+    timeout: float | None = None
+    delay: float | None = None
     requirements: list[str] = Field(default_factory=list)
 
 
@@ -35,6 +39,7 @@ class FSM(BaseModel):
     initial_state: str
     events: list[str]
     transitions: list[Transition] = Field(default_factory=list)
+    variables: dict[str, str] = Field(default_factory=dict)
 
 
 class OracleStep(BaseModel):

@@ -12,6 +12,15 @@ from rich.table import Table
 
 from fsmrepairbench.analytics import AnalyticsError, generate_benchmark_report
 from fsmrepairbench.artifact import ArtifactError, load_artifact_bundle, reproduce_artifact
+from fsmrepairbench.case_filter import (
+    CaseFilterError,
+    compute_subset_overlap,
+    filter_cases,
+    normalize_filter_key,
+    parse_predicate_string,
+    write_filter_csv,
+    write_overlap_json,
+)
 from fsmrepairbench.dataset_builder import (
     DEFAULT_OUTPUT_DIR,
     DatasetBuilderError,
@@ -54,6 +63,7 @@ from fsmrepairbench.repair_engines.baselines import (
     propose_baseline_patch,
 )
 from fsmrepairbench.scorer import score_oracle_suite
+from fsmrepairbench.stratified_builder import StratifiedBuilderError, build_stratified_dataset
 from fsmrepairbench.validators import (
     load_fsm_json,
     load_oracle_suite,
@@ -681,6 +691,96 @@ def migrate_benchmark_cmd(
     console.print(f"Output: {output_dir}")
     console.print(f"Migration report: {output_dir / MIGRATION_REPORT_FILENAME}")
     console.print(f"Release manifest: {output_dir / RELEASE_MANIFEST_FILENAME}")
+    raise typer.Exit(code=0)
+
+
+@app.command("build-stratified-dataset")
+def build_stratified_dataset_cmd(plan_path: Path, output_dir: Path) -> None:
+    """Build a taxonomy-stratified benchmark dataset from a plan file."""
+    try:
+        result = build_stratified_dataset(plan_path, output_dir)
+    except (StratifiedBuilderError, ValidationError) as exc:
+        console.print(f"[red]ERROR[/red] {exc}")
+        raise typer.Exit(code=1) from exc
+
+    console.print(
+        f"[green]OK[/green] Built stratified dataset '{plan_path.name}' with "
+        f"{len(result.cases)} cases in {result.output_dir}"
+    )
+    console.print(f"Case index: {result.case_index_path}")
+    console.print(f"Feature matrix: {result.feature_matrix_path}")
+    console.print(f"Plan copy: {result.dataset_plan_path}")
+    raise typer.Exit(code=0)
+
+
+@app.command("filter-cases")
+def filter_cases_cmd(
+    dataset_dir: Path,
+    out: Path = typer.Option(..., "--out", help="CSV output path for the filtered subset."),
+    determinism: str | None = typer.Option(None, "--determinism"),
+    machine_type: str | None = typer.Option(None, "--machine-type"),
+    arity: str | None = typer.Option(None, "--arity", help="Filter by arity_class."),
+    bug_type: str | None = typer.Option(None, "--bug-type"),
+    completeness: str | None = typer.Option(None, "--completeness"),
+    size_class: str | None = typer.Option(None, "--size-class"),
+    guard_complexity: str | None = typer.Option(None, "--guard-complexity"),
+    oracle_depth: str | None = typer.Option(None, "--oracle-depth"),
+) -> None:
+    """Filter stratified dataset cases by taxonomy features."""
+    raw_filters = {
+        "determinism": determinism,
+        "machine_type": machine_type,
+        "arity_class": arity,
+        "bug_type": bug_type,
+        "completeness": completeness,
+        "size_class": size_class,
+        "guard_complexity": guard_complexity,
+        "oracle_depth": oracle_depth,
+    }
+    filters = {
+        normalize_filter_key(key): value
+        for key, value in raw_filters.items()
+        if value is not None
+    }
+    if not filters:
+        console.print("[red]ERROR[/red] At least one feature filter must be provided")
+        raise typer.Exit(code=1)
+
+    try:
+        cases = filter_cases(dataset_dir, filters)
+        write_filter_csv(out, cases)
+    except CaseFilterError as exc:
+        console.print(f"[red]ERROR[/red] {exc}")
+        raise typer.Exit(code=1) from exc
+
+    console.print(f"[green]OK[/green] Wrote {len(cases)} matching cases to {out}")
+    raise typer.Exit(code=0)
+
+
+@app.command("subset-overlap")
+def subset_overlap_cmd(
+    dataset_dir: Path,
+    a: str = typer.Option(..., "--a", help="Comma-separated predicate, e.g. determinism=deterministic"),
+    b: str = typer.Option(..., "--b", help="Comma-separated predicate for subset B."),
+    out: Path = typer.Option(..., "--out", help="JSON output path."),
+) -> None:
+    """Compute overlap statistics between two feature-defined subsets."""
+    try:
+        overlap = compute_subset_overlap(
+            dataset_dir,
+            parse_predicate_string(a),
+            parse_predicate_string(b),
+        )
+        write_overlap_json(out, overlap)
+    except CaseFilterError as exc:
+        console.print(f"[red]ERROR[/red] {exc}")
+        raise typer.Exit(code=1) from exc
+
+    console.print(
+        f"[green]OK[/green] Overlap A={overlap.count_a}, B={overlap.count_b}, "
+        f"intersection={overlap.count_intersection}, jaccard={overlap.jaccard:.4f}"
+    )
+    console.print(f"Report: {out}")
     raise typer.Exit(code=0)
 
 
