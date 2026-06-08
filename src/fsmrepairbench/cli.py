@@ -76,6 +76,12 @@ from fsmrepairbench.requirement_generation import (
     export_requirements_txt,
     generate_requirements,
 )
+from fsmrepairbench.ambiguity_injection import (
+    AmbiguityInjectionError,
+    export_ambiguity_metadata,
+    export_injected_requirements_txt,
+    inject_requirement_ambiguity,
+)
 from fsmrepairbench.patch import PatchError, apply_patch, load_patch_json, validate_patch
 from fsmrepairbench.repair_engines.baselines import (
     BASELINE_ENGINE_NAMES,
@@ -550,6 +556,52 @@ def generate_requirements_cmd(
         f"[green]OK[/green] Generated {len(result.items)} requirements for FSM "
         f"'{result.fsm_id}' ({result.style}) at {out}"
     )
+    raise typer.Exit(code=0)
+
+
+@app.command("inject-ambiguity")
+def inject_ambiguity_cmd(
+    fsm_path: Path,
+    out: Path = typer.Option(..., "--out", help="Output path for ambiguous requirements.txt."),
+    metadata_out: Path | None = typer.Option(
+        None,
+        "--metadata-out",
+        help="Output path for ambiguity metadata JSON.",
+    ),
+    clear_style: RequirementStyle = typer.Option(
+        "concise",
+        "--clear-style",
+        help="Style used to generate the clear baseline requirements.",
+    ),
+) -> None:
+    """Inject controlled ambiguity into clear natural-language requirements."""
+    try:
+        fsm = load_fsm_json(fsm_path)
+    except (OSError, json.JSONDecodeError, ValidationError) as exc:
+        console.print(f"[red]ERROR[/red] Failed to load FSM: {exc}")
+        raise typer.Exit(code=1) from exc
+
+    fsm_errors = validate_fsm(fsm)
+    if fsm_errors:
+        console.print(f"[red]ERROR[/red] Invalid FSM: {fsm_errors[0]}")
+        raise typer.Exit(code=1)
+
+    try:
+        result = inject_requirement_ambiguity(fsm, clear_style=clear_style)
+        export_injected_requirements_txt(result, out)
+        metadata_path = metadata_out or out.with_name("ambiguity_metadata.json")
+        export_ambiguity_metadata(result, metadata_path)
+    except (AmbiguityInjectionError, RequirementGenerationError) as exc:
+        console.print(f"[red]ERROR[/red] {exc}")
+        raise typer.Exit(code=1) from exc
+
+    classes = sorted({injection.ambiguity_class for injection in result.injections})
+    console.print(
+        f"[green]OK[/green] Injected ambiguity into {len(result.injections)} requirements "
+        f"for FSM '{result.fsm_id}' at {out}"
+    )
+    console.print(f"Ambiguity metadata: {metadata_path}")
+    console.print(f"Classes used: {', '.join(classes)}")
     raise typer.Exit(code=0)
 
 
