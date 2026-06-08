@@ -337,6 +337,10 @@ def write_case_result(
     }
     path.write_text(json.dumps(payload, indent=2) + "\n", encoding="utf-8")
 
+    from fsmrepairbench.repair_trajectory import export_repair_trace, repair_trace_path_for_result
+
+    export_repair_trace(repair_result, repair_trace_path_for_result(path))
+
 
 def run_experiment(
     config: ExperimentConfig,

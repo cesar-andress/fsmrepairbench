@@ -396,10 +396,16 @@ def llm_repair_cmd(
         raise typer.Exit(code=1) from exc
 
     out.write_text(result.model_dump_json(indent=2) + "\n", encoding="utf-8")
+
+    from fsmrepairbench.repair_trajectory import export_repair_trace, repair_trace_path_for_result
+
+    trace_path = repair_trace_path_for_result(out, single_repair=True)
+    export_repair_trace(result, trace_path)
     console.print(
         f"[green]OK[/green] LLM repair finished with BPR {result.score:.2%}. "
         f"Wrote result to {out}"
     )
+    console.print(f"Repair trace: {trace_path}")
     raise typer.Exit(code=0 if result.passed else 1)
 
 
