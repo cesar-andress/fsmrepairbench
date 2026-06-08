@@ -16,6 +16,7 @@ from typing import Any
 
 from fsmrepairbench import __version__
 from fsmrepairbench.models import RepairResult
+from fsmrepairbench.versioning import SUPPORTED_VERSIONS
 
 RESULT_FILE_PATTERN = "case_*__*.json"
 HASH_COLUMNS: tuple[str, ...] = ("path", "sha256", "size_bytes")
@@ -315,6 +316,7 @@ def freeze_release(results_dir: Path, release_dir: Path) -> FreezeResult:
     manifest_path = release_dir / "manifest.json"
     manifest = {
         "fsmrepairbench_version": __version__,
+        "supported_benchmark_versions": [version.value for version in SUPPORTED_VERSIONS],
         "frozen_at": datetime.now(tz=UTC).isoformat(),
         "source_results_dir": str(results_dir.resolve()),
         "release_dir": str(release_dir.resolve()),

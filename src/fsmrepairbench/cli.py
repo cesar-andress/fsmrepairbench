@@ -60,6 +60,17 @@ from fsmrepairbench.validators import (
     validate_fsm_document,
     validate_oracle_document,
 )
+from fsmrepairbench.versioning import (
+    MIGRATION_REPORT_FILENAME,
+    RELEASE_MANIFEST_FILENAME,
+    BenchmarkVersion,
+    VersioningError,
+    analyze_migration,
+    detect_benchmark_version,
+    migrate_benchmark,
+    write_migration_report,
+    write_release_manifest,
+)
 
 app = typer.Typer(
     name="fsmrepairbench",
@@ -482,6 +493,11 @@ def build_dataset_cmd(
     output_dir: Path = typer.Option(DEFAULT_OUTPUT_DIR, "--output"),
     workers: int | None = typer.Option(None, "--workers", min=1),
     resume: bool = typer.Option(True, "--resume/--no-resume"),
+    benchmark_version: BenchmarkVersion = typer.Option(
+        BenchmarkVersion.V1_0,
+        "--benchmark-version",
+        help="Benchmark schema version for the generated dataset.",
+    ),
 ) -> None:
     """Build a large-scale benchmark dataset automatically."""
     try:
@@ -491,6 +507,7 @@ def build_dataset_cmd(
             output_dir=output_dir,
             workers=workers,
             resume=resume,
+            benchmark_version=benchmark_version,
         )
     except DatasetBuilderError as exc:
         console.print(f"[red]ERROR[/red] {exc}")
@@ -612,6 +629,70 @@ def leaderboard_cmd(results_dir: Path) -> None:
             f"{entry.avg_bpr_improvement:.4f}",
         )
     console.print(table)
+    raise typer.Exit(code=0)
+
+
+@app.command("benchmark-version")
+def benchmark_version_cmd(dataset_dir: Path) -> None:
+    """Detect and display the benchmark version for a dataset."""
+    try:
+        version = detect_benchmark_version(dataset_dir)
+    except VersioningError as exc:
+        console.print(f"[red]ERROR[/red] {exc}")
+        raise typer.Exit(code=1) from exc
+
+    console.print(f"[green]OK[/green] Benchmark version: {version.value}")
+    manifest_path = dataset_dir / RELEASE_MANIFEST_FILENAME
+    if manifest_path.is_file():
+        console.print(f"Release manifest: {manifest_path}")
+    raise typer.Exit(code=0)
+
+
+@app.command("migrate-benchmark")
+def migrate_benchmark_cmd(
+    source_dir: Path,
+    target_version: BenchmarkVersion = typer.Option(..., "--target-version"),
+    output_dir: Path = typer.Option(..., "--output"),
+    dry_run: bool = typer.Option(False, "--dry-run", help="Analyze migration without writing files."),
+) -> None:
+    """Migrate a benchmark dataset to a newer schema version."""
+    try:
+        if dry_run:
+            report = analyze_migration(source_dir, target_version)
+            report_path = source_dir / f"dry_run_{MIGRATION_REPORT_FILENAME}"
+            write_migration_report(report_path, report)
+            console.print(
+                f"[green]OK[/green] Dry-run migration {report.source_version.value} -> "
+                f"{report.target_version.value} for {report.case_count} cases"
+            )
+            console.print(f"Report: {report_path}")
+            raise typer.Exit(code=0)
+
+        report = migrate_benchmark(source_dir, output_dir, target_version)
+    except VersioningError as exc:
+        console.print(f"[red]ERROR[/red] {exc}")
+        raise typer.Exit(code=1) from exc
+
+    console.print(
+        f"[green]OK[/green] Migrated {report.case_count} cases from "
+        f"{report.source_version.value} to {report.target_version.value}"
+    )
+    console.print(f"Output: {output_dir}")
+    console.print(f"Migration report: {output_dir / MIGRATION_REPORT_FILENAME}")
+    console.print(f"Release manifest: {output_dir / RELEASE_MANIFEST_FILENAME}")
+    raise typer.Exit(code=0)
+
+
+@app.command("release-manifest")
+def release_manifest_cmd(dataset_dir: Path) -> None:
+    """Generate or refresh the release manifest for a benchmark dataset."""
+    try:
+        manifest_path = write_release_manifest(dataset_dir)
+    except VersioningError as exc:
+        console.print(f"[red]ERROR[/red] {exc}")
+        raise typer.Exit(code=1) from exc
+
+    console.print(f"[green]OK[/green] Wrote release manifest to {manifest_path}")
     raise typer.Exit(code=0)
 
 

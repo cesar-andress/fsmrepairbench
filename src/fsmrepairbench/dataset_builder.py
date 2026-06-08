@@ -29,8 +29,16 @@ from fsmrepairbench.oracle_generator import (
 )
 from fsmrepairbench.scorer import score_oracle_suite
 from fsmrepairbench.validators import is_valid_fsm
+from fsmrepairbench.versioning import (
+    DEFAULT_BENCHMARK_VERSION,
+    BenchmarkVersion,
+    collect_case_requirements,
+    format_case_id,
+    version_spec,
+    write_release_manifest,
+)
 
-DATASET_ID = "fsmrepairbench_v1"
+DATASET_ID = version_spec(DEFAULT_BENCHMARK_VERSION).dataset_id
 DEFAULT_OUTPUT_DIR = Path("data") / DATASET_ID
 
 COMPLEXITY_LEVELS: tuple[ComplexityLevel, ...] = ("small", "medium", "large", "very_large")
@@ -80,10 +88,11 @@ class CaseBuildSpec:
 
     case_number: int
     base_seed: int
+    benchmark_version: BenchmarkVersion = DEFAULT_BENCHMARK_VERSION
 
     @property
     def case_id(self) -> str:
-        return f"case_{self.case_number:06d}"
+        return format_case_id(self.case_number)
 
     @property
     def complexity(self) -> ComplexityLevel:
@@ -250,9 +259,12 @@ def _write_case_metadata(
     case_dir: Path,
     row: DatasetCaseRow,
     difficulty_metadata: dict[str, object],
+    *,
+    benchmark_version: BenchmarkVersion = DEFAULT_BENCHMARK_VERSION,
 ) -> None:
     payload = {
         "case_id": row.case_id,
+        "benchmark_version": benchmark_version.value,
         "reference_fsm_id": row.reference_fsm_id,
         "faulty_fsm_id": row.faulty_fsm_id,
         "complexity": row.complexity,
@@ -274,6 +286,14 @@ def _write_case_metadata(
         "valid_reference": row.valid_reference,
         "valid_faulty": row.valid_faulty,
     }
+    if benchmark_version is BenchmarkVersion.V2_0:
+        payload["schema_version"] = 2
+        requirements = collect_case_requirements(case_dir / "reference_fsm.json")
+        payload["requirements"] = requirements
+        (case_dir / "requirements.json").write_text(
+            json.dumps({"requirements": requirements}, indent=2) + "\n",
+            encoding="utf-8",
+        )
     (case_dir / "case_metadata.json").write_text(
         json.dumps(payload, indent=2) + "\n",
         encoding="utf-8",
@@ -354,7 +374,12 @@ def build_single_case(spec: CaseBuildSpec, output_dir: Path) -> DatasetCaseRow:
         bug_metadata=bug_metadata,
         oracle=oracle,
     )
-    _write_case_metadata(case_dir, row, difficulty.to_metadata())
+    _write_case_metadata(
+        case_dir,
+        row,
+        difficulty.to_metadata(),
+        benchmark_version=spec.benchmark_version,
+    )
     return row
 
 
@@ -406,6 +431,7 @@ def write_dataset_metadata(
     completed_cases: int,
     workers: int,
     rows: list[DatasetCaseRow],
+    benchmark_version: BenchmarkVersion = DEFAULT_BENCHMARK_VERSION,
 ) -> None:
     """Write dataset-level JSON metadata."""
     complexity_counts: dict[str, int] = {}
@@ -424,8 +450,10 @@ def write_dataset_metadata(
     )
 
     payload = {
-        "dataset_id": DATASET_ID,
-        "version": "1.0.0",
+        "dataset_id": version_spec(benchmark_version).dataset_id,
+        "benchmark_version": benchmark_version.value,
+        "version": benchmark_version.value,
+        "schema_version": 2 if benchmark_version is BenchmarkVersion.V2_0 else 1,
         "seed": seed,
         "target_size": target_size,
         "completed_cases": completed_cases,
@@ -456,6 +484,7 @@ def build_dataset(
     output_dir: Path = DEFAULT_OUTPUT_DIR,
     workers: int | None = None,
     resume: bool = True,
+    benchmark_version: BenchmarkVersion = DEFAULT_BENCHMARK_VERSION,
 ) -> DatasetBuildResult:
     """Build a large-scale benchmark dataset with parallel execution and resume."""
     if size <= 0:
@@ -479,7 +508,11 @@ def build_dataset(
 
     pending_specs: list[CaseBuildSpec] = []
     for case_number in range(1, size + 1):
-        spec = CaseBuildSpec(case_number=case_number, base_seed=seed)
+        spec = CaseBuildSpec(
+            case_number=case_number,
+            base_seed=seed,
+            benchmark_version=benchmark_version,
+        )
         if resume and spec.case_id in rows_by_case:
             continue
         pending_specs.append(spec)
@@ -501,7 +534,7 @@ def build_dataset(
                 row = future.result()
                 record_row(row)
 
-    all_rows = [rows_by_case[f"case_{case_number:06d}"] for case_number in range(1, size + 1)]
+    all_rows = [rows_by_case[format_case_id(case_number)] for case_number in range(1, size + 1)]
     completed_rows = [row for row in all_rows if _row_is_complete(row)]
     if len(completed_rows) != size:
         failed = [row.case_id for row in all_rows if not _row_is_complete(row)]
@@ -519,7 +552,9 @@ def build_dataset(
         completed_cases=len(completed_rows),
         workers=worker_count,
         rows=all_rows,
+        benchmark_version=benchmark_version,
     )
+    write_release_manifest(output_dir)
 
     return DatasetBuildResult(
         output_dir=output_dir,
