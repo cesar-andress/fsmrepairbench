@@ -32,6 +32,7 @@ from fsmrepairbench.dataset_builder import (
     DatasetBuilderError,
     build_dataset,
 )
+from fsmrepairbench.dataset_quality import DatasetQualityError, validate_dataset
 from fsmrepairbench.difficulty import (
     DifficultyError,
     estimate_difficulty_from_path,
@@ -1105,6 +1106,47 @@ def detect_gaps_cmd(
         f"{report['generation_plan_cells']} cells)"
     )
     raise typer.Exit(code=0)
+
+
+@app.command("validate-dataset")
+def validate_dataset_cmd(
+    dataset_dir: Path,
+    output_path: Path | None = typer.Option(
+        None,
+        "--output",
+        help="Path for quality_report.json (defaults to DATASET_DIR/quality_report.json).",
+    ),
+) -> None:
+    """Validate benchmark dataset quality and write quality_report.json."""
+    try:
+        result = validate_dataset(dataset_dir, output_path=output_path)
+    except DatasetQualityError as exc:
+        console.print(f"[red]ERROR[/red] {exc}")
+        raise typer.Exit(code=1) from exc
+
+    report = result.report
+    status = report["overall_status"]
+    summary = report["summary"]
+    status_color = {"pass": "green", "warn": "yellow", "fail": "red"}.get(status, "white")
+    console.print(
+        f"[{status_color}]Quality report[/{status_color}] "
+        f"({status.upper()}) for {report['case_count']} cases"
+    )
+    console.print(f"Report: {result.report_path}")
+    console.print(
+        "Findings: "
+        f"errors={summary['errors']}, "
+        f"warnings={summary['warnings']}, "
+        f"info={summary['info']}"
+    )
+    failed_checks = [
+        name
+        for name, check in report["checks"].items()
+        if check["status"] != "pass"
+    ]
+    if failed_checks:
+        console.print(f"Checks with findings: {', '.join(sorted(failed_checks))}")
+    raise typer.Exit(code=0 if result.passed else 1)
 
 
 @app.command("mine-failure-patterns")
