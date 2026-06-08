@@ -90,6 +90,9 @@ Metadata describing an injected bug used in a benchmark instance.
 | `changed_transition_id` | `str | None` | no | None |  |
 | `description` | `str` | yes | — |  |
 | `seed` | `int` | yes | — |  |
+| `mutation_complexity` | `str | None` | no | None |  |
+| `mutation_scope` | `str | None` | no | None |  |
+| `mutation_mode` | `str | None` | no | None |  |
 
 ### `FSM`
 

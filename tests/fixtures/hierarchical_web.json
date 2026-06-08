@@ -1,0 +1,67 @@
+{
+  "id": "web_portal",
+  "name": "Web Portal",
+  "root": {
+    "id": "web_portal_root",
+    "name": "Portal Root",
+    "states": [
+      {"id": "home"},
+      {"id": "authenticated"}
+    ],
+    "initial_state": "home",
+    "events": ["login", "logout", "open_checkout"],
+    "transitions": [
+      {
+        "id": "root_login",
+        "source": "home",
+        "event": "login",
+        "target": "authenticated"
+      },
+      {
+        "id": "root_logout",
+        "source": "authenticated",
+        "event": "logout",
+        "target": "home"
+      },
+      {
+        "id": "root_open_checkout",
+        "source": "authenticated",
+        "event": "open_checkout",
+        "target": "authenticated"
+      }
+    ]
+  },
+  "subsystems": [
+    {
+      "id": "checkout",
+      "name": "Checkout Subsystem",
+      "entry_event": "open_checkout",
+      "exit_event": "checkout_done",
+      "fsm": {
+        "id": "checkout_fsm",
+        "name": "Checkout",
+        "states": [
+          {"id": "cart"},
+          {"id": "paid"}
+        ],
+        "initial_state": "cart",
+        "events": ["pay", "checkout_done"],
+        "transitions": [
+          {
+            "id": "checkout_pay",
+            "source": "cart",
+            "event": "pay",
+            "target": "paid",
+            "guard": "card_valid"
+          },
+          {
+            "id": "checkout_finish",
+            "source": "paid",
+            "event": "checkout_done",
+            "target": "paid"
+          }
+        ]
+      }
+    }
+  ]
+}

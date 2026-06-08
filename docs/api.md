@@ -155,6 +155,35 @@ One stratum in a stratified benchmark generation plan.
 | `bug_type` | `BugType` | yes | — |  |
 | `count` | `int` | yes | — |  |
 
+## `fsmrepairbench.hierarchical_fsm`
+
+### `HierarchicalFSM`
+
+Module: `fsmrepairbench.hierarchical_fsm`
+
+Root FSM with attached subsystems for hierarchical modelling.
+
+| Field | Type | Required | Default | Description |
+|-------|------|----------|---------|-------------|
+| `id` | `str` | yes | — |  |
+| `name` | `str` | yes | — |  |
+| `root` | `FSM` | yes | — |  |
+| `subsystems` | `list[fsmrepairbench.hierarchical_fsm.Subsystem]` | no | PydanticUndefined |  |
+
+### `Subsystem`
+
+Module: `fsmrepairbench.hierarchical_fsm`
+
+Nested FSM representing a web-like subsystem.
+
+| Field | Type | Required | Default | Description |
+|-------|------|----------|---------|-------------|
+| `id` | `str` | yes | — |  |
+| `name` | `str` | yes | — |  |
+| `fsm` | `FSM` | yes | — |  |
+| `entry_event` | `str | None` | no | None |  |
+| `exit_event` | `str | None` | no | None |  |
+
 ## `fsmrepairbench.literature`
 
 ### `LiteratureEntry`
@@ -204,6 +233,9 @@ Metadata describing an injected bug used in a benchmark instance.
 | `changed_transition_id` | `str | None` | no | None |  |
 | `description` | `str` | yes | — |  |
 | `seed` | `int` | yes | — |  |
+| `mutation_complexity` | `str | None` | no | None |  |
+| `mutation_scope` | `str | None` | no | None |  |
+| `mutation_mode` | `str | None` | no | None |  |
 
 ### `FSM`
 

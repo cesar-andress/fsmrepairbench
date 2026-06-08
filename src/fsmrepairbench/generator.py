@@ -11,7 +11,7 @@ from pathlib import Path
 from pydantic import ValidationError
 
 from fsmrepairbench.models import FSM, BugMetadata, OracleSuite
-from fsmrepairbench.mutators import MUTATION_OPERATORS, MutatorError, mutate
+from fsmrepairbench.mutators import BENCHMARK_MUTATION_OPERATORS, MUTATION_OPERATORS, MutatorError, mutate
 from fsmrepairbench.scorer import score_oracle_suite
 from fsmrepairbench.validators import is_valid_fsm, load_fsm_json, load_oracle_suite, validate_fsm
 
@@ -164,7 +164,7 @@ def _mutation_seed(base_seed: int, case_number: int, attempt: int) -> int:
 
 
 def _operator_for_variant(variant_index: int) -> str:
-    return MUTATION_OPERATORS[variant_index % len(MUTATION_OPERATORS)]
+    return BENCHMARK_MUTATION_OPERATORS[variant_index % len(BENCHMARK_MUTATION_OPERATORS)]
 
 
 def _format_optional_float(value: float | None) -> str:

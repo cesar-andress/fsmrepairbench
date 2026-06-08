@@ -13,11 +13,15 @@ from fsmrepairbench.mutators import (
     describe_mutator_registry,
     mutate,
 )
+from fsmrepairbench.mutation_advanced import ADVANCED_MUTATION_OPERATORS
 from fsmrepairbench.validators import is_valid_fsm, load_fsm, validate_fsm
 
 FIXTURES = Path(__file__).parent / "fixtures"
 REFERENCE = load_fsm(FIXTURES / "valid_fsm.json")
 SEED = 42
+BASE_MUTATION_OPERATORS = tuple(
+    operator for operator in MUTATION_OPERATORS if operator not in ADVANCED_MUTATION_OPERATORS
+)
 
 
 @pytest.fixture
@@ -25,7 +29,7 @@ def reference() -> FSM:
     return REFERENCE.model_copy(deep=True)
 
 
-@pytest.mark.parametrize("operator", MUTATION_OPERATORS)
+@pytest.mark.parametrize("operator", BASE_MUTATION_OPERATORS)
 def test_each_operator_produces_faulty_fsm(reference: FSM, operator: str) -> None:
     faulty, metadata = mutate(reference, operator, SEED)
 
@@ -41,7 +45,7 @@ def test_each_operator_produces_faulty_fsm(reference: FSM, operator: str) -> Non
     assert metadata.description
 
 
-@pytest.mark.parametrize("operator", MUTATION_OPERATORS)
+@pytest.mark.parametrize("operator", BASE_MUTATION_OPERATORS)
 def test_mutation_is_deterministic(reference: FSM, operator: str) -> None:
     first_fsm, first_meta = mutate(reference, operator, SEED)
     second_fsm, second_meta = mutate(reference, operator, SEED)

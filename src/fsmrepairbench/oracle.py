@@ -97,3 +97,20 @@ def execute_scenario(fsm: FSM, scenario: OracleScenario) -> ScenarioResult:
 def simulate_scenario(fsm: FSM, scenario: OracleScenario) -> bool:
     """Return whether *scenario* passes when executed against *fsm*."""
     return execute_scenario(fsm, scenario).passed
+
+
+def trace_scenario_transitions(fsm: FSM, scenario: OracleScenario) -> list[str]:
+    """Return transition ids executed when *scenario* is run against *fsm*."""
+    current_state = fsm.initial_state
+    executed: list[str] = []
+
+    for step in scenario.steps:
+        transition = _find_transition(fsm, current_state, step)
+        if transition is None:
+            break
+        executed.append(transition.id)
+        current_state = transition.target
+        if current_state != step.expected_state:
+            break
+
+    return executed

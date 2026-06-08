@@ -173,6 +173,26 @@ fsmrepairbench calibrate-difficulty DATASET_DIR
 | `output_dir` | `Path | None` | `--output-dir` | None | Directory for difficulty_calibration.csv and report JSON. |
 | `bucket_method` | `str` | `--bucket-method` | 'quantile' | Bucket assignment strategy: quantile (dataset-calibrated) or fixed. |
 
+### `coupling-report`
+
+Track coupling between mutation complexity and oracle fault detection.
+
+**Usage**
+
+```bash
+fsmrepairbench coupling-report PATH PATH tests/fixtures/valid_oracle.json PATH
+```
+
+| Parameter | Type | Flags | Default | Description |
+|-----------|------|-------|---------|-------------|
+| `reference_path` | `Path` | positional | required |  |
+| `faulty_path` | `Path` | positional | required |  |
+| `oracle_path` | `Path` | positional | required |  |
+| `metadata_path` | `Path` | positional | required |  |
+| `out_json` | `Path | None` | `--out-json` | None |  |
+| `out_csv` | `Path | None` | `--out-csv` | None |  |
+| `quiet` | `bool` | `--quiet` | False |  |
+
 ### `coverage-optimizer`
 
 Analyze benchmark diversity from feature_matrix.csv and suggest gap-filling regions.
@@ -258,6 +278,21 @@ fsmrepairbench filter-cases DATASET_DIR --out PATH
 | `guard_complexity` | `str | None` | `--guard-complexity` | None |  |
 | `oracle_depth` | `str | None` | `--oracle-depth` | None |  |
 
+### `flatten-hierarchical`
+
+Flatten a hierarchical FSM JSON document to a flat FSM.
+
+**Usage**
+
+```bash
+fsmrepairbench flatten-hierarchical PATH --out PATH
+```
+
+| Parameter | Type | Flags | Default | Description |
+|-----------|------|-------|---------|-------------|
+| `hierarchical_path` | `Path` | positional | required |  |
+| `out` | `Path` | `--out` | required |  |
+
 ### `freeze`
 
 Freeze experiment results into an auditable release directory.
@@ -290,6 +325,25 @@ fsmrepairbench generate-benchmark RESULTS_DIR OUTPUT_DIR
 | `bugs_per_fsm` | `int` | `--bugs-per-fsm` | 10 |  |
 | `seed` | `int` | `--seed` | 123 |  |
 
+### `generate-constrained-inputs`
+
+Generate constraint-based input sequences for FSM path coverage.
+
+**Usage**
+
+```bash
+fsmrepairbench generate-constrained-inputs tests/fixtures/valid_fsm.json
+```
+
+| Parameter | Type | Flags | Default | Description |
+|-----------|------|-------|---------|-------------|
+| `fsm_path` | `Path` | positional | required |  |
+| `out_json` | `Path` | `--out-json` | required |  |
+| `out_csv` | `Path | None` | `--out-csv` | None |  |
+| `target_coverage` | `float` | `--target-coverage` | 1.0 |  |
+| `max_path_length` | `int` | `--max-path-length` | 8 |  |
+| `quiet` | `bool` | `--quiet` | False |  |
+
 ### `generate-fsm`
 
 Generate a synthetic FSM and export it as benchmark JSON.
@@ -310,6 +364,24 @@ fsmrepairbench generate-fsm --out PATH
 | `deterministic` | `bool` | `--deterministic/--nondeterministic` | True |  |
 | `allow_dead_states` | `bool` | `--allow-dead-states` | False |  |
 | `complexity` | `ComplexityLevel | None` | `--complexity` | None | Optional preset: small, medium, large, very_large |
+
+### `generate-hierarchical-oracle`
+
+Generate multi-level oracles for a hierarchical FSM.
+
+**Usage**
+
+```bash
+fsmrepairbench generate-hierarchical-oracle PATH
+```
+
+| Parameter | Type | Flags | Default | Description |
+|-----------|------|-------|---------|-------------|
+| `hierarchical_path` | `Path` | positional | required |  |
+| `out_json` | `Path` | `--out-json` | required |  |
+| `out_csv` | `Path | None` | `--out-csv` | None |  |
+| `depth` | `str` | `--depth` | 'medium' |  |
+| `quiet` | `bool` | `--quiet` | False |  |
 
 ### `generate-oracles`
 
@@ -523,6 +595,25 @@ fsmrepairbench score tests/fixtures/valid_fsm.json tests/fixtures/valid_oracle.j
 | `out_json` | `Path | None` | `--out-json` | None | Write the full ScoreResult as JSON to this path. |
 | `out_csv` | `Path | None` | `--out-csv` | None | Write scenario-level score rows as CSV to this path. |
 | `quiet` | `bool` | `--quiet` | False | Suppress detailed table output; print a short summary only. |
+
+### `spec-coverage`
+
+Compute specification-based transition, pair, and sequence coverage.
+
+**Usage**
+
+```bash
+fsmrepairbench spec-coverage tests/fixtures/valid_fsm.json tests/fixtures/valid_oracle.json
+```
+
+| Parameter | Type | Flags | Default | Description |
+|-----------|------|-------|---------|-------------|
+| `fsm_path` | `Path` | positional | required |  |
+| `oracle_path` | `Path` | positional | required |  |
+| `out_json` | `Path | None` | `--out-json` | None |  |
+| `out_csv` | `Path | None` | `--out-csv` | None |  |
+| `max_sequence_length` | `int` | `--max-sequence-length` | 3 |  |
+| `quiet` | `bool` | `--quiet` | False |  |
 
 ### `subset-overlap`
 

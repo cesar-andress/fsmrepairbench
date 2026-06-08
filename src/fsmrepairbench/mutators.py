@@ -495,3 +495,14 @@ def apply_mutation(reference: FSM, metadata: BugMetadata) -> tuple[FSM, BugMetad
     if reproduced.bug_id != metadata.bug_id:
         raise MutatorError("Reproduced mutation metadata does not match requested bug_id")
     return faulty, reproduced
+
+
+from fsmrepairbench import mutation_advanced as _mutation_advanced
+
+MUTATION_OPERATORS = MUTATION_OPERATORS + _mutation_advanced.ADVANCED_MUTATION_OPERATORS
+_OPERATOR_IMPL.update(_mutation_advanced.ADVANCED_OPERATOR_IMPL)
+BENCHMARK_MUTATION_OPERATORS: tuple[str, ...] = tuple(
+    operator
+    for operator in MUTATION_OPERATORS
+    if operator not in _mutation_advanced.ADVANCED_MUTATION_OPERATORS
+)

@@ -18,7 +18,7 @@ from fsmrepairbench.generator import (
     discover_reference_fsms,
     generate_benchmark,
 )
-from fsmrepairbench.mutators import MUTATION_OPERATORS
+from fsmrepairbench.mutators import BENCHMARK_MUTATION_OPERATORS, MUTATION_OPERATORS
 from fsmrepairbench.validators import load_fsm_json, load_oracle_suite
 
 FIXTURES = Path(__file__).parent / "fixtures"
@@ -136,12 +136,12 @@ def test_generate_benchmark_operator_rotation(tmp_path: Path) -> None:
     result = generate_benchmark(
         input_dir,
         output_dir,
-        bugs_per_fsm=len(MUTATION_OPERATORS),
+        bugs_per_fsm=len(BENCHMARK_MUTATION_OPERATORS),
         seed=123,
     )
 
     operators = [case.mutation_operator for case in result.cases]
-    assert operators == list(MUTATION_OPERATORS)
+    assert operators == list(BENCHMARK_MUTATION_OPERATORS)
 
 
 def test_generate_benchmark_reference_beats_faulty_bpr(tmp_path: Path) -> None:
@@ -165,7 +165,7 @@ def test_generate_benchmark_marks_invalid_faulty_fsm(tmp_path: Path) -> None:
     result = generate_benchmark(
         input_dir,
         output_dir,
-        bugs_per_fsm=len(MUTATION_OPERATORS),
+        bugs_per_fsm=len(BENCHMARK_MUTATION_OPERATORS),
         seed=123,
     )
 

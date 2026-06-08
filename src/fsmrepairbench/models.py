@@ -111,6 +111,9 @@ class BugMetadata(BaseModel):
     changed_transition_id: str | None = None
     description: str
     seed: int
+    mutation_complexity: str | None = None
+    mutation_scope: str | None = None
+    mutation_mode: str | None = None
 
 
 class RepairResult(BaseModel):

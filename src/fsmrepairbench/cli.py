@@ -4,6 +4,7 @@ from __future__ import annotations
 
 import json
 from pathlib import Path
+from typing import cast
 
 import typer
 from pydantic import ValidationError
@@ -69,6 +70,7 @@ from fsmrepairbench.literature import (
 )
 from fsmrepairbench.llm.ollama import OllamaError, run_llm_repair_case
 from fsmrepairbench.mutators import MUTATION_OPERATORS, MutatorError, mutate
+from fsmrepairbench.models import BugMetadata
 from fsmrepairbench.oracle_generator import (
     DepthLevel,
     OracleGeneratorError,
@@ -94,6 +96,32 @@ from fsmrepairbench.repair_engines.baselines import (
     propose_baseline_patch,
 )
 from fsmrepairbench.scorer import score_oracle_suite, write_score_csv, write_score_json
+from fsmrepairbench.constrained_input import (
+    CONSTRAINED_INPUT_CSV_COLUMNS,
+    constrained_plan_to_csv_rows,
+    constrained_plan_to_json_dict,
+    generate_constrained_inputs,
+)
+from fsmrepairbench.coupling_tracker import (
+    COUPLING_CSV_COLUMNS,
+    coupling_report_to_csv_rows,
+    coupling_report_to_json_dict,
+    track_coupling_effect,
+)
+from fsmrepairbench.hierarchical_fsm import (
+    HIERARCHICAL_CSV_COLUMNS,
+    HierarchicalFSM,
+    flatten_hierarchical_fsm,
+    generate_hierarchical_oracle,
+    hierarchical_oracle_to_csv_rows,
+)
+from fsmrepairbench.spec_coverage import (
+    SPEC_COVERAGE_CSV_COLUMNS,
+    compute_spec_coverage,
+    spec_coverage_to_csv_rows,
+    spec_coverage_to_json_dict,
+)
+from fsmrepairbench.sota_export import write_csv_report, write_json_report
 from fsmrepairbench.stratified_builder import StratifiedBuilderError, build_stratified_dataset
 from fsmrepairbench.validators import (
     is_oracle_compatible,
@@ -234,6 +262,216 @@ def score(
         console.print(table)
 
     raise typer.Exit(code=0 if result.bpr == 1.0 else 1)
+
+
+@app.command("spec-coverage")
+def spec_coverage_cmd(
+    fsm_path: Path,
+    oracle_path: Path,
+    out_json: Path | None = typer.Option(None, "--out-json"),
+    out_csv: Path | None = typer.Option(None, "--out-csv"),
+    max_sequence_length: int = typer.Option(3, "--max-sequence-length", min=1),
+    quiet: bool = typer.Option(False, "--quiet"),
+) -> None:
+    """Compute specification-based transition, pair, and sequence coverage."""
+    try:
+        fsm = load_fsm_json(fsm_path)
+        suite = load_oracle_suite(oracle_path)
+    except (OSError, json.JSONDecodeError, ValidationError) as exc:
+        console.print(f"[red]ERROR[/red] Failed to load input: {exc}")
+        raise typer.Exit(code=1) from exc
+
+    if not is_oracle_compatible(fsm, suite):
+        console.print(f"[red]ERROR[/red] {oracle_incompatibility_message(fsm, suite)}")
+        raise typer.Exit(code=1)
+
+    report = compute_spec_coverage(fsm, suite, max_sequence_length=max_sequence_length)
+    if out_json is not None:
+        write_json_report(out_json, spec_coverage_to_json_dict(report))
+    if out_csv is not None:
+        write_csv_report(
+            out_csv,
+            columns=SPEC_COVERAGE_CSV_COLUMNS,
+            rows=spec_coverage_to_csv_rows(report),
+        )
+
+    if quiet:
+        console.print(
+            f"[green]OK[/green] transition={report.transition_coverage:.2%}, "
+            f"pairs={report.transition_pair_coverage:.2%}, "
+            f"sequences={report.sequence_coverage:.2%}"
+        )
+    else:
+        console.print(f"[bold]Machine type[/bold]: {report.machine_type.value}")
+        console.print(f"Transition coverage: {report.transition_coverage:.2%}")
+        console.print(f"Transition pair coverage: {report.transition_pair_coverage:.2%}")
+        console.print(f"Sequence coverage (len<={max_sequence_length}): {report.sequence_coverage:.2%}")
+        if report.efsm_guard_transition_coverage is not None:
+            console.print(f"EFSM guard coverage: {report.efsm_guard_transition_coverage:.2%}")
+        if report.timed_transition_coverage is not None:
+            console.print(f"Timed transition coverage: {report.timed_transition_coverage:.2%}")
+
+    raise typer.Exit(code=0)
+
+
+@app.command("coupling-report")
+def coupling_report_cmd(
+    reference_path: Path,
+    faulty_path: Path,
+    oracle_path: Path,
+    metadata_path: Path,
+    out_json: Path | None = typer.Option(None, "--out-json"),
+    out_csv: Path | None = typer.Option(None, "--out-csv"),
+    quiet: bool = typer.Option(False, "--quiet"),
+) -> None:
+    """Track coupling between mutation complexity and oracle fault detection."""
+    try:
+        reference = load_fsm_json(reference_path)
+        faulty = load_fsm_json(faulty_path)
+        suite = load_oracle_suite(oracle_path)
+        metadata = BugMetadata.model_validate(json.loads(metadata_path.read_text(encoding="utf-8")))
+    except (OSError, json.JSONDecodeError, ValidationError) as exc:
+        console.print(f"[red]ERROR[/red] Failed to load input: {exc}")
+        raise typer.Exit(code=1) from exc
+
+    if not is_oracle_compatible(faulty, suite):
+        console.print(f"[red]ERROR[/red] {oracle_incompatibility_message(faulty, suite)}")
+        raise typer.Exit(code=1)
+
+    report = track_coupling_effect(reference, faulty, suite, metadata)
+    if out_json is not None:
+        write_json_report(out_json, coupling_report_to_json_dict(report))
+    if out_csv is not None:
+        write_csv_report(
+            out_csv,
+            columns=COUPLING_CSV_COLUMNS,
+            rows=coupling_report_to_csv_rows(report),
+        )
+
+    if quiet:
+        console.print(
+            f"[green]OK[/green] complexity={report.mutation_complexity}, "
+            f"fault_detectable={report.fault_detectable}"
+        )
+    else:
+        console.print(f"Operator: {report.mutation_operator} ({report.mutation_complexity})")
+        console.print(f"Reference BPR: {report.reference_bpr:.2%}")
+        console.print(f"Faulty BPR: {report.faulty_bpr:.2%}")
+        console.print(f"Complex fault coverage: {report.complex_fault_coverage:.2%}")
+        console.print(f"Simple proxy coverage: {report.simple_fault_proxy_coverage:.2%}")
+
+    raise typer.Exit(code=0)
+
+
+@app.command("flatten-hierarchical")
+def flatten_hierarchical_cmd(
+    hierarchical_path: Path,
+    out: Path = typer.Option(..., "--out"),
+) -> None:
+    """Flatten a hierarchical FSM JSON document to a flat FSM."""
+    try:
+        hierarchical = HierarchicalFSM.model_validate(
+            json.loads(hierarchical_path.read_text(encoding="utf-8"))
+        )
+    except (OSError, json.JSONDecodeError, ValidationError) as exc:
+        console.print(f"[red]ERROR[/red] Failed to load hierarchical FSM: {exc}")
+        raise typer.Exit(code=1) from exc
+
+    flat = flatten_hierarchical_fsm(hierarchical)
+    out.parent.mkdir(parents=True, exist_ok=True)
+    out.write_text(flat.model_dump_json(indent=2) + "\n", encoding="utf-8")
+    console.print(f"[green]OK[/green] Flattened '{hierarchical.id}' to {out}")
+    raise typer.Exit(code=0)
+
+
+@app.command("generate-hierarchical-oracle")
+def generate_hierarchical_oracle_cmd(
+    hierarchical_path: Path,
+    out_json: Path = typer.Option(..., "--out-json"),
+    out_csv: Path | None = typer.Option(None, "--out-csv"),
+    depth: str = typer.Option("medium", "--depth"),
+    quiet: bool = typer.Option(False, "--quiet"),
+) -> None:
+    """Generate multi-level oracles for a hierarchical FSM."""
+    if depth not in {"shallow", "medium", "deep", "exhaustive_like"}:
+        console.print(f"[red]ERROR[/red] Unknown depth '{depth}'")
+        raise typer.Exit(code=1)
+
+    try:
+        hierarchical = HierarchicalFSM.model_validate(
+            json.loads(hierarchical_path.read_text(encoding="utf-8"))
+        )
+    except (OSError, json.JSONDecodeError, ValidationError) as exc:
+        console.print(f"[red]ERROR[/red] Failed to load hierarchical FSM: {exc}")
+        raise typer.Exit(code=1) from exc
+
+    suite = generate_hierarchical_oracle(hierarchical, depth=cast(DepthLevel, depth))
+    write_json_report(out_json, suite.model_dump())
+    if out_csv is not None:
+        write_csv_report(
+            out_csv,
+            columns=HIERARCHICAL_CSV_COLUMNS,
+            rows=hierarchical_oracle_to_csv_rows(suite),
+        )
+
+    if quiet:
+        console.print(f"[green]OK[/green] {len(suite.scenarios)} hierarchical scenarios")
+    else:
+        console.print(
+            f"[green]OK[/green] Generated hierarchical oracle '{suite.id}' "
+            f"with {len(suite.scenarios)} scenarios"
+        )
+        console.print(f"Oracle JSON: {out_json}")
+        if out_csv is not None:
+            console.print(f"Oracle CSV: {out_csv}")
+
+    raise typer.Exit(code=0)
+
+
+@app.command("generate-constrained-inputs")
+def generate_constrained_inputs_cmd(
+    fsm_path: Path,
+    out_json: Path = typer.Option(..., "--out-json"),
+    out_csv: Path | None = typer.Option(None, "--out-csv"),
+    target_coverage: float = typer.Option(1.0, "--target-coverage"),
+    max_path_length: int = typer.Option(8, "--max-path-length", min=1),
+    quiet: bool = typer.Option(False, "--quiet"),
+) -> None:
+    """Generate constraint-based input sequences for FSM path coverage."""
+    try:
+        fsm = load_fsm_json(fsm_path)
+    except (OSError, json.JSONDecodeError, ValidationError) as exc:
+        console.print(f"[red]ERROR[/red] Failed to load FSM: {exc}")
+        raise typer.Exit(code=1) from exc
+
+    plan = generate_constrained_inputs(
+        fsm,
+        target_transition_coverage=target_coverage,
+        max_path_length=max_path_length,
+    )
+    write_json_report(out_json, constrained_plan_to_json_dict(plan))
+    if out_csv is not None:
+        write_csv_report(
+            out_csv,
+            columns=CONSTRAINED_INPUT_CSV_COLUMNS,
+            rows=constrained_plan_to_csv_rows(plan),
+        )
+
+    if quiet:
+        console.print(
+            f"[green]OK[/green] coverage={plan.achieved_transition_coverage:.2%}, "
+            f"sequences={len(plan.sequences)}"
+        )
+    else:
+        console.print(
+            f"[green]OK[/green] Generated {len(plan.sequences)} constrained sequences "
+            f"({plan.achieved_transition_coverage:.2%} transition coverage)"
+        )
+        console.print(f"Plan JSON: {out_json}")
+        if out_csv is not None:
+            console.print(f"Plan CSV: {out_csv}")
+
+    raise typer.Exit(code=0)
 
 
 @app.command("mutate")

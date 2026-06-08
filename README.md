@@ -122,6 +122,13 @@ fsmrepairbench score examples/demo_faulty.json examples/demo_oracle.json \
   --out-csv results/demo_score.csv \
   --quiet
 
+# SOTA analysis: specification coverage, coupling, constrained inputs
+fsmrepairbench spec-coverage tests/fixtures/simple_fsm.json tests/fixtures/simple_oracle.json \
+  --out-json results/spec_coverage.json --out-csv results/spec_coverage.csv --quiet
+fsmrepairbench generate-constrained-inputs tests/fixtures/simple_fsm.json \
+  --out-json results/constrained_inputs.json --out-csv results/constrained_inputs.csv --quiet
+fsmrepairbench flatten-hierarchical tests/fixtures/hierarchical_web.json --out results/flat_web.json
+
 # Generate benchmark cases from reference FSMs (skips non-FSM JSON in input dir)
 fsmrepairbench generate-benchmark tests/fixtures data/generated_smoke \
   --bugs-per-fsm 3 --seed 42
