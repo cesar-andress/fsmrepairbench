@@ -2,11 +2,37 @@
 
 This directory contains stratified dataset generation plans for FSMRepairBench. Each plan is a YAML file that declares taxonomy cells (`GenerationCell`) with explicit counts so benchmark construction is reproducible rather than accidental.
 
-## Initial 10k plan
+## Plans
 
 | File | Cases | Seed | Purpose |
 |------|------:|-----:|---------|
+| `fsmrepairbench_v0_smoke_plan.yaml` | 100 | 42 | Fast smoke-test stratified build for CI and local validation |
 | `fsmrepairbench_v0_10k_plan.yaml` | 10,000 | 42 | Balanced v0 benchmark across machine families, guards, timing, graph topology, and bug types |
+
+## Smoke plan (100 cases)
+
+The smoke plan covers `plain_fsm`, `mealy`, `moore`, `efsm`, and `timed_fsm` with deterministic and nondeterministic cells, complete and partial completeness, low/medium/high arity, and fifteen mutation operators. All cells use the `tiny` size class with `shallow` oracle depth to keep generation fast.
+
+```bash
+fsmrepairbench build-stratified-dataset \
+  plans/fsmrepairbench_v0_smoke_plan.yaml \
+  data/fsmrepairbench_v0_smoke
+```
+
+Validate locally:
+
+```bash
+python -c "
+from pathlib import Path
+from fsmrepairbench.generators.stratified_specs import load_dataset_plan, total_planned_cases
+plan = load_dataset_plan(Path('plans/fsmrepairbench_v0_smoke_plan.yaml'))
+print(plan.name, total_planned_cases(plan), plan.seed)
+"
+```
+
+Expected output: `fsmrepairbench_v0_smoke 100 42`
+
+## Initial 10k plan
 
 The plan is organised into commented blocks:
 
