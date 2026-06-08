@@ -1,0 +1,621 @@
+{
+  "generation_seed": 6096,
+  "mutants": [
+    {
+      "fsm": {
+        "cyclic_metadata": null,
+        "description": "Synthetic FSM generated with seed=1, states=5, events=3, branching_factor=2, deterministic=True, allow_dead_states=False",
+        "discrete_time_step": null,
+        "events": [
+          "e1_0",
+          "e1_1",
+          "e1_2"
+        ],
+        "id": "synthetic_1_5_3_ex006__mut__first_order__state_deletion__6096",
+        "initial_state": "s1_0_ex006",
+        "name": "Synthetic FSM (small) (example variant 6)",
+        "parent_fsm_id": "synthetic_1_5_3_ex006",
+        "reference_fsm_id": "synthetic_1_5_3_ex006",
+        "semantics_mode": null,
+        "states": [
+          {
+            "id": "s1_0_ex006",
+            "quiescence": false,
+            "refusal": false,
+            "state_output": null
+          },
+          {
+            "id": "s1_1_ex006",
+            "quiescence": false,
+            "refusal": false,
+            "state_output": null
+          },
+          {
+            "id": "s1_3_ex006",
+            "quiescence": false,
+            "refusal": false,
+            "state_output": null
+          },
+          {
+            "id": "s1_4_ex006",
+            "quiescence": false,
+            "refusal": false,
+            "state_output": null
+          }
+        ],
+        "transitions": [
+          {
+            "action": "act1_1",
+            "delay": null,
+            "discrete_time": null,
+            "event": "e1_2",
+            "guard": null,
+            "id": "t1_1_ex006",
+            "is_nondeterministic": false,
+            "output": null,
+            "probability": null,
+            "quiescence": false,
+            "refusal": false,
+            "requirements": [],
+            "source": "s1_0_ex006",
+            "target": "s1_1_ex006",
+            "timeout": null
+          },
+          {
+            "action": "act1_3",
+            "delay": null,
+            "discrete_time": null,
+            "event": "e1_1",
+            "guard": "g1_2_1",
+            "id": "t1_3_ex006",
+            "is_nondeterministic": false,
+            "output": null,
+            "probability": null,
+            "quiescence": false,
+            "refusal": false,
+            "requirements": [],
+            "source": "s1_0_ex006",
+            "target": "s1_3_ex006",
+            "timeout": null
+          },
+          {
+            "action": "act1_4",
+            "delay": null,
+            "discrete_time": null,
+            "event": "e1_1",
+            "guard": null,
+            "id": "t1_4_ex006",
+            "is_nondeterministic": false,
+            "output": null,
+            "probability": null,
+            "quiescence": false,
+            "refusal": false,
+            "requirements": [],
+            "source": "s1_3_ex006",
+            "target": "s1_4_ex006",
+            "timeout": null
+          },
+          {
+            "action": "act1_5",
+            "delay": null,
+            "discrete_time": null,
+            "event": "e1_0",
+            "guard": null,
+            "id": "t1_5_ex006",
+            "is_nondeterministic": false,
+            "output": null,
+            "probability": null,
+            "quiescence": false,
+            "refusal": false,
+            "requirements": [],
+            "source": "s1_1_ex006",
+            "target": "s1_3_ex006",
+            "timeout": null
+          },
+          {
+            "action": "act1_6",
+            "delay": null,
+            "discrete_time": null,
+            "event": "e1_1",
+            "guard": null,
+            "id": "t1_6_ex006",
+            "is_nondeterministic": false,
+            "output": null,
+            "probability": null,
+            "quiescence": false,
+            "refusal": false,
+            "requirements": [],
+            "source": "s1_1_ex006",
+            "target": "s1_0_ex006",
+            "timeout": null
+          },
+          {
+            "action": "act1_9",
+            "delay": null,
+            "discrete_time": null,
+            "event": "e1_2",
+            "guard": null,
+            "id": "t1_9_ex006",
+            "is_nondeterministic": false,
+            "output": null,
+            "probability": null,
+            "quiescence": false,
+            "refusal": false,
+            "requirements": [],
+            "source": "s1_3_ex006",
+            "target": "s1_0_ex006",
+            "timeout": null
+          },
+          {
+            "action": "act1_10",
+            "delay": null,
+            "discrete_time": null,
+            "event": "e1_1",
+            "guard": null,
+            "id": "t1_10_ex006",
+            "is_nondeterministic": false,
+            "output": null,
+            "probability": null,
+            "quiescence": false,
+            "refusal": false,
+            "requirements": [],
+            "source": "s1_4_ex006",
+            "target": "s1_3_ex006",
+            "timeout": null
+          },
+          {
+            "action": "act1_11",
+            "delay": null,
+            "discrete_time": null,
+            "event": "e1_2",
+            "guard": null,
+            "id": "t1_11_ex006",
+            "is_nondeterministic": false,
+            "output": null,
+            "probability": null,
+            "quiescence": false,
+            "refusal": false,
+            "requirements": [],
+            "source": "s1_4_ex006",
+            "target": "s1_1_ex006",
+            "timeout": null
+          }
+        ],
+        "variables": {}
+      },
+      "mutant_id": "synthetic_1_5_3_ex006__mut__first_order__state_deletion__6096",
+      "mutation_description": "Deleted state 's1_2_ex006' and incident transitions",
+      "mutation_order": 1,
+      "mutation_type": "state_deletion",
+      "operators": [
+        "state_deletion"
+      ],
+      "order_class": "first_order",
+      "parent_id": "synthetic_1_5_3_ex006",
+      "seed": 6096
+    },
+    {
+      "fsm": {
+        "cyclic_metadata": null,
+        "description": "Synthetic FSM generated with seed=1, states=5, events=3, branching_factor=2, deterministic=True, allow_dead_states=False",
+        "discrete_time_step": null,
+        "events": [
+          "e1_0",
+          "e1_1",
+          "e1_2"
+        ],
+        "id": "synthetic_1_5_3_ex006__mut__second_order__state_deletion__state_insertion__16096",
+        "initial_state": "s1_0_ex006",
+        "name": "Synthetic FSM (small) (example variant 6)",
+        "parent_fsm_id": "synthetic_1_5_3_ex006",
+        "reference_fsm_id": "synthetic_1_5_3_ex006",
+        "semantics_mode": null,
+        "states": [
+          {
+            "id": "s1_0_ex006",
+            "quiescence": false,
+            "refusal": false,
+            "state_output": null
+          },
+          {
+            "id": "s1_2_ex006",
+            "quiescence": false,
+            "refusal": false,
+            "state_output": null
+          },
+          {
+            "id": "s1_3_ex006",
+            "quiescence": false,
+            "refusal": false,
+            "state_output": null
+          },
+          {
+            "id": "s1_4_ex006",
+            "quiescence": false,
+            "refusal": false,
+            "state_output": null
+          },
+          {
+            "id": "state_insert_17093",
+            "quiescence": false,
+            "refusal": false,
+            "state_output": null
+          }
+        ],
+        "transitions": [
+          {
+            "action": "act1_2",
+            "delay": null,
+            "discrete_time": null,
+            "event": "e1_1",
+            "guard": null,
+            "id": "t1_2_ex006",
+            "is_nondeterministic": false,
+            "output": null,
+            "probability": null,
+            "quiescence": false,
+            "refusal": false,
+            "requirements": [],
+            "source": "s1_0_ex006",
+            "target": "s1_2_ex006",
+            "timeout": null
+          },
+          {
+            "action": "act1_3",
+            "delay": null,
+            "discrete_time": null,
+            "event": "e1_1",
+            "guard": "g1_2_1",
+            "id": "t1_3_ex006",
+            "is_nondeterministic": false,
+            "output": null,
+            "probability": null,
+            "quiescence": false,
+            "refusal": false,
+            "requirements": [],
+            "source": "s1_0_ex006",
+            "target": "s1_3_ex006",
+            "timeout": null
+          },
+          {
+            "action": "act1_4",
+            "delay": null,
+            "discrete_time": null,
+            "event": "e1_1",
+            "guard": null,
+            "id": "t1_4_ex006",
+            "is_nondeterministic": false,
+            "output": null,
+            "probability": null,
+            "quiescence": false,
+            "refusal": false,
+            "requirements": [],
+            "source": "s1_3_ex006",
+            "target": "s1_4_ex006",
+            "timeout": null
+          },
+          {
+            "action": "act1_7",
+            "delay": null,
+            "discrete_time": null,
+            "event": "e1_1",
+            "guard": null,
+            "id": "t1_7_ex006",
+            "is_nondeterministic": false,
+            "output": null,
+            "probability": null,
+            "quiescence": false,
+            "refusal": false,
+            "requirements": [],
+            "source": "s1_2_ex006",
+            "target": "s1_0_ex006",
+            "timeout": null
+          },
+          {
+            "action": "act1_8",
+            "delay": null,
+            "discrete_time": null,
+            "event": "e1_2",
+            "guard": null,
+            "id": "t1_8_ex006",
+            "is_nondeterministic": false,
+            "output": null,
+            "probability": null,
+            "quiescence": false,
+            "refusal": false,
+            "requirements": [],
+            "source": "s1_2_ex006",
+            "target": "s1_3_ex006",
+            "timeout": null
+          },
+          {
+            "action": "act1_9",
+            "delay": null,
+            "discrete_time": null,
+            "event": "e1_2",
+            "guard": null,
+            "id": "t1_9_ex006",
+            "is_nondeterministic": false,
+            "output": null,
+            "probability": null,
+            "quiescence": false,
+            "refusal": false,
+            "requirements": [],
+            "source": "s1_3_ex006",
+            "target": "s1_0_ex006",
+            "timeout": null
+          },
+          {
+            "action": "act1_10",
+            "delay": null,
+            "discrete_time": null,
+            "event": "e1_1",
+            "guard": null,
+            "id": "t1_10_ex006",
+            "is_nondeterministic": false,
+            "output": null,
+            "probability": null,
+            "quiescence": false,
+            "refusal": false,
+            "requirements": [],
+            "source": "s1_4_ex006",
+            "target": "s1_3_ex006",
+            "timeout": null
+          },
+          {
+            "action": null,
+            "delay": null,
+            "discrete_time": null,
+            "event": "e1_2",
+            "guard": null,
+            "id": "t_insert_17093",
+            "is_nondeterministic": false,
+            "output": null,
+            "probability": null,
+            "quiescence": false,
+            "refusal": false,
+            "requirements": [],
+            "source": "s1_2_ex006",
+            "target": "state_insert_17093",
+            "timeout": null
+          }
+        ],
+        "variables": {}
+      },
+      "mutant_id": "synthetic_1_5_3_ex006__mut__second_order__state_deletion__state_insertion__16096",
+      "mutation_description": "Deleted state 's1_1_ex006' and incident transitions; Inserted state 'state_insert_17093' with incoming transition from 's1_2_ex006'",
+      "mutation_order": 2,
+      "mutation_type": "state_deletion, state_insertion",
+      "operators": [
+        "state_deletion",
+        "state_insertion"
+      ],
+      "order_class": "second_order",
+      "parent_id": "synthetic_1_5_3_ex006",
+      "seed": 16096
+    },
+    {
+      "fsm": {
+        "cyclic_metadata": null,
+        "description": "Synthetic FSM generated with seed=1, states=5, events=3, branching_factor=2, deterministic=True, allow_dead_states=False",
+        "discrete_time_step": null,
+        "events": [
+          "e1_0",
+          "e1_1",
+          "e1_2"
+        ],
+        "id": "synthetic_1_5_3_ex006__mut__higher_order__state_deletion__state_insertion__transition_deletion__26096",
+        "initial_state": "s1_0_ex006",
+        "name": "Synthetic FSM (small) (example variant 6)",
+        "parent_fsm_id": "synthetic_1_5_3_ex006",
+        "reference_fsm_id": "synthetic_1_5_3_ex006",
+        "semantics_mode": null,
+        "states": [
+          {
+            "id": "s1_0_ex006",
+            "quiescence": false,
+            "refusal": false,
+            "state_output": null
+          },
+          {
+            "id": "s1_1_ex006",
+            "quiescence": false,
+            "refusal": false,
+            "state_output": null
+          },
+          {
+            "id": "s1_3_ex006",
+            "quiescence": false,
+            "refusal": false,
+            "state_output": null
+          },
+          {
+            "id": "s1_4_ex006",
+            "quiescence": false,
+            "refusal": false,
+            "state_output": null
+          },
+          {
+            "id": "state_insert_27093",
+            "quiescence": false,
+            "refusal": false,
+            "state_output": null
+          }
+        ],
+        "transitions": [
+          {
+            "action": "act1_1",
+            "delay": null,
+            "discrete_time": null,
+            "event": "e1_2",
+            "guard": null,
+            "id": "t1_1_ex006",
+            "is_nondeterministic": false,
+            "output": null,
+            "probability": null,
+            "quiescence": false,
+            "refusal": false,
+            "requirements": [],
+            "source": "s1_0_ex006",
+            "target": "s1_1_ex006",
+            "timeout": null
+          },
+          {
+            "action": "act1_3",
+            "delay": null,
+            "discrete_time": null,
+            "event": "e1_1",
+            "guard": "g1_2_1",
+            "id": "t1_3_ex006",
+            "is_nondeterministic": false,
+            "output": null,
+            "probability": null,
+            "quiescence": false,
+            "refusal": false,
+            "requirements": [],
+            "source": "s1_0_ex006",
+            "target": "s1_3_ex006",
+            "timeout": null
+          },
+          {
+            "action": "act1_4",
+            "delay": null,
+            "discrete_time": null,
+            "event": "e1_1",
+            "guard": null,
+            "id": "t1_4_ex006",
+            "is_nondeterministic": false,
+            "output": null,
+            "probability": null,
+            "quiescence": false,
+            "refusal": false,
+            "requirements": [],
+            "source": "s1_3_ex006",
+            "target": "s1_4_ex006",
+            "timeout": null
+          },
+          {
+            "action": "act1_5",
+            "delay": null,
+            "discrete_time": null,
+            "event": "e1_0",
+            "guard": null,
+            "id": "t1_5_ex006",
+            "is_nondeterministic": false,
+            "output": null,
+            "probability": null,
+            "quiescence": false,
+            "refusal": false,
+            "requirements": [],
+            "source": "s1_1_ex006",
+            "target": "s1_3_ex006",
+            "timeout": null
+          },
+          {
+            "action": "act1_9",
+            "delay": null,
+            "discrete_time": null,
+            "event": "e1_2",
+            "guard": null,
+            "id": "t1_9_ex006",
+            "is_nondeterministic": false,
+            "output": null,
+            "probability": null,
+            "quiescence": false,
+            "refusal": false,
+            "requirements": [],
+            "source": "s1_3_ex006",
+            "target": "s1_0_ex006",
+            "timeout": null
+          },
+          {
+            "action": "act1_10",
+            "delay": null,
+            "discrete_time": null,
+            "event": "e1_1",
+            "guard": null,
+            "id": "t1_10_ex006",
+            "is_nondeterministic": false,
+            "output": null,
+            "probability": null,
+            "quiescence": false,
+            "refusal": false,
+            "requirements": [],
+            "source": "s1_4_ex006",
+            "target": "s1_3_ex006",
+            "timeout": null
+          },
+          {
+            "action": "act1_11",
+            "delay": null,
+            "discrete_time": null,
+            "event": "e1_2",
+            "guard": null,
+            "id": "t1_11_ex006",
+            "is_nondeterministic": false,
+            "output": null,
+            "probability": null,
+            "quiescence": false,
+            "refusal": false,
+            "requirements": [],
+            "source": "s1_4_ex006",
+            "target": "s1_1_ex006",
+            "timeout": null
+          },
+          {
+            "action": null,
+            "delay": null,
+            "discrete_time": null,
+            "event": "e1_0",
+            "guard": null,
+            "id": "t_insert_27093",
+            "is_nondeterministic": false,
+            "output": null,
+            "probability": null,
+            "quiescence": false,
+            "refusal": false,
+            "requirements": [],
+            "source": "s1_0_ex006",
+            "target": "state_insert_27093",
+            "timeout": null
+          }
+        ],
+        "variables": {}
+      },
+      "mutant_id": "synthetic_1_5_3_ex006__mut__higher_order__state_deletion__state_insertion__transition_deletion__26096",
+      "mutation_description": "Deleted state 's1_2_ex006' and incident transitions; Inserted state 'state_insert_27093' with incoming transition from 's1_0_ex006'; Deleted transition 't1_6_ex006'",
+      "mutation_order": 3,
+      "mutation_type": "state_deletion, state_insertion, transition_deletion",
+      "operators": [
+        "state_deletion",
+        "state_insertion",
+        "transition_deletion"
+      ],
+      "order_class": "higher_order",
+      "parent_id": "synthetic_1_5_3_ex006",
+      "seed": 26096
+    }
+  ],
+  "parent_fsm_id": "synthetic_1_5_3_ex006",
+  "statistics": {
+    "by_mutation_type": {
+      "state_deletion": 1,
+      "state_deletion, state_insertion": 1,
+      "state_deletion, state_insertion, transition_deletion": 1
+    },
+    "by_operator": {
+      "state_deletion": 3,
+      "state_insertion": 2,
+      "transition_deletion": 1
+    },
+    "by_order_class": {
+      "first_order": 1,
+      "higher_order": 1,
+      "second_order": 1
+    },
+    "first_order_count": 1,
+    "higher_order_count": 1,
+    "second_order_count": 1,
+    "total_mutants": 3
+  }
+}

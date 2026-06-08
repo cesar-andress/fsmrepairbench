@@ -64,6 +64,7 @@ from fsmrepairbench.smoke_test_pipeline import (
     SmokeTestPipelineConfig,
     SmokeTestPipelineError,
     prepare_smoke_test_input,
+    prepare_smoke_test_input_from_examples,
     run_smoke_test_pipeline,
     validate_smoke_test_outputs,
 )
@@ -1790,7 +1791,17 @@ def run_smoke_test_cmd(
         help="Consolidated smoke-test output directory.",
     ),
     seed: int = typer.Option(42, "--seed", help="Fixed random seed for reproducibility."),
-    fsm_count: int = typer.Option(15, "--fsm-count", min=10, max=20),
+    fsm_count: int = typer.Option(10, "--fsm-count", min=1, max=20),
+    examples_dir: Path = typer.Option(
+        Path("examples"),
+        "--examples-dir",
+        help="Directory containing example FSM JSON files.",
+    ),
+    from_examples: bool = typer.Option(
+        False,
+        "--from-examples",
+        help="Build smoke-test input from examples/ FSMs and oracles.",
+    ),
     prepare_input: bool = typer.Option(
         False,
         "--prepare-input",
@@ -1803,10 +1814,25 @@ def run_smoke_test_cmd(
     ),
     quiet: bool = typer.Option(False, "--quiet", help="Suppress per-FSM progress logging."),
 ) -> None:
-    """Run the end-to-end smoke-test validation pipeline on 10-20 FSMs."""
-    if prepare_input:
+    """Run the end-to-end smoke-test validation pipeline."""
+    if from_examples and fsm_count > 10:
+        console.print("[red]ERROR[/red] Examples smoke test supports at most 10 FSMs")
+        raise typer.Exit(code=1)
+    if not from_examples and fsm_count < 10:
+        console.print("[red]ERROR[/red] Template smoke test requires at least 10 FSMs")
+        raise typer.Exit(code=1)
+
+    if prepare_input or not input_dir.is_dir():
         try:
-            prepare_smoke_test_input(input_dir, seed=seed, fsm_count=fsm_count)
+            if from_examples:
+                prepare_smoke_test_input_from_examples(
+                    examples_dir,
+                    input_dir,
+                    seed=seed,
+                    max_fsm_count=fsm_count,
+                )
+            else:
+                prepare_smoke_test_input(input_dir, seed=seed, fsm_count=fsm_count)
         except SmokeTestPipelineError as exc:
             console.print(f"[red]ERROR[/red] {exc}")
             raise typer.Exit(code=1) from exc
@@ -1818,6 +1844,8 @@ def run_smoke_test_cmd(
         fsm_count=fsm_count,
         prepare_input=False,
         use_cli=use_cli,
+        input_source="examples" if from_examples else "template",
+        examples_dir=examples_dir,
     )
     try:
         if quiet:
@@ -1837,7 +1865,10 @@ def run_smoke_test_cmd(
     console.print(
         f"[green]OK[/green] Smoke test finished: "
         f"{result.fsm_count} FSMs, {result.mutant_count} mutants, "
-        f"mean BPR={result.mean_bpr:.2%}"
+        f"mean BPR={result.mean_bpr:.2%}, "
+        f"mean state coverage={result.mean_state_coverage:.2%}, "
+        f"mean transition coverage={result.mean_transition_coverage:.2%}, "
+        f"detected faults={result.detected_fault_count}"
     )
     console.print(f"Output: {result.output_dir}")
     console.print(f"Summary: {result.summary_path}")
@@ -1862,11 +1893,35 @@ def prepare_smoke_test_input_cmd(
         help="Directory for generated FSM and oracle inputs.",
     ),
     seed: int = typer.Option(42, "--seed"),
-    fsm_count: int = typer.Option(15, "--fsm-count", min=10, max=20),
+    fsm_count: int = typer.Option(10, "--fsm-count", min=1, max=20),
+    examples_dir: Path = typer.Option(
+        Path("examples"),
+        "--examples-dir",
+        help="Directory containing example FSM JSON files.",
+    ),
+    from_examples: bool = typer.Option(
+        False,
+        "--from-examples",
+        help="Build input from examples/ instead of the parking-gate template.",
+    ),
 ) -> None:
     """Generate a deterministic smoke-test input dataset with high oracle coverage."""
     try:
-        path = prepare_smoke_test_input(output_dir, seed=seed, fsm_count=fsm_count)
+        if from_examples:
+            if fsm_count > 10:
+                console.print("[red]ERROR[/red] Examples smoke test supports at most 10 FSMs")
+                raise typer.Exit(code=1)
+            path = prepare_smoke_test_input_from_examples(
+                examples_dir,
+                output_dir,
+                seed=seed,
+                max_fsm_count=fsm_count,
+            )
+        else:
+            if fsm_count < 10:
+                console.print("[red]ERROR[/red] Template smoke test requires at least 10 FSMs")
+                raise typer.Exit(code=1)
+            path = prepare_smoke_test_input(output_dir, seed=seed, fsm_count=fsm_count)
     except SmokeTestPipelineError as exc:
         console.print(f"[red]ERROR[/red] {exc}")
         raise typer.Exit(code=1) from exc

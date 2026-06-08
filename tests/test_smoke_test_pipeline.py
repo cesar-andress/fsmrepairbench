@@ -16,9 +16,12 @@ from fsmrepairbench.smoke_test_pipeline import (
     SmokeTestPipelineConfig,
     infer_injected_fault_elements,
     prepare_smoke_test_input,
+    prepare_smoke_test_input_from_examples,
     run_smoke_test_pipeline,
     validate_smoke_test_outputs,
 )
+
+EXAMPLES = Path(__file__).parent.parent / "examples"
 from fsmrepairbench.mutators import mutate
 from fsmrepairbench.validators import load_fsm_json
 
@@ -32,6 +35,69 @@ def test_prepare_smoke_test_input_creates_pairs(tmp_path: Path) -> None:
     oracles = sorted((input_dir / "oracles").glob("*.json"))
     assert len(fsms) == 10
     assert len(oracles) == 10
+
+
+def test_prepare_smoke_test_input_from_examples(tmp_path: Path) -> None:
+    input_dir = prepare_smoke_test_input_from_examples(
+        EXAMPLES,
+        tmp_path / "input",
+        seed=5,
+        max_fsm_count=10,
+    )
+    fsms = sorted((input_dir / "fsms").glob("*.json"))
+    oracles = sorted((input_dir / "oracles").glob("*.json"))
+    assert len(fsms) == 10
+    assert len(oracles) == 10
+
+
+def test_run_smoke_test_pipeline_from_examples(tmp_path: Path) -> None:
+    input_dir = prepare_smoke_test_input_from_examples(
+        EXAMPLES,
+        tmp_path / "input",
+        seed=19,
+        max_fsm_count=10,
+    )
+    output_dir = tmp_path / "results" / "smoke_test"
+    config = SmokeTestPipelineConfig(
+        input_dir=input_dir,
+        output_dir=output_dir,
+        seed=19,
+        fsm_count=10,
+        input_source="examples",
+        examples_dir=EXAMPLES,
+        use_cli=False,
+    )
+    result = run_smoke_test_pipeline(config)
+    validation = validate_smoke_test_outputs(result.output_dir)
+    assert result.fsm_count == 10
+    assert validation.all_mutants_scored
+    assert validation.coverage_within_threshold
+
+
+def test_cli_run_smoke_test_from_examples(tmp_path: Path) -> None:
+    output_dir = tmp_path / "results" / "smoke_test"
+    result = runner.invoke(
+        app,
+        [
+            "run-smoke-test",
+            "--from-examples",
+            "--examples-dir",
+            str(EXAMPLES),
+            "--input-dir",
+            str(tmp_path / "input"),
+            "--output-dir",
+            str(output_dir),
+            "--seed",
+            "23",
+            "--fsm-count",
+            "10",
+            "--prepare-input",
+            "--no-use-cli",
+            "--quiet",
+        ],
+    )
+    assert result.exit_code == 0, result.stdout
+    assert (output_dir / "metadata" / "smoke_test_summary.json").exists()
 
 
 def test_infer_injected_fault_elements_detects_changed_transition() -> None:
@@ -53,6 +119,7 @@ def test_run_smoke_test_pipeline_writes_outputs(tmp_path: Path) -> None:
         first_order_count=1,
         second_order_count=1,
         higher_order_count=1,
+        input_source="template",
         use_cli=False,
     )
     result = run_smoke_test_pipeline(config)

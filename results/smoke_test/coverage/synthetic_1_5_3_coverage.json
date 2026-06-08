@@ -1,0 +1,86 @@
+{
+  "criteria": {
+    "guard": {
+      "coverage": 1.0,
+      "covered": 1,
+      "covered_items": [
+        "t1_3"
+      ],
+      "name": "guard",
+      "total": 1
+    },
+    "state": {
+      "coverage": 1.0,
+      "covered": 5,
+      "covered_items": [
+        "s1_0",
+        "s1_1",
+        "s1_2",
+        "s1_3",
+        "s1_4"
+      ],
+      "name": "state",
+      "total": 5
+    },
+    "transition": {
+      "coverage": 1.0,
+      "covered": 11,
+      "covered_items": [
+        "t1_1",
+        "t1_10",
+        "t1_11",
+        "t1_2",
+        "t1_3",
+        "t1_4",
+        "t1_5",
+        "t1_6",
+        "t1_7",
+        "t1_8",
+        "t1_9"
+      ],
+      "name": "transition",
+      "total": 11
+    },
+    "transition_pair": {
+      "coverage": 0.38095238095238093,
+      "covered": 8,
+      "covered_items": [
+        "t1_1->t1_5",
+        "t1_1->t1_6",
+        "t1_2->t1_7",
+        "t1_2->t1_8",
+        "t1_3->t1_4",
+        "t1_3->t1_9",
+        "t1_4->t1_10",
+        "t1_4->t1_11"
+      ],
+      "name": "transition_pair",
+      "total": 21
+    },
+    "transition_sequence": {
+      "coverage": 0.4583333333333333,
+      "covered": 11,
+      "covered_items": [
+        "t1_1",
+        "t1_1->t1_5",
+        "t1_1->t1_6",
+        "t1_2",
+        "t1_2->t1_7",
+        "t1_2->t1_8",
+        "t1_3",
+        "t1_3->t1_4",
+        "t1_3->t1_4->t1_10",
+        "t1_3->t1_4->t1_11",
+        "t1_3->t1_9"
+      ],
+      "name": "transition_sequence",
+      "total": 24
+    }
+  },
+  "fsm_id": "synthetic_1_5_3",
+  "machine_type": "plain_fsm",
+  "oracle_suite_id": "synthetic_1_5_3_oracles",
+  "seed": 42,
+  "sequence_depth": 3,
+  "timestamp": "2026-06-08T22:00:10Z"
+}

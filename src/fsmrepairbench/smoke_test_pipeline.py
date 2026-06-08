@@ -29,7 +29,7 @@ from fsmrepairbench.literature_mutation import (
 )
 from fsmrepairbench.models import FSM, OracleSuite, Transition
 from fsmrepairbench.mutators import MutatorError, mutate
-from fsmrepairbench.oracle_generator import DepthLevel
+from fsmrepairbench.oracle_generator import DepthLevel, generate_oracle_suite
 from fsmrepairbench.sota_export import write_csv_report, write_json_report
 from fsmrepairbench.taxonomy import (
     infer_determinism,
@@ -43,10 +43,22 @@ ElementType = Literal["state", "transition"]
 
 DEFAULT_OUTPUT_DIR = Path("results") / "smoke_test"
 DEFAULT_INPUT_DIR = Path("data") / "smoke_test_input"
+DEFAULT_EXAMPLES_DIR = Path("examples")
 TEMPLATE_DIR = Path(__file__).resolve().parents[2] / "data" / "smoke_test_template"
 DEFAULT_FSM_COUNT = 15
-MIN_FSM_COUNT = 10
+MIN_FSM_COUNT = 1
 MAX_FSM_COUNT = 20
+MAX_EXAMPLES_FSM_COUNT = 10
+MIN_TEMPLATE_FSM_COUNT = 10
+EXAMPLES_FSM_SKIP: frozenset[str] = frozenset(
+    {
+        "demo_faulty.json",
+        "demo_bug.json",
+    }
+)
+ORACLE_NAME_OVERRIDES: dict[str, str] = {
+    "demo_fsm.json": "demo_oracle.json",
+}
 DEFAULT_SEED = 42
 
 LOCALIZATION_METHODS: tuple[SuspiciousnessMethod, ...] = ("ochiai", "tarantula", "jaccard")
@@ -84,6 +96,7 @@ MUTANT_METADATA_COLUMNS: tuple[str, ...] = (
     "mutation_description",
     "operators",
     "changed_transition_id",
+    "tracked_fault_localization",
     "bpr",
     "detected_fault",
     "localization_top5_ochiai",
@@ -115,7 +128,7 @@ class SmokeTestPipelineConfig(BaseModel):
     input_dir: Path = DEFAULT_INPUT_DIR
     output_dir: Path = DEFAULT_OUTPUT_DIR
     seed: int = DEFAULT_SEED
-    fsm_count: int = Field(default=DEFAULT_FSM_COUNT, ge=MIN_FSM_COUNT, le=MAX_FSM_COUNT)
+    fsm_count: int = Field(default=10, ge=MIN_FSM_COUNT, le=MAX_FSM_COUNT)
     first_order_count: int = Field(default=1, ge=1)
     second_order_count: int = Field(default=1, ge=0)
     higher_order_count: int = Field(default=1, ge=0)
@@ -123,6 +136,8 @@ class SmokeTestPipelineConfig(BaseModel):
     oracle_depth: DepthLevel = "deep"
     prepare_input: bool = False
     use_cli: bool = True
+    input_source: Literal["template", "examples"] = "template"
+    examples_dir: Path = DEFAULT_EXAMPLES_DIR
 
 
 @dataclass(frozen=True)
@@ -193,7 +208,13 @@ def _annotate_payload(payload: dict[str, Any], *, seed: int, timestamp: str) -> 
     }
 
 
-def discover_fsm_oracle_pairs(input_dir: Path) -> list[tuple[Path, Path]]:
+def discover_fsm_oracle_pairs(
+    input_dir: Path,
+    *,
+    expected_count: int | None = None,
+    min_count: int = MIN_FSM_COUNT,
+    max_count: int = MAX_FSM_COUNT,
+) -> list[tuple[Path, Path]]:
     """Return paired FSM and oracle paths from *input_dir*."""
     if not input_dir.is_dir():
         msg = f"Input directory not found: {input_dir}"
@@ -225,13 +246,202 @@ def discover_fsm_oracle_pairs(input_dir: Path) -> list[tuple[Path, Path]]:
     if not pairs:
         msg = f"No FSM/oracle pairs found under {input_dir}"
         raise SmokeTestPipelineError(msg)
-    if len(pairs) < MIN_FSM_COUNT or len(pairs) > MAX_FSM_COUNT:
+    if expected_count is not None and len(pairs) != expected_count:
+        msg = f"Expected {expected_count} FSM/oracle pairs under {input_dir}; found {len(pairs)}"
+        raise SmokeTestPipelineError(msg)
+    if expected_count is None and (len(pairs) < min_count or len(pairs) > max_count):
         msg = (
-            f"Smoke-test input must contain {MIN_FSM_COUNT}-{MAX_FSM_COUNT} FSM/oracle pairs; "
+            f"Smoke-test input must contain {min_count}-{max_count} FSM/oracle pairs; "
             f"found {len(pairs)}"
         )
         raise SmokeTestPipelineError(msg)
     return pairs
+
+
+def _discover_example_fsm_paths(examples_dir: Path) -> list[Path]:
+    if not examples_dir.is_dir():
+        msg = f"Examples directory not found: {examples_dir}"
+        raise SmokeTestPipelineError(msg)
+    paths = [
+        path
+        for path in discover_reference_fsm_paths(examples_dir)
+        if path.name not in EXAMPLES_FSM_SKIP
+    ]
+    if not paths:
+        msg = f"No reference FSM JSON files found in {examples_dir}"
+        raise SmokeTestPipelineError(msg)
+    return paths
+
+
+def _oracle_meets_coverage(
+    reference: FSM,
+    oracle: OracleSuite,
+    *,
+    min_state_coverage: float,
+    min_transition_coverage: float,
+) -> bool:
+    report = compute_coverage_report(reference, oracle, sequence_depth=3)
+    return (
+        report.state.coverage >= min_state_coverage
+        and report.transition.coverage >= min_transition_coverage
+    )
+
+
+def _resolve_oracle_for_example(
+    examples_dir: Path,
+    reference: FSM,
+    fsm_path: Path,
+    *,
+    oracle_depth: DepthLevel,
+    min_state_coverage: float,
+    min_transition_coverage: float,
+) -> OracleSuite:
+    candidates: list[Path] = []
+    override = ORACLE_NAME_OVERRIDES.get(fsm_path.name)
+    if override is not None:
+        candidates.append(examples_dir / override)
+    candidates.extend(
+        (
+            examples_dir / f"{fsm_path.stem}_oracle.json",
+            examples_dir / f"{reference.id}_oracle.json",
+        )
+    )
+    for candidate in candidates:
+        if not candidate.is_file():
+            continue
+        suite = load_oracle_suite(candidate)
+        if suite.fsm_id not in {None, reference.id}:
+            continue
+        adapted = suite.model_copy(deep=True)
+        adapted.fsm_id = reference.id
+        if _oracle_meets_coverage(
+            reference,
+            adapted,
+            min_state_coverage=min_state_coverage,
+            min_transition_coverage=min_transition_coverage,
+        ):
+            return adapted
+
+    for depth in (oracle_depth, "exhaustive_like"):
+        generated = generate_oracle_suite(reference, depth=depth)
+        suite = generated.suite
+        if _oracle_meets_coverage(
+            reference,
+            suite,
+            min_state_coverage=min_state_coverage,
+            min_transition_coverage=min_transition_coverage,
+        ):
+            return suite
+
+    msg = f"Could not build oracle with required coverage for example FSM '{reference.id}'"
+    raise SmokeTestPipelineError(msg)
+
+
+def _clone_fsm_oracle_pair(
+    reference: FSM,
+    oracle: OracleSuite,
+    *,
+    index: int,
+) -> tuple[FSM, OracleSuite]:
+    """Create an isomorphic FSM/oracle variant for smoke-test expansion."""
+    suffix = f"_ex{index:03d}"
+    cloned_reference = reference.model_copy(deep=True)
+    cloned_reference.id = f"{reference.id}{suffix}"
+    cloned_reference.name = f"{reference.name} (example variant {index})"
+    state_map = {state.id: f"{state.id}{suffix}" for state in cloned_reference.states}
+    for state in cloned_reference.states:
+        state.id = state_map[state.id]
+    cloned_reference.initial_state = state_map[cloned_reference.initial_state]
+    for transition in cloned_reference.transitions:
+        transition.id = f"{transition.id}{suffix}"
+        transition.source = state_map[transition.source]
+        transition.target = state_map[transition.target]
+
+    cloned_oracle = oracle.model_copy(deep=True)
+    cloned_oracle.id = f"{cloned_reference.id}_oracle"
+    cloned_oracle.fsm_id = cloned_reference.id
+    for scenario in cloned_oracle.scenarios:
+        scenario.id = f"{scenario.id}{suffix}"
+        for step in scenario.steps:
+            if step.expected_state in state_map:
+                step.expected_state = state_map[step.expected_state]
+    return cloned_reference, cloned_oracle
+
+
+def prepare_smoke_test_input_from_examples(
+    examples_dir: Path,
+    output_dir: Path,
+    *,
+    seed: int = DEFAULT_SEED,
+    max_fsm_count: int = MAX_EXAMPLES_FSM_COUNT,
+    oracle_depth: DepthLevel = "deep",
+    min_state_coverage: float = COVERAGE_STATE_THRESHOLD,
+    min_transition_coverage: float = COVERAGE_TRANSITION_THRESHOLD,
+) -> Path:
+    """Build smoke-test input from ``examples/`` FSMs and matching or generated oracles."""
+    if max_fsm_count < MIN_FSM_COUNT or max_fsm_count > MAX_EXAMPLES_FSM_COUNT:
+        msg = f"max_fsm_count must be between {MIN_FSM_COUNT} and {MAX_EXAMPLES_FSM_COUNT}"
+        raise SmokeTestPipelineError(msg)
+
+    base_paths = _discover_example_fsm_paths(examples_dir)
+    base_pairs: list[tuple[FSM, OracleSuite, str]] = []
+    for path in base_paths:
+        reference = load_fsm_json(path)
+        oracle = _resolve_oracle_for_example(
+            examples_dir,
+            reference,
+            path,
+            oracle_depth=oracle_depth,
+            min_state_coverage=min_state_coverage,
+            min_transition_coverage=min_transition_coverage,
+        )
+        base_pairs.append((reference, oracle, path.name))
+
+    fsms_dir = output_dir / "fsms"
+    oracles_dir = output_dir / "oracles"
+    fsms_dir.mkdir(parents=True, exist_ok=True)
+    oracles_dir.mkdir(parents=True, exist_ok=True)
+
+    manifest: dict[str, object] = {
+        "seed": seed,
+        "timestamp": _utc_timestamp(),
+        "source": "examples",
+        "examples_dir": str(examples_dir),
+        "fsm_count": max_fsm_count,
+        "pairs": [],
+    }
+
+    for index in range(max_fsm_count):
+        base_reference, base_oracle, source_name = base_pairs[index % len(base_pairs)]
+        if index < len(base_pairs):
+            reference, oracle = base_reference, base_oracle
+            source_label = source_name
+        else:
+            reference, oracle = _clone_fsm_oracle_pair(
+                base_reference,
+                base_oracle,
+                index=index + 1,
+            )
+            source_label = f"{source_name}#variant{index + 1}"
+
+        coverage = compute_coverage_report(reference, oracle, sequence_depth=3)
+        fsm_path = fsms_dir / f"fsm_{index + 1:04d}.json"
+        oracle_path = oracles_dir / f"{reference.id}_oracle.json"
+        fsm_path.write_text(reference.model_dump_json(indent=2) + "\n", encoding="utf-8")
+        oracle_path.write_text(oracle.model_dump_json(indent=2) + "\n", encoding="utf-8")
+        manifest["pairs"].append(
+            {
+                "fsm_path": str(fsm_path),
+                "oracle_path": str(oracle_path),
+                "fsm_id": reference.id,
+                "source_example": source_label,
+                "state_coverage": round(coverage.state.coverage, 6),
+                "transition_coverage": round(coverage.transition.coverage, 6),
+            }
+        )
+
+    write_json_report(output_dir / "input_manifest.json", manifest)
+    return output_dir
 
 
 def _clone_reference_variant(
@@ -276,8 +486,8 @@ def prepare_smoke_test_input(
 ) -> Path:
     """Generate deterministic smoke-test inputs from the parking-gate template."""
     del oracle_depth  # Template oracle already satisfies coverage thresholds.
-    if fsm_count < MIN_FSM_COUNT or fsm_count > MAX_FSM_COUNT:
-        msg = f"fsm_count must be between {MIN_FSM_COUNT} and {MAX_FSM_COUNT}"
+    if fsm_count < MIN_TEMPLATE_FSM_COUNT or fsm_count > MAX_FSM_COUNT:
+        msg = f"fsm_count must be between {MIN_TEMPLATE_FSM_COUNT} and {MAX_FSM_COUNT}"
         raise SmokeTestPipelineError(msg)
 
     template_fsm_path = TEMPLATE_DIR / "reference_fsm.json"
@@ -692,7 +902,7 @@ def validate_smoke_test_outputs(output_dir: Path) -> SmokeTestValidationResult:
             evaluated = 0
             successes = 0
             for row in rows:
-                if not row.get("changed_transition_id"):
+                if not int(row.get("tracked_fault_localization", "0")):
                     continue
                 if int(row.get("detected_fault", "0")) == 0:
                     continue
@@ -720,15 +930,39 @@ def validate_smoke_test_outputs(output_dir: Path) -> SmokeTestValidationResult:
 
 def run_smoke_test_pipeline(config: SmokeTestPipelineConfig) -> SmokeTestPipelineResult:
     """Execute the full smoke-test pipeline and write consolidated outputs."""
-    if config.prepare_input or not config.input_dir.is_dir():
-        prepare_smoke_test_input(
-            config.input_dir,
-            seed=config.seed,
-            fsm_count=config.fsm_count,
-            oracle_depth=config.oracle_depth,
-        )
+    if config.input_source == "examples":
+        min_count = MIN_FSM_COUNT
+        max_count = MAX_EXAMPLES_FSM_COUNT
+        if config.fsm_count > MAX_EXAMPLES_FSM_COUNT:
+            msg = f"Examples smoke test supports at most {MAX_EXAMPLES_FSM_COUNT} FSMs"
+            raise SmokeTestPipelineError(msg)
+    else:
+        min_count = MIN_TEMPLATE_FSM_COUNT
+        max_count = MAX_FSM_COUNT
 
-    pairs = discover_fsm_oracle_pairs(config.input_dir)
+    if config.prepare_input or not config.input_dir.is_dir():
+        if config.input_source == "examples":
+            prepare_smoke_test_input_from_examples(
+                config.examples_dir,
+                config.input_dir,
+                seed=config.seed,
+                max_fsm_count=config.fsm_count,
+                oracle_depth=config.oracle_depth,
+            )
+        else:
+            prepare_smoke_test_input(
+                config.input_dir,
+                seed=config.seed,
+                fsm_count=config.fsm_count,
+                oracle_depth=config.oracle_depth,
+            )
+
+    pairs = discover_fsm_oracle_pairs(
+        config.input_dir,
+        expected_count=config.fsm_count,
+        min_count=min_count,
+        max_count=max_count,
+    )
     timestamp = _utc_timestamp()
 
     output_dir = config.output_dir
@@ -917,9 +1151,11 @@ def run_smoke_test_pipeline(config: SmokeTestPipelineConfig) -> SmokeTestPipelin
                 if any(localization_hits_by_method.values()):
                     localization_hits += 1
                 if mutant_entry.changed_transition_id is not None:
-                    tracked_localization_checks += 1
-                    if any(localization_hits_by_method.values()):
-                        tracked_localization_hits += 1
+                    mutant_transition_ids = {transition.id for transition in mutant_fsm.transitions}
+                    if mutant_entry.changed_transition_id in mutant_transition_ids:
+                        tracked_localization_checks += 1
+                        if any(localization_hits_by_method.values()):
+                            tracked_localization_hits += 1
 
             mutant_metadata_rows.append(
                 {
@@ -931,6 +1167,11 @@ def run_smoke_test_pipeline(config: SmokeTestPipelineConfig) -> SmokeTestPipelin
                     "mutation_description": mutant_entry.mutation_description,
                     "operators": "|".join(mutant_entry.operators),
                     "changed_transition_id": mutant_entry.changed_transition_id or "",
+                    "tracked_fault_localization": int(
+                        mutant_entry.changed_transition_id is not None
+                        and mutant_entry.changed_transition_id
+                        in {transition.id for transition in mutant_fsm.transitions}
+                    ),
                     "bpr": round(bpr, 6),
                     "detected_fault": int(detected),
                     "localization_top5_ochiai": int(localization_hits_by_method["ochiai"]),
