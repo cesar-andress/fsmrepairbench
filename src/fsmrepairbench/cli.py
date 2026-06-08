@@ -101,6 +101,13 @@ from fsmrepairbench.repair_engines.baselines import (
     BaselineEngineError,
     propose_baseline_patch,
 )
+from fsmrepairbench.selective_mutation import (
+    SUPPORTED_STRATEGIES,
+    MutationStrategy,
+    SelectiveMutationError,
+    plan_mutations,
+    write_mutation_plan_json,
+)
 from fsmrepairbench.scorer import score_oracle_suite, write_score_csv, write_score_json
 from fsmrepairbench.constrained_input import (
     CONSTRAINED_INPUT_CSV_COLUMNS,
@@ -274,6 +281,65 @@ def score(
         console.print(table)
 
     raise typer.Exit(code=0 if result.bpr == 1.0 else 1)
+
+
+@app.command("plan-mutations")
+def plan_mutations_cmd(
+    fsm_path: Path,
+    strategy: str = typer.Option(
+        "coverage_aware",
+        "--strategy",
+        help="Selection strategy for mutation planning.",
+    ),
+    budget: int = typer.Option(100, "--budget", min=1),
+    out: Path = typer.Option(..., "--out", help="Write mutation plan JSON to this path."),
+    seed: int = typer.Option(42, "--seed", help="Seed for random_sample strategy."),
+    quiet: bool = typer.Option(False, "--quiet", help="Print a short summary only."),
+) -> None:
+    """Plan selective first-order mutations without generating every possible mutant."""
+    if strategy not in SUPPORTED_STRATEGIES:
+        console.print(
+            f"[red]ERROR[/red] Unknown strategy '{strategy}'. "
+            f"Supported: {', '.join(SUPPORTED_STRATEGIES)}"
+        )
+        raise typer.Exit(code=1)
+
+    try:
+        fsm = load_fsm_json(fsm_path)
+    except (OSError, json.JSONDecodeError, ValidationError) as exc:
+        console.print(f"[red]ERROR[/red] Failed to load FSM: {exc}")
+        raise typer.Exit(code=1) from exc
+
+    reference_errors = validate_fsm(fsm)
+    if reference_errors:
+        console.print(f"[red]ERROR[/red] Invalid FSM: {reference_errors[0]}")
+        raise typer.Exit(code=1)
+
+    try:
+        plan = plan_mutations(fsm, strategy=cast(MutationStrategy, strategy), budget=budget, seed=seed)
+    except SelectiveMutationError as exc:
+        console.print(f"[red]ERROR[/red] {exc}")
+        raise typer.Exit(code=1) from exc
+
+    write_mutation_plan_json(out, plan)
+
+    if quiet:
+        console.print(
+            f"[green]OK[/green] planned={len(plan.planned_mutations)}, "
+            f"cost={plan.expected_cost:.1f}, diversity={plan.expected_diversity:.2f}"
+        )
+    else:
+        console.print(
+            f"[green]OK[/green] Planned {len(plan.planned_mutations)} mutations "
+            f"for '{fsm.id}' using {strategy}"
+        )
+        console.print(
+            f"Expected cost={plan.expected_cost:.1f}, "
+            f"diversity={plan.expected_diversity:.2f}"
+        )
+        console.print(f"Plan: {out}")
+
+    raise typer.Exit(code=0)
 
 
 @app.command("coverage")

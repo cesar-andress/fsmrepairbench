@@ -604,6 +604,25 @@ fsmrepairbench mutate-higher-order tests/fixtures/valid_fsm.json --seed 42 --out
 | `out` | `Path` | `--out` | required | Output path for faulty FSM JSON. |
 | `meta` | `Path` | `--meta` | required | Output path for bug metadata JSON. |
 
+### `plan-mutations`
+
+Plan selective first-order mutations without generating every possible mutant.
+
+**Usage**
+
+```bash
+fsmrepairbench plan-mutations tests/fixtures/valid_fsm.json --out PATH
+```
+
+| Parameter | Type | Flags | Default | Description |
+|-----------|------|-------|---------|-------------|
+| `fsm_path` | `Path` | positional | required |  |
+| `strategy` | `str` | `--strategy` | 'coverage_aware' | Selection strategy for mutation planning. |
+| `budget` | `int` | `--budget` | 100 |  |
+| `out` | `Path` | `--out` | required | Write mutation plan JSON to this path. |
+| `seed` | `int` | `--seed` | 42 | Seed for random_sample strategy. |
+| `quiet` | `bool` | `--quiet` | False | Print a short summary only. |
+
 ### `release-manifest`
 
 Generate or refresh the release manifest for a benchmark dataset.
