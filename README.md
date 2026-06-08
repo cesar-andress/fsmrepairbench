@@ -5,202 +5,87 @@
 [![Python 3.11+](https://img.shields.io/badge/python-3.11+-3776ab?logo=python&logoColor=white)](https://www.python.org/downloads/)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
 [![Version](https://img.shields.io/badge/version-0.1.0-blue)](pyproject.toml)
-[![Benchmark](https://img.shields.io/badge/benchmark-v1.0%20%7C%20v2.0-green)](#dataset-structure)
 
-**A reproducible benchmark for evaluating automated repair of behavioural finite-state machines.**
+**Behavioural finite-state machine repair benchmark — toolkit, generators, and experiment pipeline.**
 
-FSMRepairBench provides seeded FSM instances, controlled fault injection, behavioural
-oracle suites, and a full experiment toolchain — from dataset generation through LLM
-repair loops to checksum-backed frozen releases.
+FSMRepairBench evaluates whether automated methods can restore correct behaviour in
+faulty state machines using **oracle-based scoring**, not textual diff against a hidden
+reference. The repository ships a working Python implementation: JSON schemas, validation,
+seeded mutation, dataset builders, LLM/baseline repair experiments, and governance tooling.
+
+> **Status:** under active development (v0.1.0). The implementation is substantial and
+> tested, but there is **no official frozen public release or peer-reviewed paper yet**.
+> APIs, dataset contents, and leaderboard protocols may change before v2.0.
 
 ---
 
 ## Table of contents
 
-- [Motivation](#motivation)
-- [Benchmark overview](#benchmark-overview)
-- [Architecture](#architecture)
-- [Quick start](#quick-start)
+- [Project pitch](#project-pitch)
+- [Current capabilities](#current-capabilities)
 - [Installation](#installation)
-- [Benchmark taxonomy](#benchmark-taxonomy)
-- [Dataset structure](#dataset-structure)
-- [Repair workflow](#repair-workflow)
-- [Documentation](#documentation)
+- [Quick start](#quick-start)
+- [CLI command overview](#cli-command-overview)
+- [Taxonomy-driven dataset generation](#taxonomy-driven-dataset-generation)
+- [Literature taxonomy](#literature-taxonomy)
+- [Synthetic FSM generation](#synthetic-fsm-generation)
+- [Oracle generation](#oracle-generation)
+- [Mutation operators](#mutation-operators)
+- [Benchmark generation](#benchmark-generation)
+- [Artifact reproducibility](#artifact-reproducibility)
+- [Tests](#tests)
 - [Roadmap](#roadmap)
+- [Documentation](#documentation)
 - [Citation](#citation)
 - [Contributing](#contributing)
 
 ---
 
-## Motivation
+## Project pitch
 
-Real-world controllers, protocol handlers, and embedded systems are often specified as
-**state machines**. When those models are wrong, engineers must repair behaviour — not
-merely edit syntax. Meanwhile, LLMs and program-repair tools are overwhelmingly evaluated
-on **line-level code** (Defects4J, SWE-Bench, HumanEval) or **smart-contract bytecode**
-(SmartBugs).
+Controllers, protocols, and embedded systems are often modelled as **finite-state
+machines**. Repairing those models means fixing **behaviour** — which states are reached
+under which events — not merely editing JSON or diagram syntax.
 
-**FSMRepairBench fills a gap**: a controlled, stratified benchmark where:
+Most repair benchmarks instead target **source code** (Defects4J, SWE-Bench, HumanEval) or
+**smart contracts** (SmartBugs). FSMRepairBench targets **explicit behavioural FSMs** with:
 
-- Ground truth is **behavioural** — oracle scenarios, not diff against a hidden reference.
-- Faults are **documented** — fifteen seeded mutation operators with reproducible metadata.
-- Diversity is **measurable** — a ten-dimensional taxonomy supports slice-aware reporting.
-- Artefacts are **long-lived** — stable case IDs, schema versioning, and frozen releases.
+- a published **oracle suite** as the correctness criterion;
+- **controlled, seeded faults** with documented mutation metadata;
+- a **ten-dimensional taxonomy** for stratified generation and reporting;
+- a reproducible toolchain from dataset build through experiment freeze.
 
-We built FSMRepairBench as an open research artifact intended to survive multiple paper
-cycles: comparable scores, reproducible datasets, and transparent threats to validity.
-
-> See the [FSMRepairBench Manifesto](docs/FSMREPAIRBENCH_MANIFESTO.md) for scientific
-> positioning relative to Defects4J, SWE-Bench, HumanEval, and SmartBugs.
+Primary metric: **Behavioural Pass Rate (BPR)** — fraction of oracle steps passed by a
+candidate FSM. See [docs/oracle_spec.md](docs/oracle_spec.md).
 
 ---
 
-## Benchmark overview
+## Current capabilities
 
-Each benchmark **case** is a self-contained repair instance:
+The following is **implemented and covered by tests** in this repository:
 
-| Component | Role |
-|-----------|------|
-| **Reference FSM** | Correct behavioural model (not shown to repair methods at scoring time) |
-| **Faulty FSM** | Buggy instance the repair method must fix |
-| **Oracle suite** | Ordered scenarios: apply events, assert expected states |
-| **Bug metadata** | Mutation operator, seed, and fault description |
-| **Case metadata** | Difficulty, coverage, BPR summary, taxonomy features |
+| Area | What works today |
+|------|------------------|
+| **Core model** | Pydantic FSM, oracle, bug metadata, patch, and score schemas |
+| **Validation** | `validate-fsm`, `validate-oracle`, semantic FSM checks |
+| **Scoring** | Oracle execution, BPR, repair result aggregation |
+| **Generation** | Synthetic FSMs, oracle suites, requirements, ambiguity injection |
+| **Fault injection** | 15 seeded mutation operators with reproducible metadata |
+| **Datasets** | Mass build (`build-dataset`), stratified build from YAML plans, feature matrix |
+| **Experiments** | Parallel executor, LLM backends (Ollama, vLLM, OpenAI-compat), baselines |
+| **Analytics** | Difficulty calibration, coverage/gap analysis, quality & novelty reports |
+| **Governance** | Schema versioning, migration, evolution diff, release manifests, freeze |
+| **Artifacts** | Paper-style bundles with `reproduce` command |
+| **Docs** | Technical specs under `docs/`, auto-generated API/CLI/schema reference |
 
-**Primary metric — Behavioural Pass Rate (BPR)**
-
-\[
-\text{BPR} = \frac{\text{passed oracle steps}}{\text{total oracle steps}}
-\]
-
-A **complete repair** achieves BPR = 1.0. Partial improvements are tracked via
-`delta_bpr = final_bpr − initial_bpr`.
-
-```mermaid
-flowchart LR
-    REF["Reference FSM\n(BPR = 1.0)"]
-    MUT["Mutation\n(15 operators)"]
-    FAULT["Faulty FSM\n(BPR < 1.0)"]
-    REP["Repair method\n(LLM / baseline)"]
-    PATCH["Typed patch"]
-    CAND["Candidate FSM"]
-    ORA["Oracle execution"]
-    SCORE["BPR score"]
-
-    REF --> MUT --> FAULT
-    FAULT --> REP --> PATCH --> CAND --> ORA --> SCORE
-```
-
-**What FSMRepairBench is not**
-
-- Not a repository-scale software engineering benchmark (cf. SWE-Bench).
-- Not a real-bug Java/Python APR corpus (cf. Defects4J / BugsInPy).
-- Not single-function synthesis from docstrings (cf. HumanEval).
-
-It **is** a behavioural model-repair benchmark with explicit state spaces, oracles, and
-stratified synthetic diversity.
-
----
-
-## Architecture
-
-```mermaid
-flowchart TB
-    subgraph Generation
-        SF[Synthetic Factory]
-        SG[Stratified Generator]
-        OG[Oracle Generator]
-        MU[15 Mutators]
-    end
-
-    subgraph Packaging
-        DB[Dataset Builder]
-        SB[Stratified Builder]
-        VER[Versioning]
-    end
-
-    subgraph Evaluation
-        EXP[Experiment Executor]
-        LLM[LLM Repair Loop]
-        BL[Baseline Engines]
-        SC[Oracle Scorer]
-    end
-
-    subgraph Governance
-        QA[Quality Validation]
-        NV[Novelty Analysis]
-        FR[Freeze Release]
-        EV[Benchmark Evolution]
-    end
-
-    SF --> DB
-    SG --> SB
-    OG --> DB
-    MU --> DB
-    DB --> VER
-    SB --> VER
-    VER --> EXP
-    EXP --> LLM
-    EXP --> BL
-    LLM --> SC
-    BL --> SC
-    SC --> FR
-    QA --> VER
-    NV --> VER
-    EV --> VER
-```
-
-The toolkit is a Python package (`fsmrepairbench`) with a Typer CLI (~35 commands),
-Pydantic JSON schemas, pluggable LLM backends (Ollama, vLLM, OpenAI-compatible APIs),
-and governance tooling for quality, novelty, migration, and frozen releases.
-
-Full details: [docs/architecture.md](docs/architecture.md)
-
----
-
-## Quick start
-
-### Validate a sample case
-
-```bash
-fsmrepairbench validate-fsm tests/fixtures/valid_fsm.json
-fsmrepairbench validate-oracle tests/fixtures/valid_oracle.json
-```
-
-### Score an FSM against an oracle
-
-```bash
-fsmrepairbench score tests/fixtures/valid_fsm.json tests/fixtures/valid_oracle.json
-```
-
-### Build a small dataset
-
-```bash
-fsmrepairbench build-dataset --size 10 --seed 42 --output data/my_benchmark
-fsmrepairbench validate-dataset data/my_benchmark
-fsmrepairbench analyze-novelty data/my_benchmark
-```
-
-### Run an experiment
-
-```bash
-fsmrepairbench run-experiment configs/experiment.yaml
-fsmrepairbench leaderboard results/
-fsmrepairbench freeze-release results/ --release-dir releases/run_001
-```
-
-### Build a stratified dataset from a plan
-
-```bash
-fsmrepairbench build-stratified-dataset plans/fsmrepairbench_v0_10k_plan.yaml data/stratified
-```
+Not yet available as a **published benchmark product**: frozen leaderboard track, held-out
+evaluation split, Zenodo DOI, or community-maintained reference dataset at scale.
 
 ---
 
 ## Installation
 
-**Requirements:** Python 3.11+ (3.12 recommended). Use a virtual environment to avoid mixing
-interpreter-specific packages.
+**Requirements:** Python 3.11+ (3.12 recommended). Use a project virtual environment.
 
 ```bash
 git clone https://github.com/ORG/FSMRepairBench.git
@@ -211,135 +96,234 @@ python -m pip install -U pip
 python -m pip install -e ".[dev,analytics]"
 ```
 
-| Install target | Command | Includes |
-|----------------|---------|----------|
-| Core CLI | `pip install -e .` | validate, score, mutate, dataset build |
-| Analytics plots | `pip install -e ".[analytics]"` | matplotlib, kiwisolver |
-| Development | `pip install -e ".[dev]"` | pytest, ruff, mypy |
+| Extra | Command | Purpose |
+|-------|---------|---------|
+| Core | `pip install -e .` | Validation, scoring, mutation, dataset build (no matplotlib) |
+| `analytics` | `pip install -e ".[analytics]"` | Diversity plots (`benchmark-report`) |
+| `dev` | `pip install -e ".[dev]"` | pytest, ruff, mypy |
 
-Full setup guide: [docs/development.md](docs/development.md)
-
-Verify the installation:
-
-```bash
-fsmrepairbench --help
-pytest -q
-```
+Setup troubleshooting: [docs/development.md](docs/development.md)
 
 ---
 
-## Benchmark taxonomy
-
-Cases are classified along **ten stratification dimensions** for generation, filtering,
-and slice-aware evaluation:
-
-| Dimension | Example values |
-|-----------|----------------|
-| `machine_type` | `plain_fsm`, `mealy`, `moore`, `efsm`, `timed_fsm`, `timed_efsm` |
-| `determinism` | `deterministic`, `nondeterministic` |
-| `completeness` | `complete`, `partial` |
-| `arity_class` | `low`, `medium`, `high`, `very_high` |
-| `size_class` | `tiny`, `small`, `medium`, `large`, `very_large` |
-| `guard_complexity` | `none`, `simple`, `compound`, `nested` |
-| `time_features` | `none`, `timeout`, `timed_guard`, … |
-| `graph_structure` | `acyclic`, `cyclic`, `dense`, `layered`, … |
-| `oracle_depth` | `shallow`, `medium`, `deep`, `exhaustive_like` |
-| `bug_type` | aligns with [15 mutation operators](docs/mutation_spec.md) |
-
-Filter cases programmatically:
+## Quick start
 
 ```bash
-fsmrepairbench filter-cases DATASET_DIR \
-  --determinism deterministic \
-  --machine-type efsm \
-  --out subset.csv
+# Validate fixtures
+fsmrepairbench validate-fsm tests/fixtures/valid_fsm.json
+fsmrepairbench validate-oracle tests/fixtures/valid_oracle.json
+
+# Score reference FSM against oracle (BPR = 1.0 expected)
+fsmrepairbench score tests/fixtures/valid_fsm.json tests/fixtures/valid_oracle.json
+
+# Generate benchmark cases from reference FSMs (skips non-FSM JSON in input dir)
+fsmrepairbench generate-benchmark tests/fixtures data/generated_smoke \
+  --bugs-per-fsm 3 --seed 42
+
+# Build a synthetic dataset
+fsmrepairbench build-dataset --size 10 --seed 42 --output data/my_benchmark
+fsmrepairbench validate-dataset data/my_benchmark
+
+# Stratified build from a plan
+fsmrepairbench build-stratified-dataset plans/fsmrepairbench_v0_10k_plan.yaml data/stratified
 ```
 
-Taxonomy reference: [docs/taxonomy.md](docs/taxonomy.md) · Literature grounding:
-[data/literature/literature_taxonomy.yaml](data/literature/literature_taxonomy.yaml)
-
----
-
-## Dataset structure
-
-```
-DATASET_DIR/
-├── metadata.json              # dataset seed, version, statistics
-├── index.csv                  # case inventory
-├── feature_matrix.csv         # stratified builds: taxonomy features per case
-├── release_manifest.json      # release traceability
-├── cases/
-│   └── case_000001/
-│       ├── reference_fsm.json
-│       ├── faulty_fsm.json
-│       ├── bug_metadata.json
-│       ├── oracle_suite.json
-│       ├── case_metadata.json
-│       └── requirements.json  # optional (schema v2.0)
-├── quality_report.json        # from validate-dataset
-└── novelty_report.json        # from analyze-novelty
-```
-
-**Schema versions**
-
-| Version | Dataset ID | Notable addition |
-|---------|------------|------------------|
-| v0.1 | `fsmrepairbench_v0` | Core four case files |
-| v1.0 | `fsmrepairbench_v1` | `case_metadata.json` |
-| v2.0 | `fsmrepairbench_v2` | Optional `requirements.json` |
-
-Detect version: `fsmrepairbench benchmark-version DATASET_DIR`
-
-Full schema reference: [docs/dataset_format.md](docs/dataset_format.md) ·
-Auto-generated: [docs/schemas.md](docs/schemas.md)
-
----
-
-## Repair workflow
-
-Repair methods receive the **faulty FSM**, **oracle suite**, and optionally **natural-language
-requirements**. They propose a **typed patch** (add/remove/replace transitions, guards,
-actions, initial state). The patch is applied; the candidate FSM is scored by oracle
-execution.
-
-```mermaid
-sequenceDiagram
-    participant Case as Benchmark case
-    participant Engine as Repair engine
-    participant Patch as Patch applier
-    participant Oracle as Oracle engine
-
-    Case->>Engine: faulty_fsm + oracle (+ requirements)
-    loop Up to N iterations
-        Engine->>Engine: propose patch JSON
-        Engine->>Patch: apply patch
-        Patch->>Oracle: candidate FSM
-        Oracle->>Engine: BPR score
-    end
-    Engine->>Case: best candidate + repair trace
-```
-
-**Patch operations:** `add_transition`, `remove_transition`, `replace_transition_source`,
-`replace_transition_target`, `replace_transition_event`, `replace_initial_state`,
-`replace_guard`, `replace_action`
-
-**Experiment metrics:** `initial_bpr`, `final_bpr`, `delta_bpr`, `complete_repair`,
-`effective_repair`, `regression`, patch failure counts, iteration count.
+Repair and experiment workflow:
 
 ```bash
-# Baseline repair
 fsmrepairbench baseline-repair faulty.json oracle.json --out patch.json
-
-# LLM repair (Ollama example)
-fsmrepairbench llm-repair faulty.json oracle.json --model llama3.1:8b --out patch.json
-
-# Apply and score
 fsmrepairbench apply-patch faulty.json patch.json --out repaired.json
-fsmrepairbench score repaired.json oracle.json
+fsmrepairbench run-experiment configs/experiment.yaml
+fsmrepairbench leaderboard results/
+fsmrepairbench freeze-release results/ --release-dir releases/run_001
 ```
 
-Oracle semantics: [docs/oracle_spec.md](docs/oracle_spec.md) · Metrics:
-[docs/metrics.md](docs/metrics.md)
+---
+
+## CLI command overview
+
+Entry point: `fsmrepairbench`. Full reference: [docs/cli.md](docs/cli.md) (auto-generated).
+
+| Group | Commands |
+|-------|----------|
+| **Validation** | `validate-fsm`, `validate-oracle`, `validate-dataset` |
+| **Scoring & repair** | `score`, `mutate`, `apply-patch`, `baseline-repair`, `llm-repair` |
+| **FSM / oracle tools** | `generate-fsm`, `generate-oracles`, `generate-requirements`, `inject-ambiguity` |
+| **Dataset build** | `build-dataset`, `build-stratified-dataset`, `generate-benchmark` |
+| **Analysis** | `estimate-difficulty`, `calibrate-difficulty`, `benchmark-report`, `coverage-optimizer`, `detect-gaps`, `analyze-novelty`, `mine-failure-patterns` |
+| **Filtering** | `filter-cases`, `subset-overlap` |
+| **Experiments & release** | `run-experiment`, `leaderboard`, `freeze-release`, `export-hf`, `reproduce` |
+| **Versioning** | `benchmark-version`, `migrate-benchmark`, `release-manifest`, `benchmark-evolution compare`, `benchmark-evolution trace` |
+| **Literature** | `literature-index` |
+
+Core commands (`validate-fsm`, `validate-oracle`, `score`, `mutate`, `build-dataset`) do
+**not** require the `analytics` extra.
+
+---
+
+## Taxonomy-driven dataset generation
+
+FSMRepairBench classifies cases along **ten dimensions** for stratified generation,
+filtering, and slice-aware evaluation:
+
+`machine_type`, `determinism`, `completeness`, `arity_class`, `size_class`,
+`guard_complexity`, `time_features`, `graph_structure`, `oracle_depth`, `bug_type`
+
+Stratified builds consume a YAML **plan** (`plans/`) declaring cells and counts. Output
+includes `cases/`, `feature_matrix.csv`, and taxonomy-aligned metadata.
+
+```bash
+fsmrepairbench build-stratified-dataset plans/fsmrepairbench_v0_10k_plan.yaml OUTPUT_DIR
+fsmrepairbench filter-cases OUTPUT_DIR --machine-type efsm --out subset.csv
+fsmrepairbench detect-gaps OUTPUT_DIR
+```
+
+Reference: [docs/taxonomy.md](docs/taxonomy.md) · Plan format: [plans/README.md](plans/README.md)
+
+---
+
+## Literature taxonomy
+
+A literature-informed taxonomy maps classic FSM families and testing concepts to benchmark
+tags. The index is built from `data/literature/literature_taxonomy.yaml` and supports
+grounding stratification choices in published automata and model-based testing literature.
+
+```bash
+fsmrepairbench literature-index --out data/literature/index.json
+```
+
+See [docs/literature/README.md](docs/literature/README.md) and
+[data/literature/literature_taxonomy.yaml](data/literature/literature_taxonomy.yaml).
+
+---
+
+## Synthetic FSM generation
+
+The synthetic factory generates parameterised FSMs with configurable size, branching,
+determinism, and complexity presets (`small` → `very_large`). Used by mass and stratified
+builders with deterministic seeds.
+
+```bash
+fsmrepairbench generate-fsm --out fsm.json --complexity medium --seed 42
+fsmrepairbench build-dataset --size 100 --seed 42 --output data/benchmark_v1
+```
+
+Machine families supported in the taxonomy include plain FSM, Mealy, Moore, EFSM, and
+timed variants (practical subset — see [docs/benchmark_spec.md](docs/benchmark_spec.md)).
+
+---
+
+## Oracle generation
+
+Oracle suites are generated from reference FSMs via bounded scenario walks. Depth presets
+control scenario length and coverage ambition:
+
+| Depth | Max steps (approx.) |
+|-------|---------------------|
+| `shallow` | 5 |
+| `medium` | 12 |
+| `deep` | 25 |
+| `exhaustive_like` | 40 |
+
+```bash
+fsmrepairbench generate-oracles reference_fsm.json --out oracle_suite.json --depth medium
+```
+
+Reference FSMs are validated to achieve BPR = 1.0 on generated suites before mutation.
+Semantics: [docs/oracle_spec.md](docs/oracle_spec.md)
+
+---
+
+## Mutation operators
+
+Fifteen **seeded** operators inject controlled faults with documented `bug_metadata.json`:
+
+`missing_transition`, `wrong_target`, `wrong_source`, `wrong_event`, `wrong_initial_state`,
+`duplicate_transition`, `dead_state_intro`, `guard_flip`, `guard_weaken`, `guard_strengthen`,
+`action_corruption`, `timeout_corruption`, `delay_corruption`, `nondeterminism_intro`,
+`unreachable_state_intro`
+
+```bash
+fsmrepairbench mutate reference.json --operator missing_transition --seed 42 \
+  --out faulty.json --meta bug_metadata.json
+```
+
+Full fault models: [docs/mutation_spec.md](docs/mutation_spec.md)
+
+---
+
+## Benchmark generation
+
+Build repair cases from a directory of **reference FSM JSON files**. Non-FSM files
+(oracle suites, invalid JSON) are discovered and **skipped** automatically.
+
+```
+INPUT_DIR/
+├── reference_fsm.json      # loaded
+├── oracles/                # optional oracle suites keyed by fsm_id
+│   └── reference_oracle.json
+└── other.json              # skipped if not a valid FSM
+```
+
+```bash
+fsmrepairbench generate-benchmark INPUT_DIR OUTPUT_DIR --bugs-per-fsm 10 --seed 123
+```
+
+Each case under `OUTPUT_DIR/cases/case_NNNNNN/` contains `reference_fsm.json`,
+`faulty_fsm.json`, `bug_metadata.json`, and optionally `oracle_suite.json`, plus
+`summary.csv`.
+
+---
+
+## Artifact reproducibility
+
+Paper-style artifact bundles pin dataset seeds, experiment configs, prompts, and models.
+The `reproduce` command rebuilds datasets (when configured), runs experiments, and can
+freeze results with SHA-256 checksums.
+
+```bash
+fsmrepairbench reproduce artifacts/icse2027/
+fsmrepairbench freeze-release results/ --release-dir releases/frozen_run
+```
+
+Bundled example artifacts ship under `artifacts/` (ICSE/EMSE/TSE placeholder tracks).
+Details: [docs/reproducibility.md](docs/reproducibility.md) · Policies:
+[VERSIONING_POLICY.md](VERSIONING_POLICY.md), [DATASET_POLICY.md](DATASET_POLICY.md)
+
+---
+
+## Tests
+
+```bash
+pytest
+```
+
+The suite covers validation, scoring, mutation, generation, stratified builds,
+experiments, leaderboard, versioning, quality/novelty analysis, and CLI smoke tests.
+Shared helpers live in `tests/helpers.py`.
+
+For development:
+
+```bash
+pip install -e ".[dev,analytics]"
+ruff check src tests
+python scripts/update_docs.py   # refresh docs/api.md, docs/cli.md, docs/schemas.md
+```
+
+---
+
+## Roadmap
+
+FSMRepairBench is evolving toward a community-maintained reference benchmark. Highlights:
+
+| Phase | Direction |
+|-------|-----------|
+| **Implemented** | Core toolchain, 15 mutators, stratified builder, LLM experiments, governance, docs |
+| **Next** | Frozen v2.0 release, public leaderboard protocol, held-out evaluation split |
+| **Later** | Timed oracle execution, curated industrial cases, multi-oracle consensus |
+
+Full roadmap: [docs/roadmap.md](docs/roadmap.md) · Vision:
+[docs/FSMREPAIRBENCH_MANIFESTO.md](docs/FSMREPAIRBENCH_MANIFESTO.md)
 
 ---
 
@@ -347,48 +331,22 @@ Oracle semantics: [docs/oracle_spec.md](docs/oracle_spec.md) · Metrics:
 
 | Document | Description |
 |----------|-------------|
-| [docs/architecture.md](docs/architecture.md) | System architecture and data flow |
+| [docs/architecture.md](docs/architecture.md) | System architecture |
 | [docs/benchmark_spec.md](docs/benchmark_spec.md) | Goals, scope, limitations |
-| [docs/dataset_format.md](docs/dataset_format.md) | JSON schemas and validation |
-| [docs/oracle_spec.md](docs/oracle_spec.md) | Oracle execution and BPR |
-| [docs/mutation_spec.md](docs/mutation_spec.md) | Mutation operators and fault models |
-| [docs/metrics.md](docs/metrics.md) | All benchmark metrics |
-| [docs/reproducibility.md](docs/reproducibility.md) | Seeds, versioning, freezing |
-| [docs/roadmap.md](docs/roadmap.md) | Planned evolution |
-| [docs/development.md](docs/development.md) | Developer setup and troubleshooting |
-| [docs/api.md](docs/api.md) | Auto-generated API reference |
+| [docs/dataset_format.md](docs/dataset_format.md) | On-disk JSON contract |
+| [docs/oracle_spec.md](docs/oracle_spec.md) | Oracle execution & BPR |
+| [docs/mutation_spec.md](docs/mutation_spec.md) | Mutation operators |
+| [docs/metrics.md](docs/metrics.md) | Evaluation metrics |
+| [docs/reproducibility.md](docs/reproducibility.md) | Seeds, versioning, freeze |
+| [docs/development.md](docs/development.md) | Developer setup |
 | [docs/cli.md](docs/cli.md) | Auto-generated CLI reference |
-| [BENCHMARK_SPEC.md](BENCHMARK_SPEC.md) | Normative benchmark contract |
-| [DATASET_POLICY.md](DATASET_POLICY.md) | Dataset governance |
-| [CONTRIBUTING.md](CONTRIBUTING.md) | Contribution guidelines |
-
-Regenerate API/CLI/schema docs after code changes:
-
-```bash
-python scripts/update_docs.py
-```
-
----
-
-## Roadmap
-
-| Horizon | Goals |
-|---------|-------|
-| **Now (v1 → v2)** | Community frozen v2.0 release, public leaderboard, held-out evaluation split |
-| **Medium term** | Timed oracle execution, industrial case studies, multi-oracle consensus, MDE interchange |
-| **Long term** | Community steering, perennial artifact track, certified repair classes |
-
-Completed: core validation, 15 mutators, stratified builder, versioning/migration,
-difficulty calibration, gap detection, requirement generation, repair trajectories,
-failure pattern mining, quality/novelty analysis, artifact reproduction.
-
-Full roadmap: [docs/roadmap.md](docs/roadmap.md)
+| [BENCHMARK_SPEC.md](BENCHMARK_SPEC.md) | Normative contract |
 
 ---
 
 ## Citation
 
-If you use FSMRepairBench in your research, please cite:
+If you use this repository in research, please cite the software (paper citation TBD):
 
 ```bibtex
 @software{fsmrepairbench2026,
@@ -397,46 +355,25 @@ If you use FSMRepairBench in your research, please cite:
   year         = {2026},
   url          = {https://github.com/ORG/FSMRepairBench},
   version      = {0.1.0},
-  note         = {Benchmark toolkit and dataset generation framework}
+  note         = {Under active development; not yet a published benchmark release}
 }
 ```
-
-> **Placeholder** — replace `ORG/FSMRepairBench` with the canonical repository URL and
-> add a peer-reviewed paper citation when published.
 
 ---
 
 ## Contributing
 
-We welcome contributions that improve benchmark quality, tooling, documentation, and
-stratified coverage. Please read:
-
-1. [CONTRIBUTING.md](CONTRIBUTING.md) — workflow and review expectations
-2. [DATASET_POLICY.md](DATASET_POLICY.md) — what may change in published datasets
-3. [VERSIONING_POLICY.md](VERSIONING_POLICY.md) — schema and evolution rules
-
-Before opening a pull request:
+See [CONTRIBUTING.md](CONTRIBUTING.md). Before submitting changes:
 
 ```bash
 pytest -q
 ruff check src tests
-python scripts/update_docs.py    # if CLI or models changed
-fsmrepairbench validate-dataset DATASET_DIR   # if dataset changed
 ```
 
-Install test dependencies with `pip install -e ".[dev,analytics]"`. See
-[docs/development.md](docs/development.md).
-
-**Do not** silently edit frozen benchmark cases or reuse case IDs for different semantics.
+Do not silently edit frozen cases or reuse case IDs for different semantics.
 
 ---
 
 ## License
 
 MIT License — see [LICENSE](LICENSE).
-
----
-
-<p align="center">
-  <sub>FSMRepairBench — behavioural ground truth · seeded faults · stratified diversity · reproducible science</sub>
-</p>
