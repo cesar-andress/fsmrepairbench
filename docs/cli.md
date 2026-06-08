@@ -502,6 +502,24 @@ fsmrepairbench llm-repair tests/fixtures/valid_fsm.json tests/fixtures/valid_ora
 | `iterations` | `int` | `--iterations` | 3 |  |
 | `temperature` | `float` | `--temperature` | 0.0 |  |
 
+### `localize-fault`
+
+Rank suspicious FSM elements using spectrum-based fault localization.
+
+**Usage**
+
+```bash
+fsmrepairbench localize-fault tests/fixtures/valid_fsm.json tests/fixtures/valid_oracle.json --out PATH
+```
+
+| Parameter | Type | Flags | Default | Description |
+|-----------|------|-------|---------|-------------|
+| `fsm_path` | `Path` | positional | required |  |
+| `oracle_path` | `Path` | positional | required |  |
+| `out` | `Path` | `--out` | required | Write localization report JSON to this path. |
+| `method` | `str` | `--method` | 'ochiai' | Suspiciousness coefficient: ochiai, tarantula, or jaccard. |
+| `quiet` | `bool` | `--quiet` | False | Print a short summary only. |
+
 ### `migrate-benchmark`
 
 Migrate a benchmark dataset to a newer schema version.

@@ -116,6 +116,11 @@ from fsmrepairbench.hierarchical_fsm import (
     hierarchical_oracle_to_csv_rows,
 )
 from fsmrepairbench.coverage import compute_coverage_report, write_coverage_json
+from fsmrepairbench.fault_localization import (
+    SuspiciousnessMethod,
+    localize_fault,
+    write_localization_json,
+)
 from fsmrepairbench.spec_coverage import (
     SPEC_COVERAGE_CSV_COLUMNS,
     compute_spec_coverage,
@@ -313,6 +318,67 @@ def coverage_cmd(
             console.print(f"Guard coverage: {report.guard.coverage:.2%}")
         if report.timeout is not None:
             console.print(f"Timeout coverage: {report.timeout.coverage:.2%}")
+
+    raise typer.Exit(code=0)
+
+
+@app.command("localize-fault")
+def localize_fault_cmd(
+    fsm_path: Path,
+    oracle_path: Path,
+    out: Path = typer.Option(..., "--out", help="Write localization report JSON to this path."),
+    method: str = typer.Option(
+        "ochiai",
+        "--method",
+        help="Suspiciousness coefficient: ochiai, tarantula, or jaccard.",
+    ),
+    quiet: bool = typer.Option(False, "--quiet", help="Print a short summary only."),
+) -> None:
+    """Rank suspicious FSM elements using spectrum-based fault localization."""
+    if method not in {"ochiai", "tarantula", "jaccard"}:
+        console.print(f"[red]ERROR[/red] Unknown method '{method}'")
+        raise typer.Exit(code=1)
+
+    try:
+        fsm = load_fsm_json(fsm_path)
+        suite = load_oracle_suite(oracle_path)
+    except (OSError, json.JSONDecodeError, ValidationError) as exc:
+        console.print(f"[red]ERROR[/red] Failed to load input: {exc}")
+        raise typer.Exit(code=1) from exc
+
+    if not is_oracle_compatible(fsm, suite):
+        console.print(f"[red]ERROR[/red] {oracle_incompatibility_message(fsm, suite)}")
+        raise typer.Exit(code=1)
+
+    try:
+        report = localize_fault(fsm, suite, method=cast(SuspiciousnessMethod, method))
+    except ValueError as exc:
+        console.print(f"[red]ERROR[/red] {exc}")
+        raise typer.Exit(code=1) from exc
+
+    write_localization_json(out, report)
+
+    if quiet:
+        top = report.rankings[0] if report.rankings else None
+        if top is None:
+            console.print("[green]OK[/green] No ranked elements")
+        else:
+            console.print(
+                f"[green]OK[/green] top={top.element_type}:{top.element_id} "
+                f"score={top.score:.4f}"
+            )
+    else:
+        console.print(
+            f"[green]OK[/green] Ranked {len(report.rankings)} elements using {method} "
+            f"({report.total_failed_scenarios} failed scenarios)"
+        )
+        console.print(f"Report: {out}")
+        for element in report.rankings[:5]:
+            console.print(
+                f"  {element.element_type}:{element.element_id} "
+                f"score={element.score:.4f} "
+                f"(failed={element.failed_cover_count}, passed={element.passed_cover_count})"
+            )
 
     raise typer.Exit(code=0)
 
