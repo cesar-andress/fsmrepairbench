@@ -1,14 +1,15 @@
-"""Specification-based coverage metrics for FSM oracle suites."""
+"""Backward-compatible wrappers for specification-based coverage."""
 
 from __future__ import annotations
 
-from collections.abc import Iterable
-from dataclasses import dataclass
-from itertools import combinations
-
-from fsmrepairbench.models import FSM, OracleSuite, Transition
-from fsmrepairbench.oracle import trace_scenario_transitions
-from fsmrepairbench.taxonomy import MachineType, infer_machine_type
+from fsmrepairbench.coverage import (
+    CoverageReport,
+    compute_coverage_report,
+    coverage_report_to_dict,
+    write_coverage_json,
+)
+from fsmrepairbench.models import FSM, OracleSuite
+from fsmrepairbench.taxonomy import MachineType
 
 SPEC_COVERAGE_CSV_COLUMNS: tuple[str, ...] = (
     "metric",
@@ -19,86 +20,74 @@ SPEC_COVERAGE_CSV_COLUMNS: tuple[str, ...] = (
 )
 
 
-@dataclass(frozen=True)
-class TransitionSequenceCoverage:
-    """Coverage of transition sequences up to a fixed length."""
-
-    max_length: int
-    covered_sequences: tuple[tuple[str, ...], ...]
-    total_sequences: int
-    coverage: float
-
-
-@dataclass(frozen=True)
 class SpecCoverageReport:
-    """Specification-based coverage summary for an FSM and oracle suite."""
+    """Legacy report shape used by earlier SOTA integration code."""
 
-    machine_type: MachineType
-    transition_coverage: float
-    transition_pair_coverage: float
-    sequence_coverage: float
-    covered_transitions: tuple[str, ...]
-    covered_transition_pairs: tuple[tuple[str, str], ...]
-    covered_sequences: tuple[tuple[str, ...], ...]
-    total_transitions: int
-    total_transition_pairs: int
-    total_sequences: int
-    efsm_guard_transition_coverage: float | None
-    timed_transition_coverage: float | None
-    max_sequence_length: int
+    def __init__(self, report: CoverageReport) -> None:
+        self._report = report
 
+    @property
+    def machine_type(self) -> MachineType:
+        return self._report.machine_type
 
-def _all_transition_ids(fsm: FSM) -> tuple[str, ...]:
-    return tuple(transition.id for transition in fsm.transitions)
+    @property
+    def transition_coverage(self) -> float:
+        return self._report.transition.coverage
 
+    @property
+    def transition_pair_coverage(self) -> float:
+        return self._report.transition_pair.coverage
 
-def _all_transition_pairs(transition_ids: Iterable[str]) -> set[tuple[str, str]]:
-    ordered = tuple(transition_ids)
-    return {(left, right) for left, right in combinations(ordered, 2)}
+    @property
+    def sequence_coverage(self) -> float:
+        return self._report.transition_sequence.coverage
 
+    @property
+    def covered_transitions(self) -> tuple[str, ...]:
+        return self._report.transition.covered_items
 
-def _is_efsm_transition(transition: Transition, fsm: FSM) -> bool:
-    return bool(transition.guard) or bool(fsm.variables)
+    @property
+    def covered_transition_pairs(self) -> tuple[tuple[str, str], ...]:
+        pairs: list[tuple[str, str]] = []
+        for item in self._report.transition_pair.covered_items:
+            left, right = item.split("->", maxsplit=1)
+            pairs.append((left, right))
+        return tuple(pairs)
 
+    @property
+    def covered_sequences(self) -> tuple[tuple[str, ...], ...]:
+        return tuple(
+            tuple(part for part in item.split("->"))
+            for item in self._report.transition_sequence.covered_items
+        )
 
-def _is_timed_transition(transition: Transition) -> bool:
-    return transition.timeout is not None or transition.delay is not None
+    @property
+    def total_transitions(self) -> int:
+        return self._report.transition.total
 
+    @property
+    def total_transition_pairs(self) -> int:
+        return self._report.transition_pair.total
 
-def _collect_executed_paths(suite: OracleSuite, fsm: FSM) -> list[list[str]]:
-    return [trace_scenario_transitions(fsm, scenario) for scenario in suite.scenarios]
+    @property
+    def total_sequences(self) -> int:
+        return self._report.transition_sequence.total
 
+    @property
+    def efsm_guard_transition_coverage(self) -> float | None:
+        if self._report.guard is None:
+            return None
+        return self._report.guard.coverage
 
-def _sequence_set(paths: Iterable[list[str]], *, max_length: int) -> set[tuple[str, ...]]:
-    sequences: set[tuple[str, ...]] = set()
-    for path in paths:
-        for length in range(1, min(max_length, len(path)) + 1):
-            for start in range(len(path) - length + 1):
-                sequences.add(tuple(path[start : start + length]))
-    return sequences
+    @property
+    def timed_transition_coverage(self) -> float | None:
+        if self._report.timeout is None:
+            return None
+        return self._report.timeout.coverage
 
-
-def _all_feasible_sequences(fsm: FSM, *, max_length: int) -> set[tuple[str, ...]]:
-    """Collect contiguous transition-id sequences along feasible paths."""
-    from collections import deque
-
-    sequences: set[tuple[str, ...]] = set()
-    queue: deque[tuple[str, tuple[str, ...]]] = deque([(fsm.initial_state, ())])
-
-    while queue:
-        state, path = queue.popleft()
-        if path:
-            sequences.add(path)
-        if len(path) >= max_length:
-            continue
-        for transition in fsm.transitions:
-            if transition.source != state:
-                continue
-            next_path = path + (transition.id,)
-            sequences.add(next_path)
-            queue.append((transition.target, next_path))
-
-    return sequences
+    @property
+    def max_sequence_length(self) -> int:
+        return self._report.sequence_depth
 
 
 def compute_spec_coverage(
@@ -107,129 +96,70 @@ def compute_spec_coverage(
     *,
     max_sequence_length: int = 3,
 ) -> SpecCoverageReport:
-    """Compute transition, pair, and sequence coverage exercised by *suite*."""
-    if max_sequence_length < 1:
-        msg = "max_sequence_length must be at least 1"
-        raise ValueError(msg)
-
-    machine_type = infer_machine_type(fsm)
-    transition_ids = _all_transition_ids(fsm)
-    transition_lookup = {transition.id: transition for transition in fsm.transitions}
-    paths = _collect_executed_paths(suite, fsm)
-
-    covered_transitions: set[str] = set()
-    covered_pairs: set[tuple[str, str]] = set()
-    for path in paths:
-        covered_transitions.update(path)
-        for left, right in zip(path, path[1:], strict=False):
-            covered_pairs.add((left, right))
-
-    covered_sequences = _sequence_set(paths, max_length=max_sequence_length)
-    total_sequences = _all_feasible_sequences(fsm, max_length=max_sequence_length)
-    total_pairs = _all_transition_pairs(transition_ids)
-
-    efsm_ids = {
-        transition.id
-        for transition in fsm.transitions
-        if _is_efsm_transition(transition, fsm)
-    }
-    timed_ids = {transition.id for transition in fsm.transitions if _is_timed_transition(transition)}
-
-    efsm_coverage: float | None = None
-    if efsm_ids:
-        efsm_coverage = len(covered_transitions & efsm_ids) / len(efsm_ids)
-
-    timed_coverage: float | None = None
-    if timed_ids:
-        timed_coverage = len(covered_transitions & timed_ids) / len(timed_ids)
-
-    total_transitions = len(transition_ids)
-    transition_coverage = (
-        len(covered_transitions) / total_transitions if total_transitions else 0.0
-    )
-    transition_pair_coverage = len(covered_pairs) / len(total_pairs) if total_pairs else 0.0
-    sequence_coverage = len(covered_sequences) / len(total_sequences) if total_sequences else 0.0
-
-    _ = transition_lookup
-    return SpecCoverageReport(
-        machine_type=machine_type,
-        transition_coverage=transition_coverage,
-        transition_pair_coverage=transition_pair_coverage,
-        sequence_coverage=sequence_coverage,
-        covered_transitions=tuple(sorted(covered_transitions)),
-        covered_transition_pairs=tuple(sorted(covered_pairs)),
-        covered_sequences=tuple(sorted(covered_sequences)),
-        total_transitions=total_transitions,
-        total_transition_pairs=len(total_pairs),
-        total_sequences=len(total_sequences),
-        efsm_guard_transition_coverage=efsm_coverage,
-        timed_transition_coverage=timed_coverage,
-        max_sequence_length=max_sequence_length,
-    )
+    """Compute specification-based coverage using the canonical coverage module."""
+    report = compute_coverage_report(fsm, suite, sequence_depth=max_sequence_length)
+    return SpecCoverageReport(report)
 
 
 def spec_coverage_to_json_dict(report: SpecCoverageReport) -> dict[str, object]:
-    """Convert a report to a JSON-serialisable mapping."""
-    return {
-        "machine_type": report.machine_type.value,
-        "transition_coverage": report.transition_coverage,
-        "transition_pair_coverage": report.transition_pair_coverage,
-        "sequence_coverage": report.sequence_coverage,
-        "covered_transitions": list(report.covered_transitions),
-        "covered_transition_pairs": [list(pair) for pair in report.covered_transition_pairs],
-        "covered_sequences": [list(sequence) for sequence in report.covered_sequences],
-        "total_transitions": report.total_transitions,
-        "total_transition_pairs": report.total_transition_pairs,
-        "total_sequences": report.total_sequences,
-        "efsm_guard_transition_coverage": report.efsm_guard_transition_coverage,
-        "timed_transition_coverage": report.timed_transition_coverage,
-        "max_sequence_length": report.max_sequence_length,
-    }
+    """Convert a legacy report wrapper to JSON."""
+    payload = coverage_report_to_dict(report._report)
+    payload["state_coverage"] = report._report.state.coverage
+    payload["transition_coverage"] = report.transition_coverage
+    payload["transition_pair_coverage"] = report.transition_pair_coverage
+    payload["sequence_coverage"] = report.sequence_coverage
+    payload["efsm_guard_transition_coverage"] = report.efsm_guard_transition_coverage
+    payload["timed_transition_coverage"] = report.timed_transition_coverage
+    payload["max_sequence_length"] = report.max_sequence_length
+    return payload
 
 
 def spec_coverage_to_csv_rows(report: SpecCoverageReport) -> list[dict[str, object]]:
-    """Flatten a report into CSV rows."""
-    rows: list[dict[str, object]] = [
-        {
-            "metric": "transition",
-            "covered": len(report.covered_transitions),
-            "total": report.total_transitions,
-            "coverage": f"{report.transition_coverage:.6f}",
-            "machine_type": report.machine_type.value,
-        },
-        {
-            "metric": "transition_pair",
-            "covered": len(report.covered_transition_pairs),
-            "total": report.total_transition_pairs,
-            "coverage": f"{report.transition_pair_coverage:.6f}",
-            "machine_type": report.machine_type.value,
-        },
-        {
-            "metric": "sequence",
-            "covered": len(report.covered_sequences),
-            "total": report.total_sequences,
-            "coverage": f"{report.sequence_coverage:.6f}",
-            "machine_type": report.machine_type.value,
-        },
-    ]
-    if report.efsm_guard_transition_coverage is not None:
+    """Flatten a legacy report wrapper into CSV rows."""
+    rows: list[dict[str, object]] = []
+    for criterion in (
+        report._report.state,
+        report._report.transition,
+        report._report.transition_pair,
+        report._report.transition_sequence,
+    ):
         rows.append(
             {
-                "metric": "efsm_guard_transition",
-                "covered": len(report.covered_transitions),
-                "total": report.total_transitions,
-                "coverage": f"{report.efsm_guard_transition_coverage:.6f}",
+                "metric": criterion.name,
+                "covered": criterion.covered,
+                "total": criterion.total,
+                "coverage": f"{criterion.coverage:.6f}",
                 "machine_type": report.machine_type.value,
             }
         )
-    if report.timed_transition_coverage is not None:
+    if report._report.guard is not None:
         rows.append(
             {
-                "metric": "timed_transition",
-                "covered": len(report.covered_transitions),
-                "total": report.total_transitions,
-                "coverage": f"{report.timed_transition_coverage:.6f}",
+                "metric": "guard",
+                "covered": report._report.guard.covered,
+                "total": report._report.guard.total,
+                "coverage": f"{report._report.guard.coverage:.6f}",
+                "machine_type": report.machine_type.value,
+            }
+        )
+    if report._report.timeout is not None:
+        rows.append(
+            {
+                "metric": "timeout",
+                "covered": report._report.timeout.covered,
+                "total": report._report.timeout.total,
+                "coverage": f"{report._report.timeout.coverage:.6f}",
                 "machine_type": report.machine_type.value,
             }
         )
     return rows
+
+
+__all__ = [
+    "SPEC_COVERAGE_CSV_COLUMNS",
+    "SpecCoverageReport",
+    "compute_spec_coverage",
+    "spec_coverage_to_csv_rows",
+    "spec_coverage_to_json_dict",
+    "write_coverage_json",
+]

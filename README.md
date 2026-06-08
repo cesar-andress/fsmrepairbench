@@ -123,6 +123,8 @@ fsmrepairbench score examples/demo_faulty.json examples/demo_oracle.json \
   --quiet
 
 # SOTA analysis: specification coverage, coupling, constrained inputs
+fsmrepairbench coverage tests/fixtures/simple_fsm.json tests/fixtures/simple_oracle.json \
+  --out results/coverage.json
 fsmrepairbench spec-coverage tests/fixtures/simple_fsm.json tests/fixtures/simple_oracle.json \
   --out-json results/spec_coverage.json --out-csv results/spec_coverage.csv --quiet
 fsmrepairbench generate-constrained-inputs tests/fixtures/simple_fsm.json \

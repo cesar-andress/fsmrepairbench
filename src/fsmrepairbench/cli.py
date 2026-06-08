@@ -115,6 +115,7 @@ from fsmrepairbench.hierarchical_fsm import (
     generate_hierarchical_oracle,
     hierarchical_oracle_to_csv_rows,
 )
+from fsmrepairbench.coverage import compute_coverage_report, write_coverage_json
 from fsmrepairbench.spec_coverage import (
     SPEC_COVERAGE_CSV_COLUMNS,
     compute_spec_coverage,
@@ -262,6 +263,58 @@ def score(
         console.print(table)
 
     raise typer.Exit(code=0 if result.bpr == 1.0 else 1)
+
+
+@app.command("coverage")
+def coverage_cmd(
+    fsm_path: Path,
+    oracle_path: Path,
+    out: Path = typer.Option(..., "--out", help="Write coverage report JSON to this path."),
+    sequence_depth: int = typer.Option(
+        3,
+        "--sequence-depth",
+        min=1,
+        help="Maximum transition-sequence length for sequence coverage.",
+    ),
+    quiet: bool = typer.Option(False, "--quiet", help="Print a short summary only."),
+) -> None:
+    """Compute specification-based coverage criteria for an FSM and oracle suite."""
+    try:
+        fsm = load_fsm_json(fsm_path)
+        suite = load_oracle_suite(oracle_path)
+    except (OSError, json.JSONDecodeError, ValidationError) as exc:
+        console.print(f"[red]ERROR[/red] Failed to load input: {exc}")
+        raise typer.Exit(code=1) from exc
+
+    if not is_oracle_compatible(fsm, suite):
+        console.print(f"[red]ERROR[/red] {oracle_incompatibility_message(fsm, suite)}")
+        raise typer.Exit(code=1)
+
+    report = compute_coverage_report(fsm, suite, sequence_depth=sequence_depth)
+    write_coverage_json(out, report)
+
+    if quiet:
+        console.print(
+            f"[green]OK[/green] state={report.state.coverage:.2%}, "
+            f"transition={report.transition.coverage:.2%}, "
+            f"pairs={report.transition_pair.coverage:.2%}, "
+            f"sequences={report.transition_sequence.coverage:.2%}"
+        )
+    else:
+        console.print(f"[green]OK[/green] Wrote coverage report for '{fsm.id}' to {out}")
+        console.print(f"State coverage: {report.state.coverage:.2%}")
+        console.print(f"Transition coverage: {report.transition.coverage:.2%}")
+        console.print(f"Transition-pair coverage: {report.transition_pair.coverage:.2%}")
+        console.print(
+            "Transition-sequence coverage "
+            f"(depth<={sequence_depth}): {report.transition_sequence.coverage:.2%}"
+        )
+        if report.guard is not None:
+            console.print(f"Guard coverage: {report.guard.coverage:.2%}")
+        if report.timeout is not None:
+            console.print(f"Timeout coverage: {report.timeout.coverage:.2%}")
+
+    raise typer.Exit(code=0)
 
 
 @app.command("spec-coverage")

@@ -193,6 +193,24 @@ fsmrepairbench coupling-report PATH PATH tests/fixtures/valid_oracle.json PATH
 | `out_csv` | `Path | None` | `--out-csv` | None |  |
 | `quiet` | `bool` | `--quiet` | False |  |
 
+### `coverage`
+
+Compute specification-based coverage criteria for an FSM and oracle suite.
+
+**Usage**
+
+```bash
+fsmrepairbench coverage tests/fixtures/valid_fsm.json tests/fixtures/valid_oracle.json --out PATH
+```
+
+| Parameter | Type | Flags | Default | Description |
+|-----------|------|-------|---------|-------------|
+| `fsm_path` | `Path` | positional | required |  |
+| `oracle_path` | `Path` | positional | required |  |
+| `out` | `Path` | `--out` | required | Write coverage report JSON to this path. |
+| `sequence_depth` | `int` | `--sequence-depth` | 3 | Maximum transition-sequence length for sequence coverage. |
+| `quiet` | `bool` | `--quiet` | False | Print a short summary only. |
+
 ### `coverage-optimizer`
 
 Analyze benchmark diversity from feature_matrix.csv and suggest gap-filling regions.

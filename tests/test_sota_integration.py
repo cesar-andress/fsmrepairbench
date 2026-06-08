@@ -106,7 +106,7 @@ def test_cli_spec_coverage_exports_json_and_csv(tmp_path: Path) -> None:
     with csv_path.open(encoding="utf-8", newline="") as handle:
         rows = list(csv.DictReader(handle))
     assert rows
-    assert rows[0]["metric"] == "transition"
+    assert {row["metric"] for row in rows} >= {"state", "transition"}
 
 
 def test_cli_coupling_report_exports_machine_readable_outputs(tmp_path: Path) -> None:
