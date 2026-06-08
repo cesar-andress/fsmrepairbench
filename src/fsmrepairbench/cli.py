@@ -33,6 +33,10 @@ from fsmrepairbench.difficulty import (
     estimate_difficulty_from_path,
     export_difficulty_metadata,
 )
+from fsmrepairbench.difficulty_calibration import (
+    DifficultyCalibrationError,
+    calibrate_benchmark_difficulty,
+)
 from fsmrepairbench.experiments import (
     ExperimentConfigError,
     load_experiment_config,
@@ -577,6 +581,49 @@ def estimate_difficulty_cmd(
 
     if out is not None:
         console.print(f"[green]OK[/green] Wrote difficulty metadata to {out}")
+    raise typer.Exit(code=0)
+
+
+@app.command("calibrate-difficulty")
+def calibrate_difficulty_cmd(
+    dataset_dir: Path,
+    output_dir: Path | None = typer.Option(
+        None,
+        "--output-dir",
+        help="Directory for difficulty_calibration.csv and report JSON.",
+    ),
+    bucket_method: str = typer.Option(
+        "quantile",
+        "--bucket-method",
+        help="Bucket assignment strategy: quantile (dataset-calibrated) or fixed.",
+    ),
+) -> None:
+    """Calibrate benchmark difficulty and write difficulty_calibration.csv."""
+    if bucket_method not in {"quantile", "fixed"}:
+        console.print(f"[red]ERROR[/red] Unsupported bucket method: {bucket_method}")
+        raise typer.Exit(code=1)
+
+    try:
+        result = calibrate_benchmark_difficulty(
+            dataset_dir,
+            bucket_method=bucket_method,  # type: ignore[arg-type]
+            output_dir=output_dir,
+        )
+    except (DifficultyCalibrationError, CoverageOptimizerError) as exc:
+        console.print(f"[red]ERROR[/red] {exc}")
+        raise typer.Exit(code=1) from exc
+
+    report = result.report
+    distribution = report["bucket_distribution"]
+    console.print(
+        f"[green]OK[/green] Calibrated difficulty for {report['case_count']} cases"
+    )
+    console.print(f"Calibration CSV: {result.calibration_path}")
+    console.print(f"Report: {result.report_path}")
+    console.print(
+        "Buckets: "
+        + ", ".join(f"{bucket}={count}" for bucket, count in sorted(distribution.items()))
+    )
     raise typer.Exit(code=0)
 
 
