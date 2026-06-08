@@ -221,6 +221,8 @@ Behavioural finite-state machine definition.
 | `events` | `list[str]` | yes | — |  |
 | `transitions` | `list[fsmrepairbench.models.Transition]` | no | PydanticUndefined |  |
 | `variables` | `dict[str, str]` | no | PydanticUndefined |  |
+| `parent_fsm_id` | `str | None` | no | None |  |
+| `reference_fsm_id` | `str | None` | no | None |  |
 
 ### `OracleScenario`
 

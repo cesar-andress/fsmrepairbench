@@ -103,6 +103,33 @@ def is_valid_fsm(fsm: FSM) -> bool:
     return not validate_fsm(fsm)
 
 
+def is_oracle_compatible(fsm: FSM, suite: OracleSuite) -> bool:
+    """Return whether *suite* can score *fsm* or a derived repair variant."""
+    if suite.fsm_id is None:
+        return True
+
+    oracle_fsm_id = suite.fsm_id
+    if fsm.id == oracle_fsm_id:
+        return True
+    if fsm.reference_fsm_id == oracle_fsm_id:
+        return True
+    if fsm.parent_fsm_id == oracle_fsm_id:
+        return True
+    if fsm.id.startswith(f"{oracle_fsm_id}__faulty__"):
+        return True
+    if fsm.id.startswith(f"{oracle_fsm_id}__repaired__"):
+        return True
+    return False
+
+
+def oracle_incompatibility_message(fsm: FSM, suite: OracleSuite) -> str:
+    """Describe why *suite* cannot score *fsm*."""
+    return (
+        f"Oracle fsm_id '{suite.fsm_id}' is not compatible with FSM id '{fsm.id}' "
+        f"(reference_fsm_id={fsm.reference_fsm_id!r}, parent_fsm_id={fsm.parent_fsm_id!r})"
+    )
+
+
 def load_oracle_suite(path: Path) -> OracleSuite:
     """Load and validate an oracle suite from JSON."""
     return load_model(path, OracleSuite)

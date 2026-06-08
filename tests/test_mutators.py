@@ -34,6 +34,8 @@ def test_each_operator_produces_faulty_fsm(reference: FSM, operator: str) -> Non
     assert metadata.bug_id == f"{reference.id}__{operator}__{SEED}"
     assert metadata.reference_fsm_id == reference.id
     assert metadata.faulty_fsm_id == faulty.id
+    assert faulty.reference_fsm_id == reference.id
+    assert faulty.parent_fsm_id == reference.id
     assert metadata.mutation_operator == operator
     assert metadata.seed == SEED
     assert metadata.description

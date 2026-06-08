@@ -40,6 +40,8 @@ class FSM(BaseModel):
     events: list[str]
     transitions: list[Transition] = Field(default_factory=list)
     variables: dict[str, str] = Field(default_factory=dict)
+    parent_fsm_id: str | None = None
+    reference_fsm_id: str | None = None
 
 
 class OracleStep(BaseModel):

@@ -74,6 +74,8 @@ def _clone_fsm(reference: FSM, operator: str, seed: int) -> FSM:
     faulty = reference.model_copy(deep=True)
     faulty.id = _faulty_fsm_id(reference.id, operator, seed)
     faulty.name = f"{reference.name} (faulty: {operator})"
+    faulty.reference_fsm_id = reference.id
+    faulty.parent_fsm_id = reference.id
     return faulty
 
 

@@ -96,8 +96,10 @@ from fsmrepairbench.repair_engines.baselines import (
 from fsmrepairbench.scorer import score_oracle_suite
 from fsmrepairbench.stratified_builder import StratifiedBuilderError, build_stratified_dataset
 from fsmrepairbench.validators import (
+    is_oracle_compatible,
     load_fsm_json,
     load_oracle_suite,
+    oracle_incompatibility_message,
     validate_fsm,
     validate_fsm_document,
     validate_oracle_document,
@@ -176,11 +178,8 @@ def score(fsm_path: Path, oracle_path: Path) -> None:
         console.print(f"[red]ERROR[/red] Failed to load oracle: {exc}")
         raise typer.Exit(code=1) from exc
 
-    if suite.fsm_id is not None and suite.fsm_id != fsm.id:
-        console.print(
-            "[red]ERROR[/red] Oracle fsm_id "
-            f"'{suite.fsm_id}' does not match FSM id '{fsm.id}'"
-        )
+    if not is_oracle_compatible(fsm, suite):
+        console.print(f"[red]ERROR[/red] {oracle_incompatibility_message(fsm, suite)}")
         raise typer.Exit(code=1)
 
     result = score_oracle_suite(fsm, suite)
@@ -348,10 +347,9 @@ def baseline_repair_cmd(
         console.print(f"[red]ERROR[/red] Failed to load input: {exc}")
         raise typer.Exit(code=1) from exc
 
-    if oracle_suite.fsm_id is not None and oracle_suite.fsm_id != fsm.id:
+    if not is_oracle_compatible(fsm, oracle_suite):
         console.print(
-            "[red]ERROR[/red] Oracle fsm_id "
-            f"'{oracle_suite.fsm_id}' does not match FSM id '{fsm.id}'"
+            f"[red]ERROR[/red] {oracle_incompatibility_message(fsm, oracle_suite)}"
         )
         raise typer.Exit(code=1)
 
@@ -386,10 +384,9 @@ def llm_repair_cmd(
         console.print(f"[red]ERROR[/red] Failed to load input: {exc}")
         raise typer.Exit(code=1) from exc
 
-    if oracle_suite.fsm_id is not None and oracle_suite.fsm_id != fsm.id:
+    if not is_oracle_compatible(fsm, oracle_suite):
         console.print(
-            "[red]ERROR[/red] Oracle fsm_id "
-            f"'{oracle_suite.fsm_id}' does not match FSM id '{fsm.id}'"
+            f"[red]ERROR[/red] {oracle_incompatibility_message(fsm, oracle_suite)}"
         )
         raise typer.Exit(code=1)
 

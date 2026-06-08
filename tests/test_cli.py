@@ -76,7 +76,7 @@ def test_cli_score_fsm_id_mismatch() -> None:
         ],
     )
     assert result.exit_code == 1
-    assert "does not match" in result.stdout
+    assert "not compatible" in result.stdout
 
 
 def test_cli_mutate_writes_outputs(tmp_path: Path) -> None:
