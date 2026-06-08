@@ -136,6 +136,24 @@ def _write_case(
         _write_json(case_dir / "oracle_suite.json", oracle)
 
 
+def write_benchmark_case(
+    *,
+    case_dir: Path,
+    reference: FSM,
+    faulty_fsm: FSM,
+    bug_metadata: BugMetadata,
+    oracle: OracleSuite | None,
+) -> None:
+    """Write one benchmark case directory."""
+    _write_case(
+        case_dir=case_dir,
+        reference=reference,
+        faulty_fsm=faulty_fsm,
+        bug_metadata=bug_metadata,
+        oracle=oracle,
+    )
+
+
 def generate_benchmark(
     input_dir: Path,
     output_dir: Path,

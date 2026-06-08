@@ -10,6 +10,11 @@ from pydantic import ValidationError
 from rich.console import Console
 from rich.table import Table
 
+from fsmrepairbench.dataset_builder import (
+    DEFAULT_OUTPUT_DIR,
+    DatasetBuilderError,
+    build_dataset,
+)
 from fsmrepairbench.experiments import (
     ExperimentConfigError,
     load_experiment_config,
@@ -459,6 +464,39 @@ def generate_oracles_cmd(
         f"transitions={coverage.transition_coverage:.2%}, "
         f"events={coverage.event_coverage:.2%}"
     )
+    raise typer.Exit(code=0)
+
+
+@app.command("build-dataset")
+def build_dataset_cmd(
+    size: int = typer.Option(..., "--size", min=1),
+    seed: int = typer.Option(42, "--seed"),
+    output_dir: Path = typer.Option(DEFAULT_OUTPUT_DIR, "--output"),
+    workers: int | None = typer.Option(None, "--workers", min=1),
+    resume: bool = typer.Option(True, "--resume/--no-resume"),
+) -> None:
+    """Build a large-scale benchmark dataset automatically."""
+    try:
+        result = build_dataset(
+            size=size,
+            seed=seed,
+            output_dir=output_dir,
+            workers=workers,
+            resume=resume,
+        )
+    except DatasetBuilderError as exc:
+        console.print(f"[red]ERROR[/red] {exc}")
+        raise typer.Exit(code=1) from exc
+
+    completed = len(
+        [row for row in result.rows if row.status in {"completed", "skipped"}]
+    )
+    console.print(
+        f"[green]OK[/green] Built dataset with {completed} cases in {result.output_dir}"
+    )
+    console.print(f"Metadata: {result.metadata_path}")
+    console.print(f"Index: {result.index_path}")
+    console.print(f"Progress: {result.progress_path}")
     raise typer.Exit(code=0)
 
 

@@ -189,7 +189,7 @@ def compute_coverage(fsm: FSM, suite: OracleSuite) -> OracleCoverageMetrics:
             for transition in _outgoing_transitions(fsm, current_state):
                 if transition.event != step.event:
                     continue
-                if transition.guard is not None and transition.guard != step.guard:
+                if step.guard != transition.guard:
                     continue
                 matched = transition
                 break

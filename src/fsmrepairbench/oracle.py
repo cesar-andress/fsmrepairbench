@@ -38,7 +38,7 @@ def _find_transition(
             continue
         if transition.event != step.event:
             continue
-        if transition.guard is not None and transition.guard != step.guard:
+        if step.guard != transition.guard:
             continue
         return transition
     return None
