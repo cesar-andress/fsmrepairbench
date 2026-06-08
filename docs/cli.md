@@ -520,6 +520,9 @@ fsmrepairbench score tests/fixtures/valid_fsm.json tests/fixtures/valid_oracle.j
 |-----------|------|-------|---------|-------------|
 | `fsm_path` | `Path` | positional | required |  |
 | `oracle_path` | `Path` | positional | required |  |
+| `out_json` | `Path | None` | `--out-json` | None | Write the full ScoreResult as JSON to this path. |
+| `out_csv` | `Path | None` | `--out-csv` | None | Write scenario-level score rows as CSV to this path. |
+| `quiet` | `bool` | `--quiet` | False | Suppress detailed table output; print a short summary only. |
 
 ### `subset-overlap`
 

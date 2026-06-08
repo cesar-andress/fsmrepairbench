@@ -2,8 +2,60 @@
 
 from __future__ import annotations
 
-from fsmrepairbench.models import FSM, OracleSuite, RepairResult, ScoreResult
+import csv
+from pathlib import Path
+
+from fsmrepairbench.models import FSM, OracleSuite, RepairResult, ScenarioResult, ScoreResult
 from fsmrepairbench.oracle import execute_scenario
+
+SCORE_CSV_COLUMNS: tuple[str, ...] = (
+    "fsm_id",
+    "oracle_suite_id",
+    "scenario_id",
+    "passed",
+    "passed_steps",
+    "total_steps",
+    "bpr",
+)
+
+
+def scenario_bpr(scenario: ScenarioResult) -> float:
+    """Return the behavioural pass rate for a single scenario."""
+    if scenario.total_steps == 0:
+        return 0.0
+    return scenario.passed_steps / scenario.total_steps
+
+
+def write_score_json(path: Path, result: ScoreResult) -> None:
+    """Write the full score result as JSON to *path*."""
+    path.parent.mkdir(parents=True, exist_ok=True)
+    path.write_text(result.model_dump_json(indent=2) + "\n", encoding="utf-8")
+
+
+def write_score_csv(
+    path: Path,
+    *,
+    fsm_id: str,
+    oracle_suite_id: str,
+    result: ScoreResult,
+) -> None:
+    """Write scenario-level score rows as CSV to *path*."""
+    path.parent.mkdir(parents=True, exist_ok=True)
+    with path.open("w", encoding="utf-8", newline="") as handle:
+        writer = csv.DictWriter(handle, fieldnames=list(SCORE_CSV_COLUMNS))
+        writer.writeheader()
+        for scenario in result.scenarios:
+            writer.writerow(
+                {
+                    "fsm_id": fsm_id,
+                    "oracle_suite_id": oracle_suite_id,
+                    "scenario_id": scenario.scenario_id,
+                    "passed": scenario.passed,
+                    "passed_steps": scenario.passed_steps,
+                    "total_steps": scenario.total_steps,
+                    "bpr": f"{scenario_bpr(scenario):.6f}",
+                }
+            )
 
 
 def score_oracle_suite(fsm: FSM, suite: OracleSuite) -> ScoreResult:

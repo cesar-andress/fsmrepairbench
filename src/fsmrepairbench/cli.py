@@ -93,7 +93,7 @@ from fsmrepairbench.repair_engines.baselines import (
     BaselineEngineError,
     propose_baseline_patch,
 )
-from fsmrepairbench.scorer import score_oracle_suite
+from fsmrepairbench.scorer import score_oracle_suite, write_score_csv, write_score_json
 from fsmrepairbench.stratified_builder import StratifiedBuilderError, build_stratified_dataset
 from fsmrepairbench.validators import (
     is_oracle_compatible,
@@ -158,7 +158,25 @@ def validate_oracle(path: Path) -> None:
 
 
 @app.command("score")
-def score(fsm_path: Path, oracle_path: Path) -> None:
+def score(
+    fsm_path: Path,
+    oracle_path: Path,
+    out_json: Path | None = typer.Option(
+        None,
+        "--out-json",
+        help="Write the full ScoreResult as JSON to this path.",
+    ),
+    out_csv: Path | None = typer.Option(
+        None,
+        "--out-csv",
+        help="Write scenario-level score rows as CSV to this path.",
+    ),
+    quiet: bool = typer.Option(
+        False,
+        "--quiet",
+        help="Suppress detailed table output; print a short summary only.",
+    ),
+) -> None:
     """Score an FSM against an oracle suite."""
     fsm_errors = []
     try:
@@ -184,23 +202,36 @@ def score(fsm_path: Path, oracle_path: Path) -> None:
 
     result = score_oracle_suite(fsm, suite)
 
-    console.print(f"[bold]BPR[/bold]: {result.bpr:.2%}")
-    console.print(
-        f"Steps: {result.passed_steps}/{result.total_steps} | "
-        f"Scenarios: {result.passed_scenarios}/{result.total_scenarios}"
-    )
-
-    table = Table(title="Scenario Results")
-    table.add_column("Scenario")
-    table.add_column("Passed")
-    table.add_column("Steps")
-    for scenario in result.scenarios:
-        table.add_row(
-            scenario.scenario_id,
-            "yes" if scenario.passed else "no",
-            f"{scenario.passed_steps}/{scenario.total_steps}",
+    if out_json is not None:
+        write_score_json(out_json, result)
+    if out_csv is not None:
+        write_score_csv(
+            out_csv,
+            fsm_id=fsm.id,
+            oracle_suite_id=suite.id,
+            result=result,
         )
-    console.print(table)
+
+    if quiet:
+        console.print(f"[green]OK[/green] BPR: {result.bpr:.2%}")
+    else:
+        console.print(f"[bold]BPR[/bold]: {result.bpr:.2%}")
+        console.print(
+            f"Steps: {result.passed_steps}/{result.total_steps} | "
+            f"Scenarios: {result.passed_scenarios}/{result.total_scenarios}"
+        )
+
+        table = Table(title="Scenario Results")
+        table.add_column("Scenario")
+        table.add_column("Passed")
+        table.add_column("Steps")
+        for scenario in result.scenarios:
+            table.add_row(
+                scenario.scenario_id,
+                "yes" if scenario.passed else "no",
+                f"{scenario.passed_steps}/{scenario.total_steps}",
+            )
+        console.print(table)
 
     raise typer.Exit(code=0 if result.bpr == 1.0 else 1)
 

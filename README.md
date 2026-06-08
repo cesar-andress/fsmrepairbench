@@ -116,6 +116,12 @@ fsmrepairbench validate-oracle tests/fixtures/valid_oracle.json
 # Score reference FSM against oracle (BPR = 1.0 expected)
 fsmrepairbench score tests/fixtures/valid_fsm.json tests/fixtures/valid_oracle.json
 
+# Export machine-readable score results
+fsmrepairbench score examples/demo_faulty.json examples/demo_oracle.json \
+  --out-json results/demo_score.json \
+  --out-csv results/demo_score.csv \
+  --quiet
+
 # Generate benchmark cases from reference FSMs (skips non-FSM JSON in input dir)
 fsmrepairbench generate-benchmark tests/fixtures data/generated_smoke \
   --bugs-per-fsm 3 --seed 42
