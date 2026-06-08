@@ -199,19 +199,25 @@ fsmrepairbench build-stratified-dataset plans/fsmrepairbench_v0_10k_plan.yaml da
 
 ## Installation
 
-**Requirements:** Python 3.11+
+**Requirements:** Python 3.11+ (3.12 recommended). Use a virtual environment to avoid mixing
+interpreter-specific packages.
 
 ```bash
 git clone https://github.com/ORG/FSMRepairBench.git
 cd FSMRepairBench
-pip install -e .
+python3.12 -m venv .venv
+source .venv/bin/activate
+python -m pip install -U pip
+python -m pip install -e ".[dev,analytics]"
 ```
 
-Development dependencies (linting, type-checking):
+| Install target | Command | Includes |
+|----------------|---------|----------|
+| Core CLI | `pip install -e .` | validate, score, mutate, dataset build |
+| Analytics plots | `pip install -e ".[analytics]"` | matplotlib, kiwisolver |
+| Development | `pip install -e ".[dev]"` | pytest, ruff, mypy |
 
-```bash
-pip install -e ".[dev]"
-```
+Full setup guide: [docs/development.md](docs/development.md)
 
 Verify the installation:
 
@@ -349,6 +355,7 @@ Oracle semantics: [docs/oracle_spec.md](docs/oracle_spec.md) · Metrics:
 | [docs/metrics.md](docs/metrics.md) | All benchmark metrics |
 | [docs/reproducibility.md](docs/reproducibility.md) | Seeds, versioning, freezing |
 | [docs/roadmap.md](docs/roadmap.md) | Planned evolution |
+| [docs/development.md](docs/development.md) | Developer setup and troubleshooting |
 | [docs/api.md](docs/api.md) | Auto-generated API reference |
 | [docs/cli.md](docs/cli.md) | Auto-generated CLI reference |
 | [BENCHMARK_SPEC.md](BENCHMARK_SPEC.md) | Normative benchmark contract |
@@ -416,6 +423,9 @@ ruff check src tests
 python scripts/update_docs.py    # if CLI or models changed
 fsmrepairbench validate-dataset DATASET_DIR   # if dataset changed
 ```
+
+Install test dependencies with `pip install -e ".[dev,analytics]"`. See
+[docs/development.md](docs/development.md).
 
 **Do not** silently edit frozen benchmark cases or reuse case IDs for different semantics.
 

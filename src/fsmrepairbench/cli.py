@@ -10,7 +10,6 @@ from pydantic import ValidationError
 from rich.console import Console
 from rich.table import Table
 
-from fsmrepairbench.analytics import AnalyticsError, generate_benchmark_report
 from fsmrepairbench.artifact import ArtifactError, load_artifact_bundle, reproduce_artifact
 from fsmrepairbench.case_filter import (
     CaseFilterError,
@@ -745,6 +744,8 @@ def calibrate_difficulty_cmd(
 @app.command("benchmark-report")
 def benchmark_report_cmd(dataset_dir: Path) -> None:
     """Generate diversity analytics for a benchmark dataset."""
+    from fsmrepairbench.analytics import AnalyticsError, generate_benchmark_report
+
     try:
         result = generate_benchmark_report(dataset_dir)
     except AnalyticsError as exc:

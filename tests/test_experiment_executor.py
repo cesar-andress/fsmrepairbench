@@ -16,7 +16,7 @@ from fsmrepairbench.llm.clients.registry import (
     parse_model_specs,
 )
 from fsmrepairbench.models import FSM, OracleSuite, RepairResult
-from tests.test_experiments import _fake_repair_runner, _setup_cases_root
+from tests.helpers import fake_repair_runner, setup_cases_root
 
 
 def test_parse_model_specs_supports_backends() -> None:
@@ -48,7 +48,7 @@ def test_create_model_clients() -> None:
 
 
 def test_task_queue_persists_pending_tasks(tmp_path: Path) -> None:
-    cases_dir = _setup_cases_root(tmp_path)
+    cases_dir = setup_cases_root(tmp_path)
     cases = discover_experiment_cases(cases_dir)
     specs = [ModelSpec(name="model-a", backend=ModelBackend.OLLAMA)]
     tasks = build_repair_tasks(cases, specs, iterations=2, temperature=0.0)
@@ -61,7 +61,7 @@ def test_task_queue_persists_pending_tasks(tmp_path: Path) -> None:
 
 
 def test_executor_runs_with_worker_pool(tmp_path: Path) -> None:
-    cases_dir = _setup_cases_root(tmp_path)
+    cases_dir = setup_cases_root(tmp_path)
     output_dir = tmp_path / "results" / "exp001"
     config = ExperimentConfig(
         models=["model-a"],
@@ -77,7 +77,7 @@ def test_executor_runs_with_worker_pool(tmp_path: Path) -> None:
     executor = ExperimentExecutor(
         config,
         executor_config=ExecutorConfig(workers=2, checkpoint_interval=1),
-        repair_runner=_fake_repair_runner,
+        repair_runner=fake_repair_runner,
     )
     result = executor.run(resume=False)
 
@@ -87,7 +87,7 @@ def test_executor_runs_with_worker_pool(tmp_path: Path) -> None:
 
 
 def test_executor_resume_skips_completed_tasks(tmp_path: Path) -> None:
-    cases_dir = _setup_cases_root(tmp_path)
+    cases_dir = setup_cases_root(tmp_path)
     output_dir = tmp_path / "results" / "exp001"
     config = ExperimentConfig(
         models=["model-a"],
@@ -109,7 +109,7 @@ def test_executor_resume_skips_completed_tasks(tmp_path: Path) -> None:
         temperature: float,
     ) -> RepairResult:
         calls["count"] += 1
-        return _fake_repair_runner(
+        return fake_repair_runner(
             faulty_fsm,
             oracle_suite,
             model,
@@ -126,7 +126,7 @@ def test_executor_resume_skips_completed_tasks(tmp_path: Path) -> None:
 
 
 def test_build_repair_tasks_scales_linearly(tmp_path: Path) -> None:
-    cases_dir = _setup_cases_root(tmp_path)
+    cases_dir = setup_cases_root(tmp_path)
     cases = discover_experiment_cases(cases_dir)
     specs = parse_model_specs(["model-a", "model-b", {"name": "gpt", "backend": "openai"}])
     tasks = build_repair_tasks(cases, specs, iterations=3, temperature=0.0)

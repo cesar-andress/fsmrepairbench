@@ -17,13 +17,13 @@ from fsmrepairbench.leaderboard import (
     generate_leaderboard,
     load_case_result_records,
 )
-from tests.test_experiments import _fake_repair_runner, _setup_cases_root
+from tests.helpers import fake_repair_runner, setup_cases_root
 
 runner = CliRunner()
 
 
 def test_compute_leaderboard_entries_from_experiment_results(tmp_path: Path) -> None:
-    cases_dir = _setup_cases_root(tmp_path)
+    cases_dir = setup_cases_root(tmp_path)
     output_dir = tmp_path / "results" / "exp001"
     config = ExperimentConfig(
         models=["model-a", "model-b"],
@@ -33,7 +33,7 @@ def test_compute_leaderboard_entries_from_experiment_results(tmp_path: Path) -> 
         output_dir=output_dir,
         resume=True,
     )
-    run_experiment(config, repair_runner=_fake_repair_runner)
+    run_experiment(config, repair_runner=fake_repair_runner)
 
     records = load_case_result_records(output_dir)
     entries = compute_leaderboard_entries(records)
@@ -46,7 +46,7 @@ def test_compute_leaderboard_entries_from_experiment_results(tmp_path: Path) -> 
 
 
 def test_generate_leaderboard_writes_csv_and_markdown(tmp_path: Path) -> None:
-    cases_dir = _setup_cases_root(tmp_path)
+    cases_dir = setup_cases_root(tmp_path)
     output_dir = tmp_path / "results" / "exp001"
     config = ExperimentConfig(
         models=["model-a"],
@@ -56,7 +56,7 @@ def test_generate_leaderboard_writes_csv_and_markdown(tmp_path: Path) -> None:
         output_dir=output_dir,
         resume=True,
     )
-    run_experiment(config, repair_runner=_fake_repair_runner)
+    run_experiment(config, repair_runner=fake_repair_runner)
 
     result_path(output_dir, "case_000001", "model-a")
     result = generate_leaderboard(output_dir)
@@ -118,7 +118,7 @@ def test_generate_leaderboard_requires_results(tmp_path: Path) -> None:
 
 
 def test_cli_leaderboard(tmp_path: Path) -> None:
-    cases_dir = _setup_cases_root(tmp_path)
+    cases_dir = setup_cases_root(tmp_path)
     output_dir = tmp_path / "results" / "exp001"
     config = ExperimentConfig(
         models=["model-a"],
@@ -128,7 +128,7 @@ def test_cli_leaderboard(tmp_path: Path) -> None:
         output_dir=output_dir,
         resume=True,
     )
-    run_experiment(config, repair_runner=_fake_repair_runner)
+    run_experiment(config, repair_runner=fake_repair_runner)
 
     result = runner.invoke(app, ["leaderboard", str(output_dir)])
     assert result.exit_code == 0

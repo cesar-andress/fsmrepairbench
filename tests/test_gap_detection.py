@@ -19,14 +19,14 @@ from fsmrepairbench.gap_detection import (
     detect_gap_cells,
 )
 from fsmrepairbench.generators.stratified_specs import load_dataset_plan
-from tests.test_coverage_optimizer import _write_minimal_matrix
+from tests.helpers import write_minimal_matrix
 
 runner = CliRunner()
 
 
 def test_detect_gap_cells_identifies_missing_and_underrepresented(tmp_path: Path) -> None:
     matrix_path = tmp_path / "feature_matrix.csv"
-    _write_minimal_matrix(matrix_path)
+    write_minimal_matrix(matrix_path)
     rows = load_feature_matrix(matrix_path)
 
     gaps = detect_gap_cells(rows, expected_count=1)
@@ -41,7 +41,7 @@ def test_detect_gap_cells_identifies_missing_and_underrepresented(tmp_path: Path
 def test_detect_benchmark_gaps_writes_artifacts(tmp_path: Path) -> None:
     dataset_dir = tmp_path / "dataset"
     dataset_dir.mkdir()
-    _write_minimal_matrix(dataset_dir / "feature_matrix.csv")
+    write_minimal_matrix(dataset_dir / "feature_matrix.csv")
 
     result = detect_benchmark_gaps(dataset_dir, expected_count=1, max_plan_cells=5)
 
@@ -69,7 +69,7 @@ def test_detect_benchmark_gaps_writes_artifacts(tmp_path: Path) -> None:
 def test_gap_fill_plan_is_valid_yaml(tmp_path: Path) -> None:
     dataset_dir = tmp_path / "dataset"
     dataset_dir.mkdir()
-    _write_minimal_matrix(dataset_dir / "feature_matrix.csv")
+    write_minimal_matrix(dataset_dir / "feature_matrix.csv")
 
     result = detect_benchmark_gaps(dataset_dir, expected_count=1, max_plan_cells=3)
     payload = yaml.safe_load(result.gap_fill_plan_path.read_text(encoding="utf-8"))
@@ -81,7 +81,7 @@ def test_gap_fill_plan_is_valid_yaml(tmp_path: Path) -> None:
 def test_cli_detect_gaps(tmp_path: Path) -> None:
     dataset_dir = tmp_path / "dataset"
     dataset_dir.mkdir()
-    _write_minimal_matrix(dataset_dir / "feature_matrix.csv")
+    write_minimal_matrix(dataset_dir / "feature_matrix.csv")
 
     result = runner.invoke(
         app,

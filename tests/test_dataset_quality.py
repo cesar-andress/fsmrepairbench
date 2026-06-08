@@ -16,7 +16,7 @@ from fsmrepairbench.dataset_quality import (
     validate_dataset,
 )
 from fsmrepairbench.stratified_builder import build_stratified_dataset
-from tests.test_coverage_optimizer import _write_minimal_matrix
+from tests.helpers import write_minimal_matrix
 
 runner = CliRunner()
 
@@ -54,7 +54,7 @@ def test_validate_dataset_detects_class_imbalance(tmp_path: Path) -> None:
     dataset_dir = tmp_path / "dataset"
     dataset_dir.mkdir()
     (dataset_dir / "cases").mkdir()
-    _write_minimal_matrix(dataset_dir / "feature_matrix.csv")
+    write_minimal_matrix(dataset_dir / "feature_matrix.csv")
     imbalanced = textwrap.dedent(
         """
         case_id,machine_type,determinism,completeness,arity_class,size_class,guard_complexity,time_features,graph_structure,oracle_depth,bug_type,num_states,num_events,num_transitions,avg_out_degree,max_out_degree,num_guards,num_timed_guards,num_timeouts,num_cycles,scc_count,seed

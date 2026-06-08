@@ -18,7 +18,7 @@ from fsmrepairbench.difficulty_calibration import (
     calibrate_difficulty_rows,
     compute_difficulty_score,
 )
-from tests.test_coverage_optimizer import _write_minimal_matrix
+from tests.helpers import write_minimal_matrix
 
 runner = CliRunner()
 
@@ -48,7 +48,7 @@ def test_compute_difficulty_score_uses_all_factors() -> None:
 
 def test_calibrate_difficulty_rows_assigns_buckets(tmp_path: Path) -> None:
     matrix_path = tmp_path / "feature_matrix.csv"
-    _write_minimal_matrix(matrix_path)
+    write_minimal_matrix(matrix_path)
 
     rows = calibrate_difficulty_rows(
         [
@@ -119,7 +119,7 @@ def test_assign_difficulty_buckets_fixed_thresholds() -> None:
 def test_calibrate_benchmark_difficulty_writes_artifacts(tmp_path: Path) -> None:
     dataset_dir = tmp_path / "dataset"
     dataset_dir.mkdir()
-    _write_minimal_matrix(dataset_dir / "feature_matrix.csv")
+    write_minimal_matrix(dataset_dir / "feature_matrix.csv")
 
     result = calibrate_benchmark_difficulty(dataset_dir, bucket_method="quantile")
 
@@ -144,7 +144,7 @@ def test_calibrate_benchmark_difficulty_writes_artifacts(tmp_path: Path) -> None
 def test_cli_calibrate_difficulty(tmp_path: Path) -> None:
     dataset_dir = tmp_path / "dataset"
     dataset_dir.mkdir()
-    _write_minimal_matrix(dataset_dir / "feature_matrix.csv")
+    write_minimal_matrix(dataset_dir / "feature_matrix.csv")
 
     result = runner.invoke(app, ["calibrate-difficulty", str(dataset_dir)])
     assert result.exit_code == 0

@@ -23,7 +23,7 @@ jobs:
           python-version: "3.11"
 
       - name: Install package
-        run: pip install -e .
+        run: pip install -e ".[dev,analytics]"
 
       - name: Regenerate documentation
         run: python scripts/update_docs.py

@@ -10,11 +10,6 @@ from datetime import UTC, datetime
 from pathlib import Path
 from typing import Any
 
-import matplotlib
-
-matplotlib.use("Agg")
-import matplotlib.pyplot as plt
-
 from fsmrepairbench.dataset_builder import DatasetCaseRow, is_case_complete, load_case_row
 from fsmrepairbench.difficulty import category_for_score
 from fsmrepairbench.mutators import MUTATION_OPERATORS
@@ -25,6 +20,22 @@ SUMMARY_COLUMNS: tuple[str, ...] = ("metric", "bucket", "count", "fraction")
 
 class AnalyticsError(RuntimeError):
     """Raised when benchmark analytics cannot be generated."""
+
+
+def _pyplot():
+    """Import matplotlib lazily so core CLI commands avoid plotting dependencies."""
+    try:
+        import matplotlib
+
+        matplotlib.use("Agg")
+        import matplotlib.pyplot as plt
+    except ImportError as exc:
+        msg = (
+            "Analytics plotting dependencies are missing. "
+            f"Install them with: pip install -e '.[analytics]' ({exc})"
+        )
+        raise AnalyticsError(msg) from exc
+    return plt
 
 
 @dataclass(frozen=True)
@@ -282,6 +293,7 @@ def _save_bar_plot(
     labels: list[str],
     values: list[int],
 ) -> None:
+    plt = _pyplot()
     figure, axis = plt.subplots(figsize=(8, 5))
     axis.bar(labels, values, color="#4472C4")
     axis.set_title(title)
@@ -301,6 +313,7 @@ def _save_histogram(
     values: list[float],
     bins: int = 10,
 ) -> None:
+    plt = _pyplot()
     figure, axis = plt.subplots(figsize=(8, 5))
     axis.hist(values, bins=bins, color="#70AD47", edgecolor="white")
     axis.set_title(title)
@@ -356,6 +369,7 @@ def write_plots(plots_dir: Path, analytics: BenchmarkAnalytics) -> None:
         bins=min(10, max(3, len(set(analytics.difficulty_score_values)))),
     )
 
+    plt = _pyplot()
     figure, axes = plt.subplots(1, 3, figsize=(12, 4))
     coverage_sets = (
         ("State", analytics.oracle_state_coverage_distribution),
