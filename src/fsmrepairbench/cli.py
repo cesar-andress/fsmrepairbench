@@ -15,6 +15,11 @@ from fsmrepairbench.dataset_builder import (
     DatasetBuilderError,
     build_dataset,
 )
+from fsmrepairbench.difficulty import (
+    DifficultyError,
+    estimate_difficulty_from_path,
+    export_difficulty_metadata,
+)
 from fsmrepairbench.experiments import (
     ExperimentConfigError,
     load_experiment_config,
@@ -497,6 +502,40 @@ def build_dataset_cmd(
     console.print(f"Metadata: {result.metadata_path}")
     console.print(f"Index: {result.index_path}")
     console.print(f"Progress: {result.progress_path}")
+    raise typer.Exit(code=0)
+
+
+@app.command("estimate-difficulty")
+def estimate_difficulty_cmd(
+    case_path: Path,
+    out: Path | None = typer.Option(None, "--out", help="Optional metadata JSON output path."),
+) -> None:
+    """Estimate difficulty for a benchmark case or FSM JSON file."""
+    try:
+        estimate = estimate_difficulty_from_path(case_path)
+    except (DifficultyError, OSError, ValidationError) as exc:
+        console.print(f"[red]ERROR[/red] {exc}")
+        raise typer.Exit(code=1) from exc
+
+    if out is not None:
+        export_difficulty_metadata(estimate, out)
+
+    table = Table(title="FSM Difficulty Estimate")
+    table.add_column("Field")
+    table.add_column("Value")
+    table.add_row("difficulty_score", f"{estimate.difficulty_score:.2f}")
+    table.add_row("category", estimate.category)
+    metrics = estimate.metrics
+    table.add_row("state_count", str(metrics.state_count))
+    table.add_row("transition_count", str(metrics.transition_count))
+    table.add_row("branching_factor", f"{metrics.branching_factor:.4f}")
+    table.add_row("average_path_length", f"{metrics.average_path_length:.4f}")
+    table.add_row("cycles", str(metrics.cycles))
+    table.add_row("strongly_connected_components", str(metrics.strongly_connected_components))
+    console.print(table)
+
+    if out is not None:
+        console.print(f"[green]OK[/green] Wrote difficulty metadata to {out}")
     raise typer.Exit(code=0)
 
 

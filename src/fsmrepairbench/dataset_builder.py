@@ -12,6 +12,7 @@ from pathlib import Path
 from threading import Lock
 from typing import Any, cast
 
+from fsmrepairbench.difficulty import estimate_difficulty
 from fsmrepairbench.generator import MAX_MUTATION_RETRIES, write_benchmark_case
 from fsmrepairbench.generators.synthetic_factory import (
     ComplexityLevel,
@@ -23,7 +24,6 @@ from fsmrepairbench.models import FSM, BugMetadata
 from fsmrepairbench.mutators import MUTATION_OPERATORS, MutatorError, mutate
 from fsmrepairbench.oracle_generator import (
     DepthLevel,
-    OracleCoverageMetrics,
     OracleGeneratorError,
     generate_oracle_suite,
 )
@@ -39,12 +39,6 @@ ORACLE_DEPTH_BY_COMPLEXITY: dict[ComplexityLevel, DepthLevel] = {
     "medium": "medium",
     "large": "medium",
     "very_large": "deep",
-}
-COMPLEXITY_BASE_SCORE: dict[ComplexityLevel, float] = {
-    "small": 0.2,
-    "medium": 0.4,
-    "large": 0.65,
-    "very_large": 0.85,
 }
 
 INDEX_COLUMNS: tuple[str, ...] = (
@@ -165,27 +159,6 @@ class DatasetBuildResult:
     rows: tuple[DatasetCaseRow, ...]
 
 
-def compute_difficulty_score(
-    *,
-    complexity: ComplexityLevel,
-    state_count: int,
-    transition_count: int,
-    event_count: int,
-    coverage: OracleCoverageMetrics,
-) -> float:
-    """Return a normalized difficulty score in ``[0, 1]``."""
-    complexity_weight = COMPLEXITY_BASE_SCORE[complexity]
-    size_weight = min(
-        1.0,
-        (state_count / 50.0 + transition_count / 250.0 + event_count / 15.0) / 3.0,
-    )
-    coverage_gap = 1.0 - (
-        (coverage.state_coverage + coverage.transition_coverage + coverage.event_coverage) / 3.0
-    )
-    score = 0.5 * complexity_weight + 0.35 * size_weight + 0.15 * coverage_gap
-    return round(min(1.0, max(0.0, score)), 4)
-
-
 def case_dir_for(output_dir: Path, case_id: str) -> Path:
     """Return the directory path for *case_id*."""
     return output_dir / "cases" / case_id
@@ -273,7 +246,11 @@ def _write_progress_csv(path: Path, rows: list[DatasetCaseRow]) -> None:
     _write_csv(path, PROGRESS_COLUMNS, formatted_rows)
 
 
-def _write_case_metadata(case_dir: Path, row: DatasetCaseRow) -> None:
+def _write_case_metadata(
+    case_dir: Path,
+    row: DatasetCaseRow,
+    difficulty_metadata: dict[str, object],
+) -> None:
     payload = {
         "case_id": row.case_id,
         "reference_fsm_id": row.reference_fsm_id,
@@ -284,6 +261,8 @@ def _write_case_metadata(case_dir: Path, row: DatasetCaseRow) -> None:
         "event_count": row.event_count,
         "mutation_operator": row.mutation_operator,
         "difficulty_score": row.difficulty_score,
+        "difficulty_category": difficulty_metadata["category"],
+        "difficulty": difficulty_metadata,
         "oracle_coverage": {
             "state_coverage": row.oracle_state_coverage,
             "transition_coverage": row.oracle_transition_coverage,
@@ -346,6 +325,7 @@ def build_single_case(spec: CaseBuildSpec, output_dir: Path) -> DatasetCaseRow:
     )
     valid_faulty = is_valid_fsm(faulty_fsm)
     faulty_bpr = score_oracle_suite(faulty_fsm, oracle).bpr
+    difficulty = estimate_difficulty(reference)
 
     row = DatasetCaseRow(
         case_id=spec.case_id,
@@ -356,13 +336,7 @@ def build_single_case(spec: CaseBuildSpec, output_dir: Path) -> DatasetCaseRow:
         transition_count=len(reference.transitions),
         event_count=len(reference.events),
         mutation_operator=spec.mutation_operator,
-        difficulty_score=compute_difficulty_score(
-            complexity=spec.complexity,
-            state_count=len(reference.states),
-            transition_count=len(reference.transitions),
-            event_count=len(reference.events),
-            coverage=coverage,
-        ),
+        difficulty_score=difficulty.difficulty_score,
         oracle_state_coverage=coverage.state_coverage,
         oracle_transition_coverage=coverage.transition_coverage,
         oracle_event_coverage=coverage.event_coverage,
@@ -380,7 +354,7 @@ def build_single_case(spec: CaseBuildSpec, output_dir: Path) -> DatasetCaseRow:
         bug_metadata=bug_metadata,
         oracle=oracle,
     )
-    _write_case_metadata(case_dir, row)
+    _write_case_metadata(case_dir, row, difficulty.to_metadata())
     return row
 
 
