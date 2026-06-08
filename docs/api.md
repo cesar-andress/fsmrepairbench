@@ -236,6 +236,10 @@ Metadata describing an injected bug used in a benchmark instance.
 | `mutation_complexity` | `str | None` | no | None |  |
 | `mutation_scope` | `str | None` | no | None |  |
 | `mutation_mode` | `str | None` | no | None |  |
+| `mutation_order` | `int | None` | no | None |  |
+| `component_faults` | `list[dict[str, str | int | None]]` | no | PydanticUndefined |  |
+| `is_higher_order` | `bool` | no | False |  |
+| `coupled_to_simple_faults` | `list[str] | None` | no | None |  |
 
 ### `FSM`
 

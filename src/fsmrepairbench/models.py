@@ -114,6 +114,10 @@ class BugMetadata(BaseModel):
     mutation_complexity: str | None = None
     mutation_scope: str | None = None
     mutation_mode: str | None = None
+    mutation_order: int | None = None
+    component_faults: list[dict[str, str | int | None]] = Field(default_factory=list)
+    is_higher_order: bool = False
+    coupled_to_simple_faults: list[str] | None = None
 
 
 class RepairResult(BaseModel):

@@ -173,6 +173,22 @@ fsmrepairbench calibrate-difficulty DATASET_DIR
 | `output_dir` | `Path | None` | `--output-dir` | None | Directory for difficulty_calibration.csv and report JSON. |
 | `bucket_method` | `str` | `--bucket-method` | 'quantile' | Bucket assignment strategy: quantile (dataset-calibrated) or fixed. |
 
+### `coupling-analysis`
+
+Estimate whether oracles detecting first-order faults also detect higher-order faults.
+
+**Usage**
+
+```bash
+fsmrepairbench coupling-analysis DATASET_DIR --out PATH
+```
+
+| Parameter | Type | Flags | Default | Description |
+|-----------|------|-------|---------|-------------|
+| `dataset_dir` | `Path` | positional | required |  |
+| `out` | `Path` | `--out` | required | Write coupling analysis JSON to this path. |
+| `quiet` | `bool` | `--quiet` | False | Print a short summary only. |
+
 ### `coupling-report`
 
 Track coupling between mutation complexity and oracle fault detection.
@@ -566,6 +582,24 @@ fsmrepairbench mutate tests/fixtures/valid_fsm.json --operator missing_transitio
 |-----------|------|-------|---------|-------------|
 | `ref_fsm_path` | `Path` | positional | required |  |
 | `operator` | `str` | `--operator` | required | Mutation operator name. |
+| `seed` | `int` | `--seed` | required | Deterministic seed. |
+| `out` | `Path` | `--out` | required | Output path for faulty FSM JSON. |
+| `meta` | `Path` | `--meta` | required | Output path for bug metadata JSON. |
+
+### `mutate-higher-order`
+
+Generate a first- or higher-order faulty FSM by chaining mutation operators.
+
+**Usage**
+
+```bash
+fsmrepairbench mutate-higher-order tests/fixtures/valid_fsm.json --seed 42 --out PATH --meta PATH
+```
+
+| Parameter | Type | Flags | Default | Description |
+|-----------|------|-------|---------|-------------|
+| `ref_fsm_path` | `Path` | positional | required |  |
+| `operators` | `str` | `--operators` | required | Comma-separated mutation operators to apply in order. |
 | `seed` | `int` | `--seed` | required | Deterministic seed. |
 | `out` | `Path` | `--out` | required | Output path for faulty FSM JSON. |
 | `meta` | `Path` | `--meta` | required | Output path for bug metadata JSON. |

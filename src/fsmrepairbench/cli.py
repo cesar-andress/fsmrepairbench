@@ -58,6 +58,12 @@ from fsmrepairbench.generators.synthetic_factory import (
     generate_synthetic_fsm,
     params_from_complexity,
 )
+from fsmrepairbench.higher_order_mutation import (
+    HigherOrderMutationError,
+    analyze_dataset_coupling,
+    mutate_higher_order,
+    write_dataset_coupling_report,
+)
 from fsmrepairbench.hf_export import HuggingFaceExportError, export_huggingface_dataset
 from fsmrepairbench.leaderboard import LeaderboardError, generate_leaderboard
 from fsmrepairbench.literature import (
@@ -842,6 +848,86 @@ def freeze_cmd(results_dir: Path, release_dir: Path) -> None:
     console.print(f"[green]OK[/green] Frozen release written to {result.release_dir}")
     console.print(f"Manifest: {result.manifest_path}")
     console.print(f"Files checksummed: {len(result.files)}")
+    raise typer.Exit(code=0)
+
+
+@app.command("mutate-higher-order")
+def mutate_higher_order_cmd(
+    ref_fsm_path: Path,
+    operators: str = typer.Option(
+        ...,
+        "--operators",
+        help="Comma-separated mutation operators to apply in order.",
+    ),
+    seed: int = typer.Option(..., "--seed", help="Deterministic seed."),
+    out: Path = typer.Option(..., "--out", help="Output path for faulty FSM JSON."),
+    meta: Path = typer.Option(..., "--meta", help="Output path for bug metadata JSON."),
+) -> None:
+    """Generate a first- or higher-order faulty FSM by chaining mutation operators."""
+    try:
+        reference = load_fsm_json(ref_fsm_path)
+    except (OSError, json.JSONDecodeError, ValidationError) as exc:
+        console.print(f"[red]ERROR[/red] Failed to load reference FSM: {exc}")
+        raise typer.Exit(code=1) from exc
+
+    reference_errors = validate_fsm(reference)
+    if reference_errors:
+        console.print(f"[red]ERROR[/red] Invalid reference FSM: {reference_errors[0]}")
+        raise typer.Exit(code=1)
+
+    try:
+        faulty_fsm, bug_metadata = mutate_higher_order(reference, operators, seed)
+    except HigherOrderMutationError as exc:
+        console.print(f"[red]ERROR[/red] {exc}")
+        raise typer.Exit(code=1) from exc
+
+    out.write_text(faulty_fsm.model_dump_json(indent=2) + "\n", encoding="utf-8")
+    meta.write_text(bug_metadata.model_dump_json(indent=2) + "\n", encoding="utf-8")
+
+    order_label = "higher-order" if bug_metadata.is_higher_order else "first-order"
+    console.print(
+        f"[green]OK[/green] Wrote {order_label} faulty FSM '{faulty_fsm.id}' "
+        f"(mutation_order={bug_metadata.mutation_order}) to {out}"
+    )
+    console.print(f"Metadata: {meta}")
+    raise typer.Exit(code=0)
+
+
+@app.command("coupling-analysis")
+def coupling_analysis_cmd(
+    dataset_dir: Path,
+    out: Path = typer.Option(..., "--out", help="Write coupling analysis JSON to this path."),
+    quiet: bool = typer.Option(False, "--quiet", help="Print a short summary only."),
+) -> None:
+    """Estimate whether oracles detecting first-order faults also detect higher-order faults."""
+    try:
+        report = analyze_dataset_coupling(dataset_dir)
+    except HigherOrderMutationError as exc:
+        console.print(f"[red]ERROR[/red] {exc}")
+        raise typer.Exit(code=1) from exc
+
+    write_dataset_coupling_report(out, report)
+
+    if quiet:
+        console.print(
+            f"[green]OK[/green] coupling_effect={report.coupling_effect_estimate:.2%}, "
+            f"cases={report.case_count}"
+        )
+    else:
+        console.print(
+            f"[green]OK[/green] Analyzed {report.case_count} cases "
+            f"({report.first_order_case_count} first-order, "
+            f"{report.higher_order_case_count} higher-order)"
+        )
+        console.print(
+            f"First-order detection rate: {report.first_order_detection_rate:.2%}"
+        )
+        console.print(
+            f"Higher-order detection rate: {report.higher_order_detection_rate:.2%}"
+        )
+        console.print(f"Coupling effect estimate: {report.coupling_effect_estimate:.2%}")
+        console.print(f"Report: {out}")
+
     raise typer.Exit(code=0)
 
 

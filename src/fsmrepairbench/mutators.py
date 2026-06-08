@@ -95,6 +95,8 @@ def _build_metadata(
         changed_transition_id=changed_transition_id,
         description=description,
         seed=seed,
+        mutation_order=1,
+        is_higher_order=False,
     )
 
 
