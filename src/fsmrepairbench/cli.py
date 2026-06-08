@@ -17,6 +17,14 @@ from fsmrepairbench.experiments import (
 )
 from fsmrepairbench.freeze import FreezeError, freeze_release
 from fsmrepairbench.generator import BenchmarkGenerationError, generate_benchmark
+from fsmrepairbench.generators.synthetic_factory import (
+    ComplexityLevel,
+    SyntheticFactoryError,
+    SyntheticGenerationParams,
+    export_fsm_json,
+    generate_synthetic_fsm,
+    params_from_complexity,
+)
 from fsmrepairbench.llm.ollama import OllamaError, run_llm_repair_case
 from fsmrepairbench.mutators import MUTATION_OPERATORS, MutatorError, mutate
 from fsmrepairbench.patch import PatchError, apply_patch, load_patch_json, validate_patch
@@ -357,6 +365,55 @@ def freeze_cmd(results_dir: Path, release_dir: Path) -> None:
     console.print(f"[green]OK[/green] Frozen release written to {result.release_dir}")
     console.print(f"Manifest: {result.manifest_path}")
     console.print(f"Files checksummed: {len(result.files)}")
+    raise typer.Exit(code=0)
+
+
+@app.command("generate-fsm")
+def generate_fsm_cmd(
+    out: Path = typer.Option(..., "--out", help="Output path for generated FSM JSON."),
+    states: int | None = typer.Option(None, "--states", min=1),
+    events: int | None = typer.Option(None, "--events", min=1),
+    branching_factor: int | None = typer.Option(None, "--branching-factor", min=1),
+    seed: int = typer.Option(0, "--seed"),
+    deterministic: bool = typer.Option(True, "--deterministic/--nondeterministic"),
+    allow_dead_states: bool = typer.Option(False, "--allow-dead-states"),
+    complexity: ComplexityLevel | None = typer.Option(
+        None,
+        "--complexity",
+        help="Optional preset: small, medium, large, very_large",
+    ),
+) -> None:
+    """Generate a synthetic FSM and export it as benchmark JSON."""
+    try:
+        if complexity is not None:
+            params = params_from_complexity(
+                complexity,
+                seed=seed,
+                deterministic=deterministic,
+                allow_dead_states=allow_dead_states,
+                branching_factor=branching_factor,
+                num_states=states,
+                num_events=events,
+            )
+        else:
+            params = SyntheticGenerationParams(
+                num_states=states or 10,
+                num_events=events or 5,
+                branching_factor=branching_factor or 2,
+                deterministic=deterministic,
+                allow_dead_states=allow_dead_states,
+                seed=seed,
+            )
+        fsm = generate_synthetic_fsm(params)
+        export_fsm_json(fsm, out)
+    except SyntheticFactoryError as exc:
+        console.print(f"[red]ERROR[/red] {exc}")
+        raise typer.Exit(code=1) from exc
+
+    console.print(
+        f"[green]OK[/green] Generated FSM '{fsm.id}' with "
+        f"{len(fsm.states)} states and {len(fsm.transitions)} transitions at {out}"
+    )
     raise typer.Exit(code=0)
 
 
