@@ -13,10 +13,9 @@ from fsmrepairbench.analytics import (
     AnalyticsError,
     compute_benchmark_analytics,
     generate_benchmark_report,
-    load_dataset_cases,
 )
 from fsmrepairbench.cli import app
-from fsmrepairbench.dataset_builder import build_dataset
+from fsmrepairbench.dataset_builder import build_dataset, load_dataset_cases
 
 runner = CliRunner()
 

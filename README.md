@@ -156,8 +156,9 @@ Entry point: `fsmrepairbench`. Full reference: [docs/cli.md](docs/cli.md) (auto-
 | **Versioning** | `benchmark-version`, `migrate-benchmark`, `release-manifest`, `benchmark-evolution compare`, `benchmark-evolution trace` |
 | **Literature** | `literature-index` |
 
-Core commands (`validate-fsm`, `validate-oracle`, `score`, `mutate`, `build-dataset`) do
-**not** require the `analytics` extra.
+Core commands (`validate-fsm`, `validate-oracle`, `score`, `mutate`, `generate-fsm`,
+`generate-oracles`, `generate-benchmark`, `build-dataset`) do **not** require the
+`analytics` extra.
 
 ---
 

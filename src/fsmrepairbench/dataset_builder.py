@@ -205,6 +205,70 @@ def load_case_row(case_dir: Path) -> DatasetCaseRow:
     )
 
 
+def _parse_index_bool(value: str) -> bool:
+    return value.strip().lower() in {"1", "true", "yes"}
+
+
+def load_dataset_cases(dataset_dir: Path) -> list[DatasetCaseRow]:
+    """Load benchmark cases from *dataset_dir* index or case metadata."""
+    if not dataset_dir.is_dir():
+        msg = f"Dataset directory not found: {dataset_dir}"
+        raise DatasetBuilderError(msg)
+
+    index_path = dataset_dir / "index.csv"
+    if index_path.is_file():
+        return _load_cases_from_index(index_path)
+
+    cases_root = dataset_dir / "cases"
+    if not cases_root.is_dir():
+        msg = f"No index.csv or cases/ directory found in {dataset_dir}"
+        raise DatasetBuilderError(msg)
+
+    rows: list[DatasetCaseRow] = []
+    for case_dir in sorted(path for path in cases_root.iterdir() if path.is_dir()):
+        if is_case_complete(case_dir):
+            rows.append(load_case_row(case_dir))
+
+    if not rows:
+        msg = f"No complete benchmark cases found under {cases_root}"
+        raise DatasetBuilderError(msg)
+
+    return rows
+
+
+def _load_cases_from_index(index_path: Path) -> list[DatasetCaseRow]:
+    rows: list[DatasetCaseRow] = []
+    with index_path.open(encoding="utf-8", newline="") as handle:
+        reader = csv.DictReader(handle)
+        if reader.fieldnames is None:
+            msg = f"Index CSV has no header: {index_path}"
+            raise DatasetBuilderError(msg)
+
+        for record in reader:
+            rows.append(
+                DatasetCaseRow(
+                    case_id=str(record["case_id"]),
+                    reference_fsm_id=str(record["reference_fsm_id"]),
+                    faulty_fsm_id=str(record["faulty_fsm_id"]),
+                    complexity=cast(ComplexityLevel, str(record["complexity"])),
+                    state_count=int(record["state_count"]),
+                    transition_count=int(record["transition_count"]),
+                    event_count=int(record["event_count"]),
+                    mutation_operator=str(record["mutation_operator"]),
+                    difficulty_score=float(record["difficulty_score"]),
+                    oracle_state_coverage=float(record["oracle_state_coverage"]),
+                    oracle_transition_coverage=float(record["oracle_transition_coverage"]),
+                    oracle_event_coverage=float(record["oracle_event_coverage"]),
+                    reference_bpr=float(record["reference_bpr"]),
+                    faulty_bpr=float(record["faulty_bpr"]),
+                    bpr_delta=float(record["bpr_delta"]),
+                    valid_reference=_parse_index_bool(record["valid_reference"]),
+                    valid_faulty=_parse_index_bool(record["valid_faulty"]),
+                )
+            )
+    return rows
+
+
 def _format_csv_value(key: str, value: str | float | bool | int) -> str | float | bool | int:
     float_columns = {
         "difficulty_score",

@@ -28,8 +28,9 @@ python -m pip install -e ".[dev,analytics]"
 | `dev` | pytest, ruff, mypy |
 | `analytics` | matplotlib + kiwisolver for `benchmark-report` and analytics tests |
 
-Core commands (`validate-fsm`, `validate-oracle`, `score`, `mutate`, `build-dataset`,
-etc.) do **not** require the `analytics` extra.
+Core commands (`validate-fsm`, `validate-oracle`, `score`, `mutate`, `generate-fsm`,
+`generate-oracles`, `generate-benchmark`, `build-dataset`, etc.) do **not** require the
+`analytics` extra.
 
 Install core only:
 
@@ -49,9 +50,13 @@ python -m pip install -e ".[analytics]"
 fsmrepairbench validate-fsm tests/fixtures/valid_fsm.json
 fsmrepairbench validate-oracle tests/fixtures/valid_oracle.json
 fsmrepairbench score tests/fixtures/valid_fsm.json tests/fixtures/valid_oracle.json
+fsmrepairbench mutate tests/fixtures/valid_fsm.json --operator wrong_target --seed 42 --out /tmp/faulty.json
+fsmrepairbench generate-fsm --out /tmp/fsm.json --complexity medium --seed 42
+fsmrepairbench generate-oracles /tmp/fsm.json --out /tmp/oracles.json --depth medium
+fsmrepairbench generate-benchmark tests/fixtures /tmp/benchmark --bugs-per-fsm 1 --seed 42
 ```
 
-These commands must work **without** matplotlib installed.
+These commands must work **without** matplotlib installed (base install only).
 
 Analytics commands require the `analytics` extra:
 

@@ -3,6 +3,8 @@
 from __future__ import annotations
 
 import json
+import subprocess
+import sys
 from pathlib import Path
 
 from typer.testing import CliRunner
@@ -10,7 +12,26 @@ from typer.testing import CliRunner
 from fsmrepairbench.cli import app
 
 FIXTURES = Path(__file__).parent / "fixtures"
+REPO_ROOT = Path(__file__).resolve().parents[1]
 runner = CliRunner()
+
+
+def test_cli_core_import_without_matplotlib() -> None:
+    script = """
+import sys
+
+import fsmrepairbench.cli  # noqa: F401
+
+assert "matplotlib" not in sys.modules
+"""
+    result = subprocess.run(
+        [sys.executable, "-c", script],
+        cwd=REPO_ROOT,
+        capture_output=True,
+        text=True,
+        check=False,
+    )
+    assert result.returncode == 0, result.stderr or result.stdout
 
 
 def test_cli_validate_fsm_success() -> None:

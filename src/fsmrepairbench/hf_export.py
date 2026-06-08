@@ -10,8 +10,7 @@ from typing import Any
 
 import yaml
 
-from fsmrepairbench.analytics import load_dataset_cases
-from fsmrepairbench.dataset_builder import is_case_complete
+from fsmrepairbench.dataset_builder import is_case_complete, load_dataset_cases
 from fsmrepairbench.models import FSM, BugMetadata
 from fsmrepairbench.validators import load_fsm_json, load_model, load_oracle_suite
 
