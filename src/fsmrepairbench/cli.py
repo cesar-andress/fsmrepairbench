@@ -21,6 +21,7 @@ from fsmrepairbench.case_filter import (
     write_filter_csv,
     write_overlap_json,
 )
+from fsmrepairbench.coverage_optimizer import CoverageOptimizerError, generate_coverage_report
 from fsmrepairbench.dataset_builder import (
     DEFAULT_OUTPUT_DIR,
     DatasetBuilderError,
@@ -789,6 +790,49 @@ def subset_overlap_cmd(
         f"intersection={overlap.count_intersection}, jaccard={overlap.jaccard:.4f}"
     )
     console.print(f"Report: {out}")
+    raise typer.Exit(code=0)
+
+
+@app.command("coverage-optimizer")
+def coverage_optimizer_cmd(
+    dataset_dir: Path,
+    out: Path | None = typer.Option(
+        None,
+        "--out",
+        help="Optional output path for coverage_report.json.",
+    ),
+    suggest_count: int = typer.Option(
+        200,
+        "--suggest-count",
+        min=1,
+        help="Target number of additional cases to recommend.",
+    ),
+) -> None:
+    """Analyze benchmark diversity from feature_matrix.csv and suggest gap-filling regions."""
+    try:
+        result = generate_coverage_report(
+            dataset_dir,
+            output_path=out,
+            suggestion_count=suggest_count,
+        )
+    except CoverageOptimizerError as exc:
+        console.print(f"[red]ERROR[/red] {exc}")
+        raise typer.Exit(code=1) from exc
+
+    report = result.report
+    unique = report["unique_feature_combinations"]
+    suggestions = report["suggestions"]
+    console.print(
+        f"[green]OK[/green] Coverage report for {report['case_count']} cases written to "
+        f"{result.report_path}"
+    )
+    console.print(
+        f"Unique combinations: {unique['unique_count']} "
+        f"(duplicates={unique['duplicate_combinations']})"
+    )
+    console.print(f"Missing core combinations: {report['missing_combinations']['missing_count']}")
+    console.print(f"Suggestion: {suggestions['message']}")
+    console.print(f"Recommended regions: {len(suggestions['regions'])}")
     raise typer.Exit(code=0)
 
 
