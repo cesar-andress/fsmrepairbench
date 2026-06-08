@@ -97,6 +97,13 @@ from fsmrepairbench.validators import (
     validate_fsm_document,
     validate_oracle_document,
 )
+from fsmrepairbench.benchmark_evolution import (
+    EVOLUTION_REPORT_FILENAME,
+    BenchmarkEvolutionError,
+    build_release_trace,
+    compare_benchmark_evolution,
+    write_evolution_report,
+)
 from fsmrepairbench.versioning import (
     MIGRATION_REPORT_FILENAME,
     RELEASE_MANIFEST_FILENAME,
@@ -114,6 +121,8 @@ app = typer.Typer(
     help="Benchmark toolkit for LLM-based repair of behavioural FSMs.",
     no_args_is_help=True,
 )
+evolution_app = typer.Typer(help="Trace and compare benchmark evolution releases v0, v1, and v2.")
+app.add_typer(evolution_app, name="benchmark-evolution")
 console = Console()
 
 
@@ -810,6 +819,56 @@ def benchmark_version_cmd(dataset_dir: Path) -> None:
     raise typer.Exit(code=0)
 
 
+@evolution_app.command("compare")
+def benchmark_evolution_compare_cmd(
+    source_dir: Path,
+    target_dir: Path,
+    out: Path | None = typer.Option(
+        None,
+        "--out",
+        help="Output path for the evolution comparison report JSON.",
+    ),
+) -> None:
+    """Compare two benchmark releases and report added, removed, and modified cases."""
+    try:
+        report = compare_benchmark_evolution(source_dir, target_dir)
+        report_path = out or source_dir / EVOLUTION_REPORT_FILENAME
+        write_evolution_report(report_path, report)
+    except (BenchmarkEvolutionError, VersioningError) as exc:
+        console.print(f"[red]ERROR[/red] {exc}")
+        raise typer.Exit(code=1) from exc
+
+    console.print(
+        f"[green]OK[/green] Compared {report.source_release.value} -> "
+        f"{report.target_release.value} releases"
+    )
+    console.print(f"Added cases: {len(report.added_cases)}")
+    console.print(f"Removed cases: {len(report.removed_cases)}")
+    console.print(f"Modified cases: {len(report.modified_cases)}")
+    console.print(f"Evolution report: {report_path}")
+    raise typer.Exit(code=0)
+
+
+@evolution_app.command("trace")
+def benchmark_evolution_trace_cmd(dataset_dir: Path) -> None:
+    """Show traceability metadata for a benchmark release."""
+    try:
+        trace = build_release_trace(dataset_dir)
+    except (BenchmarkEvolutionError, VersioningError) as exc:
+        console.print(f"[red]ERROR[/red] {exc}")
+        raise typer.Exit(code=1) from exc
+
+    console.print(f"[green]OK[/green] Evolution release: {trace.evolution_release.value}")
+    console.print(f"Benchmark version: {trace.benchmark_version.value}")
+    console.print(f"Dataset ID: {trace.dataset_id}")
+    console.print(f"Cases: {len(trace.case_ids)}")
+    if trace.predecessor_release is not None:
+        console.print(f"Predecessor release: {trace.predecessor_release.value}")
+    if trace.successor_release is not None:
+        console.print(f"Successor release: {trace.successor_release.value}")
+    raise typer.Exit(code=0)
+
+
 @app.command("migrate-benchmark")
 def migrate_benchmark_cmd(
     source_dir: Path,
@@ -827,6 +886,11 @@ def migrate_benchmark_cmd(
                 f"[green]OK[/green] Dry-run migration {report.source_version.value} -> "
                 f"{report.target_version.value} for {report.case_count} cases"
             )
+            console.print(
+                "Modified cases: "
+                f"{len(report.modified_cases)} "
+                f"(added={len(report.added_cases)}, removed={len(report.removed_cases)})"
+            )
             console.print(f"Report: {report_path}")
             raise typer.Exit(code=0)
 
@@ -838,6 +902,12 @@ def migrate_benchmark_cmd(
     console.print(
         f"[green]OK[/green] Migrated {report.case_count} cases from "
         f"{report.source_version.value} to {report.target_version.value}"
+    )
+    console.print(
+        "Evolution changes: "
+        f"added={len(report.added_cases)}, "
+        f"removed={len(report.removed_cases)}, "
+        f"modified={len(report.modified_cases)}"
     )
     console.print(f"Output: {output_dir}")
     console.print(f"Migration report: {output_dir / MIGRATION_REPORT_FILENAME}")

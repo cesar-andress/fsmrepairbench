@@ -167,11 +167,18 @@ class MigrationReport:
     added_fields: tuple[str, ...]
     warnings: tuple[str, ...]
     cases: tuple[MigrationCaseReport, ...]
+    added_cases: tuple[str, ...] = ()
+    removed_cases: tuple[str, ...] = ()
+    modified_cases: tuple[Any, ...] = ()
 
     def to_dict(self) -> dict[str, Any]:
+        from fsmrepairbench.benchmark_evolution import evolution_release_for_version
+
         return {
             "source_version": self.source_version.value,
             "target_version": self.target_version.value,
+            "source_release": evolution_release_for_version(self.source_version).value,
+            "target_release": evolution_release_for_version(self.target_version).value,
             "source_dir": str(self.source_dir),
             "output_dir": str(self.output_dir) if self.output_dir is not None else None,
             "generated_at": datetime.now(tz=UTC).isoformat(),
@@ -179,6 +186,15 @@ class MigrationReport:
             "stable_case_ids_preserved": self.stable_case_ids_preserved,
             "added_fields": list(self.added_fields),
             "warnings": list(self.warnings),
+            "added_cases": list(self.added_cases),
+            "removed_cases": list(self.removed_cases),
+            "modified_cases": [
+                {
+                    "case_id": case.case_id,
+                    "changes": list(case.changes),
+                }
+                for case in self.modified_cases
+            ],
             "cases": [
                 {
                     "case_id": case.case_id,
@@ -205,8 +221,11 @@ class ReleaseManifest:
     index_path: str
 
     def to_dict(self) -> dict[str, Any]:
+        from fsmrepairbench.benchmark_evolution import evolution_release_for_version
+
         return {
             "benchmark_version": self.benchmark_version.value,
+            "evolution_release": evolution_release_for_version(self.benchmark_version).value,
             "dataset_id": self.dataset_id,
             "dataset_dir": str(self.dataset_dir),
             "generated_at": datetime.now(tz=UTC).isoformat(),
@@ -421,7 +440,7 @@ def analyze_migration(dataset_dir: Path, target_version: BenchmarkVersion) -> Mi
     if source_version is BenchmarkVersion.V0_1 and target_version is not BenchmarkVersion.V0_1:
         warnings.append("Legacy v0.1 cases will gain case_metadata.json during migration")
 
-    return MigrationReport(
+    report = MigrationReport(
         source_version=source_version,
         target_version=target_version,
         source_dir=dataset_dir,
@@ -431,6 +450,13 @@ def analyze_migration(dataset_dir: Path, target_version: BenchmarkVersion) -> Mi
         added_fields=tuple(sorted(added_fields)),
         warnings=tuple(warnings),
         cases=tuple(case_reports),
+    )
+    from fsmrepairbench.benchmark_evolution import attach_evolution_to_migration_report
+
+    return attach_evolution_to_migration_report(
+        report,
+        source_dir=dataset_dir,
+        target_dir=None,
     )
 
 
@@ -536,6 +562,13 @@ def migrate_benchmark(
         added_fields=tuple(sorted(added_fields)),
         warnings=tuple(warnings),
         cases=tuple(case_reports),
+    )
+    from fsmrepairbench.benchmark_evolution import attach_evolution_to_migration_report
+
+    report = attach_evolution_to_migration_report(
+        report,
+        source_dir=source_dir,
+        target_dir=output_dir,
     )
     write_migration_report(output_dir / MIGRATION_REPORT_FILENAME, report)
     write_release_manifest(output_dir)
