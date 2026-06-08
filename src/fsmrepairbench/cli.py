@@ -70,6 +70,12 @@ from fsmrepairbench.oracle_generator import (
     export_oracle_json,
     generate_oracle_suite,
 )
+from fsmrepairbench.requirement_generation import (
+    RequirementGenerationError,
+    RequirementStyle,
+    export_requirements_txt,
+    generate_requirements,
+)
 from fsmrepairbench.patch import PatchError, apply_patch, load_patch_json, validate_patch
 from fsmrepairbench.repair_engines.baselines import (
     BASELINE_ENGINE_NAMES,
@@ -507,6 +513,42 @@ def generate_oracles_cmd(
         f"states={coverage.state_coverage:.2%}, "
         f"transitions={coverage.transition_coverage:.2%}, "
         f"events={coverage.event_coverage:.2%}"
+    )
+    raise typer.Exit(code=0)
+
+
+@app.command("generate-requirements")
+def generate_requirements_cmd(
+    fsm_path: Path,
+    out: Path = typer.Option(..., "--out", help="Output path for requirements.txt."),
+    style: RequirementStyle = typer.Option(
+        "concise",
+        "--style",
+        help="Requirement wording style: concise, verbose, ambiguous, or industrial.",
+    ),
+) -> None:
+    """Generate natural-language requirements from a reference FSM."""
+    try:
+        fsm = load_fsm_json(fsm_path)
+    except (OSError, json.JSONDecodeError, ValidationError) as exc:
+        console.print(f"[red]ERROR[/red] Failed to load FSM: {exc}")
+        raise typer.Exit(code=1) from exc
+
+    fsm_errors = validate_fsm(fsm)
+    if fsm_errors:
+        console.print(f"[red]ERROR[/red] Invalid FSM: {fsm_errors[0]}")
+        raise typer.Exit(code=1)
+
+    try:
+        result = generate_requirements(fsm, style=style)
+        export_requirements_txt(result, out)
+    except RequirementGenerationError as exc:
+        console.print(f"[red]ERROR[/red] {exc}")
+        raise typer.Exit(code=1) from exc
+
+    console.print(
+        f"[green]OK[/green] Generated {len(result.items)} requirements for FSM "
+        f"'{result.fsm_id}' ({result.style}) at {out}"
     )
     raise typer.Exit(code=0)
 
