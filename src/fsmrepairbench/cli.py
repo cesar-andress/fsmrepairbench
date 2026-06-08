@@ -23,6 +23,10 @@ from fsmrepairbench.case_filter import (
 )
 from fsmrepairbench.coverage_optimizer import CoverageOptimizerError, generate_coverage_report
 from fsmrepairbench.gap_detection import GapDetectionError, detect_benchmark_gaps
+from fsmrepairbench.failure_pattern_mining import (
+    FailurePatternMiningError,
+    mine_failure_patterns,
+)
 from fsmrepairbench.dataset_builder import (
     DEFAULT_OUTPUT_DIR,
     DatasetBuilderError,
@@ -1100,6 +1104,37 @@ def detect_gaps_cmd(
         f"(plan covers {report['generation_plan_cases']} cases in "
         f"{report['generation_plan_cells']} cells)"
     )
+    raise typer.Exit(code=0)
+
+
+@app.command("mine-failure-patterns")
+def mine_failure_patterns_cmd(
+    input_dir: Path,
+    output_dir: Path | None = typer.Option(
+        None,
+        "--output-dir",
+        help="Directory for failure_patterns.csv (defaults to input_dir).",
+    ),
+) -> None:
+    """Mine recurring repair failure patterns from repair_trace.json files."""
+    try:
+        result = mine_failure_patterns(input_dir, output_dir=output_dir)
+    except FailurePatternMiningError as exc:
+        console.print(f"[red]ERROR[/red] {exc}")
+        raise typer.Exit(code=1) from exc
+
+    report = result.report
+    console.print(
+        f"[green]OK[/green] Discovered {report['occurrence_count']} failure pattern "
+        f"occurrences across {report['trace_count']} repair traces"
+    )
+    console.print(f"Failure patterns CSV: {result.patterns_path}")
+    console.print(f"Report: {result.report_path}")
+    if report["top_patterns"]:
+        top = ", ".join(
+            f"{item['pattern']}={item['occurrences']}" for item in report["top_patterns"][:5]
+        )
+        console.print(f"Top patterns: {top}")
     raise typer.Exit(code=0)
 
 
