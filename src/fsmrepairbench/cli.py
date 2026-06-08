@@ -36,6 +36,7 @@ from fsmrepairbench.generators.synthetic_factory import (
     generate_synthetic_fsm,
     params_from_complexity,
 )
+from fsmrepairbench.hf_export import HuggingFaceExportError, export_huggingface_dataset
 from fsmrepairbench.llm.ollama import OllamaError, run_llm_repair_case
 from fsmrepairbench.mutators import MUTATION_OPERATORS, MutatorError, mutate
 from fsmrepairbench.oracle_generator import (
@@ -557,6 +558,25 @@ def benchmark_report_cmd(dataset_dir: Path) -> None:
     console.print(f"Summary: {result.summary_path}")
     console.print(f"Report: {result.report_path}")
     console.print(f"Plots: {result.plots_dir}")
+    raise typer.Exit(code=0)
+
+
+@app.command("export-hf")
+def export_hf_cmd(dataset_dir: Path) -> None:
+    """Export a benchmark dataset to HuggingFace JSONL splits."""
+    try:
+        result = export_huggingface_dataset(dataset_dir)
+    except HuggingFaceExportError as exc:
+        console.print(f"[red]ERROR[/red] {exc}")
+        raise typer.Exit(code=1) from exc
+
+    console.print(
+        f"[green]OK[/green] Exported HuggingFace dataset to {result.output_dir} "
+        f"(train={result.split_counts['train']}, "
+        f"validation={result.split_counts['validation']}, "
+        f"test={result.split_counts['test']})"
+    )
+    console.print(f"Dataset card: {result.dataset_card_path}")
     raise typer.Exit(code=0)
 
 
