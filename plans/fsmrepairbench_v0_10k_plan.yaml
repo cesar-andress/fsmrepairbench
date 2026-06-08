@@ -1,0 +1,861 @@
+# FSMRepairBench v0 10,000-case stratified generation plan
+# Seed 42 makes the full build reproducible across machines and releases.
+# Total planned cases: 10000
+
+name: fsmrepairbench_v0_10k
+version: "0.1.0"
+seed: 42
+cells:
+
+  # Block 1 — Plain FSM baseline (600 cases)
+  # Why: Establishes the simplest deterministic, complete reference family across all size classes before introducing outputs, guards, or timing.
+  - machine_type: plain_fsm
+    determinism: deterministic
+    completeness: complete
+    arity_class: low
+    size_class: tiny
+    guard_complexity: none
+    time_features: [none]
+    graph_structure: [acyclic]
+    oracle_depth: shallow
+    bug_type: missing_transition
+    count: 120
+  - machine_type: plain_fsm
+    determinism: deterministic
+    completeness: complete
+    arity_class: medium
+    size_class: small
+    guard_complexity: none
+    time_features: [none]
+    graph_structure: [cyclic]
+    oracle_depth: medium
+    bug_type: wrong_target
+    count: 120
+  - machine_type: plain_fsm
+    determinism: deterministic
+    completeness: complete
+    arity_class: high
+    size_class: medium
+    guard_complexity: none
+    time_features: [none]
+    graph_structure: [sparse]
+    oracle_depth: deep
+    bug_type: wrong_source
+    count: 120
+  - machine_type: plain_fsm
+    determinism: deterministic
+    completeness: complete
+    arity_class: very_high
+    size_class: large
+    guard_complexity: none
+    time_features: [none]
+    graph_structure: [dense]
+    oracle_depth: medium
+    bug_type: wrong_event
+    count: 120
+  - machine_type: plain_fsm
+    determinism: deterministic
+    completeness: complete
+    arity_class: medium
+    size_class: very_large
+    guard_complexity: none
+    time_features: [none]
+    graph_structure: [layered]
+    oracle_depth: exhaustive_like
+    bug_type: wrong_initial_state
+    count: 120
+
+  # Block 2 — Mealy machines (500 cases)
+  # Why: Transition-output semantics stress output-sensitive repair; spread across graph tags and oracle depths.
+  - machine_type: mealy
+    determinism: deterministic
+    completeness: complete
+    arity_class: low
+    size_class: tiny
+    guard_complexity: simple
+    time_features: [none]
+    graph_structure: [acyclic]
+    oracle_depth: shallow
+    bug_type: action_corruption
+    count: 100
+  - machine_type: mealy
+    determinism: deterministic
+    completeness: complete
+    arity_class: medium
+    size_class: small
+    guard_complexity: simple
+    time_features: [none]
+    graph_structure: [sparse]
+    oracle_depth: medium
+    bug_type: wrong_target
+    count: 100
+  - machine_type: mealy
+    determinism: deterministic
+    completeness: complete
+    arity_class: high
+    size_class: medium
+    guard_complexity: simple
+    time_features: [none]
+    graph_structure: [cyclic]
+    oracle_depth: medium
+    bug_type: missing_transition
+    count: 100
+  - machine_type: mealy
+    determinism: deterministic
+    completeness: complete
+    arity_class: medium
+    size_class: large
+    guard_complexity: simple
+    time_features: [none]
+    graph_structure: [dense]
+    oracle_depth: deep
+    bug_type: guard_flip
+    count: 100
+  - machine_type: mealy
+    determinism: deterministic
+    completeness: complete
+    arity_class: high
+    size_class: very_large
+    guard_complexity: simple
+    time_features: [none]
+    graph_structure: [hub_and_spoke]
+    oracle_depth: deep
+    bug_type: duplicate_transition
+    count: 100
+
+  # Block 3 — Moore machines (500 cases)
+  # Why: State-attached outputs cover Moore-style behaviour and state-local corruption bugs.
+  - machine_type: moore
+    determinism: deterministic
+    completeness: complete
+    arity_class: low
+    size_class: tiny
+    guard_complexity: none
+    time_features: [none]
+    graph_structure: [layered]
+    oracle_depth: shallow
+    bug_type: wrong_initial_state
+    count: 100
+  - machine_type: moore
+    determinism: deterministic
+    completeness: complete
+    arity_class: medium
+    size_class: small
+    guard_complexity: simple
+    time_features: [none]
+    graph_structure: [acyclic]
+    oracle_depth: medium
+    bug_type: wrong_target
+    count: 100
+  - machine_type: moore
+    determinism: deterministic
+    completeness: complete
+    arity_class: high
+    size_class: medium
+    guard_complexity: simple
+    time_features: [none]
+    graph_structure: [cyclic]
+    oracle_depth: deep
+    bug_type: dead_state_intro
+    count: 100
+  - machine_type: moore
+    determinism: deterministic
+    completeness: complete
+    arity_class: very_high
+    size_class: large
+    guard_complexity: compound
+    time_features: [none]
+    graph_structure: [strongly_connected]
+    oracle_depth: deep
+    bug_type: guard_weaken
+    count: 100
+  - machine_type: moore
+    determinism: deterministic
+    completeness: complete
+    arity_class: medium
+    size_class: very_large
+    guard_complexity: compound
+    time_features: [none]
+    graph_structure: [dense]
+    oracle_depth: exhaustive_like
+    bug_type: unreachable_state_intro
+    count: 100
+
+  # Block 4 — Extended FSMs (700 cases)
+  # Why: Variables plus guards model practical extended FSMs used in modelling tools and guarded transitions.
+  - machine_type: efsm
+    determinism: deterministic
+    completeness: complete
+    arity_class: medium
+    size_class: tiny
+    guard_complexity: simple
+    time_features: [none]
+    graph_structure: [sparse]
+    oracle_depth: medium
+    bug_type: guard_flip
+    count: 140
+  - machine_type: efsm
+    determinism: deterministic
+    completeness: complete
+    arity_class: high
+    size_class: small
+    guard_complexity: compound
+    time_features: [none]
+    graph_structure: [layered]
+    oracle_depth: medium
+    bug_type: guard_strengthen
+    count: 140
+  - machine_type: efsm
+    determinism: deterministic
+    completeness: complete
+    arity_class: high
+    size_class: medium
+    guard_complexity: compound
+    time_features: [none]
+    graph_structure: [cyclic]
+    oracle_depth: deep
+    bug_type: guard_weaken
+    count: 140
+  - machine_type: efsm
+    determinism: deterministic
+    completeness: complete
+    arity_class: very_high
+    size_class: large
+    guard_complexity: compound
+    time_features: [none]
+    graph_structure: [dense]
+    oracle_depth: deep
+    bug_type: wrong_event
+    count: 140
+  - machine_type: efsm
+    determinism: deterministic
+    completeness: complete
+    arity_class: very_high
+    size_class: very_large
+    guard_complexity: simple
+    time_features: [none]
+    graph_structure: [hub_and_spoke]
+    oracle_depth: exhaustive_like
+    bug_type: action_corruption
+    count: 140
+
+  # Block 5 — Timed FSMs (600 cases)
+  # Why: Timeout and delay fields introduce timed-automata-inspired cases without full EFSM variable stores.
+  - machine_type: timed_fsm
+    determinism: deterministic
+    completeness: complete
+    arity_class: low
+    size_class: tiny
+    guard_complexity: none
+    time_features: [timeout]
+    graph_structure: [acyclic]
+    oracle_depth: shallow
+    bug_type: timeout_corruption
+    count: 120
+  - machine_type: timed_fsm
+    determinism: deterministic
+    completeness: complete
+    arity_class: medium
+    size_class: small
+    guard_complexity: simple
+    time_features: [output_delay]
+    graph_structure: [cyclic]
+    oracle_depth: medium
+    bug_type: delay_corruption
+    count: 120
+  - machine_type: timed_fsm
+    determinism: deterministic
+    completeness: complete
+    arity_class: medium
+    size_class: medium
+    guard_complexity: simple
+    time_features: [timeout]
+    graph_structure: [sparse]
+    oracle_depth: deep
+    bug_type: wrong_target
+    count: 120
+  - machine_type: timed_fsm
+    determinism: deterministic
+    completeness: complete
+    arity_class: high
+    size_class: large
+    guard_complexity: compound
+    time_features: [timed_guard]
+    graph_structure: [dense]
+    oracle_depth: deep
+    bug_type: missing_transition
+    count: 120
+  - machine_type: timed_fsm
+    determinism: deterministic
+    completeness: complete
+    arity_class: high
+    size_class: very_large
+    guard_complexity: compound
+    time_features: [timed_guard]
+    graph_structure: [strongly_connected]
+    oracle_depth: exhaustive_like
+    bug_type: guard_flip
+    count: 120
+
+  # Block 6 — Timed extended FSMs (700 cases)
+  # Why: Combines guards, variables, and timing for the richest machine family in the v0 benchmark.
+  - machine_type: timed_efsm
+    determinism: deterministic
+    completeness: complete
+    arity_class: medium
+    size_class: tiny
+    guard_complexity: simple
+    time_features: [timeout]
+    graph_structure: [layered]
+    oracle_depth: medium
+    bug_type: timeout_corruption
+    count: 140
+  - machine_type: timed_efsm
+    determinism: deterministic
+    completeness: complete
+    arity_class: high
+    size_class: small
+    guard_complexity: compound
+    time_features: [timed_guard]
+    graph_structure: [hub_and_spoke]
+    oracle_depth: medium
+    bug_type: delay_corruption
+    count: 140
+  - machine_type: timed_efsm
+    determinism: deterministic
+    completeness: complete
+    arity_class: high
+    size_class: medium
+    guard_complexity: compound
+    time_features: [output_delay]
+    graph_structure: [cyclic]
+    oracle_depth: deep
+    bug_type: guard_strengthen
+    count: 140
+  - machine_type: timed_efsm
+    determinism: deterministic
+    completeness: complete
+    arity_class: very_high
+    size_class: large
+    guard_complexity: compound
+    time_features: [timed_guard]
+    graph_structure: [dense]
+    oracle_depth: exhaustive_like
+    bug_type: wrong_source
+    count: 140
+  - machine_type: timed_efsm
+    determinism: deterministic
+    completeness: complete
+    arity_class: very_high
+    size_class: very_large
+    guard_complexity: simple
+    time_features: [timeout]
+    graph_structure: [strongly_connected]
+    oracle_depth: exhaustive_like
+    bug_type: nondeterminism_intro
+    count: 140
+
+  # Block 7 — Nondeterministic stress (700 cases)
+  # Why: Ambiguous transition resolution is essential for comparing models on nondeterministic machines.
+  - machine_type: plain_fsm
+    determinism: nondeterministic
+    completeness: complete
+    arity_class: low
+    size_class: tiny
+    guard_complexity: simple
+    time_features: [none]
+    graph_structure: [acyclic]
+    oracle_depth: deep
+    bug_type: nondeterminism_intro
+    count: 100
+  - machine_type: mealy
+    determinism: nondeterministic
+    completeness: complete
+    arity_class: medium
+    size_class: small
+    guard_complexity: simple
+    time_features: [none]
+    graph_structure: [sparse]
+    oracle_depth: deep
+    bug_type: duplicate_transition
+    count: 100
+  - machine_type: moore
+    determinism: nondeterministic
+    completeness: complete
+    arity_class: medium
+    size_class: medium
+    guard_complexity: simple
+    time_features: [none]
+    graph_structure: [cyclic]
+    oracle_depth: deep
+    bug_type: wrong_event
+    count: 100
+  - machine_type: efsm
+    determinism: nondeterministic
+    completeness: complete
+    arity_class: high
+    size_class: medium
+    guard_complexity: simple
+    time_features: [none]
+    graph_structure: [layered]
+    oracle_depth: deep
+    bug_type: guard_flip
+    count: 100
+  - machine_type: timed_fsm
+    determinism: nondeterministic
+    completeness: complete
+    arity_class: high
+    size_class: large
+    guard_complexity: simple
+    time_features: [timeout]
+    graph_structure: [dense]
+    oracle_depth: deep
+    bug_type: timeout_corruption
+    count: 100
+  - machine_type: timed_efsm
+    determinism: nondeterministic
+    completeness: complete
+    arity_class: very_high
+    size_class: large
+    guard_complexity: simple
+    time_features: [timeout]
+    graph_structure: [strongly_connected]
+    oracle_depth: deep
+    bug_type: delay_corruption
+    count: 100
+  - machine_type: plain_fsm
+    determinism: nondeterministic
+    completeness: complete
+    arity_class: very_high
+    size_class: very_large
+    guard_complexity: simple
+    time_features: [none]
+    graph_structure: [hub_and_spoke]
+    oracle_depth: deep
+    bug_type: wrong_target
+    count: 100
+
+  # Block 8 — Partial completeness (500 cases)
+  # Why: Incomplete specifications mirror real models where not every state/event pair is defined.
+  - machine_type: plain_fsm
+    determinism: deterministic
+    completeness: partial
+    arity_class: medium
+    size_class: small
+    guard_complexity: simple
+    time_features: [none]
+    graph_structure: [sparse]
+    oracle_depth: medium
+    bug_type: missing_transition
+    count: 100
+  - machine_type: mealy
+    determinism: deterministic
+    completeness: partial
+    arity_class: low
+    size_class: tiny
+    guard_complexity: simple
+    time_features: [none]
+    graph_structure: [acyclic]
+    oracle_depth: medium
+    bug_type: wrong_target
+    count: 100
+  - machine_type: moore
+    determinism: deterministic
+    completeness: partial
+    arity_class: high
+    size_class: medium
+    guard_complexity: simple
+    time_features: [none]
+    graph_structure: [layered]
+    oracle_depth: medium
+    bug_type: dead_state_intro
+    count: 100
+  - machine_type: efsm
+    determinism: deterministic
+    completeness: partial
+    arity_class: high
+    size_class: large
+    guard_complexity: simple
+    time_features: [none]
+    graph_structure: [cyclic]
+    oracle_depth: medium
+    bug_type: guard_weaken
+    count: 100
+  - machine_type: timed_fsm
+    determinism: deterministic
+    completeness: partial
+    arity_class: medium
+    size_class: medium
+    guard_complexity: simple
+    time_features: [output_delay]
+    graph_structure: [dense]
+    oracle_depth: medium
+    bug_type: delay_corruption
+    count: 100
+
+  # Block 9 — Guard complexity bands (600 cases)
+  # Why: Isolates none/simple/compound guard expressions for guard-focused repair analysis.
+  - machine_type: plain_fsm
+    determinism: deterministic
+    completeness: complete
+    arity_class: medium
+    size_class: medium
+    guard_complexity: none
+    time_features: [none]
+    graph_structure: [sparse]
+    oracle_depth: medium
+    bug_type: missing_transition
+    count: 200
+  - machine_type: efsm
+    determinism: deterministic
+    completeness: complete
+    arity_class: medium
+    size_class: medium
+    guard_complexity: simple
+    time_features: [timed_guard]
+    graph_structure: [layered]
+    oracle_depth: medium
+    bug_type: guard_flip
+    count: 200
+  - machine_type: timed_efsm
+    determinism: deterministic
+    completeness: complete
+    arity_class: medium
+    size_class: medium
+    guard_complexity: compound
+    time_features: [timed_guard]
+    graph_structure: [layered]
+    oracle_depth: medium
+    bug_type: guard_strengthen
+    count: 200
+
+  # Block 10 — Time-feature emphasis (600 cases)
+  # Why: Dedicated timed guards, timeouts, and output delays for timed-automata-inspired slicing.
+  - machine_type: timed_fsm
+    determinism: deterministic
+    completeness: complete
+    arity_class: high
+    size_class: large
+    guard_complexity: compound
+    time_features: [timeout]
+    graph_structure: [cyclic]
+    oracle_depth: deep
+    bug_type: timeout_corruption
+    count: 200
+  - machine_type: timed_efsm
+    determinism: deterministic
+    completeness: complete
+    arity_class: high
+    size_class: large
+    guard_complexity: compound
+    time_features: [timed_guard]
+    graph_structure: [cyclic]
+    oracle_depth: deep
+    bug_type: guard_flip
+    count: 200
+  - machine_type: timed_fsm
+    determinism: deterministic
+    completeness: complete
+    arity_class: high
+    size_class: large
+    guard_complexity: compound
+    time_features: [output_delay]
+    graph_structure: [cyclic]
+    oracle_depth: deep
+    bug_type: delay_corruption
+    count: 200
+
+  # Block 11 — Graph topology portfolio (1400 cases)
+  # Why: Each major topology tag gets equal weight for structural diversity analyses and Venn slicing.
+  - machine_type: plain_fsm
+    determinism: deterministic
+    completeness: complete
+    arity_class: medium
+    size_class: medium
+    guard_complexity: simple
+    time_features: [none]
+    graph_structure: [acyclic]
+    oracle_depth: medium
+    bug_type: wrong_source
+    count: 200
+  - machine_type: mealy
+    determinism: deterministic
+    completeness: complete
+    arity_class: medium
+    size_class: medium
+    guard_complexity: simple
+    time_features: [none]
+    graph_structure: [cyclic]
+    oracle_depth: medium
+    bug_type: wrong_target
+    count: 200
+  - machine_type: moore
+    determinism: deterministic
+    completeness: complete
+    arity_class: medium
+    size_class: medium
+    guard_complexity: simple
+    time_features: [none]
+    graph_structure: [strongly_connected]
+    oracle_depth: medium
+    bug_type: duplicate_transition
+    count: 200
+  - machine_type: efsm
+    determinism: deterministic
+    completeness: complete
+    arity_class: medium
+    size_class: medium
+    guard_complexity: simple
+    time_features: [none]
+    graph_structure: [sparse]
+    oracle_depth: medium
+    bug_type: guard_weaken
+    count: 200
+  - machine_type: timed_fsm
+    determinism: deterministic
+    completeness: complete
+    arity_class: medium
+    size_class: medium
+    guard_complexity: simple
+    time_features: [timeout]
+    graph_structure: [dense]
+    oracle_depth: medium
+    bug_type: timeout_corruption
+    count: 200
+  - machine_type: timed_efsm
+    determinism: deterministic
+    completeness: complete
+    arity_class: medium
+    size_class: medium
+    guard_complexity: simple
+    time_features: [timeout]
+    graph_structure: [hub_and_spoke]
+    oracle_depth: medium
+    bug_type: delay_corruption
+    count: 200
+  - machine_type: plain_fsm
+    determinism: deterministic
+    completeness: complete
+    arity_class: medium
+    size_class: medium
+    guard_complexity: simple
+    time_features: [none]
+    graph_structure: [layered]
+    oracle_depth: medium
+    bug_type: wrong_initial_state
+    count: 200
+
+  # Block 12 — Arity class emphasis (400 cases)
+  # Why: Rebalances branching-factor bands so low through very_high arity remain experimentally comparable.
+  - machine_type: efsm
+    determinism: deterministic
+    completeness: complete
+    arity_class: low
+    size_class: medium
+    guard_complexity: compound
+    time_features: [none]
+    graph_structure: [dense]
+    oracle_depth: deep
+    bug_type: missing_transition
+    count: 100
+  - machine_type: efsm
+    determinism: deterministic
+    completeness: complete
+    arity_class: medium
+    size_class: medium
+    guard_complexity: compound
+    time_features: [none]
+    graph_structure: [dense]
+    oracle_depth: deep
+    bug_type: wrong_target
+    count: 100
+  - machine_type: efsm
+    determinism: deterministic
+    completeness: complete
+    arity_class: high
+    size_class: medium
+    guard_complexity: compound
+    time_features: [none]
+    graph_structure: [dense]
+    oracle_depth: deep
+    bug_type: guard_flip
+    count: 100
+  - machine_type: efsm
+    determinism: deterministic
+    completeness: complete
+    arity_class: very_high
+    size_class: medium
+    guard_complexity: compound
+    time_features: [none]
+    graph_structure: [dense]
+    oracle_depth: deep
+    bug_type: nondeterminism_intro
+    count: 100
+
+  # Block 13 — Bug-type sweep (2200 cases)
+  # Why: Guarantees every supported mutation operator appears with substantial mass for leaderboard stratification.
+  - machine_type: plain_fsm
+    determinism: deterministic
+    completeness: complete
+    arity_class: low
+    size_class: tiny
+    guard_complexity: none
+    time_features: [none]
+    graph_structure: [acyclic]
+    oracle_depth: shallow
+    bug_type: missing_transition
+    count: 147
+  - machine_type: mealy
+    determinism: deterministic
+    completeness: complete
+    arity_class: medium
+    size_class: small
+    guard_complexity: simple
+    time_features: [timeout]
+    graph_structure: [cyclic]
+    oracle_depth: medium
+    bug_type: wrong_target
+    count: 147
+  - machine_type: moore
+    determinism: deterministic
+    completeness: complete
+    arity_class: high
+    size_class: medium
+    guard_complexity: compound
+    time_features: [timed_guard]
+    graph_structure: [strongly_connected]
+    oracle_depth: deep
+    bug_type: wrong_source
+    count: 147
+  - machine_type: efsm
+    determinism: deterministic
+    completeness: complete
+    arity_class: very_high
+    size_class: large
+    guard_complexity: none
+    time_features: [output_delay]
+    graph_structure: [sparse]
+    oracle_depth: exhaustive_like
+    bug_type: wrong_event
+    count: 147
+  - machine_type: timed_fsm
+    determinism: deterministic
+    completeness: complete
+    arity_class: low
+    size_class: very_large
+    guard_complexity: simple
+    time_features: [none]
+    graph_structure: [dense]
+    oracle_depth: shallow
+    bug_type: wrong_initial_state
+    count: 147
+  - machine_type: plain_fsm
+    determinism: deterministic
+    completeness: complete
+    arity_class: medium
+    size_class: tiny
+    guard_complexity: compound
+    time_features: [timeout]
+    graph_structure: [hub_and_spoke]
+    oracle_depth: medium
+    bug_type: duplicate_transition
+    count: 147
+  - machine_type: mealy
+    determinism: deterministic
+    completeness: complete
+    arity_class: high
+    size_class: small
+    guard_complexity: none
+    time_features: [timed_guard]
+    graph_structure: [layered]
+    oracle_depth: deep
+    bug_type: dead_state_intro
+    count: 147
+  - machine_type: moore
+    determinism: deterministic
+    completeness: complete
+    arity_class: very_high
+    size_class: medium
+    guard_complexity: simple
+    time_features: [output_delay]
+    graph_structure: [acyclic]
+    oracle_depth: exhaustive_like
+    bug_type: guard_flip
+    count: 147
+  - machine_type: efsm
+    determinism: deterministic
+    completeness: complete
+    arity_class: low
+    size_class: large
+    guard_complexity: compound
+    time_features: [none]
+    graph_structure: [cyclic]
+    oracle_depth: shallow
+    bug_type: guard_weaken
+    count: 147
+  - machine_type: timed_fsm
+    determinism: deterministic
+    completeness: complete
+    arity_class: medium
+    size_class: very_large
+    guard_complexity: none
+    time_features: [timeout]
+    graph_structure: [strongly_connected]
+    oracle_depth: medium
+    bug_type: guard_strengthen
+    count: 147
+  - machine_type: plain_fsm
+    determinism: deterministic
+    completeness: complete
+    arity_class: high
+    size_class: tiny
+    guard_complexity: simple
+    time_features: [timed_guard]
+    graph_structure: [sparse]
+    oracle_depth: deep
+    bug_type: action_corruption
+    count: 146
+  - machine_type: mealy
+    determinism: deterministic
+    completeness: complete
+    arity_class: very_high
+    size_class: small
+    guard_complexity: compound
+    time_features: [output_delay]
+    graph_structure: [dense]
+    oracle_depth: exhaustive_like
+    bug_type: timeout_corruption
+    count: 146
+  - machine_type: moore
+    determinism: deterministic
+    completeness: complete
+    arity_class: low
+    size_class: medium
+    guard_complexity: none
+    time_features: [none]
+    graph_structure: [hub_and_spoke]
+    oracle_depth: shallow
+    bug_type: delay_corruption
+    count: 146
+  - machine_type: efsm
+    determinism: deterministic
+    completeness: complete
+    arity_class: medium
+    size_class: large
+    guard_complexity: simple
+    time_features: [timeout]
+    graph_structure: [layered]
+    oracle_depth: medium
+    bug_type: nondeterminism_intro
+    count: 146
+  - machine_type: timed_fsm
+    determinism: deterministic
+    completeness: complete
+    arity_class: high
+    size_class: very_large
+    guard_complexity: compound
+    time_features: [timed_guard]
+    graph_structure: [acyclic]
+    oracle_depth: deep
+    bug_type: unreachable_state_intro
+    count: 146

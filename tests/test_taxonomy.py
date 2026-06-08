@@ -83,6 +83,14 @@ def _tiny_plan_yaml() -> str:
     ).strip()
 
 
+def test_official_10k_plan_loads_and_sums_to_10000() -> None:
+    plan_path = Path(__file__).resolve().parents[1] / "plans" / "fsmrepairbench_v0_10k_plan.yaml"
+    plan = load_dataset_plan(plan_path)
+    assert plan.name == "fsmrepairbench_v0_10k"
+    assert plan.seed == 42
+    assert sum(cell.count for cell in plan.cells) == 10_000
+
+
 def test_enum_serialization_roundtrip() -> None:
     features = CaseFeatures(
         case_id="case_000001",
