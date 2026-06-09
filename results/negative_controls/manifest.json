@@ -1,0 +1,52 @@
+{
+  "experiment": "negative-control-no-fault",
+  "source_dataset": "data/fsmrepairbench_1k",
+  "dataset_dir": "data/fsmrepairbench_negative_controls",
+  "output_dir": "results/negative_controls",
+  "paper_export_dir": "../paper1/results/negative_controls",
+  "cohort_path": "data/fsmrepairbench_negative_controls/negative_control_cohort_100.txt",
+  "cohort_sha256": "b802e1702c87797d119c89f2f9bbbed7bc553b4dbc5c3efef8b197ce11155851",
+  "selection_seed": 44,
+  "cohort_size": 100,
+  "tools_dir": "tools/baselines_c1",
+  "tool_ids": [
+    "baseline_missing_transition",
+    "baseline_random",
+    "baseline_wrong_target"
+  ],
+  "overall_metrics": {
+    "case_count": 100,
+    "tool_run_count": 300,
+    "false_repair_rate": 0.0,
+    "regression_rate": 0.0,
+    "mean_delta_bpr": 0.0,
+    "tools_modifying_correct_fsms": 0,
+    "localization_skipped_cases": 100
+  },
+  "tool_metrics": {
+    "baseline_missing_transition": {
+      "case_count": 100,
+      "false_repair_rate": 0.0,
+      "regression_rate": 0.0,
+      "mean_delta_bpr": 0.0,
+      "tools_modifying_correct_fsms": 0
+    },
+    "baseline_random": {
+      "case_count": 100,
+      "false_repair_rate": 0.0,
+      "regression_rate": 0.0,
+      "mean_delta_bpr": 0.0,
+      "tools_modifying_correct_fsms": 0
+    },
+    "baseline_wrong_target": {
+      "case_count": 100,
+      "false_repair_rate": 0.0,
+      "regression_rate": 0.0,
+      "mean_delta_bpr": 0.0,
+      "tools_modifying_correct_fsms": 0
+    }
+  },
+  "replaces_v0_2_analysis": false,
+  "git_commit_hash": "9a24626dd8e5411bddb260108446a6990ebae4e5",
+  "generated_at": "2026-06-09T07:16:34.268472+00:00"
+}

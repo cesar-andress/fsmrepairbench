@@ -3050,6 +3050,90 @@ def analyze_multifamily_cohort_cmd(
     raise typer.Exit(code=0)
 
 
+@app.command("run-negative-control-campaign")
+def run_negative_control_campaign_cmd(
+    source_dataset: Path = typer.Option(
+        Path("data/fsmrepairbench_1k"),
+        "--source-dataset",
+        help="Source v0.2.0-analysis dataset to sample reference cases from.",
+    ),
+    dataset_dir: Path = typer.Option(
+        Path("data/fsmrepairbench_negative_controls"),
+        "--dataset-dir",
+        help="Output directory for generated no-fault control cases.",
+    ),
+    out: Path = typer.Option(
+        Path("results/negative_controls"),
+        "--out",
+        help="Directory for negative-control campaign exports.",
+    ),
+    source_cohort: Path | None = typer.Option(
+        None,
+        "--source-cohort",
+        help="Source cohort manifest (default: analysis_cohort_1k.txt).",
+    ),
+    tools_dir: Path = typer.Option(
+        Path("tools/baselines_c1"),
+        "--tools-dir",
+        help="Baseline repair tool configs to evaluate.",
+    ),
+    cohort_size: int = typer.Option(
+        100,
+        "--cohort-size",
+        min=1,
+        help="Number of no-fault control cases to generate.",
+    ),
+    seed: int = typer.Option(
+        44,
+        "--seed",
+        help="Reproducible cohort selection seed.",
+    ),
+    paper_export_dir: Path | None = typer.Option(
+        None,
+        "--paper-export-dir",
+        help="Paper export directory for negative-control artifacts.",
+    ),
+    reuse_dataset: bool = typer.Option(
+        False,
+        "--reuse-dataset",
+        help="Reuse an existing no-fault dataset instead of rebuilding it.",
+    ),
+) -> None:
+    """Build and evaluate the no-fault negative control cohort."""
+    from fsmrepairbench.negative_control_campaign import (
+        DEFAULT_PAPER_EXPORT,
+        NegativeControlError,
+        run_negative_control_campaign,
+    )
+
+    try:
+        result = run_negative_control_campaign(
+            source_dataset,
+            dataset_dir=dataset_dir,
+            output_dir=out,
+            paper_export_dir=paper_export_dir or DEFAULT_PAPER_EXPORT,
+            source_cohort=source_cohort,
+            tools_dir=tools_dir,
+            cohort_size=cohort_size,
+            seed=seed,
+            rebuild_dataset=not reuse_dataset,
+        )
+    except NegativeControlError as exc:
+        console.print(f"[red]ERROR[/red] {exc}")
+        raise typer.Exit(code=1) from exc
+
+    console.print(
+        f"[green]OK[/green] Negative control campaign on {result.case_count} cases"
+    )
+    console.print(f"Dataset: {result.dataset_dir}")
+    console.print(f"Cohort: {result.cohort_path}")
+    console.print(f"Summary: {result.summary_path}")
+    console.print(f"Per-case: {result.per_case_path}")
+    console.print(f"Report: {result.report_path}")
+    console.print(f"Paper export: {result.paper_export_dir}")
+    raise typer.Exit(code=0)
+
+
 @app.command("run-oracle-depth-ablation")
 def run_oracle_depth_ablation_cmd(
     dataset_dir: Path,

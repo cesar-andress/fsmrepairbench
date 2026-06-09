@@ -184,6 +184,20 @@ def localize_case_transitions(
     )
     target = metadata.changed_transition_id or ""
     operator = metadata.mutation_operator
+    if metadata.is_negative_control or metadata.mutation_operator == "no_fault":
+        return CaseLocalizationResult(
+            case_id=case_id,
+            mutation_operator=operator,
+            changed_transition_id=target,
+            localized=False,
+            transition_count=0,
+            rank_of_target=None,
+            reciprocal_rank=0.0,
+            top1_hit=False,
+            top3_hit=False,
+            top5_hit=False,
+            top_ranked_transition="",
+        )
 
     try:
         report = localize_fault(faulty, oracle, method=method)

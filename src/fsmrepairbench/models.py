@@ -158,6 +158,7 @@ class BugMetadata(BaseModel):
     component_faults: list[dict[str, str | int | None]] = Field(default_factory=list)
     is_higher_order: bool = False
     coupled_to_simple_faults: list[str] | None = None
+    is_negative_control: bool = False
 
 
 class RepairResult(BaseModel):
