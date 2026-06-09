@@ -32,6 +32,37 @@ fsmrepairbench write-c1-manifest \
   --workers 4
 ```
 
+## Multi-seed random baseline
+
+Deterministic baselines (`missing-transition`, `wrong-target`) are unchanged. The
+single-seed random row in `leaderboard.csv` (seed 0) remains for backward
+compatibility. The multi-seed random summary is the preferred floor estimate for
+STVR reporting.
+
+Default seeds: `0,1,2,3,4,5,6,7,8,9` (override with `--random-seeds`).
+
+Exports:
+
+| Path | Role |
+|------|------|
+| `results/repair_baseline_1k_c1/random_multiseed_summary.csv` | Flattened mean/std/min/max + bootstrap 95% CI |
+| `results/repair_baseline_1k_c1/random_multiseed_summary.json` | Same summary plus bootstrap metadata |
+| `results/repair_baseline_1k_c1/random_multiseed_per_seed.csv` | Per-seed cohort metrics |
+| `results/repair_baseline_1k_c1/report.md` | Bootstrap method and interpretation |
+| `../paper1/results/baseline_repair_C1/tables/table_random_multiseed.tex` | LaTeX table |
+
+Bootstrap: percentile resampling on seed-level metrics, 10,000 resamples, 95% CI,
+RNG seed 42 (see `report.md`).
+
+CLI-only multi-seed refresh:
+
+```bash
+fsmrepairbench export-c1-baseline-repair data/fsmrepairbench_1k \
+  --out ../paper1/results/baseline_repair_C1 \
+  --random-seeds 0,1,2,3,4,5,6,7,8,9 \
+  --workers 4
+```
+
 ## Manifest schema
 
 Both `results/repair_baseline_1k_c1/manifest.json` and

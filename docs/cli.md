@@ -325,6 +325,29 @@ fsmrepairbench estimate-difficulty cases/case_000001 --out PATH
 | `case_path` | `Path` | positional | required |  |
 | `out` | `Path | None` | `--out` | None | Optional metadata JSON output path. |
 
+### `export-c1-baseline-repair`
+
+Run multi-seed random baseline analysis and write C1 manifest exports.
+
+**Usage**
+
+```bash
+fsmrepairbench export-c1-baseline-repair DATASET_DIR --out PATH
+```
+
+| Parameter | Type | Flags | Default | Description |
+|-----------|------|-------|---------|-------------|
+| `dataset_dir` | `Path` | positional | required |  |
+| `out` | `Path` | `--out` | required | Write C1 export artefacts to this directory. |
+| `cohort_file` | `Path | None` | `--cohort-file` | None | Pinned cohort manifest (default: analysis_cohort_1k.txt under dataset). |
+| `tools_dir` | `Path` | `--tools-dir` | tools/baselines_c1 | Directory containing baseline tool YAML configs. |
+| `raw_runs_dir` | `Path | None` | `--raw-runs-dir` | None | Raw run-tools output directory (default: results/repair_baseline_1k_c1). |
+| `random_seeds` | `str | None` | `--random-seeds` | None | Comma-separated random baseline seeds or an integer count (default: 10 seeds 0-9). |
+| `seeds` | `str | None` | `--seeds` | None | Deprecated alias for --random-seeds. |
+| `workers` | `int` | `--workers` | 1 |  |
+| `no_per_seed_runs` | `bool` | `--no-per-seed-runs` | False | Skip writing per-seed JSON outputs under multi_seed/. |
+| `quiet` | `bool` | `--quiet` | False | Print a short summary only. |
+
 ### `export-hf`
 
 Export a benchmark dataset to HuggingFace JSONL splits.
@@ -941,6 +964,25 @@ fsmrepairbench run-benchmark-campaign plans/fsmrepairbench_v0_10k_plan.yaml DATA
 | `out` | `Path` | `--out` | results/v0_2_campaign | Campaign report output directory. |
 | `skip_build` | `bool` | `--skip-build` | False | Reuse an existing dataset in DATASET_DIR and only run analyses. |
 
+### `run-coupling-campaign`
+
+Run RQ4 higher-order coupling campaign on a pinned cohort.
+
+**Usage**
+
+```bash
+fsmrepairbench run-coupling-campaign DATASET_DIR
+```
+
+| Parameter | Type | Flags | Default | Description |
+|-----------|------|-------|---------|-------------|
+| `dataset_dir` | `Path` | positional | required |  |
+| `out` | `Path` | `--out` | results/rq4_coupling_250 | Directory for coupling CSVs, figures, tables, and report. |
+| `subset_dir` | `Path` | `--subset-dir` | results/rq4_coupling_subset | Enriched dataset workspace with first- and higher-order cases. |
+| `cohort_file` | `Path | None` | `--cohort-file` | None | Pinned cohort manifest (one case ID per line). |
+| `seed` | `int` | `--seed` | 44 | Deterministic campaign seed for HO generation and repair. |
+| `copy_cases` | `bool` | `--copy-cases` | False | Copy first-order cases instead of symlinking them. |
+
 ### `run-experiment`
 
 Run a batch repair experiment from a YAML config file.
@@ -982,6 +1024,23 @@ fsmrepairbench run-experiment-pipeline
 | `skip_plots` | `bool` | `--skip-plots` | False | Skip matplotlib figure generation. |
 | `quiet` | `bool` | `--quiet` | False | Print a short summary only. |
 
+### `run-localization-campaign`
+
+Run transition-level Ochiai localization on a pinned cohort.
+
+**Usage**
+
+```bash
+fsmrepairbench run-localization-campaign DATASET_DIR
+```
+
+| Parameter | Type | Flags | Default | Description |
+|-----------|------|-------|---------|-------------|
+| `dataset_dir` | `Path` | positional | required |  |
+| `out` | `Path` | `--out` | results/rq3_localization_1k | Directory for localization CSVs, figures, tables, and report. |
+| `cohort_file` | `Path | None` | `--cohort-file` | None | Pinned cohort manifest (one case ID per line). |
+| `method` | `str` | `--method` | 'ochiai' | Suspiciousness coefficient (ochiai, tarantula, jaccard). |
+
 ### `run-oracle-depth-ablation`
 
 Run oracle depth ablation (shallow/medium/deep) on a pinned case sample.
@@ -1000,42 +1059,6 @@ fsmrepairbench run-oracle-depth-ablation DATASET_DIR
 | `cohort_file` | `Path | None` | `--cohort-file` | None | Use an existing pinned cohort manifest (one case ID per line). |
 | `cohort_manifest` | `Path | None` | `--cohort-manifest` | None | Source cohort for selection (default: analysis_cohort_1k.txt). |
 | `no_write_cohort` | `bool` | `--no-write-cohort` | False | Do not write oracle_depth_ablation_200.txt under the dataset. |
-
-### `run-localization-campaign`
-
-Run transition-level Ochiai fault localization on a pinned cohort.
-
-**Usage**
-
-```bash
-fsmrepairbench run-localization-campaign DATASET_DIR
-```
-
-| Parameter | Type | Flags | Default | Description |
-|-----------|------|-------|---------|-------------|
-| `dataset_dir` | `Path` | positional | required | Dataset root (e.g. `data/fsmrepairbench_1k`). |
-| `out` | `Path` | `--out` | results/rq3_localization_1k | Output directory for CSVs, figures, tables, and report. |
-| `cohort_file` | `Path \| None` | `--cohort-file` | None | Pinned cohort manifest (one case ID per line). |
-| `method` | `str` | `--method` | ochiai | Suspiciousness coefficient (`ochiai`, `tarantula`, `jaccard`). |
-
-### `run-coupling-campaign`
-
-Run RQ4 higher-order coupling campaign on a pinned cohort (generates orders 2/3 mutants, coupling metrics, repair rates).
-
-**Usage**
-
-```bash
-fsmrepairbench run-coupling-campaign DATASET_DIR
-```
-
-| Parameter | Type | Flags | Default | Description |
-|-----------|------|-------|---------|-------------|
-| `dataset_dir` | `Path` | positional | required | Source dataset root (e.g. `data/fsmrepairbench_1k`). |
-| `out` | `Path` | `--out` | results/rq4_coupling_250 | Output directory for CSVs, figures, tables, and report. |
-| `subset_dir` | `Path` | `--subset-dir` | results/rq4_coupling_subset | Enriched workspace with FO + HO cases. |
-| `cohort_file` | `Path \| None` | `--cohort-file` | None | Pinned cohort manifest (one case ID per line). |
-| `seed` | `int` | `--seed` | 44 | Campaign seed for HO chains and repair baseline. |
-| `copy_cases` | `bool` | `--copy-cases` | False | Copy first-order cases instead of symlinking. |
 
 ### `run-smoke-test`
 
@@ -1272,3 +1295,23 @@ fsmrepairbench verify-metamorphic-relations PATH --out PATH
 | `core_only` | `bool` | `--core-only` | False | Verify only core MR1-MR4 relations. |
 | `catalog` | `Path | None` | `--catalog` | None | Optional path to write the metamorphic relation catalog JSON. |
 | `quiet` | `bool` | `--quiet` | False | Print a short summary only. |
+
+### `write-c1-manifest`
+
+Write C1 manifest.json to raw runs and paper export directories.
+
+**Usage**
+
+```bash
+fsmrepairbench write-c1-manifest
+```
+
+| Parameter | Type | Flags | Default | Description |
+|-----------|------|-------|---------|-------------|
+| `dataset_dir` | `Path` | `--dataset` | data/fsmrepairbench_1k | Benchmark dataset directory. |
+| `cohort_file` | `Path | None` | `--cohort-file` | None | Pinned cohort manifest (default: analysis_cohort_1k.txt under dataset). |
+| `tools_dir` | `Path` | `--tools-dir` | tools/baselines_c1 | Baseline tool YAML configuration directory. |
+| `raw_runs_dir` | `Path` | `--raw-runs-dir` | results/repair_baseline_1k_c1 | Raw run-tools output directory. |
+| `paper_export_dir` | `Path` | `--paper-export-dir` | ../paper1/results/baseline_repair_C1 | Frozen paper export directory. |
+| `workers` | `int` | `--workers` | 4 |  |
+| `quiet` | `bool` | `--quiet` | False |  |

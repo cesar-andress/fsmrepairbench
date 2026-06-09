@@ -56,7 +56,7 @@ from fsmrepairbench.baseline_repair_campaign import (
     DEFAULT_COHORT_FILE,
     DEFAULT_RAW_RUNS_DIR,
     export_c1_multi_seed_analysis,
-    parse_seeds,
+    parse_random_seeds,
     publish_c1_manifests,
 )
 from fsmrepairbench.experiments import (
@@ -1996,10 +1996,21 @@ def export_c1_baseline_repair_cmd(
         "--tools-dir",
         help="Directory containing baseline tool YAML configs.",
     ),
+    raw_runs_dir: Path | None = typer.Option(
+        None,
+        "--raw-runs-dir",
+        help="Raw run-tools output directory (default: results/repair_baseline_1k_c1).",
+    ),
+    random_seeds: str | None = typer.Option(
+        None,
+        "--random-seeds",
+        help="Comma-separated random baseline seeds or an integer count (default: 10 seeds 0-9).",
+    ),
     seeds: str | None = typer.Option(
         None,
         "--seeds",
-        help="Comma-separated random baseline seeds or an integer count (default: 10 seeds 0-9).",
+        help="Deprecated alias for --random-seeds.",
+        hidden=True,
     ),
     workers: int = typer.Option(1, "--workers", min=1),
     no_per_seed_runs: bool = typer.Option(
@@ -2012,7 +2023,8 @@ def export_c1_baseline_repair_cmd(
     """Run multi-seed random baseline analysis and write C1 manifest exports."""
     cohort = cohort_file or (dataset_dir / DEFAULT_COHORT_FILE)
     try:
-        parsed_seeds = parse_seeds(seeds)
+        seed_arg = random_seeds if random_seeds is not None else seeds
+        parsed_seeds = parse_random_seeds(seed_arg)
         result = export_c1_multi_seed_analysis(
             dataset_dir,
             cohort,
@@ -2021,6 +2033,7 @@ def export_c1_baseline_repair_cmd(
             seeds=parsed_seeds,
             workers=workers,
             write_per_seed_runs=not no_per_seed_runs,
+            raw_runs_dir=raw_runs_dir,
         )
     except BaselineRepairCampaignError as exc:
         console.print(f"[red]ERROR[/red] {exc}")
@@ -2028,16 +2041,17 @@ def export_c1_baseline_repair_cmd(
 
     if quiet:
         console.print(
-            f"[green]OK[/green] {CAMPAIGN_LABEL} manifest={result.manifest_path.name} "
+            f"[green]OK[/green] {CAMPAIGN_LABEL} summary={result.summary_csv_path.name} "
             f"seeds={len(parsed_seeds)}"
         )
     else:
         console.print(
             f"[green]OK[/green] Exported {CAMPAIGN_LABEL} multi-seed analysis to '{out}'"
         )
-        console.print(f"Manifest: {result.manifest_path}")
-        console.print(f"Multi-seed summary: {result.multi_seed_summary_path.name}")
-        console.print(f"Multi-seed aggregate: {result.multi_seed_json_path.name}")
+        console.print(f"Raw summary: {result.summary_csv_path}")
+        console.print(f"Raw per-seed: {result.per_seed_csv_path}")
+        console.print(f"LaTeX table: {result.tex_table_path}")
+        console.print(f"Report: {result.report_path}")
 
     raise typer.Exit(code=0)
 

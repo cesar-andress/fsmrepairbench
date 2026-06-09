@@ -354,7 +354,7 @@ Full roadmap: [docs/roadmap.md](docs/roadmap.md) · Vision:
 | [docs/mutation_spec.md](docs/mutation_spec.md) | Mutation operators |
 | [docs/metrics.md](docs/metrics.md) | Evaluation metrics |
 | [docs/reproducibility.md](docs/reproducibility.md) | Seeds, versioning, freeze |
-| [docs/c1_baseline_repair.md](docs/c1_baseline_repair.md) | C1 campaign manifests and regeneration |
+| [docs/c1_baseline_repair.md](docs/c1_baseline_repair.md) | C1 campaign manifests, multi-seed random floor, regeneration |
 | [docs/development.md](docs/development.md) | Developer setup |
 | [docs/cli.md](docs/cli.md) | Auto-generated CLI reference |
 | [BENCHMARK_SPEC.md](BENCHMARK_SPEC.md) | Normative contract |

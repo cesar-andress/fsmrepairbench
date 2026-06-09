@@ -8,6 +8,7 @@ from pathlib import Path
 from typer.testing import CliRunner
 
 from fsmrepairbench.baseline_repair_campaign import (
+    BOOTSTRAP_SEED,
     C1_MANIFEST_REQUIRED_FIELDS,
     CAMPAIGN_LABEL,
     RELEASE_LABEL,
@@ -16,10 +17,14 @@ from fsmrepairbench.baseline_repair_campaign import (
     build_c1_manifest,
     compute_multi_seed_statistics,
     export_c1_multi_seed_analysis,
+    flatten_multi_seed_statistics,
+    multiseed_summary_column_names,
+    parse_random_seeds,
     parse_seeds,
     publish_c1_manifests,
-    run_random_baseline_for_seed,
+    run_multi_seed_random_analysis,
     summarize_random_rows,
+    write_random_multiseed_exports,
 )
 from fsmrepairbench.cli import app
 from fsmrepairbench.freeze import sha256_file
@@ -37,10 +42,16 @@ def _cohort_file(dataset_dir: Path, case_ids: list[str]) -> Path:
     return path
 
 
-def test_parse_seeds_accepts_count_and_csv() -> None:
-    assert parse_seeds("5") == (0, 1, 2, 3, 4)
-    assert parse_seeds("1,3,5") == (1, 3, 5)
-    assert len(parse_seeds(None)) == 10
+def test_parse_random_seeds_accepts_count_and_csv() -> None:
+    assert parse_random_seeds("5") == (0, 1, 2, 3, 4)
+    assert parse_random_seeds("1,3,5") == (1, 3, 5)
+    assert parse_random_seeds(None) == tuple(range(10))
+    assert parse_random_seeds("0,1,2,3,4,5,6,7,8,9") == tuple(range(10))
+
+
+def test_parse_seeds_alias_matches_parse_random_seeds() -> None:
+    assert parse_seeds("3") == parse_random_seeds("3")
+    assert parse_seeds("2,4") == parse_random_seeds("2,4")
 
 
 def test_bootstrap_ci_returns_ordered_bounds() -> None:
@@ -51,15 +62,71 @@ def test_bootstrap_ci_returns_ordered_bounds() -> None:
     assert 0.0 <= high <= 1.0
 
 
+def test_bootstrap_ci_is_deterministic_with_bootstrap_seed() -> None:
+    values = [0.45, 0.50, 0.55, 0.48, 0.52, 0.49, 0.51, 0.47, 0.53, 0.46]
+    rng_a = __import__("random").Random(BOOTSTRAP_SEED)
+    rng_b = __import__("random").Random(BOOTSTRAP_SEED)
+    ci_a = bootstrap_ci(values, n_resamples=5000, rng=rng_a)
+    ci_b = bootstrap_ci(values, n_resamples=5000, rng=rng_b)
+    assert ci_a == ci_b
+
+
 def test_compute_multi_seed_statistics_includes_ci_fields() -> None:
     per_seed = [
-        {"complete_repair_rate": 0.5, "effective_repair_rate": 0.6, "mean_delta_bpr": 0.01},
-        {"complete_repair_rate": 0.55, "effective_repair_rate": 0.62, "mean_delta_bpr": 0.02},
-        {"complete_repair_rate": 0.48, "effective_repair_rate": 0.58, "mean_delta_bpr": 0.015},
+        {
+            "complete_repair_rate": 0.5,
+            "effective_repair_rate": 0.6,
+            "mean_delta_bpr": 0.01,
+            "regression_rate": 0.02,
+        },
+        {
+            "complete_repair_rate": 0.55,
+            "effective_repair_rate": 0.62,
+            "mean_delta_bpr": 0.02,
+            "regression_rate": 0.03,
+        },
+        {
+            "complete_repair_rate": 0.48,
+            "effective_repair_rate": 0.58,
+            "mean_delta_bpr": 0.015,
+            "regression_rate": 0.01,
+        },
     ]
     stats = compute_multi_seed_statistics(per_seed, bootstrap_resamples=500, bootstrap_seed=1)
-    for metric in ("complete_repair_rate", "effective_repair_rate", "mean_delta_bpr"):
+    for metric in (
+        "complete_repair_rate",
+        "effective_repair_rate",
+        "mean_delta_bpr",
+        "regression_rate",
+    ):
         assert stats[metric]["ci95_low"] <= stats[metric]["ci95_high"]
+        assert "std" in stats[metric]
+
+
+def test_multiseed_summary_columns_match_flattened_export() -> None:
+    aggregate = compute_multi_seed_statistics(
+        [
+            {
+                "complete_repair_rate": 0.5,
+                "effective_repair_rate": 0.01,
+                "mean_delta_bpr": -0.02,
+                "regression_rate": 0.03,
+            },
+            {
+                "complete_repair_rate": 0.52,
+                "effective_repair_rate": 0.02,
+                "mean_delta_bpr": -0.01,
+                "regression_rate": 0.04,
+            },
+        ],
+        bootstrap_resamples=200,
+        bootstrap_seed=BOOTSTRAP_SEED,
+    )
+    flat = flatten_multi_seed_statistics(aggregate, seed_count=2)
+    assert tuple(flat.keys()) == multiseed_summary_column_names()
+    assert flat["seed_count"] == 2
+    assert flat["complete_repair_rate_mean"] == aggregate["complete_repair_rate"]["mean"]
+    assert flat["regression_rate_ci95_low"] == aggregate["regression_rate"]["ci95_low"]
 
 
 def test_summarize_random_rows_from_tool_summary() -> None:
@@ -171,6 +238,45 @@ def test_publish_c1_manifests_writes_raw_and_paper_manifests(tmp_path: Path) -> 
     assert "per_case_results.csv" in paper_manifest["output_files"]
 
 
+def test_write_random_multiseed_exports_writes_required_files(tmp_path: Path) -> None:
+    raw_dir = tmp_path / "raw"
+    paper_dir = tmp_path / "paper"
+    per_seed = [
+        {
+            "seed": 0,
+            "cases": 2,
+            "complete_repair_rate": 0.5,
+            "effective_repair_rate": 0.01,
+            "mean_delta_bpr": -0.02,
+            "regression_rate": 0.03,
+        },
+        {
+            "seed": 1,
+            "cases": 2,
+            "complete_repair_rate": 0.52,
+            "effective_repair_rate": 0.02,
+            "mean_delta_bpr": -0.01,
+            "regression_rate": 0.04,
+        },
+    ]
+    aggregate = compute_multi_seed_statistics(per_seed, bootstrap_resamples=200, bootstrap_seed=BOOTSTRAP_SEED)
+    result = write_random_multiseed_exports(
+        raw_runs_dir=raw_dir,
+        paper_export_dir=paper_dir,
+        per_seed=per_seed,
+        aggregate=aggregate,
+        seeds=(0, 1),
+    )
+    assert result.summary_csv_path.is_file()
+    assert result.summary_json_path.is_file()
+    assert result.per_seed_csv_path.is_file()
+    assert result.tex_table_path.is_file()
+    assert result.report_path.is_file()
+    payload = json.loads(result.summary_json_path.read_text(encoding="utf-8"))
+    assert payload["bootstrap"]["seed"] == BOOTSTRAP_SEED
+    assert payload["bootstrap"]["method"] == "percentile"
+
+
 def test_export_c1_multi_seed_analysis_writes_manifest(tmp_path: Path) -> None:
     dataset_dir = tmp_path / "dataset"
     setup_cases_root(dataset_dir)
@@ -189,14 +295,43 @@ def test_export_c1_multi_seed_analysis_writes_manifest(tmp_path: Path) -> None:
         out_dir,
         seeds=(0, 1, 2),
         workers=1,
-        write_per_seed_runs=True,
+        write_per_seed_runs=False,
         raw_runs_dir=raw_dir,
     )
 
-    assert result.manifest_path.is_file()
-    manifest = json.loads(result.manifest_path.read_text(encoding="utf-8"))
+    assert (raw_dir / "manifest.json").is_file()
+    assert (out_dir / "manifest.json").is_file()
+    assert result.summary_csv_path.is_file()
+    assert result.tex_table_path.is_file()
+    manifest = json.loads((out_dir / "manifest.json").read_text(encoding="utf-8"))
     assert manifest["campaign_label"] == CAMPAIGN_LABEL
     assert manifest["number_of_cases"] == 2
+
+
+def test_multiseed_analysis_is_reproducible_across_runs(tmp_path: Path) -> None:
+    dataset_dir = tmp_path / "dataset"
+    setup_cases_root(dataset_dir)
+    cohort = _cohort_file(dataset_dir, ["case_000001", "case_000002"])
+    case_ids = {"case_000001", "case_000002"}
+    seeds = (0, 1, 2)
+
+    per_seed_a, aggregate_a = run_multi_seed_random_analysis(
+        dataset_dir,
+        TOOLS_DIR,
+        case_ids,
+        seeds,
+        workers=1,
+    )
+    per_seed_b, aggregate_b = run_multi_seed_random_analysis(
+        dataset_dir,
+        TOOLS_DIR,
+        case_ids,
+        seeds,
+        workers=1,
+    )
+
+    assert per_seed_a == per_seed_b
+    assert aggregate_a == aggregate_b
 
 
 def test_cli_write_c1_manifest(tmp_path: Path) -> None:
@@ -233,6 +368,8 @@ def test_cli_export_c1_baseline_repair(tmp_path: Path) -> None:
     dataset_dir = tmp_path / "dataset"
     setup_cases_root(dataset_dir)
     _cohort_file(dataset_dir, ["case_000001", "case_000002"])
+    raw_dir = tmp_path / "raw"
+    raw_dir.mkdir()
     out_dir = tmp_path / "export"
 
     result = runner.invoke(
@@ -242,12 +379,17 @@ def test_cli_export_c1_baseline_repair(tmp_path: Path) -> None:
             str(dataset_dir),
             "--out",
             str(out_dir),
-            "--seeds",
+            "--raw-runs-dir",
+            str(raw_dir),
+            "--random-seeds",
             "2",
             "--workers",
             "1",
+            "--no-per-seed-runs",
             "--quiet",
         ],
     )
     assert result.exit_code == 0, result.stdout
     assert (out_dir / "manifest.json").is_file()
+    assert (raw_dir / "random_multiseed_summary.csv").is_file()
+    assert (out_dir / "tables" / "table_random_multiseed.tex").is_file()
