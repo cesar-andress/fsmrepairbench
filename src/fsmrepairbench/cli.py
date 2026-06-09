@@ -3389,6 +3389,49 @@ def run_localization_campaign_cmd(
     raise typer.Exit(code=0)
 
 
+@app.command("audit-rq3-localization-localizability")
+def audit_rq3_localization_localizability_cmd(
+    dataset_dir: Path,
+    out: Path = typer.Option(
+        Path("results/rq3_localization_1k"),
+        "--out",
+        help="Directory containing frozen per_case_results.csv and audit outputs.",
+    ),
+    per_case_file: Path | None = typer.Option(
+        None,
+        "--per-case-file",
+        help="Optional path to per_case_results.csv (defaults to OUT/per_case_results.csv).",
+    ),
+) -> None:
+    """Audit transition-level ground-truth localizability for frozen RQ3 exports."""
+    from fsmrepairbench.localization_campaign import LocalizationCampaignError
+    from fsmrepairbench.localization_localizability_audit import (
+        run_localization_localizability_audit,
+    )
+
+    try:
+        result = run_localization_localizability_audit(
+            dataset_dir,
+            output_dir=out,
+            per_case_path=per_case_file,
+        )
+    except LocalizationCampaignError as exc:
+        console.print(f"[red]ERROR[/red] {exc}")
+        raise typer.Exit(code=1) from exc
+
+    console.print(
+        "[green]OK[/green] RQ3 localizability audit: "
+        f"{int(result.all_detectable_metrics['localized_cases'])} detectable, "
+        f"{int(result.localizable_metrics['localized_cases'])} transition-localizable GT"
+    )
+    console.print(f"Audit CSV: {result.audit_csv_path}")
+    console.print(f"Partition metrics: {result.metrics_csv_path}")
+    console.print(f"Report: {result.report_path}")
+    if result.paper_tables_dir is not None:
+        console.print(f"Paper tables: {result.paper_tables_dir}")
+    raise typer.Exit(code=0)
+
+
 @app.command("run-coupling-campaign")
 def run_coupling_campaign_cmd(
     dataset_dir: Path,

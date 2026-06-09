@@ -795,6 +795,16 @@ def run_localization_campaign(
     )
     append_ci_section_to_report(report_path, ci_rows)
 
+    from fsmrepairbench.localization_localizability_audit import (
+        run_localization_localizability_audit,
+    )
+
+    run_localization_localizability_audit(
+        dataset_dir,
+        output_dir=out,
+        per_case_path=per_case_path,
+    )
+
     manifest = _build_frozen_manifest(
         dataset_dir=dataset_dir,
         out=out,
