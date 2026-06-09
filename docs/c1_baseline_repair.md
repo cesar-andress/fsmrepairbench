@@ -49,10 +49,16 @@ Exports:
 | `results/repair_baseline_1k_c1/random_multiseed_summary.json` | Same summary plus bootstrap metadata |
 | `results/repair_baseline_1k_c1/random_multiseed_per_seed.csv` | Per-seed cohort metrics |
 | `results/repair_baseline_1k_c1/report.md` | Bootstrap method and interpretation |
-| `../paper1/results/baseline_repair_C1/tables/table_random_multiseed.tex` | LaTeX table |
+| `confidence_intervals.csv` | Case-level bootstrap 95% CI for primary C1 metrics (`baseline_missing_transition`) |
+| `confidence_intervals.json` | Same CIs plus bootstrap metadata (seed 44) |
+| `../paper1/results/baseline_repair_C1/tables/table_confidence_intervals.tex` | LaTeX CI table |
 
 Bootstrap: percentile resampling on seed-level metrics, 10,000 resamples, 95% CI,
 RNG seed 42 (see `report.md`).
+
+Case-level bootstrap CIs for deterministic baseline metrics (complete/effective repair,
+mean ΔBPR, detectable-only complete repair) are exported as `confidence_intervals.csv`
+with bootstrap seed 44.
 
 CLI-only multi-seed refresh:
 

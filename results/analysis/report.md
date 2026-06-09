@@ -80,3 +80,11 @@ Pearson correlations relate structural/oracle features to `difficulty_score` and
 - Correlations: `results/analysis/correlations.csv`
 - Figures: `results/analysis/figures/`
 
+## Bootstrap confidence intervals
+
+Non-parametric percentile bootstrap over cases (10,000 resamples, 95% CI, seed 44).
+Exports: `confidence_intervals.csv` and `confidence_intervals.json`.
+
+- `overall_detection_rate`: 0.495000 [0.465000, 0.525000] (n=1000)
+- `mean_faulty_bpr`: 0.916578 [0.901501, 0.931421] (n=1000)
+- `mean_bpr_delta`: 0.083422 [0.068579, 0.098499] (n=1000)

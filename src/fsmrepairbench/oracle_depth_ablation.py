@@ -33,6 +33,11 @@ from fsmrepairbench.oracle_generator import (
     generate_oracle_suite,
 )
 from fsmrepairbench.scorer import score_oracle_suite
+from fsmrepairbench.statistics import (
+    append_ci_section_to_report,
+    compute_c3_confidence_intervals,
+    write_confidence_interval_exports,
+)
 from fsmrepairbench.validators import load_fsm_json
 
 ABLATION_DEPTHS: tuple[DepthLevel, ...] = ("shallow", "medium", "deep")
@@ -744,6 +749,7 @@ def write_ablation_report(
             f"- Combined summary: `{output_dir / 'summary.csv'}`",
             f"- Distributions: `{output_dir / 'distributions.csv'}`",
             f"- Per-case results: `{output_dir / 'per_case_results.csv'}`",
+            f"- Confidence intervals: `{output_dir / 'confidence_intervals.csv'}`",
             f"- LaTeX tables: `{output_dir / 'tables'}/`",
             "",
         ]
@@ -849,6 +855,14 @@ def run_oracle_depth_ablation(
         depth_summaries=depth_summaries,
         depth_rows=depth_rows,
     )
+
+    ci_rows = compute_c3_confidence_intervals({depth: depth_rows[depth] for depth in ABLATION_DEPTHS})
+    write_confidence_interval_exports(
+        out,
+        campaign="C3-oracle-depth-ablation",
+        rows=ci_rows,
+    )
+    append_ci_section_to_report(report_path, ci_rows)
 
     manifest = {
         "experiment": "C3-oracle-depth-ablation",

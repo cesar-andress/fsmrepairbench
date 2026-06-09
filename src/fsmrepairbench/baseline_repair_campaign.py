@@ -16,6 +16,13 @@ from typing import Any
 
 from fsmrepairbench.experiments import discover_experiment_cases
 from fsmrepairbench.freeze import get_git_commit, sha256_file
+from fsmrepairbench.statistics import (
+    ConfidenceIntervalExportResult,
+    append_ci_section_to_report,
+    bootstrap_ci as case_bootstrap_ci,
+    compute_c1_confidence_intervals,
+    write_confidence_interval_exports,
+)
 from fsmrepairbench.tool_runner import (
     ToolRunSummaryRow,
     build_tool_tasks,
@@ -145,6 +152,61 @@ def parse_seeds(raw: str | None, *, default: Sequence[int] = DEFAULT_RANDOM_SEED
     return parse_random_seeds(raw, default=default)
 
 
+def _load_c1_summary_rows(summary_path: Path, cohort_ids: set[str]) -> list[dict[str, str]]:
+    if not summary_path.is_file():
+        return []
+    rows: list[dict[str, str]] = []
+    with summary_path.open(encoding="utf-8", newline="") as handle:
+        for row in csv.DictReader(handle):
+            if row["case_id"] in cohort_ids:
+                rows.append(dict(row))
+    return rows
+
+
+def _detectable_case_ids(dataset_dir: Path, cohort_ids: set[str]) -> set[str]:
+    from fsmrepairbench.dataset_builder import load_dataset_cases
+
+    detectable: set[str] = set()
+    for case in load_dataset_cases(dataset_dir):
+        if case.case_id in cohort_ids and case.bpr_delta > 0.0:
+            detectable.add(case.case_id)
+    return detectable
+
+
+def write_c1_confidence_interval_exports(
+    *,
+    raw_runs_dir: Path,
+    dataset_dir: Path,
+    cohort_file: Path,
+    paper_export_dir: Path | None = None,
+) -> ConfidenceIntervalExportResult | None:
+    """Write case-bootstrap CIs for C1 baseline repair metrics."""
+    cohort_ids = set(load_cohort_manifest(cohort_file))
+    tool_rows = _load_c1_summary_rows(raw_runs_dir / "summary.csv", cohort_ids)
+    if not tool_rows:
+        return None
+
+    detectable_ids = _detectable_case_ids(dataset_dir, cohort_ids)
+    ci_rows = compute_c1_confidence_intervals(
+        tool_rows,
+        detectable_case_ids=detectable_ids,
+        tool_id="baseline_missing_transition",
+    )
+    if not ci_rows:
+        return None
+
+    result = write_confidence_interval_exports(
+        raw_runs_dir,
+        campaign="C1-baseline-repair",
+        rows=ci_rows,
+        paper_export_dir=paper_export_dir,
+    )
+    append_ci_section_to_report(raw_runs_dir / "report.md", ci_rows)
+    if paper_export_dir is not None:
+        append_ci_section_to_report(paper_export_dir / "report.md", ci_rows)
+    return result
+
+
 def bootstrap_ci(
     values: Sequence[float],
     *,
@@ -152,24 +214,9 @@ def bootstrap_ci(
     ci: float = 0.95,
     rng: random.Random | None = None,
 ) -> tuple[float, float]:
-    """Return a two-sided bootstrap confidence interval for the mean."""
-    if not values:
-        return (0.0, 0.0)
-    if len(values) == 1:
-        value = float(values[0])
-        return (value, value)
-
-    generator = rng or random.Random(42)
-    alpha = (1.0 - ci) / 2.0
-    boot_means: list[float] = []
-    sample_size = len(values)
-    for _ in range(n_resamples):
-        draw = [values[generator.randrange(sample_size)] for _ in range(sample_size)]
-        boot_means.append(statistics.mean(draw))
-    boot_means.sort()
-    low_index = max(0, int(alpha * n_resamples))
-    high_index = min(len(boot_means) - 1, int((1.0 - alpha) * n_resamples) - 1)
-    return (boot_means[low_index], boot_means[high_index])
+    """Return a two-sided bootstrap confidence interval for the mean (multi-seed)."""
+    generator = rng or random.Random(BOOTSTRAP_SEED)
+    return case_bootstrap_ci(values, n_resamples=n_resamples, ci=ci, rng=generator)
 
 
 def summarize_random_rows(rows: Sequence[ToolRunSummaryRow]) -> dict[str, float | int]:
@@ -602,6 +649,12 @@ def run_c1_random_multiseed_analysis(
         workers=workers,
         number_of_cases=len(case_ids),
     )
+    write_c1_confidence_interval_exports(
+        raw_runs_dir=raw_runs_dir,
+        dataset_dir=dataset_dir,
+        cohort_file=cohort_file,
+        paper_export_dir=paper_export_dir,
+    )
     return result
 
 
@@ -656,6 +709,8 @@ def list_raw_run_output_files(raw_runs_dir: Path) -> list[str]:
         f"{MULTISEED_SUMMARY_BASENAME}.csv",
         f"{MULTISEED_SUMMARY_BASENAME}.json",
         f"{MULTISEED_PER_SEED_BASENAME}.csv",
+        "confidence_intervals.csv",
+        "confidence_intervals.json",
         "report.md",
     ):
         if (raw_runs_dir / name).is_file():

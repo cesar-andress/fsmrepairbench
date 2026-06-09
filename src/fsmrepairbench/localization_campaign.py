@@ -18,6 +18,11 @@ from fsmrepairbench.fault_localization import (
     localize_fault,
 )
 from fsmrepairbench.models import BugMetadata
+from fsmrepairbench.statistics import (
+    append_ci_section_to_report,
+    compute_rq3_confidence_intervals,
+    write_confidence_interval_exports,
+)
 from fsmrepairbench.validators import load_fsm_json, load_oracle_suite
 
 LOCALIZATION_METHOD: SuspiciousnessMethod = "ochiai"
@@ -405,9 +410,9 @@ def _write_publication_tables(
         "Cases & Localized & Top-1 & Top-3 & Top-5 & MRR \\\\",
         "\\midrule",
         f"{metrics['cohort_size']} & {metrics['localized_cases']} & "
-        f"{100 * float(metrics['top1_hit_rate']):.1f}\\% & "
-        f"{100 * float(metrics['top3_hit_rate']):.1f}\\% & "
-        f"{100 * float(metrics['top5_hit_rate']):.1f}\\% & "
+        f"{100 * float(metrics['top1_hit_rate']):.2f}\\% & "
+        f"{100 * float(metrics['top3_hit_rate']):.2f}\\% & "
+        f"{100 * float(metrics['top5_hit_rate']):.2f}\\% & "
         f"{float(metrics['mrr']):.3f} \\\\",
         "\\bottomrule",
         "\\end{tabular}",
@@ -523,6 +528,7 @@ def write_localization_report(
             f"- Summary: `{output_dir / 'summary.csv'}`",
             f"- Localization metrics: `{output_dir / 'localization_metrics.csv'}`",
             f"- Per-case results: `{output_dir / 'per_case_results.csv'}`",
+            f"- Confidence intervals: `{output_dir / 'confidence_intervals.csv'}`",
             f"- LaTeX tables: `{output_dir / 'tables'}/`",
             "",
         ]
@@ -605,6 +611,14 @@ def run_localization_campaign(
         distribution=distribution,
         rows=rows,
     )
+
+    ci_rows = compute_rq3_confidence_intervals(rows)
+    write_confidence_interval_exports(
+        out,
+        campaign="RQ3-localization",
+        rows=ci_rows,
+    )
+    append_ci_section_to_report(report_path, ci_rows)
 
     manifest = {
         "experiment": "RQ3-localization-ochiai-1k",

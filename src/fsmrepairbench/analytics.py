@@ -14,6 +14,11 @@ from typing import Any
 from fsmrepairbench.dataset_builder import DatasetBuilderError, DatasetCaseRow, load_dataset_cases
 from fsmrepairbench.difficulty import category_for_score
 from fsmrepairbench.mutators import MUTATION_OPERATORS
+from fsmrepairbench.statistics import (
+    append_ci_section_to_report,
+    compute_rq2_confidence_intervals,
+    write_confidence_interval_exports,
+)
 
 ANALYTICS_DIR_NAME = "analytics"
 SUMMARY_COLUMNS: tuple[str, ...] = ("metric", "bucket", "count", "fraction")
@@ -744,6 +749,7 @@ def write_analysis_markdown(
             "## Artifacts",
             "",
             f"- Summary metrics: `{output_dir / 'summary.csv'}`",
+            f"- Confidence intervals: `{output_dir / 'confidence_intervals.csv'}`",
             f"- Distributions: `{output_dir / 'distributions.csv'}`",
             f"- Correlations: `{output_dir / 'correlations.csv'}`",
             f"- Figures: `{output_dir / 'figures'}/`",
@@ -805,6 +811,14 @@ def generate_analysis_report(
         cases=cases,
         analytics=analytics,
     )
+
+    ci_rows = compute_rq2_confidence_intervals(cases)
+    write_confidence_interval_exports(
+        resolved_output,
+        campaign="v0.2.0-analysis",
+        rows=ci_rows,
+    )
+    append_ci_section_to_report(markdown_path, ci_rows)
 
     return AnalysisReportResult(
         dataset_dir=dataset_dir,

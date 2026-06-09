@@ -27,6 +27,11 @@ from fsmrepairbench.mutators import MUTATION_OPERATORS
 from fsmrepairbench.patch import PatchError, apply_patch
 from fsmrepairbench.repair_engines.baselines import propose_baseline_patch
 from fsmrepairbench.scorer import score_oracle_suite
+from fsmrepairbench.statistics import (
+    append_ci_section_to_report,
+    compute_rq4_confidence_intervals,
+    write_confidence_interval_exports,
+)
 from fsmrepairbench.validators import load_fsm_json, load_oracle_suite
 
 DEFAULT_CAMPAIGN_SEED = 44
@@ -828,6 +833,7 @@ def write_coupling_report(
             f"- Summary: `{output_dir / 'summary.csv'}`",
             f"- Coupling metrics: `{output_dir / 'coupling_metrics.csv'}`",
             f"- Per-case results: `{output_dir / 'per_case_results.csv'}`",
+            f"- Confidence intervals: `{output_dir / 'confidence_intervals.csv'}`",
             f"- Coupling report JSON: `{output_dir / 'coupling_report.json'}`",
             f"- LaTeX tables: `{output_dir / 'tables'}/`",
             "",
@@ -901,6 +907,14 @@ def run_coupling_campaign(
         campaign_seed=campaign_seed,
         skipped_ho=skipped_ho,
     )
+
+    ci_rows = compute_rq4_confidence_intervals(rows)
+    write_confidence_interval_exports(
+        out,
+        campaign="RQ4-coupling",
+        rows=ci_rows,
+    )
+    append_ci_section_to_report(report_path, ci_rows)
 
     cohort_digest = hashlib.sha256(cohort.read_bytes()).hexdigest()
     manifest = {

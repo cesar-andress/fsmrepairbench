@@ -1,0 +1,38 @@
+{
+  "campaign": "v0.2.0-analysis",
+  "method": "percentile_case_resample",
+  "unit": "case",
+  "ci": 0.95,
+  "resamples": 10000,
+  "seed": 44,
+  "generated_at_utc": "2026-06-09T06:44:36.212464+00:00",
+  "metrics": [
+    {
+      "metric": "overall_detection_rate",
+      "group": "",
+      "subgroup": "",
+      "n_cases": 1000,
+      "mean": 0.495,
+      "ci95_low": 0.465,
+      "ci95_high": 0.525
+    },
+    {
+      "metric": "mean_faulty_bpr",
+      "group": "",
+      "subgroup": "",
+      "n_cases": 1000,
+      "mean": 0.916578,
+      "ci95_low": 0.901501,
+      "ci95_high": 0.931421
+    },
+    {
+      "metric": "mean_bpr_delta",
+      "group": "",
+      "subgroup": "",
+      "n_cases": 1000,
+      "mean": 0.083422,
+      "ci95_low": 0.068579,
+      "ci95_high": 0.098499
+    }
+  ]
+}

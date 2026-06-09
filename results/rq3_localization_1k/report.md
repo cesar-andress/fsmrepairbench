@@ -49,3 +49,12 @@ Spectrum-based fault localization ranks transitions by Ochiai suspiciousness usi
 - Per-case results: `results/rq3_localization_1k/per_case_results.csv`
 - LaTeX tables: `results/rq3_localization_1k/tables/`
 
+## Bootstrap confidence intervals
+
+Non-parametric percentile bootstrap over cases (10,000 resamples, 95% CI, seed 44).
+Exports: `confidence_intervals.csv` and `confidence_intervals.json`.
+
+- `top_1_hit_rate`: 0.149495 [0.119192, 0.181818] (n=495)
+- `top_3_hit_rate`: 0.187879 [0.153535, 0.222222] (n=495)
+- `top_5_hit_rate`: 0.228283 [0.191919, 0.264646] (n=495)
+- `mrr`: 0.201018 [0.170688, 0.231904] (n=495)

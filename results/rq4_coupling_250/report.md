@@ -47,3 +47,20 @@ by chaining the source first-order operator with deterministic secondary operato
 - Coupling report JSON: `results/rq4_coupling_250/coupling_report.json`
 - LaTeX tables: `results/rq4_coupling_250/tables/`
 
+## Bootstrap confidence intervals
+
+Non-parametric percentile bootstrap over cases (10,000 resamples, 95% CI, seed 44).
+Exports: `confidence_intervals.csv` and `confidence_intervals.json`.
+
+- `detection_rate (order_1)`: 0.472000 [0.412000, 0.536000] (n=250)
+- `complete_repair_rate (order_1)`: 0.892000 [0.852000, 0.928000] (n=250)
+- `effective_repair_rate (order_1)`: 0.420000 [0.360000, 0.484000] (n=250)
+- `mean_bpr_delta (order_1)`: 0.067700 [0.041874, 0.096662] (n=250)
+- `detection_rate (order_2)`: 0.992000 [0.980000, 1.000000] (n=250)
+- `complete_repair_rate (order_2)`: 0.600000 [0.540000, 0.660000] (n=250)
+- `effective_repair_rate (order_2)`: 0.920000 [0.884000, 0.952000] (n=250)
+- `mean_bpr_delta (order_2)`: 0.267039 [0.220809, 0.315454] (n=250)
+- `detection_rate (order_3)`: 1.000000 [1.000000, 1.000000] (n=250)
+- `complete_repair_rate (order_3)`: 0.404000 [0.344000, 0.464000] (n=250)
+- `effective_repair_rate (order_3)`: 0.980000 [0.960000, 0.996000] (n=250)
+- `mean_bpr_delta (order_3)`: 0.388064 [0.335051, 0.441553] (n=250)

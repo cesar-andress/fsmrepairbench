@@ -64,3 +64,17 @@ Benchmark detection conclusions are **largely insensitive** to oracle depth with
 - Per-case results: `results/oracle_depth_ablation/per_case_results.csv`
 - LaTeX tables: `results/oracle_depth_ablation/tables/`
 
+## Bootstrap confidence intervals
+
+Non-parametric percentile bootstrap over cases (10,000 resamples, 95% CI, seed 44).
+Exports: `confidence_intervals.csv` and `confidence_intervals.json`.
+
+- `detection_rate (shallow)`: 0.485000 [0.415000, 0.555000] (n=200)
+- `mean_faulty_bpr (shallow)`: 0.918245 [0.882656, 0.950025] (n=200)
+- `mean_bpr_delta (shallow)`: 0.081755 [0.049975, 0.117344] (n=200)
+- `detection_rate (medium)`: 0.485000 [0.415000, 0.555000] (n=200)
+- `mean_faulty_bpr (medium)`: 0.918245 [0.882656, 0.950025] (n=200)
+- `mean_bpr_delta (medium)`: 0.081755 [0.049975, 0.117344] (n=200)
+- `detection_rate (deep)`: 0.485000 [0.415000, 0.555000] (n=200)
+- `mean_faulty_bpr (deep)`: 0.918245 [0.882656, 0.950025] (n=200)
+- `mean_bpr_delta (deep)`: 0.081755 [0.049975, 0.117344] (n=200)

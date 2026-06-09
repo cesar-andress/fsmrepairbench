@@ -1,0 +1,92 @@
+{
+  "campaign": "C3-oracle-depth-ablation",
+  "method": "percentile_case_resample",
+  "unit": "case",
+  "ci": 0.95,
+  "resamples": 10000,
+  "seed": 44,
+  "generated_at_utc": "2026-06-09T06:43:53.194834+00:00",
+  "metrics": [
+    {
+      "metric": "detection_rate",
+      "group": "shallow",
+      "subgroup": "",
+      "n_cases": 200,
+      "mean": 0.485,
+      "ci95_low": 0.415,
+      "ci95_high": 0.555
+    },
+    {
+      "metric": "mean_faulty_bpr",
+      "group": "shallow",
+      "subgroup": "",
+      "n_cases": 200,
+      "mean": 0.918245,
+      "ci95_low": 0.882656,
+      "ci95_high": 0.950025
+    },
+    {
+      "metric": "mean_bpr_delta",
+      "group": "shallow",
+      "subgroup": "",
+      "n_cases": 200,
+      "mean": 0.081755,
+      "ci95_low": 0.049975,
+      "ci95_high": 0.117344
+    },
+    {
+      "metric": "detection_rate",
+      "group": "medium",
+      "subgroup": "",
+      "n_cases": 200,
+      "mean": 0.485,
+      "ci95_low": 0.415,
+      "ci95_high": 0.555
+    },
+    {
+      "metric": "mean_faulty_bpr",
+      "group": "medium",
+      "subgroup": "",
+      "n_cases": 200,
+      "mean": 0.918245,
+      "ci95_low": 0.882656,
+      "ci95_high": 0.950025
+    },
+    {
+      "metric": "mean_bpr_delta",
+      "group": "medium",
+      "subgroup": "",
+      "n_cases": 200,
+      "mean": 0.081755,
+      "ci95_low": 0.049975,
+      "ci95_high": 0.117344
+    },
+    {
+      "metric": "detection_rate",
+      "group": "deep",
+      "subgroup": "",
+      "n_cases": 200,
+      "mean": 0.485,
+      "ci95_low": 0.415,
+      "ci95_high": 0.555
+    },
+    {
+      "metric": "mean_faulty_bpr",
+      "group": "deep",
+      "subgroup": "",
+      "n_cases": 200,
+      "mean": 0.918245,
+      "ci95_low": 0.882656,
+      "ci95_high": 0.950025
+    },
+    {
+      "metric": "mean_bpr_delta",
+      "group": "deep",
+      "subgroup": "",
+      "n_cases": 200,
+      "mean": 0.081755,
+      "ci95_low": 0.049975,
+      "ci95_high": 0.117344
+    }
+  ]
+}
