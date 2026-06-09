@@ -32,5 +32,17 @@ python ../paper1/scripts/pin_analysis_cohort.py
 |----------|-----|---------------------|--------------|
 | v0.2.0-analysis | `analyze-benchmark` | `results/analysis/` | `paper1/results/v0_2_analysis/` |
 | C1 baseline repair | `run-tools` + `tools/baselines_c1/` | `results/repair_baseline_1k_c1/` | `paper1/results/baseline_repair_C1/` |
+| C3 oracle depth ablation | `run-oracle-depth-ablation` | `results/oracle_depth_ablation/` | (pending) |
+
+## Pinned ablation cohort (200 cases)
+
+Stratified sample from `analysis_cohort_1k.txt` for construct-validity analysis:
+
+| File | Role |
+|------|------|
+| `oracle_depth_ablation_200.txt` | One case ID per line |
+| `oracle_depth_ablation_200.json` | Manifest with SHA-256, timestamps |
+
+See `docs/oracle_depth_ablation.md`.
 
 Each completed case directory under `cases/` contains reference and faulty FSM serialisations, oracle suite, and bug metadata.

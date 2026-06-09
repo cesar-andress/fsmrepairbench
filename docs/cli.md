@@ -966,6 +966,25 @@ fsmrepairbench run-experiment-pipeline
 | `skip_plots` | `bool` | `--skip-plots` | False | Skip matplotlib figure generation. |
 | `quiet` | `bool` | `--quiet` | False | Print a short summary only. |
 
+### `run-oracle-depth-ablation`
+
+Run oracle depth ablation (shallow/medium/deep) on a pinned case sample.
+
+**Usage**
+
+```bash
+fsmrepairbench run-oracle-depth-ablation DATASET_DIR
+```
+
+| Parameter | Type | Flags | Default | Description |
+|-----------|------|-------|---------|-------------|
+| `dataset_dir` | `Path` | positional | required |  |
+| `out` | `Path` | `--out` | results/oracle_depth_ablation | Directory for ablation CSVs, figures, tables, and report. |
+| `cohort_size` | `int` | `--cohort-size` | 200 | Number of stratified cases from the analysis cohort. |
+| `cohort_file` | `Path | None` | `--cohort-file` | None | Use an existing pinned cohort manifest (one case ID per line). |
+| `cohort_manifest` | `Path | None` | `--cohort-manifest` | None | Source cohort for selection (default: analysis_cohort_1k.txt). |
+| `no_write_cohort` | `bool` | `--no-write-cohort` | False | Do not write oracle_depth_ablation_200.txt under the dataset. |
+
 ### `run-smoke-test`
 
 Run the end-to-end smoke-test validation pipeline.

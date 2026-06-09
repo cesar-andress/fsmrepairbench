@@ -2817,6 +2817,70 @@ def analyze_benchmark_cmd(
     raise typer.Exit(code=0)
 
 
+@app.command("run-oracle-depth-ablation")
+def run_oracle_depth_ablation_cmd(
+    dataset_dir: Path,
+    out: Path = typer.Option(
+        Path("results/oracle_depth_ablation"),
+        "--out",
+        help="Directory for ablation CSVs, figures, tables, and report.",
+    ),
+    cohort_size: int = typer.Option(
+        200,
+        "--cohort-size",
+        min=1,
+        help="Number of stratified cases from the analysis cohort.",
+    ),
+    cohort_file: Path | None = typer.Option(
+        None,
+        "--cohort-file",
+        help="Use an existing pinned cohort manifest (one case ID per line).",
+    ),
+    cohort_manifest: Path | None = typer.Option(
+        None,
+        "--cohort-manifest",
+        help="Source cohort for selection (default: analysis_cohort_1k.txt).",
+    ),
+    no_write_cohort: bool = typer.Option(
+        False,
+        "--no-write-cohort",
+        help="Do not write oracle_depth_ablation_200.txt under the dataset.",
+    ),
+) -> None:
+    """Run oracle depth ablation (shallow/medium/deep) on a pinned case sample."""
+    from fsmrepairbench.oracle_depth_ablation import (
+        OracleDepthAblationError,
+        run_oracle_depth_ablation,
+    )
+
+    try:
+        result = run_oracle_depth_ablation(
+            dataset_dir,
+            output_dir=out,
+            cohort_size=cohort_size,
+            cohort_manifest=cohort_manifest,
+            cohort_path=cohort_file,
+            write_cohort=not no_write_cohort,
+        )
+    except OracleDepthAblationError as exc:
+        console.print(f"[red]ERROR[/red] {exc}")
+        raise typer.Exit(code=1) from exc
+
+    console.print(
+        f"[green]OK[/green] Oracle depth ablation on {result.case_count} cases "
+        f"from {dataset_dir}"
+    )
+    console.print(f"Cohort: {result.cohort_path}")
+    console.print(f"Depth summary: {result.depth_summary_path}")
+    console.print(f"Summary: {result.summary_path}")
+    console.print(f"Distributions: {result.distributions_path}")
+    console.print(f"Per-case: {result.per_case_path}")
+    console.print(f"Figures: {result.figures_dir}")
+    console.print(f"Tables: {result.tables_dir}")
+    console.print(f"Report: {result.report_path}")
+    raise typer.Exit(code=0)
+
+
 @app.command("run-benchmark-campaign")
 def run_benchmark_campaign_cmd(
     plan_path: Path,
