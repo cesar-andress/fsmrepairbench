@@ -1,0 +1,37 @@
+{
+  "id": "parking_gate_001",
+  "name": "Parking Gate",
+  "description": "Controls access to a parking lot based on ticket validation.",
+  "states": [
+    {"id": "closed"},
+    {"id": "open"}
+  ],
+  "initial_state": "closed",
+  "events": ["car_arrives", "ticket_valid", "timeout"],
+  "transitions": [
+    {
+      "id": "t1",
+      "source": "closed",
+      "event": "car_arrives",
+      "target": "closed",
+      "guard": "ticket_invalid",
+      "action": "display_error",
+      "requirements": ["R1"]
+    },
+    {
+      "id": "t2",
+      "source": "closed",
+      "event": "car_arrives",
+      "target": "open",
+      "guard": "ticket_valid",
+      "action": "open_gate"
+    },
+    {
+      "id": "t3",
+      "source": "open",
+      "event": "timeout",
+      "target": "closed",
+      "action": "close_gate"
+    }
+  ]
+}

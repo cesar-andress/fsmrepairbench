@@ -11,6 +11,7 @@ from fsmrepairbench.dataset_builder import (
     discover_coupling_case_directories,
     format_coupling_case_discovery,
     inspect_coupling_case_directory,
+    resolve_coupling_case_file,
 )
 from fsmrepairbench.models import BugMetadata, FSM, OracleSuite
 from fsmrepairbench.mutators import MUTATION_OPERATORS, MutatorError, mutate
@@ -218,11 +219,18 @@ def analyze_case_coupling(case_dir: Path) -> CaseCouplingRecord | None:
     if not inspection.is_complete:
         return None
 
-    reference = load_fsm_json(case_dir / "reference_fsm.json")
-    faulty = load_fsm_json(case_dir / "faulty_fsm.json")
-    oracle = load_oracle_suite(case_dir / "oracle_suite.json")
+    reference_path = resolve_coupling_case_file(case_dir, "reference_fsm.json")
+    faulty_path = resolve_coupling_case_file(case_dir, "faulty_fsm.json")
+    oracle_path = resolve_coupling_case_file(case_dir, "oracle_suite.json")
+    metadata_path = resolve_coupling_case_file(case_dir, "bug_metadata.json")
+    if reference_path is None or faulty_path is None or oracle_path is None or metadata_path is None:
+        return None
+
+    reference = load_fsm_json(reference_path)
+    faulty = load_fsm_json(faulty_path)
+    oracle = load_oracle_suite(oracle_path)
     metadata = BugMetadata.model_validate(
-        json.loads((case_dir / "bug_metadata.json").read_text(encoding="utf-8"))
+        json.loads(metadata_path.read_text(encoding="utf-8"))
     )
 
     mutation_order = metadata.mutation_order or 1
@@ -329,6 +337,10 @@ def dataset_coupling_report_to_dict(report: DatasetCouplingReport) -> dict[str, 
             "skipped_count": len(discovery.skipped),
             "expected_legacy_files": list(discovery.expected_legacy_files),
             "expected_stratified_files": list(discovery.expected_stratified_files),
+            "sample_case_directories": [
+                {"case_id": case_id, "detected_files": list(files)}
+                for case_id, files in discovery.sample_case_directories
+            ],
             "skipped_cases": [
                 {
                     "case_id": inspection.case_id,

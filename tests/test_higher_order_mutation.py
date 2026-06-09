@@ -21,6 +21,7 @@ from fsmrepairbench.dataset_builder import (
     discover_coupling_case_directories,
     format_coupling_case_discovery,
     inspect_coupling_case_directory,
+    resolve_coupling_case_file,
 )
 from fsmrepairbench.models import OracleSuite
 from fsmrepairbench.mutators import mutate
@@ -42,6 +43,7 @@ from fsmrepairbench.taxonomy import (
 from fsmrepairbench.validators import load_fsm, load_oracle_suite
 
 FIXTURES = Path(__file__).parent / "fixtures"
+STRATIFIED_COUPLING_DATASET = FIXTURES / "stratified_coupling_dataset"
 runner = CliRunner()
 
 
@@ -306,6 +308,50 @@ def test_coupling_analysis_works_on_stratified_dataset(tmp_path: Path) -> None:
     assert report.higher_order_case_count == 1
 
 
+def test_stratified_coupling_fixture_matches_expected_layout() -> None:
+    case_dir = STRATIFIED_COUPLING_DATASET / "cases" / "case_000002"
+    expected_files = {
+        "reference_fsm.json",
+        "faulty_fsm.json",
+        "oracle_suite.json",
+        "bug_metadata.json",
+        "case_features.json",
+    }
+    assert expected_files == set(path.name for path in case_dir.iterdir() if path.is_file())
+
+    inspection = inspect_coupling_case_directory(case_dir)
+    assert inspection.is_complete
+    assert inspection.layout == "stratified"
+
+    report = analyze_dataset_coupling(STRATIFIED_COUPLING_DATASET)
+    assert report.case_count == 1
+    assert report.discovery.complete_count == 1
+
+
+def test_coupling_analysis_accepts_legacy_file_aliases(tmp_path: Path) -> None:
+    reference = load_fsm(FIXTURES / "valid_fsm.json")
+    oracle = load_oracle_suite(FIXTURES / "valid_oracle.json")
+    faulty, metadata = mutate(reference, "wrong_target", 0)
+
+    case_dir = tmp_path / "cases" / "case_000001"
+    case_dir.mkdir(parents=True)
+    (case_dir / "reference.json").write_text(
+        reference.model_dump_json(indent=2) + "\n",
+        encoding="utf-8",
+    )
+    (case_dir / "faulty.json").write_text(faulty.model_dump_json(indent=2) + "\n", encoding="utf-8")
+    (case_dir / "oracle.json").write_text(oracle.model_dump_json(indent=2) + "\n", encoding="utf-8")
+    (case_dir / "bug.json").write_text(metadata.model_dump_json(indent=2) + "\n", encoding="utf-8")
+
+    inspection = inspect_coupling_case_directory(case_dir)
+    assert inspection.is_complete
+    assert inspection.layout == "core"
+    assert resolve_coupling_case_file(case_dir, "reference_fsm.json") == case_dir / "reference.json"
+
+    report = analyze_dataset_coupling(tmp_path)
+    assert report.case_count == 1
+
+
 def test_coupling_analysis_skips_incomplete_cases_with_diagnostics(tmp_path: Path) -> None:
     reference = load_fsm(FIXTURES / "valid_fsm.json")
     oracle = load_oracle_suite(FIXTURES / "valid_oracle.json")
@@ -337,11 +383,13 @@ def test_coupling_analysis_skips_incomplete_cases_with_diagnostics(tmp_path: Pat
     assert set(skipped.detected_files) == {"reference_fsm.json"}
 
     diagnostics = format_coupling_case_discovery(discovery)
-    assert "Case directories found: 2" in diagnostics
+    assert "Case directories scanned: 2" in diagnostics
     assert "Complete cases: 1" in diagnostics
+    assert "Sample case directories (first 5):" in diagnostics
+    assert "case_000002" in diagnostics
+    assert "missing faulty_fsm.json" in diagnostics
     assert "Expected legacy layout:" in diagnostics
     assert "Expected stratified layout:" in diagnostics
-    assert "case_000002" in diagnostics
 
     report = analyze_dataset_coupling(dataset_dir)
     assert report.case_count == 1
@@ -407,6 +455,25 @@ def test_cli_coupling_analysis(tmp_path: Path) -> None:
     payload = json.loads(out_path.read_text(encoding="utf-8"))
     assert payload["higher_order_case_count"] == 1
     assert "coupling_effect_estimate" in payload
+
+
+def test_cli_coupling_analysis_on_stratified_fixture(tmp_path: Path) -> None:
+    out_path = tmp_path / "coupling_report.json"
+    result = runner.invoke(
+        app,
+        [
+            "coupling-analysis",
+            str(STRATIFIED_COUPLING_DATASET),
+            "--out",
+            str(out_path),
+            "--quiet",
+        ],
+    )
+
+    assert result.exit_code == 0, result.stdout
+    payload = json.loads(out_path.read_text(encoding="utf-8"))
+    assert payload["case_count"] == 1
+    assert payload["discovery"]["complete_count"] == 1
 
 
 def test_write_dataset_coupling_report(tmp_path: Path) -> None:

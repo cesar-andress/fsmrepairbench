@@ -1,0 +1,43 @@
+{
+  "id": "parking_gate_oracles",
+  "fsm_id": "parking_gate_001",
+  "scenarios": [
+    {
+      "id": "invalid_ticket_stays_closed",
+      "description": "An invalid ticket keeps the gate closed.",
+      "steps": [
+        {
+          "event": "car_arrives",
+          "guard": "ticket_invalid",
+          "expected_state": "closed"
+        }
+      ]
+    },
+    {
+      "id": "valid_ticket_opens_gate",
+      "description": "A valid ticket opens the gate.",
+      "steps": [
+        {
+          "event": "car_arrives",
+          "guard": "ticket_valid",
+          "expected_state": "open"
+        }
+      ]
+    },
+    {
+      "id": "open_then_timeout_closes",
+      "description": "The gate closes automatically after a timeout.",
+      "steps": [
+        {
+          "event": "car_arrives",
+          "guard": "ticket_valid",
+          "expected_state": "open"
+        },
+        {
+          "event": "timeout",
+          "expected_state": "closed"
+        }
+      ]
+    }
+  ]
+}

@@ -75,6 +75,13 @@ COUPLING_CASE_FILES: tuple[str, ...] = (
     "bug_metadata.json",
     "oracle_suite.json",
 )
+COUPLING_OPTIONAL_FILES: tuple[str, ...] = ("case_features.json", "case_metadata.json")
+COUPLING_FILE_ALIASES: dict[str, tuple[str, ...]] = {
+    "reference_fsm.json": ("reference.json",),
+    "faulty_fsm.json": ("faulty.json",),
+    "bug_metadata.json": ("bug.json",),
+    "oracle_suite.json": ("oracle.json",),
+}
 LEGACY_CASE_METADATA_FILE = "case_metadata.json"
 STRATIFIED_CASE_METADATA_FILE = "case_features.json"
 LEGACY_CASE_LAYOUT_FILES: tuple[str, ...] = COUPLING_CASE_FILES + (LEGACY_CASE_METADATA_FILE,)
@@ -82,6 +89,7 @@ STRATIFIED_CASE_LAYOUT_FILES: tuple[str, ...] = COUPLING_CASE_FILES + (
     STRATIFIED_CASE_METADATA_FILE,
 )
 REQUIRED_CASE_FILES: tuple[str, ...] = LEGACY_CASE_LAYOUT_FILES
+COUPLING_DISCOVERY_SAMPLE_LIMIT = 5
 
 
 @dataclass(frozen=True)
@@ -109,10 +117,37 @@ class CouplingCaseDiscovery:
     skipped: tuple[CaseDirectoryInspection, ...]
     expected_legacy_files: tuple[str, ...] = LEGACY_CASE_LAYOUT_FILES
     expected_stratified_files: tuple[str, ...] = STRATIFIED_CASE_LAYOUT_FILES
+    sample_case_directories: tuple[tuple[str, tuple[str, ...]], ...] = ()
 
 
 def _detected_case_files(case_dir: Path) -> tuple[str, ...]:
     return tuple(sorted(path.name for path in case_dir.iterdir() if path.is_file()))
+
+
+def resolve_coupling_case_file(case_dir: Path, canonical_name: str) -> Path | None:
+    """Resolve a canonical coupling case file, including legacy aliases."""
+    direct = case_dir / canonical_name
+    if direct.is_file():
+        return direct
+    for alias in COUPLING_FILE_ALIASES.get(canonical_name, ()):
+        candidate = case_dir / alias
+        if candidate.is_file():
+            return candidate
+    return None
+
+
+def _has_coupling_case_file(case_dir: Path, canonical_name: str, detected_files: set[str]) -> bool:
+    if canonical_name in detected_files:
+        return True
+    return resolve_coupling_case_file(case_dir, canonical_name) is not None
+
+
+def _missing_coupling_case_files(case_dir: Path, detected_files: set[str]) -> tuple[str, ...]:
+    return tuple(
+        filename
+        for filename in COUPLING_CASE_FILES
+        if not _has_coupling_case_file(case_dir, filename, detected_files)
+    )
 
 
 def inspect_coupling_case_directory(case_dir: Path) -> CaseDirectoryInspection:
@@ -131,9 +166,7 @@ def inspect_coupling_case_directory(case_dir: Path) -> CaseDirectoryInspection:
             skip_reason=f"{case_id}: not a directory",
         )
 
-    missing_core = tuple(
-        filename for filename in COUPLING_CASE_FILES if filename not in detected_files
-    )
+    missing_core = _missing_coupling_case_files(case_dir, set(detected_files))
     if missing_core:
         return CaseDirectoryInspection(
             case_id=case_id,
@@ -191,6 +224,12 @@ def discover_coupling_case_directories(cases_root: Path) -> CouplingCaseDiscover
         inspect_coupling_case_directory(case_dir)
         for case_dir in sorted(path for path in cases_root.iterdir() if path.is_dir())
     ]
+    sample_case_directories = tuple(
+        (case_dir.name, _detected_case_files(case_dir))
+        for case_dir in sorted(path for path in cases_root.iterdir() if path.is_dir())[
+            :COUPLING_DISCOVERY_SAMPLE_LIMIT
+        ]
+    )
     complete = tuple(
         inspection.case_dir for inspection in inspections if inspection.is_complete
     )
@@ -201,14 +240,22 @@ def discover_coupling_case_directories(cases_root: Path) -> CouplingCaseDiscover
         complete_count=len(complete),
         complete_case_dirs=complete,
         skipped=skipped,
+        sample_case_directories=sample_case_directories,
     )
 
 
 def format_coupling_case_discovery(discovery: CouplingCaseDiscovery) -> str:
     """Format coupling case discovery diagnostics for CLI and error messages."""
+    alias_summary = ", ".join(
+        f"{canonical} <- {', '.join(aliases)}"
+        for canonical, aliases in COUPLING_FILE_ALIASES.items()
+        if aliases
+    )
     lines = [
-        f"Case directories found: {discovery.total_directories}",
+        f"Case directories scanned: {discovery.total_directories}",
         f"Complete cases: {discovery.complete_count}",
+        "Required files: " + ", ".join(COUPLING_CASE_FILES),
+        "Optional files: " + ", ".join(COUPLING_OPTIONAL_FILES),
         (
             "Expected legacy layout: "
             + ", ".join(discovery.expected_legacy_files)
@@ -218,10 +265,22 @@ def format_coupling_case_discovery(discovery: CouplingCaseDiscovery) -> str:
             + ", ".join(discovery.expected_stratified_files)
         ),
     ]
+    if alias_summary:
+        lines.append(f"Accepted legacy aliases: {alias_summary}")
+    if discovery.sample_case_directories:
+        lines.append(
+            f"Sample case directories (first {COUPLING_DISCOVERY_SAMPLE_LIMIT}):"
+        )
+        for case_id, files in discovery.sample_case_directories:
+            lines.append(f"  - {case_id}: {', '.join(files) or '(none)'}")
     if discovery.skipped:
         lines.append("Skipped cases:")
         for inspection in discovery.skipped:
-            lines.append(f"  - {inspection.skip_reason}")
+            missing = ", ".join(inspection.missing_files) or "(unknown)"
+            lines.append(
+                f"  - {inspection.case_id}: missing {missing}; "
+                f"detected: {', '.join(inspection.detected_files) or '(none)'}"
+            )
     return "\n".join(lines)
 
 class DatasetBuilderError(RuntimeError):
