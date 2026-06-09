@@ -31,7 +31,7 @@ python ../paper1/scripts/pin_analysis_cohort.py
 | Campaign | CLI | Results (code repo) | Paper export |
 |----------|-----|---------------------|--------------|
 | v0.2.0-analysis | `analyze-benchmark` | `results/analysis/` | `paper1/results/v0_2_analysis/` |
-| C1 baseline repair | `run-tools` + `tools/baselines_c1/` | `results/repair_baseline_1k_c1/` | `paper1/results/baseline_repair_C1/` |
+| C1 baseline repair | `run-tools` + `tools/baselines_c1/` | `results/repair_baseline_1k_c1/` (`manifest.json`) | `paper1/results/baseline_repair_C1/` (`manifest.json`) |
 | C3 oracle depth ablation | `run-oracle-depth-ablation` | `results/oracle_depth_ablation/` | (pending) |
 | RQ3 localization | `run-localization-campaign` / `paper1/scripts/run_rq3_localization.py` | `results/rq3_localization_1k/` | `paper1/results/rq3_localization_1k/` |
 | RQ4 coupling | `run-coupling-campaign` / `paper1/scripts/run_rq4_coupling_campaign.py` | `results/rq4_coupling_250/` | `paper1/results/rq4_coupling_250/` |

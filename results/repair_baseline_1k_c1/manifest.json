@@ -1,0 +1,33 @@
+{
+  "release_label": "v0.2.0-analysis",
+  "campaign_label": "C1-baseline-repair",
+  "zenodo_doi": "10.5281/zenodo.20602528",
+  "dataset_path": "/tmp/pytest-of-cesar/pytest-202/test_cli_export_c1_baseline_re0/dataset",
+  "cohort_file": "/tmp/pytest-of-cesar/pytest-202/test_cli_export_c1_baseline_re0/dataset/analysis_cohort_1k.txt",
+  "cohort_sha256": "068ae0c75c7f9857e864d0bec47ba7e6673a4bf47bd7deb4b9418bcbbb4f913a",
+  "number_of_cases": 2,
+  "tool_names": [
+    "baseline_missing_transition",
+    "baseline_random",
+    "baseline_wrong_target"
+  ],
+  "tool_config_paths": [
+    "tools/baselines_c1/baseline_missing_transition.yaml",
+    "tools/baselines_c1/baseline_random.yaml",
+    "tools/baselines_c1/baseline_wrong_target.yaml"
+  ],
+  "workers": 1,
+  "timestamp_utc": "2026-06-09T06:30:22.595646+00:00",
+  "git_commit_hash": "e14615f7e0b110496f262a0a1e70620966e41d56",
+  "output_files": [
+    "case_*__*.json",
+    "leaderboard.csv",
+    "manifest.json",
+    "summary.csv",
+    "tool_run_manifest.json"
+  ],
+  "regeneration_commands": [
+    "fsmrepairbench run-tools data/fsmrepairbench_1k tools/baselines_c1/ --out results/repair_baseline_1k_c1 --workers 1",
+    "python ../paper1/scripts/generate_baseline_repair_C1_outputs.py --workers 1"
+  ]
+}

@@ -52,10 +52,12 @@ from fsmrepairbench.semantics import (
 from fsmrepairbench.tool_runner import ToolRunnerError, load_tool_configs, run_tools
 from fsmrepairbench.baseline_repair_campaign import (
     BaselineRepairCampaignError,
+    CAMPAIGN_LABEL,
     DEFAULT_COHORT_FILE,
+    DEFAULT_RAW_RUNS_DIR,
     export_c1_multi_seed_analysis,
     parse_seeds,
-    RELEASE_LABEL,
+    publish_c1_manifests,
 )
 from fsmrepairbench.experiments import (
     ExperimentConfigError,
@@ -2026,16 +2028,71 @@ def export_c1_baseline_repair_cmd(
 
     if quiet:
         console.print(
-            f"[green]OK[/green] {RELEASE_LABEL} manifest={result.manifest_path.name} "
+            f"[green]OK[/green] {CAMPAIGN_LABEL} manifest={result.manifest_path.name} "
             f"seeds={len(parsed_seeds)}"
         )
     else:
         console.print(
-            f"[green]OK[/green] Exported {RELEASE_LABEL} multi-seed analysis to '{out}'"
+            f"[green]OK[/green] Exported {CAMPAIGN_LABEL} multi-seed analysis to '{out}'"
         )
         console.print(f"Manifest: {result.manifest_path}")
         console.print(f"Multi-seed summary: {result.multi_seed_summary_path.name}")
         console.print(f"Multi-seed aggregate: {result.multi_seed_json_path.name}")
+
+    raise typer.Exit(code=0)
+
+
+@app.command("write-c1-manifest")
+def write_c1_manifest_cmd(
+    dataset_dir: Path = typer.Option(
+        Path("data/fsmrepairbench_1k"),
+        "--dataset",
+        help="Benchmark dataset directory.",
+    ),
+    cohort_file: Path | None = typer.Option(
+        None,
+        "--cohort-file",
+        help="Pinned cohort manifest (default: analysis_cohort_1k.txt under dataset).",
+    ),
+    tools_dir: Path = typer.Option(
+        Path("tools/baselines_c1"),
+        "--tools-dir",
+        help="Baseline tool YAML configuration directory.",
+    ),
+    raw_runs_dir: Path = typer.Option(
+        Path(DEFAULT_RAW_RUNS_DIR),
+        "--raw-runs-dir",
+        help="Raw run-tools output directory.",
+    ),
+    paper_export_dir: Path = typer.Option(
+        Path("../paper1/results/baseline_repair_C1"),
+        "--paper-export-dir",
+        help="Frozen paper export directory.",
+    ),
+    workers: int = typer.Option(4, "--workers", min=1),
+    quiet: bool = typer.Option(False, "--quiet"),
+) -> None:
+    """Write C1 manifest.json to raw runs and paper export directories."""
+    cohort = cohort_file or (dataset_dir / DEFAULT_COHORT_FILE)
+    try:
+        result = publish_c1_manifests(
+            dataset_dir=dataset_dir,
+            cohort_file=cohort,
+            tools_dir=tools_dir,
+            raw_runs_dir=raw_runs_dir,
+            paper_export_dir=paper_export_dir,
+            workers=workers,
+        )
+    except BaselineRepairCampaignError as exc:
+        console.print(f"[red]ERROR[/red] {exc}")
+        raise typer.Exit(code=1) from exc
+
+    if quiet:
+        console.print(f"[green]OK[/green] raw={result.raw_manifest_path.name}")
+    else:
+        console.print(f"[green]OK[/green] Wrote {CAMPAIGN_LABEL} manifests")
+        console.print(f"Raw runs: {result.raw_manifest_path}")
+        console.print(f"Paper export: {result.paper_manifest_path}")
 
     raise typer.Exit(code=0)
 

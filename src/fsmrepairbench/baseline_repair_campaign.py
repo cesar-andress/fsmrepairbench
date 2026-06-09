@@ -3,7 +3,6 @@
 from __future__ import annotations
 
 import csv
-import hashlib
 import json
 import random
 import statistics
@@ -23,11 +22,32 @@ from fsmrepairbench.tool_runner import (
     resolve_cases_dir,
 )
 
-RELEASE_LABEL = "C1-baseline-repair"
+RELEASE_LABEL = "v0.2.0-analysis"
+CAMPAIGN_LABEL = "C1-baseline-repair"
 ZENODO_DOI = "10.5281/zenodo.20602528"
-ZENODO_RELEASE = "v0.2.0-analysis"
+DEFAULT_DATASET_PATH = "data/fsmrepairbench_1k"
 DEFAULT_COHORT_FILE = "analysis_cohort_1k.txt"
 DEFAULT_TOOLS_DIR = "tools/baselines_c1"
+DEFAULT_RAW_RUNS_DIR = "results/repair_baseline_1k_c1"
+DEFAULT_PAPER_EXPORT_DIR = "../paper1/results/baseline_repair_C1"
+DEFAULT_WORKERS = 4
+
+C1_MANIFEST_REQUIRED_FIELDS: tuple[str, ...] = (
+    "release_label",
+    "campaign_label",
+    "zenodo_doi",
+    "dataset_path",
+    "cohort_file",
+    "cohort_sha256",
+    "number_of_cases",
+    "tool_names",
+    "tool_config_paths",
+    "workers",
+    "timestamp_utc",
+    "git_commit_hash",
+    "output_files",
+    "regeneration_commands",
+)
 DETERMINISTIC_TOOL_IDS: tuple[str, ...] = (
     "baseline_missing_transition",
     "baseline_wrong_target",
@@ -325,43 +345,94 @@ def write_multi_seed_exports(
     return per_seed_path, aggregate_csv, aggregate_json
 
 
+@dataclass(frozen=True)
+class C1ManifestResult:
+    """Paths to C1 manifest files written for raw runs and paper export."""
+
+    raw_manifest_path: Path
+    paper_manifest_path: Path
+
+
+def default_regeneration_commands(
+    *,
+    dataset_path: str = DEFAULT_DATASET_PATH,
+    tools_dir: str = DEFAULT_TOOLS_DIR,
+    raw_runs_dir: str = DEFAULT_RAW_RUNS_DIR,
+    workers: int = DEFAULT_WORKERS,
+) -> list[str]:
+    """Return verbatim CLI commands to regenerate the C1 campaign."""
+    return [
+        (
+            f"fsmrepairbench run-tools {dataset_path} {tools_dir}/ "
+            f"--out {raw_runs_dir} --workers {workers}"
+        ),
+        (
+            f"python ../paper1/scripts/generate_baseline_repair_C1_outputs.py "
+            f"--workers {workers}"
+        ),
+    ]
+
+
+def _relative_repo_path(path: Path, *, base: Path | None = None) -> str:
+    """Return *path* relative to the repository root when possible."""
+    repo_root = base or Path(__file__).resolve().parents[2]
+    try:
+        return path.resolve().relative_to(repo_root.resolve()).as_posix()
+    except ValueError:
+        return path.as_posix()
+
+
+def _tool_config_paths(tools_dir: Path, *, repo_root: Path | None = None) -> list[str]:
+    return sorted(_relative_repo_path(path, base=repo_root) for path in tools_dir.glob("*.yaml"))
+
+
+def list_raw_run_output_files(raw_runs_dir: Path) -> list[str]:
+    """List manifest-tracked files under the raw C1 run-tools directory."""
+    files: list[str] = []
+    for name in ("summary.csv", "leaderboard.csv", "tool_run_manifest.json"):
+        if (raw_runs_dir / name).is_file():
+            files.append(name)
+    if any(raw_runs_dir.glob("case_*__*.json")):
+        files.append("case_*__*.json")
+    files.append("manifest.json")
+    return sorted(set(files))
+
+
 def build_c1_manifest(
     *,
-    dataset_dir: Path,
-    cohort_path: Path,
+    dataset_path: Path | str,
+    cohort_file: Path | str,
     tools_dir: Path,
     workers: int,
-    case_count: int,
-    tool_ids: Sequence[str],
+    number_of_cases: int,
     output_files: Sequence[str],
-    random_seeds: Sequence[int],
-    multi_seed_aggregate: dict[str, dict[str, float]] | None = None,
-    raw_runs_dir: Path | None = None,
+    regeneration_commands: Sequence[str] | None = None,
+    repo_root: Path | None = None,
 ) -> dict[str, Any]:
     """Build the C1 campaign manifest payload."""
+    cohort_path = Path(cohort_file)
     cohort_sha256 = sha256_file(cohort_path)
-    tool_configs = sorted(path.name for path in tools_dir.glob("*.yaml"))
+    tool_names = sorted(path.stem for path in tools_dir.glob("baseline_*.yaml"))
+
     manifest: dict[str, Any] = {
         "release_label": RELEASE_LABEL,
+        "campaign_label": CAMPAIGN_LABEL,
         "zenodo_doi": ZENODO_DOI,
-        "zenodo_release": ZENODO_RELEASE,
-        "dataset_dir": str(dataset_dir),
-        "cohort_path": str(cohort_path),
+        "dataset_path": _relative_repo_path(Path(dataset_path), base=repo_root),
+        "cohort_file": _relative_repo_path(cohort_path, base=repo_root),
         "cohort_sha256": cohort_sha256,
-        "case_count": case_count,
-        "tool_ids": list(tool_ids),
-        "tool_configs": tool_configs,
-        "tools_dir": str(tools_dir),
+        "number_of_cases": number_of_cases,
+        "tool_names": tool_names,
+        "tool_config_paths": _tool_config_paths(tools_dir, repo_root=repo_root),
         "workers": workers,
-        "random_baseline_seeds": list(random_seeds),
-        "generated_at_utc": datetime.now(UTC).isoformat(),
-        "git_commit": get_git_commit(),
-        "output_files": list(output_files),
+        "timestamp_utc": datetime.now(UTC).isoformat(),
+        "git_commit_hash": get_git_commit(),
+        "output_files": sorted(output_files),
+        "regeneration_commands": list(
+            regeneration_commands
+            or default_regeneration_commands(workers=workers),
+        ),
     }
-    if raw_runs_dir is not None:
-        manifest["raw_runs_dir"] = str(raw_runs_dir)
-    if multi_seed_aggregate is not None:
-        manifest["random_multi_seed_aggregate"] = multi_seed_aggregate
     return manifest
 
 
@@ -370,6 +441,62 @@ def write_c1_manifest(path: Path, manifest: dict[str, Any]) -> Path:
     path.parent.mkdir(parents=True, exist_ok=True)
     path.write_text(json.dumps(manifest, indent=2) + "\n", encoding="utf-8")
     return path
+
+
+def publish_c1_manifests(
+    *,
+    dataset_dir: Path,
+    cohort_file: Path,
+    tools_dir: Path,
+    raw_runs_dir: Path,
+    paper_export_dir: Path,
+    workers: int = DEFAULT_WORKERS,
+    number_of_cases: int | None = None,
+    regeneration_commands: Sequence[str] | None = None,
+    repo_root: Path | None = None,
+) -> C1ManifestResult:
+    """Write C1 manifest.json to raw runs and copy to the paper export directory."""
+    repo_root = repo_root or Path(__file__).resolve().parents[2]
+    case_count = number_of_cases if number_of_cases is not None else len(
+        load_cohort_manifest(cohort_file),
+    )
+
+    raw_manifest = build_c1_manifest(
+        dataset_path=dataset_dir,
+        cohort_file=cohort_file,
+        tools_dir=tools_dir,
+        workers=workers,
+        number_of_cases=case_count,
+        output_files=list_raw_run_output_files(raw_runs_dir),
+        regeneration_commands=regeneration_commands,
+        repo_root=repo_root,
+    )
+    raw_path = write_c1_manifest(raw_runs_dir / "manifest.json", raw_manifest)
+
+    paper_manifest = build_c1_manifest(
+        dataset_path=dataset_dir,
+        cohort_file=cohort_file,
+        tools_dir=tools_dir,
+        workers=workers,
+        number_of_cases=case_count,
+        output_files=list_output_files(paper_export_dir),
+        regeneration_commands=regeneration_commands,
+        repo_root=repo_root,
+    )
+    paper_manifest["output_files"] = [
+        path for path in paper_manifest["output_files"] if path != "manifest.json"
+    ] + ["manifest.json"]
+    if "leaderboard.csv" not in paper_manifest["output_files"]:
+        paper_manifest["output_files"].append("leaderboard.csv")
+    if "per_case_results.csv" not in paper_manifest["output_files"]:
+        paper_manifest["output_files"].append("per_case_results.csv")
+    paper_manifest["output_files"] = sorted(set(paper_manifest["output_files"]))
+    paper_manifest["raw_runs_manifest"] = _relative_repo_path(raw_path, base=repo_root)
+
+    paper_export_dir.mkdir(parents=True, exist_ok=True)
+    paper_path = write_c1_manifest(paper_export_dir / "manifest.json", paper_manifest)
+
+    return C1ManifestResult(raw_manifest_path=raw_path, paper_manifest_path=paper_path)
 
 
 def list_output_files(out_dir: Path) -> list[str]:
@@ -401,27 +528,19 @@ def finalize_c1_manifest(
     multi_seed_aggregate: dict[str, dict[str, float]] | None = None,
     raw_runs_dir: Path | None = None,
 ) -> Path:
-    """Write manifest.json after all C1 export files exist under *out_dir*."""
-    tool_ids = [*DETERMINISTIC_TOOL_IDS, RANDOM_TOOL_ID]
-    manifest = build_c1_manifest(
+    """Write paper and raw C1 manifests after export files exist."""
+    _ = random_seeds, multi_seed_aggregate
+    raw_dir = raw_runs_dir or (Path(__file__).resolve().parents[2] / DEFAULT_RAW_RUNS_DIR)
+    result = publish_c1_manifests(
         dataset_dir=dataset_dir,
-        cohort_path=cohort_path,
+        cohort_file=cohort_path,
         tools_dir=tools_dir,
+        raw_runs_dir=raw_dir,
+        paper_export_dir=out_dir,
         workers=workers,
-        case_count=case_count,
-        tool_ids=tool_ids,
-        output_files=list_output_files(out_dir),
-        random_seeds=random_seeds,
-        multi_seed_aggregate=multi_seed_aggregate,
-        raw_runs_dir=raw_runs_dir,
+        number_of_cases=case_count,
     )
-    # manifest.json is included in output_files; write after building list without it
-    manifest["output_files"] = [
-        path
-        for path in list_output_files(out_dir)
-        if path != "manifest.json"
-    ] + ["manifest.json"]
-    return write_c1_manifest(out_dir / "manifest.json", manifest)
+    return result.paper_manifest_path
 
 
 def export_c1_multi_seed_analysis(
@@ -433,6 +552,7 @@ def export_c1_multi_seed_analysis(
     seeds: Sequence[int] = DEFAULT_RANDOM_SEEDS,
     workers: int = 1,
     write_per_seed_runs: bool = True,
+    raw_runs_dir: Path | None = None,
 ) -> C1ExportResult:
     """Run multi-seed random baseline analysis and write export artefacts."""
     case_ids = set(load_cohort_manifest(cohort_path))
@@ -461,6 +581,7 @@ def export_c1_multi_seed_analysis(
         case_count=len(case_ids),
         random_seeds=seeds,
         multi_seed_aggregate=aggregate,
+        raw_runs_dir=raw_runs_dir,
     )
     return C1ExportResult(
         output_dir=out_dir,
