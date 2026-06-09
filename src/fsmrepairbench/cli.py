@@ -3145,22 +3145,79 @@ def run_coupling_campaign_cmd(
         "--copy-cases",
         help="Copy first-order cases instead of symlinking them.",
     ),
+    secondary_operator_policy: str = typer.Option(
+        "deterministic",
+        "--secondary-operator-policy",
+        help="Secondary operator selection policy: deterministic (default) or random.",
+    ),
+    random_secondary_seeds: str | None = typer.Option(
+        None,
+        "--random-secondary-seeds",
+        help="Comma-separated random secondary seeds or count (default: 0-9 when policy=random).",
+    ),
+    paper_export_dir: Path | None = typer.Option(
+        None,
+        "--paper-export-dir",
+        help="Paper export directory for random-secondary sensitivity outputs.",
+    ),
 ) -> None:
     """Run RQ4 higher-order coupling campaign on a pinned cohort."""
-    from fsmrepairbench.coupling_campaign import CouplingCampaignError, run_coupling_campaign
+    from fsmrepairbench.coupling_campaign import (
+        CouplingCampaignError,
+        DEFAULT_RANDOM_SECONDARY_OUTPUT,
+        DEFAULT_RANDOM_SECONDARY_PAPER_EXPORT,
+        DEFAULT_RANDOM_SECONDARY_SUBSET,
+        parse_random_secondary_seeds,
+        run_coupling_campaign,
+    )
+    from fsmrepairbench.coupling_random_secondary import run_random_secondary_coupling_campaign
+
+    if secondary_operator_policy not in {"deterministic", "random"}:
+        console.print("[red]ERROR[/red] secondary-operator-policy must be 'deterministic' or 'random'")
+        raise typer.Exit(code=1)
 
     try:
-        result = run_coupling_campaign(
-            dataset_dir,
-            output_dir=out,
-            cohort_path=cohort_file,
-            subset_dir=subset_dir,
-            campaign_seed=seed,
-            use_symlinks=not copy_cases,
-        )
+        if secondary_operator_policy == "random":
+            parsed_seeds = parse_random_secondary_seeds(random_secondary_seeds)
+            random_out = DEFAULT_RANDOM_SECONDARY_OUTPUT if out == Path("results/rq4_coupling_250") else out
+            random_subset = (
+                DEFAULT_RANDOM_SECONDARY_SUBSET
+                if subset_dir == Path("results/rq4_coupling_subset")
+                else subset_dir
+            )
+            result = run_random_secondary_coupling_campaign(
+                dataset_dir,
+                output_dir=random_out,
+                cohort_path=cohort_file,
+                subset_root=random_subset,
+                paper_export_dir=paper_export_dir or DEFAULT_RANDOM_SECONDARY_PAPER_EXPORT,
+                campaign_seed=seed,
+                random_secondary_seeds=parsed_seeds,
+                use_symlinks=not copy_cases,
+            )
+        else:
+            result = run_coupling_campaign(
+                dataset_dir,
+                output_dir=out,
+                cohort_path=cohort_file,
+                subset_dir=subset_dir,
+                campaign_seed=seed,
+                use_symlinks=not copy_cases,
+            )
     except CouplingCampaignError as exc:
         console.print(f"[red]ERROR[/red] {exc}")
         raise typer.Exit(code=1) from exc
+
+    if secondary_operator_policy == "random":
+        console.print(
+            f"[green]OK[/green] RQ4 random-secondary sensitivity "
+            f"({result.summary_json_path.parent.name})"
+        )
+        console.print(f"Per-seed summary: {result.per_seed_summary_path}")
+        console.print(f"Across-seed summary: {result.summary_csv_path}")
+        console.print(f"Report: {result.report_path}")
+        console.print(f"LaTeX: {result.tables_dir / 'table_random_secondary_summary.tex'}")
+        raise typer.Exit(code=0)
 
     console.print(
         f"[green]OK[/green] RQ4 coupling campaign on {result.cohort_size} cohort cases "

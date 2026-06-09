@@ -982,6 +982,12 @@ fsmrepairbench run-coupling-campaign DATASET_DIR
 | `cohort_file` | `Path | None` | `--cohort-file` | None | Pinned cohort manifest (one case ID per line). |
 | `seed` | `int` | `--seed` | 44 | Deterministic campaign seed for HO generation and repair. |
 | `copy_cases` | `bool` | `--copy-cases` | False | Copy first-order cases instead of symlinking them. |
+| `secondary_operator_policy` | `str` | `--secondary-operator-policy` | deterministic | Secondary operator selection: `deterministic` or `random`. |
+| `random_secondary_seeds` | `str | None` | `--random-secondary-seeds` | None | Comma-separated seeds or count (default 0–9 when policy=random). |
+| `paper_export_dir` | `Path | None` | `--paper-export-dir` | None | Paper export for random-secondary outputs. |
+| `secondary_operator_policy` | `str` | `--secondary-operator-policy` | 'deterministic' | Secondary operator selection policy: deterministic (default) or random. |
+| `random_secondary_seeds` | `str | None` | `--random-secondary-seeds` | None | Comma-separated random secondary seeds or count (default: 0-9 when policy=random). |
+| `paper_export_dir` | `Path | None` | `--paper-export-dir` | None | Paper export directory for random-secondary sensitivity outputs. |
 
 ### `run-experiment`
 
@@ -1196,6 +1202,23 @@ fsmrepairbench subset-overlap DATASET_DIR --out PATH
 | `a` | `str` | `--a` | required | Comma-separated predicate, e.g. determinism=deterministic |
 | `b` | `str` | `--b` | required | Comma-separated predicate for subset B. |
 | `out` | `Path` | `--out` | required | JSON output path. |
+
+### `summarize-campaign-partitions`
+
+Summarize cohort partitions and denominators across paper campaigns.
+
+**Usage**
+
+```bash
+fsmrepairbench summarize-campaign-partitions
+```
+
+| Parameter | Type | Flags | Default | Description |
+|-----------|------|-------|---------|-------------|
+| `dataset_dir` | `Path` | `--dataset` | data/fsmrepairbench_1k | Benchmark dataset directory containing pinned cohort manifests. |
+| `out` | `Path` | `--out` | results/campaign_partitions | Write partition summary artefacts to this directory. |
+| `paper_export_dir` | `Path` | `--paper-export-dir` | ../paper1/results/campaign_partitions | Frozen paper export directory for CSV and LaTeX table copies. |
+| `quiet` | `bool` | `--quiet` | False | Print a short summary only. |
 
 ### `tag-fsms`
 

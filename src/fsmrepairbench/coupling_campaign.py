@@ -5,6 +5,7 @@ from __future__ import annotations
 import csv
 import hashlib
 import json
+import random
 import shutil
 import zlib
 from collections import defaultdict
@@ -36,6 +37,11 @@ from fsmrepairbench.validators import load_fsm_json, load_oracle_suite
 
 DEFAULT_CAMPAIGN_SEED = 44
 DEFAULT_REPAIR_ENGINE = "missing-transition"
+DEFAULT_RANDOM_SECONDARY_OUTPUT = Path("results/rq4_coupling_250_random_secondary")
+DEFAULT_RANDOM_SECONDARY_SUBSET = Path("results/rq4_coupling_subset_random_secondary")
+DEFAULT_RANDOM_SECONDARY_PAPER_EXPORT = Path("../paper1/results/rq4_coupling_250_random_secondary")
+DEFAULT_RANDOM_SECONDARY_SEEDS: tuple[int, ...] = tuple(range(10))
+SECONDARY_OPERATOR_POLICIES: tuple[str, ...] = ("deterministic", "random")
 HO_ORDERS: tuple[int, ...] = (2, 3)
 CHAIN_POOL: tuple[str, ...] = (
     "wrong_target",
@@ -185,6 +191,53 @@ def build_operator_chain(primary: str, order: int, source_case_id: str, campaign
     return chain
 
 
+def build_random_operator_chain(
+    primary: str,
+    order: int,
+    source_case_id: str,
+    secondary_random_seed: int,
+) -> list[str]:
+    """Build a higher-order operator chain with reproducible random secondary operators."""
+    if order < 1:
+        msg = "Mutation order must be at least 1"
+        raise CouplingCampaignError(msg)
+    if order == 1:
+        return [primary]
+    pool = [operator for operator in CHAIN_POOL if operator in MUTATION_OPERATORS and operator != primary]
+    if not pool:
+        msg = f"No secondary operators available for primary '{primary}'"
+        raise CouplingCampaignError(msg)
+    rng = random.Random(
+        zlib.crc32(f"{source_case_id}:{order}:{secondary_random_seed}".encode()) & 0xFFFFFFFF,
+    )
+    chain = [primary]
+    for _ in range(order - 1):
+        chain.append(rng.choice(pool))
+    return chain
+
+
+def parse_random_secondary_seeds(raw: str | None) -> tuple[int, ...]:
+    """Parse comma-separated random secondary seeds or an integer count (0..n-1)."""
+    if raw is None or not str(raw).strip():
+        return DEFAULT_RANDOM_SECONDARY_SEEDS
+    text = str(raw).strip()
+    if text.isdigit():
+        count = int(text)
+        if count < 1:
+            msg = "Random secondary seed count must be at least 1"
+            raise CouplingCampaignError(msg)
+        return tuple(range(count))
+    seeds: list[int] = []
+    for part in text.split(","):
+        part = part.strip()
+        if part:
+            seeds.append(int(part))
+    if not seeds:
+        msg = "At least one random secondary seed is required"
+        raise CouplingCampaignError(msg)
+    return tuple(seeds)
+
+
 def _copy_optional_case_files(source_dir: Path, target_dir: Path) -> None:
     for filename in ("case_features.json", "case_metadata.json"):
         source = source_dir / filename
@@ -268,6 +321,8 @@ def generate_higher_order_case(
     order: int,
     campaign_seed: int,
     repair_engine: str,
+    secondary_operator_policy: str = "deterministic",
+    secondary_random_seed: int | None = None,
 ) -> CaseCouplingCampaignResult | None:
     metadata_path = source_case_dir / "bug_metadata.json"
     if not metadata_path.is_file():
@@ -282,8 +337,15 @@ def generate_higher_order_case(
 
     reference = load_fsm_json(reference_path)
     oracle = load_oracle_suite(oracle_path)
-    ho_seed = case_ho_seed(source_case_id, order, campaign_seed)
-    operators = build_operator_chain(primary, order, source_case_id, campaign_seed)
+    if secondary_operator_policy == "random":
+        if secondary_random_seed is None:
+            msg = "secondary_random_seed is required when secondary_operator_policy='random'"
+            raise CouplingCampaignError(msg)
+        ho_seed = case_ho_seed(source_case_id, order, campaign_seed + secondary_random_seed)
+        operators = build_random_operator_chain(primary, order, source_case_id, secondary_random_seed)
+    else:
+        ho_seed = case_ho_seed(source_case_id, order, campaign_seed)
+        operators = build_operator_chain(primary, order, source_case_id, campaign_seed)
 
     target_dir = source_case_dir.parent / target_case_id
     if target_dir.exists():
@@ -420,6 +482,8 @@ def materialize_coupling_subset(
     campaign_seed: int,
     repair_engine: str,
     use_symlinks: bool = True,
+    secondary_operator_policy: str = "deterministic",
+    secondary_random_seed: int | None = None,
 ) -> tuple[list[CaseCouplingCampaignResult], list[str]]:
     cases_root = subset_dir / "cases"
     if subset_dir.exists():
@@ -455,6 +519,8 @@ def materialize_coupling_subset(
                 order=order,
                 campaign_seed=campaign_seed,
                 repair_engine=repair_engine,
+                secondary_operator_policy=secondary_operator_policy,
+                secondary_random_seed=secondary_random_seed,
             )
             if generated is None:
                 skipped_ho.append(ho_case_id)
@@ -467,6 +533,8 @@ def materialize_coupling_subset(
         "cohort_size": len(case_ids),
         "campaign_seed": campaign_seed,
         "repair_engine": repair_engine,
+        "secondary_operator_policy": secondary_operator_policy,
+        "secondary_random_seed": secondary_random_seed,
         "ho_orders": list(HO_ORDERS),
         "skipped_ho_cases": skipped_ho,
         "generated_at": datetime.now(UTC).isoformat(),
