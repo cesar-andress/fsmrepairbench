@@ -33,7 +33,7 @@ python ../paper1/scripts/pin_analysis_cohort.py
 | v0.2.0-analysis | `analyze-benchmark` | `results/analysis/` | `paper1/results/v0_2_analysis/` |
 | C1 baseline repair | `run-tools` + `tools/baselines_c1/` | `results/repair_baseline_1k_c1/` | `paper1/results/baseline_repair_C1/` |
 | C3 oracle depth ablation | `run-oracle-depth-ablation` | `results/oracle_depth_ablation/` | (pending) |
-| RQ3 localization (planned) | `paper1/scripts/run_rq3_localization.py` | `results/rq3_localization_1k/` | (pending) |
+| RQ3 localization | `run-localization-campaign` / `paper1/scripts/run_rq3_localization.py` | `results/rq3_localization_1k/` | `paper1/results/rq3_localization_1k/` |
 | RQ4 coupling (planned) | `paper1/scripts/run_rq4_coupling_campaign.py` | `results/rq4_coupling_250/` | (pending) |
 
 ## Pinned experiment cohorts

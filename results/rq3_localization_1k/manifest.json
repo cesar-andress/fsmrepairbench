@@ -1,0 +1,19 @@
+{
+  "experiment": "RQ3-localization-ochiai-1k",
+  "dataset_dir": "data/fsmrepairbench_1k",
+  "output_dir": "results/rq3_localization_1k",
+  "cohort_path": "data/fsmrepairbench_1k/localization_cohort_1k.txt",
+  "method": "ochiai",
+  "element_type": "transition",
+  "ground_truth": "changed_transition_id",
+  "metrics": {
+    "cohort_size": 1000,
+    "localized_cases": 495,
+    "skipped_cases": 505,
+    "top1_hit_rate": 0.149495,
+    "top3_hit_rate": 0.187879,
+    "top5_hit_rate": 0.228283,
+    "mrr": 0.201018
+  },
+  "generated_at": "2026-06-09T03:27:43.372577+00:00"
+}

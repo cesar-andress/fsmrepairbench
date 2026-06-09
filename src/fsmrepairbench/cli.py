@@ -2881,6 +2881,57 @@ def run_oracle_depth_ablation_cmd(
     raise typer.Exit(code=0)
 
 
+@app.command("run-localization-campaign")
+def run_localization_campaign_cmd(
+    dataset_dir: Path,
+    out: Path = typer.Option(
+        Path("results/rq3_localization_1k"),
+        "--out",
+        help="Directory for localization CSVs, figures, tables, and report.",
+    ),
+    cohort_file: Path | None = typer.Option(
+        None,
+        "--cohort-file",
+        help="Pinned cohort manifest (one case ID per line).",
+    ),
+    method: str = typer.Option(
+        "ochiai",
+        "--method",
+        help="Suspiciousness coefficient (ochiai, tarantula, jaccard).",
+    ),
+) -> None:
+    """Run transition-level Ochiai localization on a pinned cohort."""
+    from fsmrepairbench.fault_localization import SuspiciousnessMethod
+    from fsmrepairbench.localization_campaign import (
+        LocalizationCampaignError,
+        run_localization_campaign,
+    )
+
+    try:
+        result = run_localization_campaign(
+            dataset_dir,
+            output_dir=out,
+            cohort_path=cohort_file,
+            method=cast(SuspiciousnessMethod, method),
+        )
+    except LocalizationCampaignError as exc:
+        console.print(f"[red]ERROR[/red] {exc}")
+        raise typer.Exit(code=1) from exc
+
+    console.print(
+        f"[green]OK[/green] Localization campaign on {result.case_count} cases "
+        f"({result.localized_cases} localized) from {dataset_dir}"
+    )
+    console.print(f"Cohort: {result.cohort_path}")
+    console.print(f"Summary: {result.summary_path}")
+    console.print(f"Metrics: {result.localization_metrics_path}")
+    console.print(f"Per-case: {result.per_case_path}")
+    console.print(f"Figures: {result.figures_dir}")
+    console.print(f"Tables: {result.tables_dir}")
+    console.print(f"Report: {result.report_path}")
+    raise typer.Exit(code=0)
+
+
 @app.command("generate-taxonomy-coverage")
 def generate_taxonomy_coverage_cmd(
     dataset_dir: Path,

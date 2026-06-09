@@ -1001,6 +1001,23 @@ fsmrepairbench run-oracle-depth-ablation DATASET_DIR
 | `cohort_manifest` | `Path | None` | `--cohort-manifest` | None | Source cohort for selection (default: analysis_cohort_1k.txt). |
 | `no_write_cohort` | `bool` | `--no-write-cohort` | False | Do not write oracle_depth_ablation_200.txt under the dataset. |
 
+### `run-localization-campaign`
+
+Run transition-level Ochiai fault localization on a pinned cohort.
+
+**Usage**
+
+```bash
+fsmrepairbench run-localization-campaign DATASET_DIR
+```
+
+| Parameter | Type | Flags | Default | Description |
+|-----------|------|-------|---------|-------------|
+| `dataset_dir` | `Path` | positional | required | Dataset root (e.g. `data/fsmrepairbench_1k`). |
+| `out` | `Path` | `--out` | results/rq3_localization_1k | Output directory for CSVs, figures, tables, and report. |
+| `cohort_file` | `Path \| None` | `--cohort-file` | None | Pinned cohort manifest (one case ID per line). |
+| `method` | `str` | `--method` | ochiai | Suspiciousness coefficient (`ochiai`, `tarantula`, `jaccard`). |
+
 ### `run-smoke-test`
 
 Run the end-to-end smoke-test validation pipeline.
