@@ -42,6 +42,7 @@ def test_write_ablation_cohort_manifest(tmp_path: Path) -> None:
     payload = json.loads(manifest.read_text(encoding="utf-8"))
     assert payload["cohort_size"] == 2
     assert payload["experiment"] == "C3-oracle-depth-ablation"
+    assert payload["depth_presets"] == {"shallow": 5, "medium": 12, "deep": 25}
 
 
 def test_score_case_at_depth_on_fixture_case() -> None:
@@ -74,6 +75,9 @@ def test_run_oracle_depth_ablation_on_fixture_dataset(tmp_path: Path) -> None:
     depth_rows = list(csv.DictReader(result.depth_summary_path.open(encoding="utf-8")))
     assert len(depth_rows) == len(ABLATION_DEPTHS)
     assert "overall_detection_rate" in depth_rows[0]
+    assert depth_rows[0]["declared_max_steps"] == "5"
+    assert "max_path_length" in depth_rows[0]
+    assert "mean_max_path_length" in depth_rows[0]
 
 
 def test_run_oracle_depth_ablation_cli(tmp_path: Path) -> None:

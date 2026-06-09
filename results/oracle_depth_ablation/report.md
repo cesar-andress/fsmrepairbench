@@ -18,11 +18,11 @@ Benchmark detection conclusions are **largely insensitive** to oracle depth with
 
 ## Summary by oracle depth
 
-| Depth | Cases | Detection rate | Detectable ratio | Mean faulty BPR | Mean BPR delta | Mean trans. cov. |
-|---|---:|---:|---:|---:|---:|---:|
-| `shallow` | 200 | 48.50% | 48.50% | 0.9182 | 0.0818 | 100.00% |
-| `medium` | 200 | 48.50% | 48.50% | 0.9182 | 0.0818 | 100.00% |
-| `deep` | 200 | 48.50% | 48.50% | 0.9182 | 0.0818 | 100.00% |
+| Depth | Max steps | Cases | Detection rate | Detectable ratio | Mean faulty BPR | Mean BPR delta | Max path length | Mean trans. cov. |
+|---|---:|---:|---:|---:|---:|---:|---:|---:|
+| `shallow` | 5 | 200 | 48.50% | 48.50% | 0.9182 | 0.0818 | 6 | 100.00% |
+| `medium` | 12 | 200 | 48.50% | 48.50% | 0.9182 | 0.0818 | 6 | 100.00% |
+| `deep` | 25 | 200 | 48.50% | 48.50% | 0.9182 | 0.0818 | 6 | 100.00% |
 
 ## Mutation operator detection by depth
 
@@ -56,12 +56,15 @@ Benchmark detection conclusions are **largely insensitive** to oracle depth with
 
 ![Oracle transition coverage by depth](figures/oracle_transition_coverage_by_depth.png)
 
+![Max path length by depth](figures/max_path_length_by_depth.png)
+
 ## Artifacts
 
 - Depth summary: `results/oracle_depth_ablation/depth_summary.csv`
 - Combined summary: `results/oracle_depth_ablation/summary.csv`
 - Distributions: `results/oracle_depth_ablation/distributions.csv`
 - Per-case results: `results/oracle_depth_ablation/per_case_results.csv`
+- Confidence intervals: `results/oracle_depth_ablation/confidence_intervals.csv`
 - LaTeX tables: `results/oracle_depth_ablation/tables/`
 
 ## Bootstrap confidence intervals

@@ -37,7 +37,8 @@ ZENODO_DOI = "10.5281/zenodo.20602528"
 DEFAULT_DATASET_PATH = "data/fsmrepairbench_1k"
 DEFAULT_COHORT_FILE = "analysis_cohort_1k.txt"
 DEFAULT_TOOLS_DIR = "tools/baselines_c1"
-DEFAULT_RAW_RUNS_DIR = "results/repair_baseline_1k_c1"
+DEFAULT_RAW_RUNS_DIR = "results/baseline_repair_C1"
+LEGACY_RAW_RUNS_DIR = "results/repair_baseline_1k_c1"
 DEFAULT_PAPER_EXPORT_DIR = "../paper1/results/baseline_repair_C1"
 DEFAULT_WORKERS = 4
 
@@ -164,10 +165,14 @@ def _load_c1_summary_rows(summary_path: Path, cohort_ids: set[str]) -> list[dict
 
 
 def _detectable_case_ids(dataset_dir: Path, cohort_ids: set[str]) -> set[str]:
-    from fsmrepairbench.dataset_builder import load_dataset_cases
+    from fsmrepairbench.dataset_builder import DatasetBuilderError, load_dataset_cases
 
+    try:
+        cases = load_dataset_cases(dataset_dir)
+    except DatasetBuilderError:
+        return set()
     detectable: set[str] = set()
-    for case in load_dataset_cases(dataset_dir):
+    for case in cases:
         if case.case_id in cohort_ids and case.bpr_delta > 0.0:
             detectable.add(case.case_id)
     return detectable
@@ -676,12 +681,18 @@ def default_regeneration_commands(
     """Return verbatim CLI commands to regenerate the C1 campaign."""
     return [
         (
-            f"fsmrepairbench run-tools {dataset_path} {tools_dir}/ "
+            f"fsmrepairbench run-c1-baseline-repair {dataset_path} "
             f"--out {raw_runs_dir} --workers {workers}"
         ),
         (
-            f"python ../paper1/scripts/generate_baseline_repair_C1_outputs.py "
+            f"fsmrepairbench run-tools {dataset_path} {tools_dir}/ "
+            f"--out {raw_runs_dir} "
+            f"--cohort-file {dataset_path}/{DEFAULT_COHORT_FILE} "
             f"--workers {workers}"
+        ),
+        (
+            f"fsmrepairbench export-c1-baseline-repair {dataset_path} "
+            f"--out {raw_runs_dir} --workers {workers}"
         ),
     ]
 

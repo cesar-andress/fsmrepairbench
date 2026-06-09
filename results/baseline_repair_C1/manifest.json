@@ -1,0 +1,39 @@
+{
+  "release_label": "v0.2.0-analysis",
+  "campaign_label": "C1-baseline-repair",
+  "zenodo_doi": "10.5281/zenodo.20602528",
+  "dataset_path": "data/fsmrepairbench_1k",
+  "cohort_file": "data/fsmrepairbench_1k/analysis_cohort_1k.txt",
+  "cohort_sha256": "c03c4d5981259510bccfced987c5175f28058d7bdccc164e7ce2ba22410f04f8",
+  "number_of_cases": 1000,
+  "tool_names": [
+    "baseline_missing_transition",
+    "baseline_random",
+    "baseline_wrong_target"
+  ],
+  "tool_config_paths": [
+    "tools/baselines_c1/baseline_missing_transition.yaml",
+    "tools/baselines_c1/baseline_random.yaml",
+    "tools/baselines_c1/baseline_wrong_target.yaml"
+  ],
+  "workers": 4,
+  "timestamp_utc": "2026-06-09T07:38:48.382259+00:00",
+  "git_commit_hash": "461520cb2ace87962f469fafb36048716d23123d",
+  "output_files": [
+    "case_*__*.json",
+    "confidence_intervals.csv",
+    "confidence_intervals.json",
+    "leaderboard.csv",
+    "manifest.json",
+    "random_multiseed_per_seed.csv",
+    "random_multiseed_summary.csv",
+    "random_multiseed_summary.json",
+    "report.md",
+    "summary.csv",
+    "tool_run_manifest.json"
+  ],
+  "regeneration_commands": [
+    "fsmrepairbench run-tools data/fsmrepairbench_1k tools/baselines_c1/ --out results/repair_baseline_1k_c1 --cohort-file data/fsmrepairbench_1k/analysis_cohort_1k.txt --workers 4",
+    "fsmrepairbench export-c1-baseline-repair data/fsmrepairbench_1k --out results/repair_baseline_1k_c1 --workers 4"
+  ]
+}

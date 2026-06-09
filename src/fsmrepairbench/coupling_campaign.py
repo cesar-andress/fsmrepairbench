@@ -3,7 +3,6 @@
 from __future__ import annotations
 
 import csv
-import hashlib
 import json
 import random
 import shutil
@@ -15,11 +14,11 @@ from pathlib import Path
 
 from fsmrepairbench.analytics import _save_bar_plot
 from fsmrepairbench.dataset_builder import resolve_coupling_case_file
+from fsmrepairbench.freeze import get_git_commit, sha256_file
 from fsmrepairbench.higher_order_mutation import (
     HigherOrderMutationError,
     analyze_case_coupling,
     analyze_dataset_coupling,
-    dataset_coupling_report_to_dict,
     mutate_higher_order,
     write_dataset_coupling_report,
 )
@@ -36,6 +35,12 @@ from fsmrepairbench.statistics import (
 from fsmrepairbench.validators import load_fsm_json, load_oracle_suite
 
 DEFAULT_CAMPAIGN_SEED = 44
+DEFAULT_COHORT_MANIFEST = "coupling_campaign_250.txt"
+DEFAULT_OUTPUT_DIR = Path("results/rq4_coupling_250")
+DEFAULT_SUBSET_DIR = Path("results/rq4_coupling_subset")
+RELEASE_LABEL = "v0.2.0-analysis"
+CAMPAIGN_LABEL = "RQ4-higher-order-coupling-250"
+ZENODO_DOI = "10.5281/zenodo.20602528"
 DEFAULT_REPAIR_ENGINE = "missing-transition"
 DEFAULT_RANDOM_SECONDARY_OUTPUT = Path("results/rq4_coupling_250_random_secondary")
 DEFAULT_RANDOM_SECONDARY_SUBSET = Path("results/rq4_coupling_subset_random_secondary")
@@ -158,6 +163,7 @@ class CouplingCampaignResult:
     report_path: Path
     figures_dir: Path
     tables_dir: Path
+    manifest_path: Path
     cohort_size: int
     case_count: int
 
@@ -637,7 +643,7 @@ def _write_summary_csv(
     assert isinstance(dataset_report, DatasetCouplingReport)
     path.parent.mkdir(parents=True, exist_ok=True)
     header_rows = [
-        ("experiment", "RQ4-higher-order-coupling-250"),
+        ("experiment", CAMPAIGN_LABEL),
         ("cohort_path", str(cohort_path)),
         ("campaign_seed", campaign_seed),
         ("repair_engine", DEFAULT_REPAIR_ENGINE),
@@ -645,6 +651,12 @@ def _write_summary_csv(
         ("higher_order_detection_rate", round(dataset_report.higher_order_detection_rate, 6)),
         ("coupling_effect_estimate", round(dataset_report.coupling_effect_estimate, 6)),
     ]
+    summary_metric_keys = {
+        "cohort_size",
+        "total_cases",
+        "first_order_case_count",
+        "higher_order_case_count",
+    }
     with path.open("w", encoding="utf-8", newline="") as handle:
         writer = csv.writer(handle)
         writer.writerow(["metric", "value"])
@@ -653,13 +665,7 @@ def _write_summary_csv(
         for row in metrics:
             if row["mutation_order"] or row["primary_operator"]:
                 continue
-            if row["metric"] in {
-                "cohort_size",
-                "total_cases",
-                "first_order_case_count",
-                "higher_order_case_count",
-                "coupling_effect_estimate",
-            }:
+            if row["metric"] in summary_metric_keys:
                 writer.writerow([row["metric"], row["value"]])
 
 
@@ -680,14 +686,20 @@ def _write_campaign_figures(
     order_labels = ["Order 1", "Order 2", "Order 3"]
     detection_rates: list[float] = []
     complete_rates: list[float] = []
+    effective_rates: list[float] = []
+    mean_bpr_deltas: list[float] = []
     for order in (1, 2, 3):
         group = [row for row in rows if row.mutation_order == order]
         if not group:
             detection_rates.append(0.0)
             complete_rates.append(0.0)
+            effective_rates.append(0.0)
+            mean_bpr_deltas.append(0.0)
             continue
         detection_rates.append(100.0 * sum(1 for row in group if row.fault_detected) / len(group))
         complete_rates.append(100.0 * sum(1 for row in group if row.complete_repair) / len(group))
+        effective_rates.append(100.0 * sum(1 for row in group if row.effective_repair) / len(group))
+        mean_bpr_deltas.append(100.0 * sum(row.bpr_delta for row in group) / len(group))
 
     _save_bar_plot(
         figures_dir / "detection_rate_by_order.png",
@@ -704,6 +716,22 @@ def _write_campaign_figures(
         ylabel="Complete Repair Rate (%)",
         labels=order_labels,
         values=[round(value, 1) for value in complete_rates],
+    )
+    _save_bar_plot(
+        figures_dir / "effective_repair_rate_by_order.png",
+        title="Effective Repair Rate by Mutation Order",
+        xlabel="Mutation Order",
+        ylabel="Effective Repair Rate (%)",
+        labels=order_labels,
+        values=[round(value, 1) for value in effective_rates],
+    )
+    _save_bar_plot(
+        figures_dir / "mean_bpr_delta_by_order.png",
+        title="Mean Faulty $\\Delta$BPR by Mutation Order",
+        xlabel="Mutation Order",
+        ylabel="Mean $\\Delta$BPR (percentage points)",
+        labels=order_labels,
+        values=[round(value, 1) for value in mean_bpr_deltas],
     )
 
     operators = sorted({row.primary_operator for row in rows if row.mutation_order == 2})
@@ -894,7 +922,13 @@ def write_coupling_report(
             "",
             "![Complete repair by order](figures/complete_repair_rate_by_order.png)",
             "",
+            "![Effective repair by order](figures/effective_repair_rate_by_order.png)",
+            "",
+            "![Mean $\\Delta$BPR by order](figures/mean_bpr_delta_by_order.png)",
+            "",
             "![Coupling effect by operator (order 2)](figures/coupling_effect_by_operator_order2.png)",
+            "",
+            "![Overall coupling effect](figures/coupling_effect_overall.png)",
             "",
             "## Artifacts",
             "",
@@ -903,12 +937,80 @@ def write_coupling_report(
             f"- Per-case results: `{output_dir / 'per_case_results.csv'}`",
             f"- Confidence intervals: `{output_dir / 'confidence_intervals.csv'}`",
             f"- Coupling report JSON: `{output_dir / 'coupling_report.json'}`",
+            f"- Frozen manifest: `{output_dir / 'manifest.json'}`",
             f"- LaTeX tables: `{output_dir / 'tables'}/`",
             "",
         ]
     )
     path.parent.mkdir(parents=True, exist_ok=True)
     path.write_text("\n".join(lines) + "\n", encoding="utf-8")
+
+
+def _dataset_coupling_summary(dataset_report: object) -> dict[str, float | int]:
+    from fsmrepairbench.higher_order_mutation import DatasetCouplingReport
+
+    assert isinstance(dataset_report, DatasetCouplingReport)
+    return {
+        "case_count": dataset_report.case_count,
+        "first_order_case_count": dataset_report.first_order_case_count,
+        "higher_order_case_count": dataset_report.higher_order_case_count,
+        "first_order_detection_rate": round(dataset_report.first_order_detection_rate, 6),
+        "higher_order_detection_rate": round(dataset_report.higher_order_detection_rate, 6),
+        "coupling_effect_estimate": round(dataset_report.coupling_effect_estimate, 6),
+    }
+
+
+def _list_output_files(out: Path) -> list[str]:
+    files: list[str] = []
+    for path in sorted(out.rglob("*")):
+        if path.is_file():
+            files.append(path.relative_to(out).as_posix())
+    return files
+
+
+def _build_frozen_manifest(
+    *,
+    dataset_dir: Path,
+    out: Path,
+    cohort_path: Path,
+    subset_dir: Path,
+    campaign_seed: int,
+    repair_engine: str,
+    dataset_report: object,
+    skipped_ho: list[str],
+) -> dict[str, object]:
+    cohort_sha256 = sha256_file(cohort_path) if cohort_path.is_file() else ""
+    return {
+        "release_label": RELEASE_LABEL,
+        "campaign_label": CAMPAIGN_LABEL,
+        "zenodo_doi": ZENODO_DOI,
+        "experiment": CAMPAIGN_LABEL,
+        "dataset_dir": str(dataset_dir),
+        "output_dir": str(out),
+        "cohort_path": str(cohort_path),
+        "cohort_sha256": cohort_sha256,
+        "subset_dir": str(subset_dir),
+        "campaign_seed": campaign_seed,
+        "repair_engine": repair_engine,
+        "ho_orders": list(HO_ORDERS),
+        "secondary_operator_policy": "deterministic",
+        "dataset_coupling_summary": _dataset_coupling_summary(dataset_report),
+        "skipped_ho_generations": skipped_ho,
+        "output_files": sorted(set(_list_output_files(out) + ["manifest.json"])),
+        "regeneration_commands": [
+            (
+                "fsmrepairbench run-coupling-campaign data/fsmrepairbench_1k "
+                f"--out {out} --subset-dir {subset_dir} --seed {campaign_seed}"
+            ),
+            (
+                "fsmrepairbench run-coupling-campaign data/fsmrepairbench_1k "
+                f"--out {out} --subset-dir {subset_dir} "
+                f"--cohort-file {cohort_path} --seed {campaign_seed}"
+            ),
+        ],
+        "git_commit_hash": get_git_commit(),
+        "generated_at": datetime.now(UTC).isoformat(),
+    }
 
 
 def run_coupling_campaign(
@@ -926,10 +1028,10 @@ def run_coupling_campaign(
         msg = f"Dataset directory not found: {dataset_dir}"
         raise CouplingCampaignError(msg)
 
-    cohort = cohort_path or (dataset_dir / "coupling_campaign_250.txt")
+    cohort = cohort_path or (dataset_dir / DEFAULT_COHORT_MANIFEST)
     case_ids = load_cohort_manifest(cohort)
-    out = output_dir or Path("results/rq4_coupling_250")
-    workspace = subset_dir or Path("results/rq4_coupling_subset")
+    out = output_dir or DEFAULT_OUTPUT_DIR
+    workspace = subset_dir or DEFAULT_SUBSET_DIR
 
     rows, skipped_ho = materialize_coupling_subset(
         dataset_dir,
@@ -950,6 +1052,7 @@ def run_coupling_campaign(
     figures_dir = out / "figures"
     tables_dir = out / "tables"
     coupling_json = out / "coupling_report.json"
+    manifest_path = out / "manifest.json"
 
     _write_per_case_csv(per_case_path, rows)
     _write_summary_csv(
@@ -984,21 +1087,17 @@ def run_coupling_campaign(
     )
     append_ci_section_to_report(report_path, ci_rows)
 
-    cohort_digest = hashlib.sha256(cohort.read_bytes()).hexdigest()
-    manifest = {
-        "experiment": "RQ4-higher-order-coupling-250",
-        "dataset_dir": str(dataset_dir),
-        "cohort_path": str(cohort),
-        "cohort_sha256": cohort_digest,
-        "subset_dir": str(workspace),
-        "output_dir": str(out),
-        "campaign_seed": campaign_seed,
-        "repair_engine": repair_engine,
-        "dataset_coupling": dataset_coupling_report_to_dict(dataset_report),
-        "skipped_ho_generations": skipped_ho,
-        "generated_at": datetime.now(UTC).isoformat(),
-    }
-    (out / "manifest.json").write_text(json.dumps(manifest, indent=2) + "\n", encoding="utf-8")
+    manifest = _build_frozen_manifest(
+        dataset_dir=dataset_dir,
+        out=out,
+        cohort_path=cohort,
+        subset_dir=workspace,
+        campaign_seed=campaign_seed,
+        repair_engine=repair_engine,
+        dataset_report=dataset_report,
+        skipped_ho=skipped_ho,
+    )
+    manifest_path.write_text(json.dumps(manifest, indent=2) + "\n", encoding="utf-8")
 
     return CouplingCampaignResult(
         dataset_dir=dataset_dir,
@@ -1011,6 +1110,7 @@ def run_coupling_campaign(
         report_path=report_path,
         figures_dir=figures_dir,
         tables_dir=tables_dir,
+        manifest_path=manifest_path,
         cohort_size=len(case_ids),
         case_count=dataset_report.case_count,
     )

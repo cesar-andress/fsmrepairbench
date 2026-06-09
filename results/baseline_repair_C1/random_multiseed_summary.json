@@ -1,0 +1,87 @@
+{
+  "tool_id": "baseline_random",
+  "seeds": [
+    0,
+    1,
+    2,
+    3,
+    4,
+    5,
+    6,
+    7,
+    8,
+    9
+  ],
+  "summary": {
+    "seed_count": 10,
+    "complete_repair_rate_mean": 0.5064,
+    "complete_repair_rate_std": 0.0018,
+    "complete_repair_rate_min": 0.505,
+    "complete_repair_rate_max": 0.511,
+    "complete_repair_rate_ci95_low": 0.5055,
+    "complete_repair_rate_ci95_high": 0.5076,
+    "effective_repair_rate_mean": 0.0059,
+    "effective_repair_rate_std": 0.003048,
+    "effective_repair_rate_min": 0.003,
+    "effective_repair_rate_max": 0.014,
+    "effective_repair_rate_ci95_low": 0.0043,
+    "effective_repair_rate_ci95_high": 0.008,
+    "mean_delta_bpr_mean": -0.024526,
+    "mean_delta_bpr_std": 0.01202,
+    "mean_delta_bpr_min": -0.0488,
+    "mean_delta_bpr_max": -0.008077,
+    "mean_delta_bpr_ci95_low": -0.032372,
+    "mean_delta_bpr_ci95_high": -0.01753,
+    "regression_rate_mean": 0.3377,
+    "regression_rate_std": 0.040383,
+    "regression_rate_ci95_low": 0.3117,
+    "regression_rate_ci95_high": 0.3612
+  },
+  "aggregate": {
+    "complete_repair_rate": {
+      "mean": 0.5064,
+      "std": 0.0018,
+      "min": 0.505,
+      "max": 0.511,
+      "ci95_low": 0.5055,
+      "ci95_high": 0.5076
+    },
+    "effective_repair_rate": {
+      "mean": 0.0059,
+      "std": 0.003048,
+      "min": 0.003,
+      "max": 0.014,
+      "ci95_low": 0.0043,
+      "ci95_high": 0.008
+    },
+    "mean_delta_bpr": {
+      "mean": -0.024526,
+      "std": 0.01202,
+      "min": -0.0488,
+      "max": -0.008077,
+      "ci95_low": -0.032372,
+      "ci95_high": -0.01753
+    },
+    "regression_rate": {
+      "mean": 0.3377,
+      "std": 0.040383,
+      "min": 0.246,
+      "max": 0.402,
+      "ci95_low": 0.3117,
+      "ci95_high": 0.3612
+    }
+  },
+  "bootstrap": {
+    "method": "percentile",
+    "ci": 0.95,
+    "resamples": 10000,
+    "seed": 42
+  },
+  "backward_compatibility": {
+    "single_seed_leaderboard_tool": "baseline_random",
+    "single_seed_default": 0,
+    "single_seed_complete_repair_rate": null,
+    "preferred_estimate": "multi_seed_summary"
+  },
+  "generated_at_utc": "2026-06-09T06:36:00.124840+00:00"
+}

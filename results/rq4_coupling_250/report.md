@@ -37,14 +37,22 @@ by chaining the source first-order operator with deterministic secondary operato
 
 ![Complete repair by order](figures/complete_repair_rate_by_order.png)
 
+![Effective repair by order](figures/effective_repair_rate_by_order.png)
+
+![Mean $\Delta$BPR by order](figures/mean_bpr_delta_by_order.png)
+
 ![Coupling effect by operator (order 2)](figures/coupling_effect_by_operator_order2.png)
+
+![Overall coupling effect](figures/coupling_effect_overall.png)
 
 ## Artifacts
 
 - Summary: `results/rq4_coupling_250/summary.csv`
 - Coupling metrics: `results/rq4_coupling_250/coupling_metrics.csv`
 - Per-case results: `results/rq4_coupling_250/per_case_results.csv`
+- Confidence intervals: `results/rq4_coupling_250/confidence_intervals.csv`
 - Coupling report JSON: `results/rq4_coupling_250/coupling_report.json`
+- Frozen manifest: `results/rq4_coupling_250/manifest.json`
 - LaTeX tables: `results/rq4_coupling_250/tables/`
 
 ## Bootstrap confidence intervals

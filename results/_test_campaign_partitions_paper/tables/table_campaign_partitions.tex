@@ -1,0 +1,18 @@
+% Auto-generated from fsmrepairbench.campaign_partitions
+\begin{table}[t]
+\caption{Unified campaign partitions and primary metric denominators. Detectable counts follow campaign-specific visibility or localizability rules.}
+\label{tab:campaign-partitions}
+\scriptsize
+\setlength{\tabcolsep}{3pt}
+\begin{tabular}{@{}p{2.1cm}p{1.5cm}rrrrp{3.2cm}@{}}
+\toprule
+Campaign & RQ & Total & Det. & Skip & Denominator & Primary metrics \\
+\midrule
+v0.2.0-analysis & RQ1 & 1000 & 495 & 0 & n=1000 (full pinned cohort) & RQ2: overall\_detection\_rate, mean\_faulty\_bpr, mean\_bpr\_delta; RQ1: taxonomy dimension/operator coverage on the same cohort \\
+C1-baseline-repair & RQ6 & 1000 & 495 & 0 & n=1000 cohort-wide; n=495 for detectable-only repair rates & complete\_repair\_rate, effective\_repair\_rate, mean\_delta\_bpr, complete\_repair\_rate\_detectable\_only \\
+RQ3-localization-ochiai-1k & RQ3 & 1000 & 495 & 505 & n=495 localized cases with changed\_transition\_id & top\_1\_hit\_rate, top\_3\_hit\_rate, top\_5\_hit\_rate, mrr \\
+RQ4-higher-order-coupling-250 & RQ4 & 250 & 118 & 0 & n=250 pinned source cases; n=250 order-1, n=250 order-2, n=250 order-3 generated cases per metric stratum & detection\_rate, complete\_repair\_rate, effective\_repair\_rate, mean\_bpr\_delta by mutation order; coupling\_effect\_estimate \\
+C3-oracle-depth-ablation-200 & C3 & 200 & 97 & 0 & n=200 fixed cases per depth preset & overall\_detection\_rate, mean\_faulty\_bpr, mean\_bpr\_delta by oracle depth (shallow/medium/deep) \\
+\bottomrule
+\end{tabular}
+\end{table}

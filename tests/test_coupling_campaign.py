@@ -53,9 +53,11 @@ def test_run_coupling_campaign_on_fixture_cohort(tmp_path: Path) -> None:
     assert result.per_case_path.is_file()
     assert result.report_path.is_file()
     assert (result.figures_dir / "detection_rate_by_order.png").is_file()
+    assert (result.figures_dir / "effective_repair_rate_by_order.png").is_file()
+    assert (result.figures_dir / "mean_bpr_delta_by_order.png").is_file()
     assert (result.tables_dir / "table_coupling_summary.tex").is_file()
     assert (out / "coupling_report.json").is_file()
-    assert (out / "manifest.json").is_file()
+    assert result.manifest_path.is_file()
 
     summary = {
         row["metric"]: row["value"]
@@ -63,6 +65,12 @@ def test_run_coupling_campaign_on_fixture_cohort(tmp_path: Path) -> None:
     }
     assert summary["campaign_seed"] == "44"
     assert int(summary["first_order_case_count"]) >= 1
+    assert "coupling_effect_estimate" in summary
+
+    manifest = json.loads(result.manifest_path.read_text(encoding="utf-8"))
+    assert manifest["zenodo_doi"] == "10.5281/zenodo.20602528"
+    assert manifest["campaign_seed"] == 44
+    assert manifest["regeneration_commands"]
 
 
 def test_run_coupling_campaign_cli(tmp_path: Path) -> None:
@@ -90,6 +98,8 @@ def test_run_coupling_campaign_cli(tmp_path: Path) -> None:
     assert (out / "report.md").is_file()
     manifest = json.loads((out / "manifest.json").read_text(encoding="utf-8"))
     assert manifest["experiment"] == "RQ4-higher-order-coupling-250"
+    assert manifest["release_label"] == "v0.2.0-analysis"
+    assert manifest["cohort_sha256"]
 
 
 def test_run_coupling_campaign_requires_dataset(tmp_path: Path) -> None:

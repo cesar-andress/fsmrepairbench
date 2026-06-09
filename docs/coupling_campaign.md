@@ -19,7 +19,22 @@ fsmrepairbench run-coupling-campaign data/fsmrepairbench_1k \
 ```
 
 Exports include `summary.csv`, `coupling_metrics.csv`, `per_case_results.csv`,
-`confidence_intervals.csv`, figures, LaTeX tables, `report.md`, and `manifest.json`.
+`coupling_report.json`, `confidence_intervals.csv`, figures, LaTeX tables,
+`report.md`, and `manifest.json`.
+
+The enriched HO workspace under `results/rq4_coupling_subset/` is gitignored and
+regenerated deterministically from the pinned cohort (`seed=44`).
+
+## Zenodo freeze
+
+`manifest.json` records:
+
+- `release_label`, `campaign_label`, `zenodo_doi`
+- `cohort_path`, `cohort_sha256`, `campaign_seed`, `subset_dir`
+- `dataset_coupling_summary`, `skipped_ho_generations`, `output_files`
+- `regeneration_commands`, `git_commit_hash`, `generated_at`
+
+Detailed per-case coupling analysis remains in `coupling_report.json`.
 
 ## Random-secondary sensitivity analysis
 

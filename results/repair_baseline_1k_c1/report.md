@@ -1,12 +1,25 @@
-# C1 Random Baseline Multi-Seed Analysis
+# C1 Baseline Repair Experiment Report
 
-Generated: 2026-06-09T06:36:00.124997+00:00
+Generated: 2026-06-09T07:38:52.106516+00:00
+Dataset: `data/fsmrepairbench_1k`
+Cohort: `data/fsmrepairbench_1k/analysis_cohort_1k.txt` (1000 cases)
+Run-tools output: `results/repair_baseline_1k_c1`
 
-## Interpretation
+## Leaderboard
 
-Deterministic baselines (`missing-transition`, `wrong-target`) are unchanged.
-The original single-seed random baseline (seed 0) remains in `leaderboard.csv` for backward compatibility.
-The multi-seed random summary below is the preferred floor estimate for STVR reporting.
+- **baseline_missing_transition**: complete=0.8440, effective=0.3860, mean ΔBPR=0.0521, detectable-only complete=0.6848 (n=495)
+- **baseline_wrong_target**: complete=0.5650, effective=0.1090, mean ΔBPR=0.0241, detectable-only complete=0.1212 (n=495)
+- **baseline_random**: complete=0.5060, effective=0.0030, mean ΔBPR=-0.0081, detectable-only complete=0.0020 (n=495)
+
+## Outputs
+
+- `per_case_results.csv`
+- `summary.csv` (per-case run-tools rows)
+- `cohort_summary.csv`
+- `leaderboard.csv`
+- `manifest.json`
+- `figures/` (PNG)
+- `tables/` (LaTeX)
 
 ## Bootstrap confidence intervals
 

@@ -17,6 +17,7 @@ from fsmrepairbench.fault_localization import (
     SuspiciousnessMethod,
     localize_fault,
 )
+from fsmrepairbench.freeze import get_git_commit, sha256_file
 from fsmrepairbench.models import BugMetadata
 from fsmrepairbench.statistics import (
     append_ci_section_to_report,
@@ -26,6 +27,11 @@ from fsmrepairbench.statistics import (
 from fsmrepairbench.validators import load_fsm_json, load_oracle_suite
 
 LOCALIZATION_METHOD: SuspiciousnessMethod = "ochiai"
+DEFAULT_COHORT_MANIFEST = "localization_cohort_1k.txt"
+DEFAULT_OUTPUT_DIR = Path("results/rq3_localization_1k")
+RELEASE_LABEL = "v0.2.0-analysis"
+CAMPAIGN_LABEL = "RQ3-localization-ochiai-1k"
+ZENODO_DOI = "10.5281/zenodo.20602528"
 TOP_K_VALUES: tuple[int, ...] = (1, 3, 5)
 RANK_BUCKETS: tuple[str, ...] = (
     "1",
@@ -59,6 +65,20 @@ LOCALIZATION_METRICS_COLUMNS: tuple[str, ...] = (
     "value",
     "count",
     "fraction",
+)
+
+LEADERBOARD_COLUMNS: tuple[str, ...] = (
+    "method",
+    "element_type",
+    "ground_truth",
+    "cohort_size",
+    "localized_cases",
+    "skipped_cases",
+    "detectable_denominator",
+    "top1_hit_rate",
+    "top3_hit_rate",
+    "top5_hit_rate",
+    "mrr",
 )
 
 
@@ -107,10 +127,12 @@ class LocalizationCampaignResult:
     cohort_path: Path
     per_case_path: Path
     summary_path: Path
+    leaderboard_path: Path
     localization_metrics_path: Path
     report_path: Path
     figures_dir: Path
     tables_dir: Path
+    manifest_path: Path
     case_count: int
     localized_cases: int
 
@@ -314,11 +336,12 @@ def _write_per_case_csv(path: Path, rows: list[CaseLocalizationResult]) -> None:
 def _write_summary_csv(path: Path, metrics: dict[str, float | int], *, cohort_path: Path) -> None:
     path.parent.mkdir(parents=True, exist_ok=True)
     rows = [
-        ("experiment", "RQ3-localization-ochiai-1k"),
+        ("experiment", CAMPAIGN_LABEL),
         ("method", LOCALIZATION_METHOD),
         ("element_type", "transition"),
         ("ground_truth", "changed_transition_id"),
         ("cohort_path", str(cohort_path)),
+        ("detectable_denominator", metrics["localized_cases"]),
         *[(key, value) for key, value in metrics.items()],
     ]
     with path.open("w", encoding="utf-8", newline="") as handle:
@@ -326,6 +349,32 @@ def _write_summary_csv(path: Path, metrics: dict[str, float | int], *, cohort_pa
         writer.writerow(["metric", "value"])
         for metric, value in rows:
             writer.writerow([metric, value])
+
+
+def _write_leaderboard_csv(
+    path: Path,
+    metrics: dict[str, float | int],
+    *,
+    method: SuspiciousnessMethod,
+) -> None:
+    path.parent.mkdir(parents=True, exist_ok=True)
+    row = {
+        "method": method,
+        "element_type": "transition",
+        "ground_truth": "changed_transition_id",
+        "cohort_size": metrics["cohort_size"],
+        "localized_cases": metrics["localized_cases"],
+        "skipped_cases": metrics["skipped_cases"],
+        "detectable_denominator": metrics["localized_cases"],
+        "top1_hit_rate": metrics["top1_hit_rate"],
+        "top3_hit_rate": metrics["top3_hit_rate"],
+        "top5_hit_rate": metrics["top5_hit_rate"],
+        "mrr": metrics["mrr"],
+    }
+    with path.open("w", encoding="utf-8", newline="") as handle:
+        writer = csv.DictWriter(handle, fieldnames=list(LEADERBOARD_COLUMNS))
+        writer.writeheader()
+        writer.writerow(row)
 
 
 def _write_localization_metrics_csv(
@@ -393,6 +442,32 @@ def _write_campaign_figures(
             xlabel="Reciprocal Rank (1/rank)",
             values=reciprocal_values,
             bins=min(10, max(3, len(set(reciprocal_values)))),
+        )
+
+    top_rank_counts = {
+        str(k): int(next((row["count"] for row in distribution if row["bucket"] == str(k)), 0))
+        for k in range(1, 6)
+    }
+    if any(top_rank_counts.values()):
+        _save_bar_plot(
+            figures_dir / "topk_rank_histogram.png",
+            title="Target Transition Rank Histogram (Top-5, Localized Cases)",
+            xlabel="Rank of Ground-Truth Transition",
+            ylabel="Cases",
+            labels=list(top_rank_counts.keys()),
+            values=list(top_rank_counts.values()),
+        )
+        _save_bar_plot(
+            figures_dir / "topk_hit_histogram.png",
+            title="Top-k Hit Counts (Localized Cases)",
+            xlabel="Metric",
+            ylabel="Hits",
+            labels=["Top-1", "Top-3", "Top-5"],
+            values=[
+                sum(1 for row in rows if row.localized and row.top1_hit),
+                sum(1 for row in rows if row.localized and row.top3_hit),
+                sum(1 for row in rows if row.localized and row.top5_hit),
+            ],
         )
 
     operator_rates = operator_hit_rates(rows, top_k=5)
@@ -479,6 +554,76 @@ def _write_publication_tables(
             "\n".join(operator_lines), encoding="utf-8"
         )
 
+    leaderboard_lines = [
+        "% Auto-generated by run-localization-campaign",
+        "\\begin{tabular}{@{}lrrrrr@{}}",
+        "\\toprule",
+        "Method & Detectable & Top-1 & Top-3 & Top-5 & MRR \\\\",
+        "\\midrule",
+        f"{LOCALIZATION_METHOD} & {metrics['localized_cases']} & "
+        f"{100 * float(metrics['top1_hit_rate']):.2f}\\% & "
+        f"{100 * float(metrics['top3_hit_rate']):.2f}\\% & "
+        f"{100 * float(metrics['top5_hit_rate']):.2f}\\% & "
+        f"{float(metrics['mrr']):.3f} \\\\",
+        "\\bottomrule",
+        "\\end{tabular}",
+        "",
+    ]
+    (tables_dir / "table_leaderboard.tex").write_text(
+        "\n".join(leaderboard_lines), encoding="utf-8"
+    )
+
+
+def _list_output_files(out: Path) -> list[str]:
+    files: list[str] = []
+    for path in sorted(out.rglob("*")):
+        if path.is_file():
+            files.append(path.relative_to(out).as_posix())
+    return files
+
+
+def _build_frozen_manifest(
+    *,
+    dataset_dir: Path,
+    out: Path,
+    cohort_path: Path,
+    method: SuspiciousnessMethod,
+    metrics: dict[str, float | int],
+) -> dict[str, object]:
+    cohort_sha256 = sha256_file(cohort_path) if cohort_path.is_file() else ""
+    return {
+        "release_label": RELEASE_LABEL,
+        "campaign_label": CAMPAIGN_LABEL,
+        "zenodo_doi": ZENODO_DOI,
+        "experiment": "RQ3-localization-ochiai-1k",
+        "dataset_dir": str(dataset_dir),
+        "output_dir": str(out),
+        "cohort_path": str(cohort_path),
+        "cohort_sha256": cohort_sha256,
+        "method": method,
+        "element_type": "transition",
+        "ground_truth": "changed_transition_id",
+        "case_count": metrics["cohort_size"],
+        "localized_cases": metrics["localized_cases"],
+        "skipped_cases": metrics["skipped_cases"],
+        "detectable_denominator": metrics["localized_cases"],
+        "metrics": metrics,
+        "output_files": sorted(set(_list_output_files(out) + ["manifest.json"])),
+        "regeneration_commands": [
+            (
+                "fsmrepairbench run-localization-campaign data/fsmrepairbench_1k "
+                f"--out {out}"
+            ),
+            (
+                "fsmrepairbench run-localization-campaign data/fsmrepairbench_1k "
+                f"--out {out} "
+                f"--cohort-file {cohort_path}"
+            ),
+        ],
+        "git_commit_hash": get_git_commit(),
+        "generated_at": datetime.now(UTC).isoformat(),
+    }
+
 
 def write_localization_report(
     path: Path,
@@ -507,9 +652,14 @@ def write_localization_report(
         "",
         "## Aggregate metrics",
         "",
+        "Top-k hit rates and MRR are computed over **detectable (localized) cases only** "
+        f"(`detectable_denominator = {metrics['localized_cases']}`). "
+        f"Skipped cases ({metrics['skipped_cases']}) are excluded from ranking metrics.",
+        "",
         "| Metric | Value |",
         "|---|---:|",
-        f"| Localized cases | {metrics['localized_cases']} |",
+        f"| Cohort size | {metrics['cohort_size']} |",
+        f"| Detectable (localized) cases | {metrics['localized_cases']} |",
         f"| Skipped cases | {metrics['skipped_cases']} |",
         f"| Top-1 hit rate | {float(metrics['top1_hit_rate']):.2%} |",
         f"| Top-3 hit rate | {float(metrics['top3_hit_rate']):.2%} |",
@@ -533,16 +683,24 @@ def write_localization_report(
             "",
             "![Top-k hit rates](figures/topk_hit_rates.png)",
             "",
+            "![Top-k hit counts](figures/topk_hit_histogram.png)",
+            "",
+            "![Target rank histogram (top-5)](figures/topk_rank_histogram.png)",
+            "",
             "![Rank distribution](figures/rank_distribution.png)",
+            "",
+            "![Reciprocal rank distribution](figures/reciprocal_rank_distribution.png)",
             "",
             "![Top-5 hit rate by operator](figures/top5_hit_rate_by_operator.png)",
             "",
             "## Artifacts",
             "",
+            f"- Leaderboard: `{output_dir / 'leaderboard.csv'}`",
             f"- Summary: `{output_dir / 'summary.csv'}`",
             f"- Localization metrics: `{output_dir / 'localization_metrics.csv'}`",
             f"- Per-case results: `{output_dir / 'per_case_results.csv'}`",
             f"- Confidence intervals: `{output_dir / 'confidence_intervals.csv'}`",
+            f"- Frozen manifest: `{output_dir / 'manifest.json'}`",
             f"- LaTeX tables: `{output_dir / 'tables'}/`",
             "",
         ]
@@ -596,13 +754,16 @@ def run_localization_campaign(
 
     per_case_path = out / "per_case_results.csv"
     summary_path = out / "summary.csv"
+    leaderboard_path = out / "leaderboard.csv"
     localization_metrics_path = out / "localization_metrics.csv"
     report_path = out / "report.md"
     figures_dir = out / "figures"
     tables_dir = out / "tables"
+    manifest_path = out / "manifest.json"
 
     _write_per_case_csv(per_case_path, rows)
     _write_summary_csv(summary_path, metrics, cohort_path=cohort)
+    _write_leaderboard_csv(leaderboard_path, metrics, method=method)
     _write_localization_metrics_csv(localization_metrics_path, metrics, distribution)
     _write_campaign_figures(
         figures_dir,
@@ -634,18 +795,14 @@ def run_localization_campaign(
     )
     append_ci_section_to_report(report_path, ci_rows)
 
-    manifest = {
-        "experiment": "RQ3-localization-ochiai-1k",
-        "dataset_dir": str(dataset_dir),
-        "output_dir": str(out),
-        "cohort_path": str(cohort),
-        "method": method,
-        "element_type": "transition",
-        "ground_truth": "changed_transition_id",
-        "metrics": metrics,
-        "generated_at": datetime.now(UTC).isoformat(),
-    }
-    (out / "manifest.json").write_text(json.dumps(manifest, indent=2) + "\n", encoding="utf-8")
+    manifest = _build_frozen_manifest(
+        dataset_dir=dataset_dir,
+        out=out,
+        cohort_path=cohort,
+        method=method,
+        metrics=metrics,
+    )
+    manifest_path.write_text(json.dumps(manifest, indent=2) + "\n", encoding="utf-8")
 
     return LocalizationCampaignResult(
         dataset_dir=dataset_dir,
@@ -653,10 +810,12 @@ def run_localization_campaign(
         cohort_path=cohort,
         per_case_path=per_case_path,
         summary_path=summary_path,
+        leaderboard_path=leaderboard_path,
         localization_metrics_path=localization_metrics_path,
         report_path=report_path,
         figures_dir=figures_dir,
         tables_dir=tables_dir,
+        manifest_path=manifest_path,
         case_count=len(case_ids),
         localized_cases=int(metrics["localized_cases"]),
     )

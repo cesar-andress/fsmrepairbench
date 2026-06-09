@@ -68,7 +68,7 @@ Directory: `results/oracle_depth_ablation/`
 
 | File | Description |
 |------|-------------|
-| `depth_summary.csv` | One row per depth: detection rate, BPR means, coverage means |
+| `depth_summary.csv` | One row per depth: detection rate, BPR means, path length, coverage means |
 | `summary.csv` | Long-format metrics keyed by `(oracle_depth, metric)` |
 | `distributions.csv` | Bucketed distributions per depth |
 | `per_case_results.csv` | Paired case×depth behavioural metrics |
@@ -79,11 +79,11 @@ Directory: `results/oracle_depth_ablation/`
 
 ## Key results (200-case cohort, v0.2.0-analysis dataset)
 
-| Depth | Detection rate | Mean BPR delta | Mean max scenario steps |
-|-------|---------------:|---------------:|------------------------:|
-| shallow | 48.5% | 0.082 | 4.0 |
-| medium | 48.5% | 0.082 | 4.0 |
-| deep | 48.5% | 0.082 | 4.0 |
+| Depth | Max steps | Detection rate | Mean BPR delta | Mean max path | Max path length |
+|-------|----------:|---------------:|---------------:|--------------:|----------------:|
+| shallow | 5 | 48.5% | 0.082 | 4.0 | (per run) |
+| medium | 12 | 48.5% | 0.082 | 4.0 | (per run) |
+| deep | 25 | 48.5% | 0.082 | 4.0 | (per run) |
 
 **Answer:** On this cohort, benchmark detection conclusions are **insensitive** to oracle
 depth within the shallow/medium/deep presets. Regenerated suites are identical because

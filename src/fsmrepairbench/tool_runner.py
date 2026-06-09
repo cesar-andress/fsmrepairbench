@@ -723,22 +723,52 @@ def write_tool_leaderboard_csv(path: Path, rows: list[ToolRunSummaryRow]) -> Non
     write_leaderboard_csv(path, entries)
 
 
+def filter_cases_by_cohort(
+    cases: list[ExperimentCase],
+    cohort_file: Path | None,
+) -> list[ExperimentCase]:
+    """Restrict *cases* to IDs listed in *cohort_file* when provided."""
+    if cohort_file is None:
+        return cases
+    if not cohort_file.is_file():
+        msg = f"Cohort manifest not found: {cohort_file}"
+        raise ToolRunnerError(msg)
+    cohort_ids = [
+        line.strip()
+        for line in cohort_file.read_text(encoding="utf-8").splitlines()
+        if line.strip()
+    ]
+    if not cohort_ids:
+        msg = f"Cohort manifest is empty: {cohort_file}"
+        raise ToolRunnerError(msg)
+    by_id = {case.case_id: case for case in cases}
+    missing = [case_id for case_id in cohort_ids if case_id not in by_id]
+    if missing:
+        preview = ", ".join(missing[:5])
+        suffix = "..." if len(missing) > 5 else ""
+        msg = f"Cohort cases missing from dataset ({len(missing)}): {preview}{suffix}"
+        raise ToolRunnerError(msg)
+    return [by_id[case_id] for case_id in cohort_ids]
+
+
 def run_tools(
     dataset_dir: Path,
     tools_dir: Path,
     output_dir: Path,
     *,
+    cohort_file: Path | None = None,
     resume: bool = True,
     workers: int = 1,
     executor: Callable[[ToolRunTask, Path], ToolRunSummaryRow] | None = None,
 ) -> ToolRunResult:
-    """Run all configured tools on all cases in *dataset_dir*."""
+    """Run all configured tools on cases in *dataset_dir* (optionally cohort-filtered)."""
     if workers < 1:
         msg = "workers must be at least 1"
         raise ToolRunnerError(msg)
 
     tools = load_tool_configs(tools_dir)
     cases = discover_experiment_cases(resolve_cases_dir(dataset_dir))
+    cases = filter_cases_by_cohort(cases, cohort_file)
     tasks = build_tool_tasks(cases, tools)
     output_dir.mkdir(parents=True, exist_ok=True)
 
@@ -785,7 +815,7 @@ def run_tools(
     write_tool_summary_csv(summary_path, rows)
     write_tool_leaderboard_csv(leaderboard_path, rows)
 
-    manifest = {
+    manifest: dict[str, Any] = {
         "dataset_dir": str(dataset_dir),
         "tools_dir": str(tools_dir),
         "output_dir": str(output_dir),
@@ -795,6 +825,8 @@ def run_tools(
         "resume": resume,
         "workers": workers,
     }
+    if cohort_file is not None:
+        manifest["cohort_file"] = str(cohort_file)
     (output_dir / "tool_run_manifest.json").write_text(
         json.dumps(manifest, indent=2, sort_keys=True) + "\n",
         encoding="utf-8",

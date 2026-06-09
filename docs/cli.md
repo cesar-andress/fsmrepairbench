@@ -344,24 +344,25 @@ fsmrepairbench estimate-difficulty cases/case_000001 --out PATH
 
 ### `export-c1-baseline-repair`
 
-Run multi-seed random baseline analysis and write C1 manifest exports.
+Export C1 CSV/LaTeX/PNG artefacts and manifests from existing run-tools output.
 
 **Usage**
 
 ```bash
-fsmrepairbench export-c1-baseline-repair DATASET_DIR --out PATH
+fsmrepairbench export-c1-baseline-repair DATASET_DIR
 ```
 
 | Parameter | Type | Flags | Default | Description |
 |-----------|------|-------|---------|-------------|
 | `dataset_dir` | `Path` | positional | required |  |
-| `out` | `Path` | `--out` | required | Write C1 export artefacts to this directory. |
+| `out` | `Path` | `--out` | results/baseline_repair_C1 | Directory containing run-tools output and export artefacts. |
 | `cohort_file` | `Path | None` | `--cohort-file` | None | Pinned cohort manifest (default: analysis_cohort_1k.txt under dataset). |
 | `tools_dir` | `Path` | `--tools-dir` | tools/baselines_c1 | Directory containing baseline tool YAML configs. |
-| `raw_runs_dir` | `Path | None` | `--raw-runs-dir` | None | Raw run-tools output directory (default: results/repair_baseline_1k_c1). |
-| `random_seeds` | `str | None` | `--random-seeds` | None | Comma-separated random baseline seeds or an integer count (default: 10 seeds 0-9). |
+| `paper_export_dir` | `Path | None` | `--paper-export-dir` | None | Optional separate paper export directory (default: same as --out). |
+| `random_seeds` | `str | None` | `--random-seeds` | None | Comma-separated random baseline seeds or an integer count (default: 0-9). |
 | `seeds` | `str | None` | `--seeds` | None | Deprecated alias for --random-seeds. |
-| `workers` | `int` | `--workers` | 1 |  |
+| `workers` | `int` | `--workers` | 4 |  |
+| `skip_multi_seed` | `bool` | `--skip-multi-seed` | False | Skip multi-seed random baseline analysis. |
 | `no_per_seed_runs` | `bool` | `--no-per-seed-runs` | False | Skip writing per-seed JSON outputs under multi_seed/. |
 | `quiet` | `bool` | `--quiet` | False | Print a short summary only. |
 
@@ -717,7 +718,8 @@ fsmrepairbench generate-taxonomy-coverage DATASET_DIR
 |-----------|------|-------|---------|-------------|
 | `dataset_dir` | `Path` | positional | required |  |
 | `out` | `Path` | `--out` | results/taxonomy_coverage | Directory for taxonomy coverage CSVs, figures, tables, and report. |
-| `cohort_file` | `Path | None` | `--cohort-file` | None | Optional cohort manifest (one case ID per line). |
+| `cohort_file` | `Path | None` | `--cohort-file` | None | Pinned cohort manifest (default: analysis_cohort_1k.txt under the dataset). |
+| `quiet` | `bool` | `--quiet` | False | Print a short summary only. |
 
 ### `inject-ambiguity`
 
@@ -981,6 +983,31 @@ fsmrepairbench run-benchmark-campaign plans/fsmrepairbench_v0_10k_plan.yaml DATA
 | `out` | `Path` | `--out` | results/v0_2_campaign | Campaign report output directory. |
 | `skip_build` | `bool` | `--skip-build` | False | Reuse an existing dataset in DATASET_DIR and only run analyses. |
 
+### `run-c1-baseline-repair`
+
+Run the C1 baseline repair experiment on the pinned 1k analysis cohort.
+
+**Usage**
+
+```bash
+fsmrepairbench run-c1-baseline-repair DATASET_DIR
+```
+
+| Parameter | Type | Flags | Default | Description |
+|-----------|------|-------|---------|-------------|
+| `dataset_dir` | `Path` | positional | required |  |
+| `out` | `Path` | `--out` | results/baseline_repair_C1 | Write C1 run-tools output and frozen exports to this directory. |
+| `cohort_file` | `Path | None` | `--cohort-file` | None | Pinned cohort manifest (default: analysis_cohort_1k.txt under dataset). |
+| `tools_dir` | `Path` | `--tools-dir` | tools/baselines_c1 | Directory containing baseline tool YAML configs. |
+| `paper_export_dir` | `Path | None` | `--paper-export-dir` | None | Optional separate paper export directory (default: same as --out). |
+| `random_seeds` | `str | None` | `--random-seeds` | None | Comma-separated random baseline seeds or an integer count (default: 0-9). |
+| `workers` | `int` | `--workers` | 4 |  |
+| `resume` | `bool` | `--resume/--no-resume` | True |  |
+| `skip_tool_runs` | `bool` | `--skip-tool-runs` | False | Export only from existing run-tools output under --out. |
+| `skip_multi_seed` | `bool` | `--skip-multi-seed` | False | Skip multi-seed random baseline analysis. |
+| `no_per_seed_runs` | `bool` | `--no-per-seed-runs` | False | Skip writing per-seed JSON outputs under multi_seed/. |
+| `quiet` | `bool` | `--quiet` | False | Print a short summary only. |
+
 ### `run-coupling-campaign`
 
 Run RQ4 higher-order coupling campaign on a pinned cohort.
@@ -1061,6 +1088,28 @@ fsmrepairbench run-localization-campaign DATASET_DIR
 | `cohort_file` | `Path | None` | `--cohort-file` | None | Pinned cohort manifest (one case ID per line). |
 | `method` | `str` | `--method` | 'ochiai' | Suspiciousness coefficient (ochiai, tarantula, jaccard). |
 
+### `run-negative-control-campaign`
+
+Build and evaluate the no-fault negative control cohort.
+
+**Usage**
+
+```bash
+fsmrepairbench run-negative-control-campaign
+```
+
+| Parameter | Type | Flags | Default | Description |
+|-----------|------|-------|---------|-------------|
+| `source_dataset` | `Path` | `--source-dataset` | data/fsmrepairbench_1k | Source v0.2.0-analysis dataset to sample reference cases from. |
+| `dataset_dir` | `Path` | `--dataset-dir` | data/fsmrepairbench_negative_controls | Output directory for generated no-fault control cases. |
+| `out` | `Path` | `--out` | results/negative_controls | Directory for negative-control campaign exports. |
+| `source_cohort` | `Path | None` | `--source-cohort` | None | Source cohort manifest (default: analysis_cohort_1k.txt). |
+| `tools_dir` | `Path` | `--tools-dir` | tools/baselines_c1 | Baseline repair tool configs to evaluate. |
+| `cohort_size` | `int` | `--cohort-size` | 100 | Number of no-fault control cases to generate. |
+| `seed` | `int` | `--seed` | 44 | Reproducible cohort selection seed. |
+| `paper_export_dir` | `Path | None` | `--paper-export-dir` | None | Paper export directory for negative-control artifacts. |
+| `reuse_dataset` | `bool` | `--reuse-dataset` | False | Reuse an existing no-fault dataset instead of rebuilding it. |
+
 ### `run-oracle-depth-ablation`
 
 Run oracle depth ablation (shallow/medium/deep) on a pinned case sample.
@@ -1119,6 +1168,7 @@ fsmrepairbench run-tools DATASET_DIR PATH --out PATH
 | `dataset_dir` | `Path` | positional | required |  |
 | `tools_dir` | `Path` | positional | required |  |
 | `out` | `Path` | `--out` | required | Write tool run results to this directory. |
+| `cohort_file` | `Path | None` | `--cohort-file` | None | Optional pinned cohort manifest (one case ID per line). |
 | `resume` | `bool` | `--resume/--no-resume` | True |  |
 | `workers` | `int` | `--workers` | 1 |  |
 | `quiet` | `bool` | `--quiet` | False | Print a short summary only. |
@@ -1350,7 +1400,7 @@ fsmrepairbench write-c1-manifest
 | `dataset_dir` | `Path` | `--dataset` | data/fsmrepairbench_1k | Benchmark dataset directory. |
 | `cohort_file` | `Path | None` | `--cohort-file` | None | Pinned cohort manifest (default: analysis_cohort_1k.txt under dataset). |
 | `tools_dir` | `Path` | `--tools-dir` | tools/baselines_c1 | Baseline tool YAML configuration directory. |
-| `raw_runs_dir` | `Path` | `--raw-runs-dir` | results/repair_baseline_1k_c1 | Raw run-tools output directory. |
+| `raw_runs_dir` | `Path` | `--raw-runs-dir` | results/baseline_repair_C1 | Raw run-tools output directory. |
 | `paper_export_dir` | `Path` | `--paper-export-dir` | ../paper1/results/baseline_repair_C1 | Frozen paper export directory. |
 | `workers` | `int` | `--workers` | 4 |  |
 | `quiet` | `bool` | `--quiet` | False |  |

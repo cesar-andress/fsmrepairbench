@@ -45,12 +45,20 @@ def test_generate_taxonomy_coverage_from_feature_matrix(tmp_path: Path) -> None:
     assert result.report_path.is_file()
     assert result.summary_path.is_file()
     assert (result.figures_dir / "dimension_coverage_ratio.png").is_file()
+    assert (result.figures_dir / "unique_combinations_summary.png").is_file()
     assert (result.tables_dir / "table_dimension_coverage.tex").is_file()
+    assert (result.tables_dir / "table_unique_combinations.tex").is_file()
+    assert (out / "unique_combinations_summary.csv").is_file()
+    assert (out / "coverage_by_unique_combinations.csv").is_file()
 
     summary = list(csv.DictReader(result.summary_path.open(encoding="utf-8")))
     assert any(row["metric"] == "mutation_operators_present" for row in summary)
     payload = json.loads((out / "feature_space_report.json").read_text(encoding="utf-8"))
     assert payload["case_count"] == 3
+    manifest = json.loads((out / "manifest.json").read_text(encoding="utf-8"))
+    assert manifest["zenodo_doi"] == "10.5281/zenodo.20602528"
+    assert manifest["release_label"] == "v0.2.0-analysis"
+    assert "regeneration_commands" in manifest
 
 
 def test_generate_taxonomy_coverage_cli(tmp_path: Path) -> None:

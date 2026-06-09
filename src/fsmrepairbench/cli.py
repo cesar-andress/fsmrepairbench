@@ -49,13 +49,17 @@ from fsmrepairbench.semantics import (
     validate_semantics,
     write_semantics_report_json,
 )
+from fsmrepairbench.c1_baseline_repair_exports import (
+    C1BaselineRepairExportError,
+    generate_c1_baseline_repair_exports,
+    run_c1_baseline_repair_experiment,
+)
 from fsmrepairbench.tool_runner import ToolRunnerError, load_tool_configs, run_tools
 from fsmrepairbench.baseline_repair_campaign import (
     BaselineRepairCampaignError,
     CAMPAIGN_LABEL,
     DEFAULT_COHORT_FILE,
     DEFAULT_RAW_RUNS_DIR,
-    export_c1_multi_seed_analysis,
     parse_random_seeds,
     publish_c1_manifests,
 )
@@ -1947,6 +1951,11 @@ def run_tools_cmd(
     dataset_dir: Path,
     tools_dir: Path,
     out: Path = typer.Option(..., "--out", help="Write tool run results to this directory."),
+    cohort_file: Path | None = typer.Option(
+        None,
+        "--cohort-file",
+        help="Optional pinned cohort manifest (one case ID per line).",
+    ),
     resume: bool = typer.Option(True, "--resume/--no-resume"),
     workers: int = typer.Option(1, "--workers", min=1),
     quiet: bool = typer.Option(False, "--quiet", help="Print a short summary only."),
@@ -1963,6 +1972,7 @@ def run_tools_cmd(
             dataset_dir,
             tools_dir,
             out,
+            cohort_file=cohort_file,
             resume=resume,
             workers=workers,
         )
@@ -1979,6 +1989,8 @@ def run_tools_cmd(
             f"[green]OK[/green] Completed {len(result.rows)} case/tool runs "
             f"from '{dataset_dir}'"
         )
+        if cohort_file is not None:
+            console.print(f"Cohort: {cohort_file}")
         console.print(f"Summary: {result.summary_path}")
         console.print(f"Leaderboard: {result.leaderboard_path}")
         console.print(f"Manifest: {result.output_dir / 'tool_run_manifest.json'}")
@@ -1986,10 +1998,14 @@ def run_tools_cmd(
     raise typer.Exit(code=0)
 
 
-@app.command("export-c1-baseline-repair")
-def export_c1_baseline_repair_cmd(
+@app.command("run-c1-baseline-repair")
+def run_c1_baseline_repair_cmd(
     dataset_dir: Path,
-    out: Path = typer.Option(..., "--out", help="Write C1 export artefacts to this directory."),
+    out: Path = typer.Option(
+        Path(DEFAULT_RAW_RUNS_DIR),
+        "--out",
+        help="Write C1 run-tools output and frozen exports to this directory.",
+    ),
     cohort_file: Path | None = typer.Option(
         None,
         "--cohort-file",
@@ -2000,23 +2016,28 @@ def export_c1_baseline_repair_cmd(
         "--tools-dir",
         help="Directory containing baseline tool YAML configs.",
     ),
-    raw_runs_dir: Path | None = typer.Option(
+    paper_export_dir: Path | None = typer.Option(
         None,
-        "--raw-runs-dir",
-        help="Raw run-tools output directory (default: results/repair_baseline_1k_c1).",
+        "--paper-export-dir",
+        help="Optional separate paper export directory (default: same as --out).",
     ),
     random_seeds: str | None = typer.Option(
         None,
         "--random-seeds",
-        help="Comma-separated random baseline seeds or an integer count (default: 10 seeds 0-9).",
+        help="Comma-separated random baseline seeds or an integer count (default: 0-9).",
     ),
-    seeds: str | None = typer.Option(
-        None,
-        "--seeds",
-        help="Deprecated alias for --random-seeds.",
-        hidden=True,
+    workers: int = typer.Option(4, "--workers", min=1),
+    resume: bool = typer.Option(True, "--resume/--no-resume"),
+    skip_tool_runs: bool = typer.Option(
+        False,
+        "--skip-tool-runs",
+        help="Export only from existing run-tools output under --out.",
     ),
-    workers: int = typer.Option(1, "--workers", min=1),
+    skip_multi_seed: bool = typer.Option(
+        False,
+        "--skip-multi-seed",
+        help="Skip multi-seed random baseline analysis.",
+    ),
     no_per_seed_runs: bool = typer.Option(
         False,
         "--no-per-seed-runs",
@@ -2024,38 +2045,123 @@ def export_c1_baseline_repair_cmd(
     ),
     quiet: bool = typer.Option(False, "--quiet", help="Print a short summary only."),
 ) -> None:
-    """Run multi-seed random baseline analysis and write C1 manifest exports."""
+    """Run the C1 baseline repair experiment on the pinned 1k analysis cohort."""
+    cohort = cohort_file or (dataset_dir / DEFAULT_COHORT_FILE)
+    try:
+        parsed_seeds = parse_random_seeds(random_seeds)
+        result = run_c1_baseline_repair_experiment(
+            dataset_dir,
+            out_dir=out,
+            cohort_file=cohort,
+            tools_dir=tools_dir,
+            paper_export_dir=paper_export_dir,
+            workers=workers,
+            random_seeds=parsed_seeds,
+            resume=resume,
+            skip_tool_runs=skip_tool_runs,
+            skip_multi_seed=skip_multi_seed,
+            write_per_seed_json=not no_per_seed_runs,
+        )
+    except (BaselineRepairCampaignError, C1BaselineRepairExportError, ToolRunnerError) as exc:
+        console.print(f"[red]ERROR[/red] {exc}")
+        raise typer.Exit(code=1) from exc
+
+    if quiet:
+        console.print(f"[green]OK[/green] {CAMPAIGN_LABEL} out={out.name}")
+    else:
+        console.print(f"[green]OK[/green] Completed {CAMPAIGN_LABEL} on '{dataset_dir}'")
+        console.print(f"Cohort: {cohort}")
+        console.print(f"Output: {result.output_dir}")
+        console.print(f"Summary: {result.export.tool_run_summary_path}")
+        console.print(f"Cohort summary: {result.export.cohort_summary_path}")
+        console.print(f"Leaderboard: {result.export.leaderboard_path}")
+        console.print(f"Manifest: {result.export.manifest_path}")
+        console.print(f"Figures: {result.export.figures_dir}")
+        console.print(f"Tables: {result.export.tables_dir}")
+
+    raise typer.Exit(code=0)
+
+
+@app.command("export-c1-baseline-repair")
+def export_c1_baseline_repair_cmd(
+    dataset_dir: Path,
+    out: Path = typer.Option(
+        Path(DEFAULT_RAW_RUNS_DIR),
+        "--out",
+        help="Directory containing run-tools output and export artefacts.",
+    ),
+    cohort_file: Path | None = typer.Option(
+        None,
+        "--cohort-file",
+        help="Pinned cohort manifest (default: analysis_cohort_1k.txt under dataset).",
+    ),
+    tools_dir: Path = typer.Option(
+        Path("tools/baselines_c1"),
+        "--tools-dir",
+        help="Directory containing baseline tool YAML configs.",
+    ),
+    paper_export_dir: Path | None = typer.Option(
+        None,
+        "--paper-export-dir",
+        help="Optional separate paper export directory (default: same as --out).",
+    ),
+    random_seeds: str | None = typer.Option(
+        None,
+        "--random-seeds",
+        help="Comma-separated random baseline seeds or an integer count (default: 0-9).",
+    ),
+    seeds: str | None = typer.Option(
+        None,
+        "--seeds",
+        help="Deprecated alias for --random-seeds.",
+        hidden=True,
+    ),
+    workers: int = typer.Option(4, "--workers", min=1),
+    skip_multi_seed: bool = typer.Option(
+        False,
+        "--skip-multi-seed",
+        help="Skip multi-seed random baseline analysis.",
+    ),
+    no_per_seed_runs: bool = typer.Option(
+        False,
+        "--no-per-seed-runs",
+        help="Skip writing per-seed JSON outputs under multi_seed/.",
+    ),
+    quiet: bool = typer.Option(False, "--quiet", help="Print a short summary only."),
+) -> None:
+    """Export C1 CSV/LaTeX/PNG artefacts and manifests from existing run-tools output."""
     cohort = cohort_file or (dataset_dir / DEFAULT_COHORT_FILE)
     try:
         seed_arg = random_seeds if random_seeds is not None else seeds
         parsed_seeds = parse_random_seeds(seed_arg)
-        result = export_c1_multi_seed_analysis(
+        result = generate_c1_baseline_repair_exports(
             dataset_dir,
-            cohort,
-            tools_dir,
-            out,
-            seeds=parsed_seeds,
+            out_dir=out,
+            cohort_file=cohort,
+            tools_dir=tools_dir,
+            paper_export_dir=paper_export_dir,
             workers=workers,
-            write_per_seed_runs=not no_per_seed_runs,
-            raw_runs_dir=raw_runs_dir,
+            random_seeds=parsed_seeds,
+            skip_multi_seed=skip_multi_seed,
+            write_per_seed_json=not no_per_seed_runs,
         )
-    except BaselineRepairCampaignError as exc:
+    except (BaselineRepairCampaignError, C1BaselineRepairExportError) as exc:
         console.print(f"[red]ERROR[/red] {exc}")
         raise typer.Exit(code=1) from exc
 
     if quiet:
         console.print(
-            f"[green]OK[/green] {CAMPAIGN_LABEL} summary={result.summary_csv_path.name} "
+            f"[green]OK[/green] {CAMPAIGN_LABEL} summary={result.tool_run_summary_path.name} "
             f"seeds={len(parsed_seeds)}"
         )
     else:
-        console.print(
-            f"[green]OK[/green] Exported {CAMPAIGN_LABEL} multi-seed analysis to '{out}'"
-        )
-        console.print(f"Raw summary: {result.summary_csv_path}")
-        console.print(f"Raw per-seed: {result.per_seed_csv_path}")
-        console.print(f"LaTeX table: {result.tex_table_path}")
-        console.print(f"Report: {result.report_path}")
+        console.print(f"[green]OK[/green] Exported {CAMPAIGN_LABEL} artefacts to '{out}'")
+        console.print(f"Tool summary: {result.tool_run_summary_path}")
+        console.print(f"Cohort summary: {result.cohort_summary_path}")
+        console.print(f"Leaderboard: {result.leaderboard_path}")
+        console.print(f"Manifest: {result.manifest_path}")
+        console.print(f"Figures: {result.figures_dir}")
+        console.print(f"Tables: {result.tables_dir}")
 
     raise typer.Exit(code=0)
 
@@ -3272,11 +3378,13 @@ def run_localization_campaign_cmd(
         f"({result.localized_cases} localized) from {dataset_dir}"
     )
     console.print(f"Cohort: {result.cohort_path}")
+    console.print(f"Leaderboard: {result.leaderboard_path}")
     console.print(f"Summary: {result.summary_path}")
     console.print(f"Metrics: {result.localization_metrics_path}")
     console.print(f"Per-case: {result.per_case_path}")
     console.print(f"Figures: {result.figures_dir}")
     console.print(f"Tables: {result.tables_dir}")
+    console.print(f"Manifest: {result.manifest_path}")
     console.print(f"Report: {result.report_path}")
     raise typer.Exit(code=0)
 
@@ -3394,6 +3502,7 @@ def run_coupling_campaign_cmd(
     console.print(f"Per-case: {result.per_case_path}")
     console.print(f"Figures: {result.figures_dir}")
     console.print(f"Tables: {result.tables_dir}")
+    console.print(f"Manifest: {result.manifest_path}")
     console.print(f"Report: {result.report_path}")
     raise typer.Exit(code=0)
 
@@ -3409,11 +3518,15 @@ def generate_taxonomy_coverage_cmd(
     cohort_file: Path | None = typer.Option(
         None,
         "--cohort-file",
-        help="Optional cohort manifest (one case ID per line).",
+        help=(
+            "Pinned cohort manifest (default: analysis_cohort_1k.txt under the dataset)."
+        ),
     ),
+    quiet: bool = typer.Option(False, "--quiet", help="Print a short summary only."),
 ) -> None:
     """Report empirical taxonomy coverage for an existing benchmark dataset."""
     from fsmrepairbench.taxonomy_coverage import (
+        DEFAULT_COHORT_MANIFEST,
         TaxonomyCoverageError,
         generate_taxonomy_coverage_report,
     )
@@ -3428,18 +3541,21 @@ def generate_taxonomy_coverage_cmd(
         console.print(f"[red]ERROR[/red] {exc}")
         raise typer.Exit(code=1) from exc
 
-    console.print(
-        f"[green]OK[/green] Taxonomy coverage report for {result.case_count} cases "
-        f"from {dataset_dir}"
-    )
-    console.print(f"Report: {result.report_path}")
-    console.print(f"Summary: {result.summary_path}")
-    console.print(f"Dimension summary: {result.dimension_summary_path}")
-    console.print(f"FSM families: {result.fsm_family_path}")
-    console.print(f"Mutation operators: {result.mutation_operator_path}")
-    console.print(f"Complexity tiers: {result.complexity_tier_path}")
-    console.print(f"Figures: {result.figures_dir}")
-    console.print(f"Tables: {result.tables_dir}")
+    if quiet:
+        console.print(f"[green]OK[/green] cases={result.case_count} report={result.report_path.name}")
+    else:
+        console.print(
+            f"[green]OK[/green] Taxonomy coverage report for {result.case_count} cases "
+            f"from '{dataset_dir}'"
+        )
+        cohort_label = result.cohort_path or (dataset_dir / DEFAULT_COHORT_MANIFEST)
+        console.print(f"Cohort: {cohort_label}")
+        console.print(f"Report: {result.report_path}")
+        console.print(f"Summary: {result.summary_path}")
+        console.print(f"Unique combinations: {result.unique_combinations_path}")
+        console.print(f"Manifest: {result.manifest_path}")
+        console.print(f"Figures: {result.figures_dir}")
+        console.print(f"Tables: {result.tables_dir}")
     raise typer.Exit(code=0)
 
 

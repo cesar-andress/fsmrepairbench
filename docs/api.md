@@ -569,6 +569,7 @@ Metadata describing an injected bug used in a benchmark instance.
 | `component_faults` | `list[dict[str, str | int | None]]` | no | PydanticUndefined |  |
 | `is_higher_order` | `bool` | no | False |  |
 | `coupled_to_simple_faults` | `list[str] | None` | no | None |  |
+| `is_negative_control` | `bool` | no | False |  |
 
 ### `CyclicStructureMetadata`
 

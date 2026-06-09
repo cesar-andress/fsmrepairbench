@@ -4,14 +4,22 @@
   "output_dir": "results/oracle_depth_ablation",
   "cohort_size": 200,
   "cohort_path": "data/fsmrepairbench_1k/oracle_depth_ablation_200.txt",
+  "cohort_manifest_path": "data/fsmrepairbench_1k/oracle_depth_ablation_200.json",
+  "scenario_policy": "shortest-path",
   "depths": [
     "shallow",
     "medium",
     "deep"
   ],
+  "depth_presets": {
+    "shallow": 5,
+    "medium": 12,
+    "deep": 25
+  },
   "depth_summaries": [
     {
       "oracle_depth": "shallow",
+      "declared_max_steps": 5,
       "case_count": 200,
       "overall_detection_rate": 0.485,
       "detectable_case_ratio": 0.485,
@@ -23,10 +31,13 @@
       "mean_oracle_event_coverage": 1.0,
       "mean_scenario_count": 93.17,
       "mean_max_scenario_steps": 4.01,
+      "mean_max_path_length": 4.01,
+      "max_path_length": 6,
       "skipped_reference_bpr_cases": 0
     },
     {
       "oracle_depth": "medium",
+      "declared_max_steps": 12,
       "case_count": 200,
       "overall_detection_rate": 0.485,
       "detectable_case_ratio": 0.485,
@@ -38,10 +49,13 @@
       "mean_oracle_event_coverage": 1.0,
       "mean_scenario_count": 93.17,
       "mean_max_scenario_steps": 4.01,
+      "mean_max_path_length": 4.01,
+      "max_path_length": 6,
       "skipped_reference_bpr_cases": 0
     },
     {
       "oracle_depth": "deep",
+      "declared_max_steps": 25,
       "case_count": 200,
       "overall_detection_rate": 0.485,
       "detectable_case_ratio": 0.485,
@@ -53,9 +67,12 @@
       "mean_oracle_event_coverage": 1.0,
       "mean_scenario_count": 93.17,
       "mean_max_scenario_steps": 4.01,
+      "mean_max_path_length": 4.01,
+      "max_path_length": 6,
       "skipped_reference_bpr_cases": 0
     }
   ],
+  "paired_detection_changes": null,
   "skipped_by_depth": {},
-  "generated_at": "2026-06-09T03:07:05.115783+00:00"
+  "generated_at": "2026-06-09T07:41:31.987749+00:00"
 }

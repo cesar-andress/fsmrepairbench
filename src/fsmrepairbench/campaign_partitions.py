@@ -35,7 +35,7 @@ PARTITION_COLUMNS: tuple[str, ...] = (
 
 RESULT_DIR_CANDIDATES: dict[str, tuple[str, ...]] = {
     "v0.2.0-analysis": ("results/v0_2_analysis", "results/analysis"),
-    "C1-baseline-repair": ("results/repair_baseline_1k_c1",),
+    "C1-baseline-repair": ("results/baseline_repair_C1", "results/repair_baseline_1k_c1"),
     "RQ3-localization": ("results/rq3_localization_1k",),
     "RQ4-coupling": ("results/rq4_coupling_250",),
     "C3-oracle-depth-ablation": ("results/oracle_depth_ablation",),

@@ -367,10 +367,25 @@ def test_cli_write_c1_manifest(tmp_path: Path) -> None:
 def test_cli_export_c1_baseline_repair(tmp_path: Path) -> None:
     dataset_dir = tmp_path / "dataset"
     setup_cases_root(dataset_dir)
-    _cohort_file(dataset_dir, ["case_000001", "case_000002"])
-    raw_dir = tmp_path / "raw"
-    raw_dir.mkdir()
+    cohort_path = _cohort_file(dataset_dir, ["case_000001", "case_000002"])
     out_dir = tmp_path / "export"
+
+    run_result = runner.invoke(
+        app,
+        [
+            "run-tools",
+            str(dataset_dir),
+            str(TOOLS_DIR),
+            "--out",
+            str(out_dir),
+            "--cohort-file",
+            str(cohort_path),
+            "--workers",
+            "1",
+            "--quiet",
+        ],
+    )
+    assert run_result.exit_code == 0, run_result.stdout
 
     result = runner.invoke(
         app,
@@ -379,8 +394,8 @@ def test_cli_export_c1_baseline_repair(tmp_path: Path) -> None:
             str(dataset_dir),
             "--out",
             str(out_dir),
-            "--raw-runs-dir",
-            str(raw_dir),
+            "--cohort-file",
+            str(cohort_path),
             "--random-seeds",
             "2",
             "--workers",
@@ -391,5 +406,7 @@ def test_cli_export_c1_baseline_repair(tmp_path: Path) -> None:
     )
     assert result.exit_code == 0, result.stdout
     assert (out_dir / "manifest.json").is_file()
-    assert (raw_dir / "random_multiseed_summary.csv").is_file()
+    assert (out_dir / "random_multiseed_summary.csv").is_file()
     assert (out_dir / "tables" / "table_random_multiseed.tex").is_file()
+    assert (out_dir / "tables" / "table_baseline_leaderboard.tex").is_file()
+    assert (out_dir / "figures" / "repair_success_histogram.png").is_file()

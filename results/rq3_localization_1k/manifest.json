@@ -1,11 +1,19 @@
 {
+  "release_label": "v0.2.0-analysis",
+  "campaign_label": "RQ3-localization-ochiai-1k",
+  "zenodo_doi": "10.5281/zenodo.20602528",
   "experiment": "RQ3-localization-ochiai-1k",
   "dataset_dir": "data/fsmrepairbench_1k",
   "output_dir": "results/rq3_localization_1k",
   "cohort_path": "data/fsmrepairbench_1k/localization_cohort_1k.txt",
+  "cohort_sha256": "c03c4d5981259510bccfced987c5175f28058d7bdccc164e7ce2ba22410f04f8",
   "method": "ochiai",
   "element_type": "transition",
   "ground_truth": "changed_transition_id",
+  "case_count": 1000,
+  "localized_cases": 495,
+  "skipped_cases": 505,
+  "detectable_denominator": 495,
   "metrics": {
     "cohort_size": 1000,
     "localized_cases": 495,
@@ -15,5 +23,30 @@
     "top5_hit_rate": 0.228283,
     "mrr": 0.201018
   },
-  "generated_at": "2026-06-09T03:27:43.372577+00:00"
+  "output_files": [
+    "confidence_intervals.csv",
+    "confidence_intervals.json",
+    "figures/rank_distribution.png",
+    "figures/reciprocal_rank_distribution.png",
+    "figures/top5_hit_rate_by_operator.png",
+    "figures/topk_hit_histogram.png",
+    "figures/topk_hit_rates.png",
+    "figures/topk_rank_histogram.png",
+    "leaderboard.csv",
+    "localization_metrics.csv",
+    "manifest.json",
+    "per_case_results.csv",
+    "report.md",
+    "summary.csv",
+    "tables/table_leaderboard.tex",
+    "tables/table_localization_by_operator.tex",
+    "tables/table_localization_summary.tex",
+    "tables/table_rank_distribution.tex"
+  ],
+  "regeneration_commands": [
+    "fsmrepairbench run-localization-campaign data/fsmrepairbench_1k --out results/rq3_localization_1k",
+    "fsmrepairbench run-localization-campaign data/fsmrepairbench_1k --out results/rq3_localization_1k --cohort-file data/fsmrepairbench_1k/localization_cohort_1k.txt"
+  ],
+  "git_commit_hash": "461520cb2ace87962f469fafb36048716d23123d",
+  "generated_at": "2026-06-09T07:49:10.003034+00:00"
 }

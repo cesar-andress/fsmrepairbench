@@ -75,12 +75,21 @@ Taxonomy claims are **partially supported**: core dimensions are populated, but 
 ## Feature-space saturation
 
 - Unique full-taxonomy combinations: **200**
+- Duplicate-combination cases: **800**
 - Missing core 5-feature combinations: **5338** (of 5440 possible)
 - Triple (`machine_type`, `bug_type`, `size_class`) coverage: **10.0%**
+
+![Unique combinations summary](figures/unique_combinations_summary.png)
+
+![Feature-space coverage ratios](figures/feature_space_coverage_ratios.png)
 
 ## Artefacts
 
 - Summary metrics: `results/taxonomy_coverage/summary.csv`
+- Unique combinations: `results/taxonomy_coverage/unique_combinations_summary.csv`
+- Top combinations: `results/taxonomy_coverage/coverage_by_unique_combinations.csv`
 - Dimension detail: `results/taxonomy_coverage/coverage_by_dimension.csv`
+- Feature-space report: `results/taxonomy_coverage/feature_space_report.json`
+- Frozen manifest: `results/taxonomy_coverage/manifest.json`
 - LaTeX tables: `results/taxonomy_coverage/tables`
 

@@ -11,9 +11,12 @@ Spectrum-based fault localization ranks transitions by Ochiai suspiciousness usi
 
 ## Aggregate metrics
 
+Top-k hit rates and MRR are computed over **detectable (localized) cases only** (`detectable_denominator = 495`). Skipped cases (505) are excluded from ranking metrics.
+
 | Metric | Value |
 |---|---:|
-| Localized cases | 495 |
+| Cohort size | 1000 |
+| Detectable (localized) cases | 495 |
 | Skipped cases | 505 |
 | Top-1 hit rate | 14.95% |
 | Top-3 hit rate | 18.79% |
@@ -38,15 +41,24 @@ Spectrum-based fault localization ranks transitions by Ochiai suspiciousness usi
 
 ![Top-k hit rates](figures/topk_hit_rates.png)
 
+![Top-k hit counts](figures/topk_hit_histogram.png)
+
+![Target rank histogram (top-5)](figures/topk_rank_histogram.png)
+
 ![Rank distribution](figures/rank_distribution.png)
+
+![Reciprocal rank distribution](figures/reciprocal_rank_distribution.png)
 
 ![Top-5 hit rate by operator](figures/top5_hit_rate_by_operator.png)
 
 ## Artifacts
 
+- Leaderboard: `results/rq3_localization_1k/leaderboard.csv`
 - Summary: `results/rq3_localization_1k/summary.csv`
 - Localization metrics: `results/rq3_localization_1k/localization_metrics.csv`
 - Per-case results: `results/rq3_localization_1k/per_case_results.csv`
+- Confidence intervals: `results/rq3_localization_1k/confidence_intervals.csv`
+- Frozen manifest: `results/rq3_localization_1k/manifest.json`
 - LaTeX tables: `results/rq3_localization_1k/tables/`
 
 ## Bootstrap confidence intervals

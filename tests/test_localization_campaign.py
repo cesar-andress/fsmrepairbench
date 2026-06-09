@@ -84,11 +84,16 @@ def test_run_localization_campaign_on_fixture_dataset(tmp_path: Path) -> None:
     assert result.case_count == 1
     assert result.localized_cases == 1
     assert result.summary_path.is_file()
+    assert result.leaderboard_path.is_file()
     assert result.localization_metrics_path.is_file()
     assert result.per_case_path.is_file()
     assert result.report_path.is_file()
+    assert result.manifest_path.is_file()
     assert (result.figures_dir / "topk_hit_rates.png").is_file()
+    assert (result.figures_dir / "topk_hit_histogram.png").is_file()
+    assert (result.figures_dir / "topk_rank_histogram.png").is_file()
     assert (result.tables_dir / "table_localization_summary.tex").is_file()
+    assert (result.tables_dir / "table_leaderboard.tex").is_file()
 
     metrics = {
         row["metric"]: row["value"]
@@ -96,6 +101,11 @@ def test_run_localization_campaign_on_fixture_dataset(tmp_path: Path) -> None:
     }
     assert metrics["method"] == "ochiai"
     assert float(metrics["cohort_size"]) == 1.0
+    assert float(metrics["detectable_denominator"]) == 1.0
+
+    manifest = json.loads(result.manifest_path.read_text(encoding="utf-8"))
+    assert manifest["zenodo_doi"] == "10.5281/zenodo.20602528"
+    assert manifest["detectable_denominator"] == 1
 
 
 def test_aggregate_localization_metrics_computes_mrr() -> None:
@@ -126,8 +136,12 @@ def test_run_localization_campaign_cli(tmp_path: Path) -> None:
     )
     assert result.exit_code == 0, result.stdout
     assert (out / "report.md").is_file()
+    assert (out / "leaderboard.csv").is_file()
     manifest = json.loads((out / "manifest.json").read_text(encoding="utf-8"))
     assert manifest["experiment"] == "RQ3-localization-ochiai-1k"
+    assert manifest["release_label"] == "v0.2.0-analysis"
+    assert manifest["cohort_sha256"]
+    assert manifest["regeneration_commands"]
 
 
 def test_run_localization_campaign_requires_dataset(tmp_path: Path) -> None:

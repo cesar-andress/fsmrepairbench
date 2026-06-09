@@ -3,41 +3,74 @@
 Campaign label: **`C1-baseline-repair`**  
 Zenodo release: **`v0.2.0-analysis`** (`10.5281/zenodo.20602528`)
 
-## Directories
+## Cohort and engines
+
+| Item | Value |
+|------|-------|
+| Dataset | `data/fsmrepairbench_1k/` |
+| Cohort | `data/fsmrepairbench_1k/analysis_cohort_1k.txt` ($n=1{,}000$) |
+| Tools | `tools/baselines_c1/` |
+| Engines | `missing-transition`, `wrong-target`, `random` (control) |
+| Patch policy | Single-pass typed patch from `faulty_fsm.json` + `oracle_suite.json` |
+
+Metrics: **complete repair**, **effective repair**, **ΔBPR**, cohort **leaderboard**, per-case enriched CSV.
+
+## Output directory
 
 | Path | Role |
 |------|------|
-| `data/fsmrepairbench_1k/` | Pinned dataset |
-| `data/fsmrepairbench_1k/analysis_cohort_1k.txt` | Cohort manifest ($n=1{,}000$) |
-| `tools/baselines_c1/` | Deterministic baseline tool configs |
-| `results/repair_baseline_1k_c1/` | Raw `run-tools` output + `manifest.json` |
-| `../paper1/results/baseline_repair_C1/` | Frozen paper export + `manifest.json` |
+| `results/baseline_repair_C1/` | Canonical C1 run-tools output + frozen exports |
+| `results/repair_baseline_1k_c1/` | Legacy raw runs (still accepted as input) |
+| `../paper1/results/baseline_repair_C1/` | Paper tree mirror (LaTeX, PNG, manifest) |
 
-## Regeneration
+Key artefacts under `results/baseline_repair_C1/`:
+
+- `summary.csv` — per-case run-tools rows (preserved for bootstrap CIs)
+- `cohort_summary.csv` — flat cohort metric/value aggregates
+- `leaderboard.csv` — tool-level complete/effective repair and mean ΔBPR
+- `per_case_results.csv` — enriched per-case table
+- `figures/*.png` — histogram and breakdown figures
+- `tables/*.tex` — paper-ready LaTeX tables
+- `manifest.json` — Zenodo v0.2.0-analysis freeze metadata
+
+## Reproducibility
+
+### Step 1 — run-tools (low-level)
 
 ```bash
 fsmrepairbench run-tools data/fsmrepairbench_1k tools/baselines_c1/ \
-  --out results/repair_baseline_1k_c1 --workers 4
-python ../paper1/scripts/generate_baseline_repair_C1_outputs.py --workers 4
+  --out results/baseline_repair_C1 \
+  --cohort-file data/fsmrepairbench_1k/analysis_cohort_1k.txt \
+  --workers 4
 ```
 
-Write or refresh manifests only:
+### Step 2 — export CSV / LaTeX / PNG / manifest
 
 ```bash
-fsmrepairbench write-c1-manifest \
-  --dataset data/fsmrepairbench_1k \
-  --cohort-file data/fsmrepairbench_1k/analysis_cohort_1k.txt \
-  --raw-runs-dir results/repair_baseline_1k_c1 \
+fsmrepairbench export-c1-baseline-repair data/fsmrepairbench_1k \
+  --out results/baseline_repair_C1 \
   --paper-export-dir ../paper1/results/baseline_repair_C1 \
   --workers 4
 ```
 
+### One-shot
+
+```bash
+fsmrepairbench run-c1-baseline-repair data/fsmrepairbench_1k \
+  --out results/baseline_repair_C1 \
+  --paper-export-dir ../paper1/results/baseline_repair_C1 \
+  --workers 4
+```
+
+Legacy paper script (export-only from existing run-tools output):
+
+```bash
+python ../paper1/scripts/generate_baseline_repair_C1_outputs.py --workers 4
+```
+
 ## Multi-seed random baseline
 
-Deterministic baselines (`missing-transition`, `wrong-target`) are unchanged. The
-single-seed random row in `leaderboard.csv` (seed 0) remains for backward
-compatibility. The multi-seed random summary is the preferred floor estimate for
-STVR reporting.
+Deterministic baselines are unchanged. The seed-0 random row in `leaderboard.csv` remains for backward compatibility; the multi-seed summary is the preferred floor estimate.
 
 Default seeds: `0,1,2,3,4,5,6,7,8,9` (override with `--random-seeds`).
 
@@ -45,41 +78,18 @@ Exports:
 
 | Path | Role |
 |------|------|
-| `results/repair_baseline_1k_c1/random_multiseed_summary.csv` | Flattened mean/std/min/max + bootstrap 95% CI |
-| `results/repair_baseline_1k_c1/random_multiseed_summary.json` | Same summary plus bootstrap metadata |
-| `results/repair_baseline_1k_c1/random_multiseed_per_seed.csv` | Per-seed cohort metrics |
-| `results/repair_baseline_1k_c1/report.md` | Bootstrap method and interpretation |
-| `confidence_intervals.csv` | Case-level bootstrap 95% CI for primary C1 metrics (`baseline_missing_transition`) |
-| `confidence_intervals.json` | Same CIs plus bootstrap metadata (seed 44) |
-| `../paper1/results/baseline_repair_C1/tables/table_confidence_intervals.tex` | LaTeX CI table |
-
-Bootstrap: percentile resampling on seed-level metrics, 10,000 resamples, 95% CI,
-RNG seed 42 (see `report.md`).
-
-Case-level bootstrap CIs for deterministic baseline metrics (complete/effective repair,
-mean ΔBPR, detectable-only complete repair) are exported as `confidence_intervals.csv`
-with bootstrap seed 44.
-
-CLI-only multi-seed refresh:
-
-```bash
-fsmrepairbench export-c1-baseline-repair data/fsmrepairbench_1k \
-  --out ../paper1/results/baseline_repair_C1 \
-  --random-seeds 0,1,2,3,4,5,6,7,8,9 \
-  --workers 4
-```
+| `random_multiseed_summary.csv` | Mean/std/min/max + bootstrap 95% CI |
+| `random_multiseed_per_seed.csv` | Per-seed cohort metrics |
+| `confidence_intervals.csv` | Case-level bootstrap 95% CI (`baseline_missing_transition`) |
+| `tables/table_confidence_intervals.tex` | LaTeX CI table |
+| `tables/table_random_multiseed.tex` | LaTeX multi-seed table |
 
 ## Manifest schema
 
-Both `results/repair_baseline_1k_c1/manifest.json` and
-`../paper1/results/baseline_repair_C1/manifest.json` record:
+`manifest.json` records:
 
 - `release_label`, `campaign_label`, `zenodo_doi`
 - `dataset_path`, `cohort_file`, `cohort_sha256`, `number_of_cases`
 - `tool_names`, `tool_config_paths`, `workers`
 - `timestamp_utc`, `git_commit_hash`
 - `output_files`, `regeneration_commands`
-
-The paper export manifest lists frozen artefacts such as `leaderboard.csv` and
-`per_case_results.csv`. The raw-runs manifest lists `summary.csv`, `leaderboard.csv`,
-`tool_run_manifest.json`, and per-case JSON result files.

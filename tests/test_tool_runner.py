@@ -266,3 +266,28 @@ def test_cli_run_tools(tmp_path: Path) -> None:
     assert result.exit_code == 0, result.stdout
     assert (output_dir / "summary.csv").is_file()
     assert (output_dir / "leaderboard.csv").is_file()
+
+
+def test_run_tools_filters_by_cohort_file(tmp_path: Path) -> None:
+    cases_root = tmp_path / "dataset"
+    setup_cases_root(cases_root)
+    cohort_path = tmp_path / "cohort.txt"
+    cohort_path.write_text("case_000001\n", encoding="utf-8")
+    tools_dir = tmp_path / "tools"
+    tools_dir.mkdir()
+    (tools_dir / "baseline_missing_transition.yaml").write_text(
+        (TOOLS_DIR / "baseline_missing_transition.yaml").read_text(encoding="utf-8"),
+        encoding="utf-8",
+    )
+    output_dir = tmp_path / "tool_runs"
+
+    result = run_tools(
+        cases_root,
+        tools_dir,
+        output_dir,
+        cohort_file=cohort_path,
+        workers=1,
+    )
+
+    assert len(result.rows) == 1
+    assert result.rows[0].case_id == "case_000001"
