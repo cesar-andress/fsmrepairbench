@@ -2,6 +2,9 @@
 
 from __future__ import annotations
 
+import random
+import statistics
+import zlib
 from collections import deque
 from collections.abc import Iterable
 from dataclasses import dataclass
@@ -11,12 +14,36 @@ from typing import Literal
 from fsmrepairbench.models import FSM, OracleScenario, OracleStep, OracleSuite, Transition
 
 DepthLevel = Literal["shallow", "medium", "deep", "exhaustive_like"]
+ScenarioPolicy = Literal["shortest-path", "depth-forced"]
 
 DEPTH_MAX_STEPS: dict[DepthLevel, int] = {
     "shallow": 5,
     "medium": 12,
     "deep": 25,
     "exhaustive_like": 40,
+}
+
+DEPTH_FORCED_TARGETS: dict[DepthLevel, dict[str, int]] = {
+    "shallow": {
+        "target_mean_steps": 3,
+        "target_max_steps": 5,
+        "min_extra_scenarios": 0,
+    },
+    "medium": {
+        "target_mean_steps": 8,
+        "target_max_steps": 12,
+        "min_extra_scenarios": 4,
+    },
+    "deep": {
+        "target_mean_steps": 16,
+        "target_max_steps": 25,
+        "min_extra_scenarios": 8,
+    },
+    "exhaustive_like": {
+        "target_mean_steps": 30,
+        "target_max_steps": 40,
+        "min_extra_scenarios": 12,
+    },
 }
 
 
@@ -45,6 +72,206 @@ class OracleGenerationResult:
 
     suite: OracleSuite
     coverage: OracleCoverageMetrics
+    declared_max_depth: int = 0
+    mean_scenario_length: float = 0.0
+    median_scenario_length: float = 0.0
+    max_scenario_length: int = 0
+    scenario_policy: ScenarioPolicy = "shortest-path"
+
+
+def _scenario_length_stats(scenarios: Iterable[OracleScenario]) -> tuple[float, float, int]:
+    lengths = [len(scenario.steps) for scenario in scenarios]
+    if not lengths:
+        return 0.0, 0.0, 0
+    return (
+        statistics.mean(lengths),
+        statistics.median(lengths),
+        max(lengths),
+    )
+
+
+def _end_state_after_steps(fsm: FSM, steps: Iterable[OracleStep]) -> str | None:
+    current_state = fsm.initial_state
+    for step in steps:
+        matched: Transition | None = None
+        for transition in _outgoing_transitions(fsm, current_state):
+            if transition.event != step.event:
+                continue
+            if step.guard != transition.guard:
+                continue
+            matched = transition
+            break
+        if matched is None:
+            return None
+        current_state = matched.target
+    return current_state
+
+
+def _random_walk_steps(
+    fsm: FSM,
+    start_state: str,
+    num_steps: int,
+    *,
+    max_total_length: int,
+    rng: random.Random,
+) -> list[OracleStep]:
+    steps: list[OracleStep] = []
+    current = start_state
+    for _ in range(num_steps):
+        if len(steps) >= max_total_length:
+            break
+        outgoing = _outgoing_transitions(fsm, current)
+        if not outgoing:
+            break
+        transition = rng.choice(outgoing)
+        steps.append(_transition_step(transition))
+        current = transition.target
+    return steps
+
+
+def _extend_scenario_to_target_length(
+    fsm: FSM,
+    scenario: OracleScenario,
+    *,
+    target_length: int,
+    max_length: int,
+    rng: random.Random,
+) -> OracleScenario:
+    current_steps = list(scenario.steps)
+    if len(current_steps) >= target_length:
+        return scenario
+    end_state = _end_state_after_steps(fsm, current_steps)
+    if end_state is None:
+        return scenario
+    extra = _random_walk_steps(
+        fsm,
+        end_state,
+        target_length - len(current_steps),
+        max_total_length=max(0, max_length - len(current_steps)),
+        rng=rng,
+    )
+    if not extra:
+        return scenario
+    return OracleScenario(
+        id=scenario.id,
+        description=scenario.description,
+        steps=current_steps + extra,
+    )
+
+
+def _random_walk_scenario(
+    fsm: FSM,
+    *,
+    scenario_id: str,
+    target_length: int,
+    max_length: int,
+    rng: random.Random,
+) -> OracleScenario | None:
+    steps = _random_walk_steps(
+        fsm,
+        fsm.initial_state,
+        target_length,
+        max_total_length=max_length,
+        rng=rng,
+    )
+    if not steps:
+        return None
+    return OracleScenario(
+        id=scenario_id,
+        description=f"Random behavioural walk ({len(steps)} steps).",
+        steps=steps,
+    )
+
+
+def _depth_forced_seed(fsm: FSM, depth: DepthLevel) -> int:
+    return zlib.crc32(f"{fsm.id}:depth-forced:{depth}".encode()) & 0xFFFFFFFF
+
+
+def generate_depth_forced_oracle_suite(
+    fsm: FSM,
+    *,
+    depth: DepthLevel = "medium",
+) -> OracleGenerationResult:
+    """Generate oracle suites whose executed walk lengths reflect depth presets."""
+    if depth not in DEPTH_FORCED_TARGETS:
+        msg = f"Depth-forced generation does not support depth '{depth}'"
+        raise OracleGeneratorError(msg)
+
+    config = DEPTH_FORCED_TARGETS[depth]
+    declared_max_depth = DEPTH_MAX_STEPS[depth]
+    target_mean = int(config["target_mean_steps"])
+    target_max = int(config["target_max_steps"])
+    min_extra = int(config["min_extra_scenarios"])
+
+    base = generate_oracle_suite(fsm, depth=depth)
+    rng = random.Random(_depth_forced_seed(fsm, depth))
+    extended: list[OracleScenario] = []
+    for index, scenario in enumerate(base.suite.scenarios):
+        per_scenario_target = min(
+            target_max,
+            max(target_mean, target_mean + (index % 3)),
+        )
+        extended.append(
+            _extend_scenario_to_target_length(
+                fsm,
+                scenario,
+                target_length=per_scenario_target,
+                max_length=target_max,
+                rng=rng,
+            )
+        )
+
+    extra_index = 0
+    while len(extended) < len(base.suite.scenarios) + min_extra:
+        scenario = _random_walk_scenario(
+            fsm,
+            scenario_id=f"depth_forced_walk_{extra_index}",
+            target_length=target_max,
+            max_length=target_max,
+            rng=rng,
+        )
+        if scenario is None:
+            break
+        extended.append(scenario)
+        extra_index += 1
+
+    _, _, observed_max = _scenario_length_stats(extended)
+    attempt = 0
+    while observed_max < target_mean and attempt < min_extra + 4:
+        scenario = _random_walk_scenario(
+            fsm,
+            scenario_id=f"depth_forced_boost_{attempt}",
+            target_length=target_max,
+            max_length=target_max,
+            rng=rng,
+        )
+        if scenario is None:
+            break
+        extended.append(scenario)
+        _, _, observed_max = _scenario_length_stats(extended)
+        attempt += 1
+
+    scenarios = _dedupe_scenarios(extended)
+    if not scenarios:
+        msg = "Could not generate any depth-forced oracle scenarios for the FSM"
+        raise OracleGeneratorError(msg)
+
+    suite = OracleSuite(
+        id=f"{fsm.id}_oracles_depth_forced_{depth}",
+        fsm_id=fsm.id,
+        scenarios=scenarios,
+    )
+    final_coverage = compute_coverage(fsm, suite)
+    mean_len, median_len, max_len = _scenario_length_stats(scenarios)
+    return OracleGenerationResult(
+        suite=suite,
+        coverage=final_coverage,
+        declared_max_depth=declared_max_depth,
+        mean_scenario_length=mean_len,
+        median_scenario_length=median_len,
+        max_scenario_length=max_len,
+        scenario_policy="depth-forced",
+    )
 
 
 def reachable_state_ids(fsm: FSM) -> set[str]:
@@ -221,8 +448,12 @@ def generate_oracle_suite(
     fsm: FSM,
     *,
     depth: DepthLevel = "medium",
+    policy: ScenarioPolicy = "shortest-path",
 ) -> OracleGenerationResult:
     """Generate an oracle suite by traversing paths in *fsm*."""
+    if policy == "depth-forced":
+        return generate_depth_forced_oracle_suite(fsm, depth=depth)
+
     max_depth = DEPTH_MAX_STEPS[depth]
     scenarios: list[OracleScenario] = []
 
@@ -259,7 +490,16 @@ def generate_oracle_suite(
         scenarios=scenarios,
     )
     final_coverage = compute_coverage(fsm, suite)
-    return OracleGenerationResult(suite=suite, coverage=final_coverage)
+    mean_len, median_len, max_len = _scenario_length_stats(scenarios)
+    return OracleGenerationResult(
+        suite=suite,
+        coverage=final_coverage,
+        declared_max_depth=max_depth,
+        mean_scenario_length=mean_len,
+        median_scenario_length=median_len,
+        max_scenario_length=max_len,
+        scenario_policy="shortest-path",
+    )
 
 
 def export_oracle_json(suite: OracleSuite, path: Path) -> None:

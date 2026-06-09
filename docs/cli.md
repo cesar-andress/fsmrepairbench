@@ -982,9 +982,6 @@ fsmrepairbench run-coupling-campaign DATASET_DIR
 | `cohort_file` | `Path | None` | `--cohort-file` | None | Pinned cohort manifest (one case ID per line). |
 | `seed` | `int` | `--seed` | 44 | Deterministic campaign seed for HO generation and repair. |
 | `copy_cases` | `bool` | `--copy-cases` | False | Copy first-order cases instead of symlinking them. |
-| `secondary_operator_policy` | `str` | `--secondary-operator-policy` | deterministic | Secondary operator selection: `deterministic` or `random`. |
-| `random_secondary_seeds` | `str | None` | `--random-secondary-seeds` | None | Comma-separated seeds or count (default 0–9 when policy=random). |
-| `paper_export_dir` | `Path | None` | `--paper-export-dir` | None | Paper export for random-secondary outputs. |
 | `secondary_operator_policy` | `str` | `--secondary-operator-policy` | 'deterministic' | Secondary operator selection policy: deterministic (default) or random. |
 | `random_secondary_seeds` | `str | None` | `--random-secondary-seeds` | None | Comma-separated random secondary seeds or count (default: 0-9 when policy=random). |
 | `paper_export_dir` | `Path | None` | `--paper-export-dir` | None | Paper export directory for random-secondary sensitivity outputs. |
@@ -1065,6 +1062,8 @@ fsmrepairbench run-oracle-depth-ablation DATASET_DIR
 | `cohort_file` | `Path | None` | `--cohort-file` | None | Use an existing pinned cohort manifest (one case ID per line). |
 | `cohort_manifest` | `Path | None` | `--cohort-manifest` | None | Source cohort for selection (default: analysis_cohort_1k.txt). |
 | `no_write_cohort` | `bool` | `--no-write-cohort` | False | Do not write oracle_depth_ablation_200.txt under the dataset. |
+| `scenario_policy` | `str` | `--scenario-policy` | 'shortest-path' | Scenario generation policy: shortest-path (default) or depth-forced. |
+| `paper_export_dir` | `Path | None` | `--paper-export-dir` | None | Paper export directory for depth-forced ablation outputs. |
 
 ### `run-smoke-test`
 

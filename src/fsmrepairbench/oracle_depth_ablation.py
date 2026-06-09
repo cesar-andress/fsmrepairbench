@@ -29,6 +29,7 @@ from fsmrepairbench.mutators import MUTATION_OPERATORS
 from fsmrepairbench.oracle_generator import (
     DepthLevel,
     OracleGeneratorError,
+    ScenarioPolicy,
     compute_coverage,
     generate_oracle_suite,
 )
@@ -43,6 +44,10 @@ from fsmrepairbench.validators import load_fsm_json
 ABLATION_DEPTHS: tuple[DepthLevel, ...] = ("shallow", "medium", "deep")
 DEFAULT_COHORT_SIZE = 200
 DEFAULT_COHORT_SEED = 44
+DEFAULT_V2_OUTPUT = Path("results/oracle_depth_ablation_v2")
+DEFAULT_V2_PAPER_EXPORT = Path("../paper1/results/oracle_depth_ablation_v2")
+SCENARIO_POLICIES: tuple[ScenarioPolicy, ...] = ("shortest-path", "depth-forced")
+V2_EXPERIMENT = "C3-oracle-depth-ablation-v2"
 COHORT_FILENAME = "oracle_depth_ablation_200.txt"
 COHORT_JSON_FILENAME = "oracle_depth_ablation_200.json"
 PER_CASE_COLUMNS: tuple[str, ...] = (
@@ -75,6 +80,46 @@ DEPTH_SUMMARY_COLUMNS: tuple[str, ...] = (
     "mean_max_scenario_steps",
     "skipped_reference_bpr_cases",
 )
+V2_PER_CASE_COLUMNS: tuple[str, ...] = PER_CASE_COLUMNS + (
+    "scenario_policy",
+    "declared_max_depth",
+    "observed_max_executed_depth",
+    "mean_scenario_length",
+    "median_scenario_length",
+    "max_scenario_length",
+)
+V2_DEPTH_SUMMARY_COLUMNS: tuple[str, ...] = DEPTH_SUMMARY_COLUMNS + (
+    "scenario_policy",
+    "declared_max_depth",
+    "mean_scenario_length",
+    "median_scenario_length",
+    "max_scenario_length",
+    "detection_gains_vs_shallow",
+    "detection_losses_vs_shallow",
+)
+PAIRED_DETECTION_COLUMNS: tuple[str, ...] = (
+    "comparison_depth",
+    "both_detected",
+    "shallow_only_detected",
+    "higher_only_detected",
+    "neither_detected",
+    "detection_gains",
+    "detection_losses",
+    "mcnemar_chi2",
+)
+COVERAGE_BY_DEPTH_COLUMNS: tuple[str, ...] = (
+    "oracle_depth",
+    "scenario_policy",
+    "declared_max_depth",
+    "case_count",
+    "mean_oracle_state_coverage",
+    "mean_oracle_transition_coverage",
+    "mean_oracle_event_coverage",
+    "mean_scenario_count",
+    "mean_scenario_length",
+    "median_scenario_length",
+    "max_scenario_length",
+)
 
 
 class OracleDepthAblationError(RuntimeError):
@@ -98,8 +143,43 @@ class DepthCaseResult:
     oracle_event_coverage: float
     scenario_count: int
     max_scenario_steps: int
+    scenario_policy: ScenarioPolicy = "shortest-path"
+    declared_max_depth: int = 0
+    observed_max_executed_depth: int = 0
+    mean_scenario_length: float = 0.0
+    median_scenario_length: float = 0.0
+    max_scenario_length: int = 0
 
     def to_dict(self) -> dict[str, str | float | bool | int]:
+        payload = {
+            "case_id": self.case_id,
+            "oracle_depth": self.depth,
+            "mutation_operator": self.mutation_operator,
+            "size_class": self.size_class,
+            "reference_bpr": round(self.reference_bpr, 6),
+            "faulty_bpr": round(self.faulty_bpr, 6),
+            "bpr_delta": round(self.bpr_delta, 6),
+            "fault_detected": self.fault_detected,
+            "oracle_state_coverage": round(self.oracle_state_coverage, 6),
+            "oracle_transition_coverage": round(self.oracle_transition_coverage, 6),
+            "oracle_event_coverage": round(self.oracle_event_coverage, 6),
+            "scenario_count": self.scenario_count,
+            "max_scenario_steps": self.max_scenario_steps,
+        }
+        if self.scenario_policy == "depth-forced":
+            payload.update(
+                {
+                    "scenario_policy": self.scenario_policy,
+                    "declared_max_depth": self.declared_max_depth,
+                    "observed_max_executed_depth": self.observed_max_executed_depth,
+                    "mean_scenario_length": round(self.mean_scenario_length, 6),
+                    "median_scenario_length": round(self.median_scenario_length, 6),
+                    "max_scenario_length": self.max_scenario_length,
+                }
+            )
+        return payload
+
+    def to_v2_dict(self) -> dict[str, str | float | bool | int]:
         return {
             "case_id": self.case_id,
             "oracle_depth": self.depth,
@@ -114,6 +194,12 @@ class DepthCaseResult:
             "oracle_event_coverage": round(self.oracle_event_coverage, 6),
             "scenario_count": self.scenario_count,
             "max_scenario_steps": self.max_scenario_steps,
+            "scenario_policy": self.scenario_policy,
+            "declared_max_depth": self.declared_max_depth,
+            "observed_max_executed_depth": self.observed_max_executed_depth,
+            "mean_scenario_length": round(self.mean_scenario_length, 6),
+            "median_scenario_length": round(self.median_scenario_length, 6),
+            "max_scenario_length": self.max_scenario_length,
         }
 
     def to_dataset_case_row(self, *, complexity: str = "small") -> DatasetCaseRow:
@@ -155,6 +241,10 @@ class OracleDepthAblationResult:
     figures_dir: Path
     tables_dir: Path
     case_count: int
+    manifest_path: Path | None = None
+    paired_detection_path: Path | None = None
+    coverage_by_depth_path: Path | None = None
+    paper_export_dir: Path | None = None
 
 
 def _size_class_to_complexity(size_class: str) -> str:
@@ -300,7 +390,12 @@ def write_ablation_cohort_manifest(
     return txt_path, json_path
 
 
-def score_case_at_depth(case_dir: Path, depth: DepthLevel) -> DepthCaseResult:
+def score_case_at_depth(
+    case_dir: Path,
+    depth: DepthLevel,
+    *,
+    scenario_policy: ScenarioPolicy = "shortest-path",
+) -> DepthCaseResult:
     """Regenerate oracle at *depth* and score reference/faulty FSMs."""
     reference_path = resolve_coupling_case_file(case_dir, "reference_fsm.json")
     faulty_path = resolve_coupling_case_file(case_dir, "faulty_fsm.json")
@@ -313,7 +408,7 @@ def score_case_at_depth(case_dir: Path, depth: DepthLevel) -> DepthCaseResult:
     faulty = load_fsm_json(faulty_path)
 
     try:
-        generation = generate_oracle_suite(reference, depth=depth)
+        generation = generate_oracle_suite(reference, depth=depth, policy=scenario_policy)
     except OracleGeneratorError as exc:
         msg = f"Oracle generation failed for {case_dir.name} at {depth}: {exc}"
         raise OracleDepthAblationError(msg) from exc
@@ -342,6 +437,12 @@ def score_case_at_depth(case_dir: Path, depth: DepthLevel) -> DepthCaseResult:
         oracle_event_coverage=coverage.event_coverage,
         scenario_count=len(generation.suite.scenarios),
         max_scenario_steps=max(scenario_steps) if scenario_steps else 0,
+        scenario_policy=scenario_policy,
+        declared_max_depth=generation.declared_max_depth,
+        observed_max_executed_depth=generation.max_scenario_length,
+        mean_scenario_length=generation.mean_scenario_length,
+        median_scenario_length=generation.median_scenario_length,
+        max_scenario_length=generation.max_scenario_length,
     )
 
 
@@ -350,13 +451,16 @@ def _aggregate_depth_summary(
     rows: list[DepthCaseResult],
     *,
     skipped: int,
+    scenario_policy: ScenarioPolicy = "shortest-path",
+    detection_gains_vs_shallow: int = 0,
+    detection_losses_vs_shallow: int = 0,
 ) -> dict[str, str | float | int]:
     if not rows:
         msg = f"No scored cases for depth {depth}"
         raise OracleDepthAblationError(msg)
     detected = sum(1 for row in rows if row.fault_detected)
     count = len(rows)
-    return {
+    summary: dict[str, str | float | int] = {
         "oracle_depth": depth,
         "case_count": count,
         "overall_detection_rate": round(detected / count, 6),
@@ -379,23 +483,140 @@ def _aggregate_depth_summary(
         ),
         "skipped_reference_bpr_cases": skipped,
     }
+    if scenario_policy == "depth-forced":
+        summary.update(
+            {
+                "scenario_policy": scenario_policy,
+                "declared_max_depth": rows[0].declared_max_depth,
+                "mean_scenario_length": round(
+                    sum(row.mean_scenario_length for row in rows) / count, 2
+                ),
+                "median_scenario_length": round(
+                    sum(row.median_scenario_length for row in rows) / count, 2
+                ),
+                "max_scenario_length": max(row.max_scenario_length for row in rows),
+                "detection_gains_vs_shallow": detection_gains_vs_shallow,
+                "detection_losses_vs_shallow": detection_losses_vs_shallow,
+            }
+        )
+    return summary
 
 
-def _write_depth_summary_csv(path: Path, summaries: list[dict[str, str | float | int]]) -> None:
+def _detection_sets(
+    depth_rows: dict[DepthLevel, list[DepthCaseResult]],
+    *,
+    depth: DepthLevel,
+) -> dict[str, bool]:
+    return {row.case_id: row.fault_detected for row in depth_rows[depth]}
+
+
+def compute_paired_detection_changes(
+    depth_rows: dict[DepthLevel, list[DepthCaseResult]],
+) -> list[dict[str, str | float | int]]:
+    shallow = _detection_sets(depth_rows, depth="shallow")
+    rows: list[dict[str, str | float | int]] = []
+    for depth in ("medium", "deep"):
+        higher = _detection_sets(depth_rows, depth=depth)  # type: ignore[arg-type]
+        both = sum(1 for case_id in shallow if shallow[case_id] and higher.get(case_id, False))
+        shallow_only = sum(
+            1 for case_id in shallow if shallow[case_id] and not higher.get(case_id, False)
+        )
+        higher_only = sum(
+            1 for case_id in shallow if not shallow[case_id] and higher.get(case_id, False)
+        )
+        neither = sum(
+            1 for case_id in shallow if not shallow[case_id] and not higher.get(case_id, False)
+        )
+        gains = higher_only
+        losses = shallow_only
+        discordant = gains + losses
+        mcnemar = round(((gains - losses) ** 2) / discordant, 6) if discordant else 0.0
+        rows.append(
+            {
+                "comparison_depth": depth,
+                "both_detected": both,
+                "shallow_only_detected": shallow_only,
+                "higher_only_detected": higher_only,
+                "neither_detected": neither,
+                "detection_gains": gains,
+                "detection_losses": losses,
+                "mcnemar_chi2": mcnemar,
+            }
+        )
+    return rows
+
+
+def _paired_gains_losses(
+    depth_rows: dict[DepthLevel, list[DepthCaseResult]],
+    *,
+    depth: DepthLevel,
+) -> tuple[int, int]:
+    shallow = _detection_sets(depth_rows, depth="shallow")
+    higher = _detection_sets(depth_rows, depth=depth)
+    gains = sum(
+        1 for case_id in shallow if not shallow[case_id] and higher.get(case_id, False)
+    )
+    losses = sum(
+        1 for case_id in shallow if shallow[case_id] and not higher.get(case_id, False)
+    )
+    return gains, losses
+
+
+def _write_csv(path: Path, fieldnames: list[str], rows: list[dict[str, str | float | int]]) -> None:
     path.parent.mkdir(parents=True, exist_ok=True)
     with path.open("w", encoding="utf-8", newline="") as handle:
-        writer = csv.DictWriter(handle, fieldnames=list(DEPTH_SUMMARY_COLUMNS))
+        writer = csv.DictWriter(handle, fieldnames=fieldnames)
         writer.writeheader()
-        writer.writerows(summaries)
+        writer.writerows(rows)
 
 
-def _write_per_case_csv(path: Path, rows: list[DepthCaseResult]) -> None:
+def _coverage_by_depth_rows(
+    depth_summaries: list[dict[str, str | float | int]],
+) -> list[dict[str, str | float | int]]:
+    rows: list[dict[str, str | float | int]] = []
+    for summary in depth_summaries:
+        rows.append(
+            {
+                "oracle_depth": summary["oracle_depth"],
+                "scenario_policy": summary.get("scenario_policy", "shortest-path"),
+                "declared_max_depth": summary.get("declared_max_depth", ""),
+                "case_count": summary["case_count"],
+                "mean_oracle_state_coverage": summary["mean_oracle_state_coverage"],
+                "mean_oracle_transition_coverage": summary["mean_oracle_transition_coverage"],
+                "mean_oracle_event_coverage": summary["mean_oracle_event_coverage"],
+                "mean_scenario_count": summary["mean_scenario_count"],
+                "mean_scenario_length": summary.get("mean_scenario_length", summary["mean_max_scenario_steps"]),
+                "median_scenario_length": summary.get("median_scenario_length", ""),
+                "max_scenario_length": summary.get("max_scenario_length", ""),
+            }
+        )
+    return rows
+
+
+def _write_depth_summary_csv(
+    path: Path,
+    summaries: list[dict[str, str | float | int]],
+    *,
+    scenario_policy: ScenarioPolicy = "shortest-path",
+) -> None:
+    fieldnames = list(V2_DEPTH_SUMMARY_COLUMNS if scenario_policy == "depth-forced" else DEPTH_SUMMARY_COLUMNS)
+    _write_csv(path, fieldnames, summaries)
+
+
+def _write_per_case_csv(
+    path: Path,
+    rows: list[DepthCaseResult],
+    *,
+    scenario_policy: ScenarioPolicy = "shortest-path",
+) -> None:
     path.parent.mkdir(parents=True, exist_ok=True)
+    fieldnames = list(V2_PER_CASE_COLUMNS if scenario_policy == "depth-forced" else PER_CASE_COLUMNS)
     with path.open("w", encoding="utf-8", newline="") as handle:
-        writer = csv.DictWriter(handle, fieldnames=list(PER_CASE_COLUMNS))
+        writer = csv.DictWriter(handle, fieldnames=fieldnames)
         writer.writeheader()
         for row in rows:
-            writer.writerow(row.to_dict())
+            payload = row.to_v2_dict() if scenario_policy == "depth-forced" else row.to_dict()
+            writer.writerow(payload)
 
 
 def _cases_for_depth(rows: list[DepthCaseResult], depth: DepthLevel) -> list[DatasetCaseRow]:
@@ -675,9 +896,16 @@ def write_ablation_report(
     cohort_path: Path,
     depth_summaries: list[dict[str, str | float | int]],
     depth_rows: dict[DepthLevel, list[DepthCaseResult]],
+    scenario_policy: ScenarioPolicy = "shortest-path",
+    paired_detection_rows: list[dict[str, str | float | int]] | None = None,
 ) -> None:
     """Write Markdown report answering oracle-depth sensitivity."""
     conclusion = _sensitivity_conclusion(depth_summaries, depth_rows=depth_rows)
+    policy_line = (
+        "- **Scenario policy:** depth-forced (longer random walks + extra scenarios when needed)"
+        if scenario_policy == "depth-forced"
+        else "- **Oracles:** regenerated with existing `generate_oracle_suite` presets only"
+    )
     lines = [
         "# Oracle Depth Ablation (C3)",
         "",
@@ -689,7 +917,7 @@ def write_ablation_report(
         f"- **Dataset:** `{dataset_dir}`",
         f"- **Cohort:** {depth_summaries[0]['case_count']} cases (`{cohort_path.name}`)",
         "- **FSMs:** fixed reference/faulty machines from the published release",
-        "- **Oracles:** regenerated with existing `generate_oracle_suite` presets only",
+        policy_line,
         "- **Depth presets:** shallow (max 5 steps), medium (12), deep (25)",
         "",
         "## Research question",
@@ -730,6 +958,24 @@ def write_ablation_report(
             cells.append(f"{rates.get(operator, 0.0):.2%}")
         lines.append("| " + " | ".join(cells) + " |")
 
+    if paired_detection_rows:
+        lines.extend(
+            [
+                "",
+                "## Paired detection changes vs shallow (McNemar-style)",
+                "",
+                "| Depth | Both | Shallow only | Higher only | Neither | Gains | Losses | χ² |",
+                "|---|---:|---:|---:|---:|---:|---:|---:|",
+            ]
+        )
+        for row in paired_detection_rows:
+            lines.append(
+                f"| `{row['comparison_depth']}` | {row['both_detected']} | "
+                f"{row['shallow_only_detected']} | {row['higher_only_detected']} | "
+                f"{row['neither_detected']} | {row['detection_gains']} | "
+                f"{row['detection_losses']} | {row['mcnemar_chi2']} |"
+            )
+
     lines.extend(
         [
             "",
@@ -750,12 +996,102 @@ def write_ablation_report(
             f"- Distributions: `{output_dir / 'distributions.csv'}`",
             f"- Per-case results: `{output_dir / 'per_case_results.csv'}`",
             f"- Confidence intervals: `{output_dir / 'confidence_intervals.csv'}`",
+        ]
+    )
+    if scenario_policy == "depth-forced":
+        lines.extend(
+            [
+                f"- Paired detection changes: `{output_dir / 'paired_detection_changes.csv'}`",
+                f"- Coverage by depth: `{output_dir / 'coverage_by_depth.csv'}`",
+            ]
+        )
+    lines.extend(
+        [
             f"- LaTeX tables: `{output_dir / 'tables'}/`",
             "",
         ]
     )
     path.parent.mkdir(parents=True, exist_ok=True)
     path.write_text("\n".join(lines) + "\n", encoding="utf-8")
+
+
+def _write_v2_publication_tables(
+    tables_dir: Path,
+    *,
+    depth_summaries: list[dict[str, str | float | int]],
+    paired_detection_rows: list[dict[str, str | float | int]],
+) -> None:
+    tables_dir.mkdir(parents=True, exist_ok=True)
+    lines = [
+        "% Auto-generated by run-oracle-depth-ablation --scenario-policy depth-forced",
+        "\\begin{table}[t]",
+        "\\caption{Depth-forced oracle ablation summary by preset.}",
+        "\\label{tab:c3-depth-forced-summary}",
+        "\\small",
+        "\\begin{tabular}{@{}lrrrrrr@{}}",
+        "\\toprule",
+        "Depth & Cases & Detection & Mean len. & Max len. & Scenarios & $\\Delta$BPR \\\\",
+        "\\midrule",
+    ]
+    for row in depth_summaries:
+        lines.append(
+            f"{row['oracle_depth']} & {row['case_count']} & "
+            f"{100 * float(row['overall_detection_rate']):.1f}\\% & "
+            f"{float(row['mean_scenario_length']):.1f} & "
+            f"{int(row['max_scenario_length'])} & "
+            f"{float(row['mean_scenario_count']):.1f} & "
+            f"{float(row['mean_bpr_delta']):.3f} \\\\"
+        )
+    lines.extend(["\\bottomrule", "\\end{tabular}", "\\end{table}", ""])
+    (tables_dir / "table_depth_forced_summary.tex").write_text("\n".join(lines), encoding="utf-8")
+
+    paired_lines = [
+        "% Auto-generated by run-oracle-depth-ablation --scenario-policy depth-forced",
+        "\\begin{table}[t]",
+        "\\caption{Paired detection changes vs shallow (McNemar-style counts).}",
+        "\\label{tab:c3-paired-detection}",
+        "\\small",
+        "\\begin{tabular}{@{}lrrrrrr@{}}",
+        "\\toprule",
+        "Depth & Both & Shallow only & Higher only & Neither & Gains & Losses \\\\",
+        "\\midrule",
+    ]
+    for row in paired_detection_rows:
+        paired_lines.append(
+            f"{row['comparison_depth']} & {row['both_detected']} & "
+            f"{row['shallow_only_detected']} & {row['higher_only_detected']} & "
+            f"{row['neither_detected']} & {row['detection_gains']} & {row['detection_losses']} \\\\"
+        )
+    paired_lines.extend(["\\bottomrule", "\\end{tabular}", "\\end{table}", ""])
+    (tables_dir / "table_paired_detection_changes.tex").write_text(
+        "\n".join(paired_lines),
+        encoding="utf-8",
+    )
+
+
+def _copy_paper_exports(
+    *,
+    output_dir: Path,
+    paper_export_dir: Path,
+) -> None:
+    paper_export_dir.mkdir(parents=True, exist_ok=True)
+    paper_tables = paper_export_dir / "tables"
+    paper_tables.mkdir(parents=True, exist_ok=True)
+    for name in (
+        "depth_summary.csv",
+        "per_case_results.csv",
+        "paired_detection_changes.csv",
+        "coverage_by_depth.csv",
+        "report.md",
+        "manifest.json",
+    ):
+        source = output_dir / name
+        if source.is_file():
+            (paper_export_dir / name).write_text(source.read_text(encoding="utf-8"), encoding="utf-8")
+    for tex_name in ("table_depth_forced_summary.tex", "table_paired_detection_changes.tex"):
+        source = output_dir / "tables" / tex_name
+        if source.is_file():
+            (paper_tables / tex_name).write_text(source.read_text(encoding="utf-8"), encoding="utf-8")
 
 
 def run_oracle_depth_ablation(
@@ -766,13 +1102,24 @@ def run_oracle_depth_ablation(
     cohort_manifest: Path | None = None,
     cohort_path: Path | None = None,
     write_cohort: bool = True,
+    scenario_policy: ScenarioPolicy = "shortest-path",
+    paper_export_dir: Path | None = None,
 ) -> OracleDepthAblationResult:
     """Run oracle depth ablation on a pinned stratified cohort."""
+    if scenario_policy not in SCENARIO_POLICIES:
+        msg = f"Unsupported scenario policy: {scenario_policy}"
+        raise OracleDepthAblationError(msg)
+
     if not dataset_dir.is_dir():
         msg = f"Dataset directory not found: {dataset_dir}"
         raise OracleDepthAblationError(msg)
 
-    out = output_dir or Path("results/oracle_depth_ablation")
+    if scenario_policy == "depth-forced":
+        out = output_dir or DEFAULT_V2_OUTPUT
+        paper_dir = paper_export_dir or DEFAULT_V2_PAPER_EXPORT
+    else:
+        out = output_dir or Path("results/oracle_depth_ablation")
+        paper_dir = None
     out.mkdir(parents=True, exist_ok=True)
 
     if cohort_path is not None and cohort_path.is_file():
@@ -804,7 +1151,11 @@ def run_oracle_depth_ablation(
         for case_id in case_ids:
             case_dir = dataset_dir / "cases" / case_id
             try:
-                result = score_case_at_depth(case_dir, depth)
+                result = score_case_at_depth(
+                    case_dir,
+                    depth,
+                    scenario_policy=scenario_policy,
+                )
             except OracleDepthAblationError:
                 skipped_by_depth[depth] += 1
                 continue
@@ -815,11 +1166,24 @@ def run_oracle_depth_ablation(
         msg = "No cases scored successfully across any oracle depth"
         raise OracleDepthAblationError(msg)
 
-    depth_summaries = [
-        _aggregate_depth_summary(depth, depth_rows[depth], skipped=skipped_by_depth[depth])
-        for depth in ABLATION_DEPTHS
-        if depth_rows[depth]
-    ]
+    paired_detection_rows = compute_paired_detection_changes(depth_rows)
+    depth_summaries = []
+    for depth in ABLATION_DEPTHS:
+        if not depth_rows[depth]:
+            continue
+        gains, losses = (0, 0)
+        if depth != "shallow":
+            gains, losses = _paired_gains_losses(depth_rows, depth=depth)
+        depth_summaries.append(
+            _aggregate_depth_summary(
+                depth,
+                depth_rows[depth],
+                skipped=skipped_by_depth[depth],
+                scenario_policy=scenario_policy,
+                detection_gains_vs_shallow=gains,
+                detection_losses_vs_shallow=losses,
+            )
+        )
 
     per_case_path = out / "per_case_results.csv"
     depth_summary_path = out / "depth_summary.csv"
@@ -828,9 +1192,19 @@ def run_oracle_depth_ablation(
     report_path = out / "report.md"
     figures_dir = out / "figures"
     tables_dir = out / "tables"
+    paired_detection_path = out / "paired_detection_changes.csv"
+    coverage_by_depth_path = out / "coverage_by_depth.csv"
+    manifest_path = out / "manifest.json"
 
-    _write_per_case_csv(per_case_path, per_case_rows)
-    _write_depth_summary_csv(depth_summary_path, depth_summaries)
+    _write_per_case_csv(per_case_path, per_case_rows, scenario_policy=scenario_policy)
+    _write_depth_summary_csv(depth_summary_path, depth_summaries, scenario_policy=scenario_policy)
+    if scenario_policy == "depth-forced":
+        _write_csv(paired_detection_path, list(PAIRED_DETECTION_COLUMNS), paired_detection_rows)
+        _write_csv(
+            coverage_by_depth_path,
+            list(COVERAGE_BY_DEPTH_COLUMNS),
+            _coverage_by_depth_rows(depth_summaries),
+        )
     _write_combined_summary_csv(
         summary_path,
         dataset_dir=dataset_dir,
@@ -847,6 +1221,12 @@ def run_oracle_depth_ablation(
         depth_summaries=depth_summaries,
         depth_rows=depth_rows,
     )
+    if scenario_policy == "depth-forced":
+        _write_v2_publication_tables(
+            tables_dir,
+            depth_summaries=depth_summaries,
+            paired_detection_rows=paired_detection_rows,
+        )
     write_ablation_report(
         report_path,
         dataset_dir=dataset_dir,
@@ -854,6 +1234,8 @@ def run_oracle_depth_ablation(
         cohort_path=cohort_txt or (dataset_dir / COHORT_FILENAME),
         depth_summaries=depth_summaries,
         depth_rows=depth_rows,
+        scenario_policy=scenario_policy,
+        paired_detection_rows=paired_detection_rows if scenario_policy == "depth-forced" else None,
     )
 
     ci_rows = compute_c3_confidence_intervals({depth: depth_rows[depth] for depth in ABLATION_DEPTHS})
@@ -865,17 +1247,22 @@ def run_oracle_depth_ablation(
     append_ci_section_to_report(report_path, ci_rows)
 
     manifest = {
-        "experiment": "C3-oracle-depth-ablation",
+        "experiment": V2_EXPERIMENT if scenario_policy == "depth-forced" else "C3-oracle-depth-ablation",
         "dataset_dir": str(dataset_dir),
         "output_dir": str(out),
         "cohort_size": len(case_ids),
         "cohort_path": str(cohort_txt),
+        "scenario_policy": scenario_policy,
         "depths": list(ABLATION_DEPTHS),
         "depth_summaries": depth_summaries,
+        "paired_detection_changes": paired_detection_rows if scenario_policy == "depth-forced" else None,
         "skipped_by_depth": dict(skipped_by_depth),
         "generated_at": datetime.now(UTC).isoformat(),
     }
-    (out / "manifest.json").write_text(json.dumps(manifest, indent=2) + "\n", encoding="utf-8")
+    manifest_path.write_text(json.dumps(manifest, indent=2) + "\n", encoding="utf-8")
+
+    if scenario_policy == "depth-forced" and paper_dir is not None:
+        _copy_paper_exports(output_dir=out, paper_export_dir=paper_dir)
 
     return OracleDepthAblationResult(
         dataset_dir=dataset_dir,
@@ -890,4 +1277,8 @@ def run_oracle_depth_ablation(
         figures_dir=figures_dir,
         tables_dir=tables_dir,
         case_count=len(case_ids),
+        manifest_path=manifest_path,
+        paired_detection_path=paired_detection_path if scenario_policy == "depth-forced" else None,
+        coverage_by_depth_path=coverage_by_depth_path if scenario_policy == "depth-forced" else None,
+        paper_export_dir=paper_dir,
     )

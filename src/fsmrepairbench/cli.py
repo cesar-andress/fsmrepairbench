@@ -3031,25 +3031,57 @@ def run_oracle_depth_ablation_cmd(
         "--no-write-cohort",
         help="Do not write oracle_depth_ablation_200.txt under the dataset.",
     ),
+    scenario_policy: str = typer.Option(
+        "shortest-path",
+        "--scenario-policy",
+        help="Scenario generation policy: shortest-path (default) or depth-forced.",
+    ),
+    paper_export_dir: Path | None = typer.Option(
+        None,
+        "--paper-export-dir",
+        help="Paper export directory for depth-forced ablation outputs.",
+    ),
 ) -> None:
     """Run oracle depth ablation (shallow/medium/deep) on a pinned case sample."""
     from fsmrepairbench.oracle_depth_ablation import (
+        DEFAULT_V2_OUTPUT,
+        DEFAULT_V2_PAPER_EXPORT,
         OracleDepthAblationError,
         run_oracle_depth_ablation,
     )
 
+    if scenario_policy not in {"shortest-path", "depth-forced"}:
+        console.print("[red]ERROR[/red] scenario-policy must be 'shortest-path' or 'depth-forced'")
+        raise typer.Exit(code=1)
+
+    v2_out = DEFAULT_V2_OUTPUT if out == Path("results/oracle_depth_ablation") else out
     try:
         result = run_oracle_depth_ablation(
             dataset_dir,
-            output_dir=out,
+            output_dir=v2_out if scenario_policy == "depth-forced" else out,
             cohort_size=cohort_size,
             cohort_manifest=cohort_manifest,
             cohort_path=cohort_file,
             write_cohort=not no_write_cohort,
+            scenario_policy=scenario_policy,  # type: ignore[arg-type]
+            paper_export_dir=paper_export_dir or DEFAULT_V2_PAPER_EXPORT,
         )
     except OracleDepthAblationError as exc:
         console.print(f"[red]ERROR[/red] {exc}")
         raise typer.Exit(code=1) from exc
+
+    if scenario_policy == "depth-forced":
+        console.print(
+            f"[green]OK[/green] Oracle depth ablation (depth-forced) on {result.case_count} cases "
+            f"from {dataset_dir}"
+        )
+        console.print(f"Cohort: {result.cohort_path}")
+        console.print(f"Depth summary: {result.depth_summary_path}")
+        console.print(f"Paired detection: {result.paired_detection_path}")
+        console.print(f"Coverage by depth: {result.coverage_by_depth_path}")
+        console.print(f"Report: {result.report_path}")
+        console.print(f"Paper export: {result.paper_export_dir}")
+        raise typer.Exit(code=0)
 
     console.print(
         f"[green]OK[/green] Oracle depth ablation on {result.case_count} cases "

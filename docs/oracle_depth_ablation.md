@@ -132,3 +132,35 @@ pytest tests/test_oracle_depth_ablation.py -q
 - Paper design note: `paper1/reviews/minimum_publishable_experiment.md` (C3)
 - Oracle specification: `docs/oracle_spec.md`
 - Published analysis baseline: `results/analysis/` (1,000-case shallow oracles)
+
+## Depth-forced sensitivity (C3 v2)
+
+The original C3 campaign (`--scenario-policy shortest-path`, default) preserves
+shortest-path oracle generation. Because compact FSMs already fit within the
+shallow step cap, shallow/medium/deep produce identical suites (~4 steps).
+
+The **depth-forced** policy (`--scenario-policy depth-forced`) actively lengthens
+scenario walks and adds extra random-walk scenarios when medium/deep presets are
+requested, so depth presets change the executed scenario catalogue.
+
+```bash
+fsmrepairbench run-oracle-depth-ablation data/fsmrepairbench_1k \
+  --scenario-policy depth-forced \
+  --out results/oracle_depth_ablation_v2 \
+  --cohort-file data/fsmrepairbench_1k/oracle_depth_ablation_200.txt \
+  --no-write-cohort
+```
+
+Outputs under `results/oracle_depth_ablation_v2/`:
+
+| File | Description |
+|------|-------------|
+| `depth_summary.csv` | Per-depth detection, BPR, scenario length, gains/losses vs shallow |
+| `per_case_results.csv` | Case×depth metrics incl. declared/observed depth |
+| `paired_detection_changes.csv` | McNemar-style paired detection table vs shallow |
+| `coverage_by_depth.csv` | State/transition/event coverage and scenario counts |
+| `report.md` | Narrative sensitivity report |
+| `manifest.json` | Run metadata |
+| `figures/`, `tables/` | Publication assets |
+
+Paper export: `../paper1/results/oracle_depth_ablation_v2/tables/`
