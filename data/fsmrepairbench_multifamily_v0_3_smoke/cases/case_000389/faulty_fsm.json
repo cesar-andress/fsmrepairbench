@@ -1,0 +1,126 @@
+{
+  "id": "synthetic_8174_3_2__faulty__missing_transition__389046",
+  "name": "Synthetic FSM (custom) (faulty: missing_transition)",
+  "description": "Synthetic FSM generated with seed=8174, states=3, events=2, branching_factor=2, deterministic=True, allow_dead_states=False",
+  "states": [
+    {
+      "id": "s8174_0",
+      "state_output": null,
+      "refusal": false,
+      "quiescence": false
+    },
+    {
+      "id": "s8174_1",
+      "state_output": null,
+      "refusal": false,
+      "quiescence": false
+    },
+    {
+      "id": "s8174_2",
+      "state_output": null,
+      "refusal": false,
+      "quiescence": false
+    }
+  ],
+  "initial_state": "s8174_0",
+  "events": [
+    "e8174_0",
+    "e8174_1"
+  ],
+  "transitions": [
+    {
+      "id": "t8174_1",
+      "source": "s8174_0",
+      "event": "e8174_0",
+      "target": "s8174_1",
+      "guard": "x_8174_0 > 0 and y_8174_0 < 10",
+      "action": "act8174_1",
+      "output": null,
+      "timeout": null,
+      "delay": null,
+      "requirements": [],
+      "probability": null,
+      "is_nondeterministic": false,
+      "refusal": false,
+      "quiescence": false,
+      "discrete_time": null
+    },
+    {
+      "id": "t8174_3",
+      "source": "s8174_0",
+      "event": "e8174_1",
+      "target": "s8174_0",
+      "guard": "x_8174_2 > 0 and y_8174_2 < 10",
+      "action": "act8174_3",
+      "output": null,
+      "timeout": null,
+      "delay": null,
+      "requirements": [],
+      "probability": null,
+      "is_nondeterministic": false,
+      "refusal": false,
+      "quiescence": false,
+      "discrete_time": null
+    },
+    {
+      "id": "t8174_4",
+      "source": "s8174_1",
+      "event": "e8174_1",
+      "target": "s8174_2",
+      "guard": "x_8174_3 > 0 and y_8174_3 < 10",
+      "action": "act8174_4",
+      "output": null,
+      "timeout": null,
+      "delay": null,
+      "requirements": [],
+      "probability": null,
+      "is_nondeterministic": false,
+      "refusal": false,
+      "quiescence": false,
+      "discrete_time": null
+    },
+    {
+      "id": "t8174_5",
+      "source": "s8174_2",
+      "event": "e8174_0",
+      "target": "s8174_2",
+      "guard": "x_8174_4 > 0 and y_8174_4 < 10",
+      "action": "act8174_5",
+      "output": null,
+      "timeout": null,
+      "delay": null,
+      "requirements": [],
+      "probability": null,
+      "is_nondeterministic": false,
+      "refusal": false,
+      "quiescence": false,
+      "discrete_time": null
+    },
+    {
+      "id": "t8174_6",
+      "source": "s8174_2",
+      "event": "e8174_0",
+      "target": "s8174_2",
+      "guard": "x_8174_5 > 0 and y_8174_5 < 10",
+      "action": "act8174_6",
+      "output": null,
+      "timeout": null,
+      "delay": null,
+      "requirements": [],
+      "probability": null,
+      "is_nondeterministic": false,
+      "refusal": false,
+      "quiescence": false,
+      "discrete_time": null
+    }
+  ],
+  "variables": {
+    "x": "int",
+    "y": "int"
+  },
+  "parent_fsm_id": "synthetic_8174_3_2",
+  "reference_fsm_id": "synthetic_8174_3_2",
+  "discrete_time_step": null,
+  "semantics_mode": null,
+  "cyclic_metadata": null
+}

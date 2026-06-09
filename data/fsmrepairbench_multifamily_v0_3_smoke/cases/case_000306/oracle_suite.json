@@ -1,0 +1,92 @@
+{
+  "id": "synthetic_6460_3_2_oracles",
+  "fsm_id": "synthetic_6460_3_2",
+  "scenarios": [
+    {
+      "id": "cover_transition_t6460_1",
+      "description": "Covers transition 't6460_1' (s6460_0 --e6460_1--> s6460_1).",
+      "steps": [
+        {
+          "event": "e6460_1",
+          "expected_state": "s6460_1",
+          "guard": "x_6460_0 > 0 and y_6460_0 < 10",
+          "accepting_states": [],
+          "probability_threshold": null,
+          "refusal_expected": false,
+          "quiescence_expected": false,
+          "discrete_time": null
+        }
+      ]
+    },
+    {
+      "id": "cover_transition_t6460_2",
+      "description": "Covers transition 't6460_2' (s6460_0 --e6460_0--> s6460_2).",
+      "steps": [
+        {
+          "event": "e6460_0",
+          "expected_state": "s6460_2",
+          "guard": "x_6460_1 > 0 and y_6460_1 < 10",
+          "accepting_states": [],
+          "probability_threshold": null,
+          "refusal_expected": false,
+          "quiescence_expected": false,
+          "discrete_time": null
+        }
+      ]
+    },
+    {
+      "id": "cover_transition_t6460_3",
+      "description": "Covers transition 't6460_3' (s6460_1 --e6460_0--> s6460_1).",
+      "steps": [
+        {
+          "event": "e6460_1",
+          "expected_state": "s6460_1",
+          "guard": "x_6460_0 > 0 and y_6460_0 < 10",
+          "accepting_states": [],
+          "probability_threshold": null,
+          "refusal_expected": false,
+          "quiescence_expected": false,
+          "discrete_time": null
+        },
+        {
+          "event": "e6460_0",
+          "expected_state": "s6460_1",
+          "guard": "x_6460_2 > 0 and y_6460_2 < 10",
+          "accepting_states": [],
+          "probability_threshold": null,
+          "refusal_expected": false,
+          "quiescence_expected": false,
+          "discrete_time": null
+        }
+      ]
+    },
+    {
+      "id": "cover_transition_t6460_4",
+      "description": "Covers transition 't6460_4' (s6460_2 --e6460_1--> s6460_2).",
+      "steps": [
+        {
+          "event": "e6460_0",
+          "expected_state": "s6460_2",
+          "guard": "x_6460_1 > 0 and y_6460_1 < 10",
+          "accepting_states": [],
+          "probability_threshold": null,
+          "refusal_expected": false,
+          "quiescence_expected": false,
+          "discrete_time": null
+        },
+        {
+          "event": "e6460_1",
+          "expected_state": "s6460_2",
+          "guard": "x_6460_3 > 0 and y_6460_3 < 10",
+          "accepting_states": [],
+          "probability_threshold": null,
+          "refusal_expected": false,
+          "quiescence_expected": false,
+          "discrete_time": null
+        }
+      ]
+    }
+  ],
+  "semantics_mode": null,
+  "probability_threshold": null
+}

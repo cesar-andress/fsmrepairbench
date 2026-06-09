@@ -1,0 +1,106 @@
+{
+  "id": "synthetic_793_3_2__faulty__nondeterminism_intro__38046",
+  "name": "Synthetic FSM (custom) (faulty: nondeterminism_intro)",
+  "description": "Synthetic FSM generated with seed=793, states=3, events=2, branching_factor=1, deterministic=False, allow_dead_states=True",
+  "states": [
+    {
+      "id": "s793_0",
+      "state_output": null,
+      "refusal": false,
+      "quiescence": false
+    },
+    {
+      "id": "s793_1",
+      "state_output": null,
+      "refusal": false,
+      "quiescence": false
+    },
+    {
+      "id": "s793_2",
+      "state_output": null,
+      "refusal": false,
+      "quiescence": false
+    }
+  ],
+  "initial_state": "s793_0",
+  "events": [
+    "e793_0",
+    "e793_1"
+  ],
+  "transitions": [
+    {
+      "id": "t793_1",
+      "source": "s793_0",
+      "event": "e793_0",
+      "target": "s793_1",
+      "guard": null,
+      "action": "act793_1",
+      "output": null,
+      "timeout": null,
+      "delay": null,
+      "requirements": [],
+      "probability": null,
+      "is_nondeterministic": false,
+      "refusal": false,
+      "quiescence": false,
+      "discrete_time": null
+    },
+    {
+      "id": "t793_2",
+      "source": "s793_0",
+      "event": "e793_1",
+      "target": "s793_2",
+      "guard": null,
+      "action": "act793_2",
+      "output": null,
+      "timeout": null,
+      "delay": null,
+      "requirements": [],
+      "probability": null,
+      "is_nondeterministic": false,
+      "refusal": false,
+      "quiescence": false,
+      "discrete_time": null
+    },
+    {
+      "id": "t793_4",
+      "source": "s793_2",
+      "event": "e793_0",
+      "target": "s793_2",
+      "guard": null,
+      "action": "act793_4",
+      "output": null,
+      "timeout": null,
+      "delay": null,
+      "requirements": [],
+      "probability": null,
+      "is_nondeterministic": false,
+      "refusal": false,
+      "quiescence": false,
+      "discrete_time": null
+    },
+    {
+      "id": "t793_4__nd__38046",
+      "source": "s793_2",
+      "event": "e793_0",
+      "target": "s793_0",
+      "guard": null,
+      "action": "act793_4",
+      "output": null,
+      "timeout": null,
+      "delay": null,
+      "requirements": [],
+      "probability": null,
+      "is_nondeterministic": false,
+      "refusal": false,
+      "quiescence": false,
+      "discrete_time": null
+    }
+  ],
+  "variables": {},
+  "parent_fsm_id": "synthetic_793_3_2",
+  "reference_fsm_id": "synthetic_793_3_2",
+  "discrete_time_step": null,
+  "semantics_mode": null,
+  "cyclic_metadata": null
+}

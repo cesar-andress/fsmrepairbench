@@ -1,0 +1,106 @@
+{
+  "id": "synthetic_691_3_2__faulty__nondeterminism_intro__32046",
+  "name": "Synthetic FSM (custom) (faulty: nondeterminism_intro)",
+  "description": "Synthetic FSM generated with seed=691, states=3, events=2, branching_factor=1, deterministic=False, allow_dead_states=True",
+  "states": [
+    {
+      "id": "s691_0",
+      "state_output": null,
+      "refusal": false,
+      "quiescence": false
+    },
+    {
+      "id": "s691_1",
+      "state_output": null,
+      "refusal": false,
+      "quiescence": false
+    },
+    {
+      "id": "s691_2",
+      "state_output": null,
+      "refusal": false,
+      "quiescence": false
+    }
+  ],
+  "initial_state": "s691_0",
+  "events": [
+    "e691_0",
+    "e691_1"
+  ],
+  "transitions": [
+    {
+      "id": "t691_1",
+      "source": "s691_0",
+      "event": "e691_0",
+      "target": "s691_1",
+      "guard": null,
+      "action": "act691_1",
+      "output": null,
+      "timeout": null,
+      "delay": null,
+      "requirements": [],
+      "probability": null,
+      "is_nondeterministic": false,
+      "refusal": false,
+      "quiescence": false,
+      "discrete_time": null
+    },
+    {
+      "id": "t691_3",
+      "source": "s691_1",
+      "event": "e691_1",
+      "target": "s691_1",
+      "guard": null,
+      "action": "act691_3",
+      "output": null,
+      "timeout": null,
+      "delay": null,
+      "requirements": [],
+      "probability": null,
+      "is_nondeterministic": false,
+      "refusal": false,
+      "quiescence": false,
+      "discrete_time": null
+    },
+    {
+      "id": "t691_4",
+      "source": "s691_2",
+      "event": "e691_0",
+      "target": "s691_2",
+      "guard": null,
+      "action": "act691_4",
+      "output": null,
+      "timeout": null,
+      "delay": null,
+      "requirements": [],
+      "probability": null,
+      "is_nondeterministic": false,
+      "refusal": false,
+      "quiescence": false,
+      "discrete_time": null
+    },
+    {
+      "id": "t691_4__nd__32046",
+      "source": "s691_2",
+      "event": "e691_0",
+      "target": "s691_0",
+      "guard": null,
+      "action": "act691_4",
+      "output": null,
+      "timeout": null,
+      "delay": null,
+      "requirements": [],
+      "probability": null,
+      "is_nondeterministic": false,
+      "refusal": false,
+      "quiescence": false,
+      "discrete_time": null
+    }
+  ],
+  "variables": {},
+  "parent_fsm_id": "synthetic_691_3_2",
+  "reference_fsm_id": "synthetic_691_3_2",
+  "discrete_time_step": null,
+  "semantics_mode": null,
+  "cyclic_metadata": null
+}

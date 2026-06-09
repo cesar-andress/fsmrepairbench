@@ -7,6 +7,7 @@ This directory contains stratified dataset generation plans for FSMRepairBench. 
 | File | Cases | Seed | Purpose |
 |------|------:|-----:|---------|
 | `fsmrepairbench_v0_smoke_plan.yaml` | 100 | 42 | Fast smoke-test stratified build for CI and local validation |
+| `fsmrepairbench_multifamily_v0_3_smoke_plan.yaml` | 500 | 46 | v0.3.0 external-validity pilot (100 cases × 5 families) |
 | `fsmrepairbench_v0_10k_plan.yaml` | 10,000 | 42 | Balanced v0 benchmark across machine families, guards, timing, graph topology, and bug types |
 
 ## Smoke plan (100 cases)
@@ -31,6 +32,23 @@ print(plan.name, total_planned_cases(plan), plan.seed)
 ```
 
 Expected output: `fsmrepairbench_v0_smoke 100 42`
+
+## Multi-family v0.3.0 pilot (500 cases)
+
+External-validity pilot spanning all five machine families at 100 cases each. This plan
+does **not** replace the frozen Zenodo `v0.2.0-analysis` release.
+
+```bash
+fsmrepairbench build-stratified-dataset \
+  plans/fsmrepairbench_multifamily_v0_3_smoke_plan.yaml \
+  data/fsmrepairbench_multifamily_v0_3_smoke
+
+fsmrepairbench analyze-multifamily-cohort \
+  data/fsmrepairbench_multifamily_v0_3_smoke \
+  --out results/multifamily_v0_3_smoke
+```
+
+See `docs/multifamily_pilot.md`.
 
 ## Initial 10k plan
 

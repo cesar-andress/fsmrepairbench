@@ -1,0 +1,86 @@
+{
+  "id": "synthetic_2541_3_2_oracles",
+  "fsm_id": "synthetic_2541_3_2",
+  "scenarios": [
+    {
+      "id": "cover_transition_t2541_1",
+      "description": "Covers transition 't2541_1' (s2541_0 --e2541_1--> s2541_1).",
+      "steps": [
+        {
+          "event": "e2541_1",
+          "expected_state": "s2541_1",
+          "guard": "x_2541_0 > 0",
+          "accepting_states": [],
+          "probability_threshold": null,
+          "refusal_expected": false,
+          "quiescence_expected": false,
+          "discrete_time": null
+        }
+      ]
+    },
+    {
+      "id": "cover_transition_t2541_2",
+      "description": "Covers transition 't2541_2' (s2541_1 --e2541_0--> s2541_2).",
+      "steps": [
+        {
+          "event": "e2541_1",
+          "expected_state": "s2541_1",
+          "guard": "x_2541_0 > 0",
+          "accepting_states": [],
+          "probability_threshold": null,
+          "refusal_expected": false,
+          "quiescence_expected": false,
+          "discrete_time": null
+        },
+        {
+          "event": "e2541_0",
+          "expected_state": "s2541_2",
+          "guard": "x_2541_1 > 0",
+          "accepting_states": [],
+          "probability_threshold": null,
+          "refusal_expected": false,
+          "quiescence_expected": false,
+          "discrete_time": null
+        }
+      ]
+    },
+    {
+      "id": "cover_transition_t2541_3",
+      "description": "Covers transition 't2541_3' (s2541_2 --e2541_0--> s2541_2).",
+      "steps": [
+        {
+          "event": "e2541_1",
+          "expected_state": "s2541_1",
+          "guard": "x_2541_0 > 0",
+          "accepting_states": [],
+          "probability_threshold": null,
+          "refusal_expected": false,
+          "quiescence_expected": false,
+          "discrete_time": null
+        },
+        {
+          "event": "e2541_0",
+          "expected_state": "s2541_2",
+          "guard": "x_2541_1 > 0",
+          "accepting_states": [],
+          "probability_threshold": null,
+          "refusal_expected": false,
+          "quiescence_expected": false,
+          "discrete_time": null
+        },
+        {
+          "event": "e2541_0",
+          "expected_state": "s2541_2",
+          "guard": "x_2541_2 > 0",
+          "accepting_states": [],
+          "probability_threshold": null,
+          "refusal_expected": false,
+          "quiescence_expected": false,
+          "discrete_time": null
+        }
+      ]
+    }
+  ],
+  "semantics_mode": null,
+  "probability_threshold": null
+}

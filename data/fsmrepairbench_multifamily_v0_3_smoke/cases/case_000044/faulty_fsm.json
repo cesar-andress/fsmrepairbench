@@ -1,0 +1,106 @@
+{
+  "id": "synthetic_895_3_2__faulty__nondeterminism_intro__44046",
+  "name": "Synthetic FSM (custom) (faulty: nondeterminism_intro)",
+  "description": "Synthetic FSM generated with seed=895, states=3, events=2, branching_factor=1, deterministic=False, allow_dead_states=True",
+  "states": [
+    {
+      "id": "s895_0",
+      "state_output": null,
+      "refusal": false,
+      "quiescence": false
+    },
+    {
+      "id": "s895_1",
+      "state_output": null,
+      "refusal": false,
+      "quiescence": false
+    },
+    {
+      "id": "s895_2",
+      "state_output": null,
+      "refusal": false,
+      "quiescence": false
+    }
+  ],
+  "initial_state": "s895_0",
+  "events": [
+    "e895_0",
+    "e895_1"
+  ],
+  "transitions": [
+    {
+      "id": "t895_2",
+      "source": "s895_0",
+      "event": "e895_0",
+      "target": "s895_2",
+      "guard": null,
+      "action": "act895_2",
+      "output": null,
+      "timeout": null,
+      "delay": null,
+      "requirements": [],
+      "probability": null,
+      "is_nondeterministic": false,
+      "refusal": false,
+      "quiescence": false,
+      "discrete_time": null
+    },
+    {
+      "id": "t895_3",
+      "source": "s895_1",
+      "event": "e895_1",
+      "target": "s895_2",
+      "guard": null,
+      "action": "act895_3",
+      "output": null,
+      "timeout": null,
+      "delay": null,
+      "requirements": [],
+      "probability": null,
+      "is_nondeterministic": false,
+      "refusal": false,
+      "quiescence": false,
+      "discrete_time": null
+    },
+    {
+      "id": "t895_4",
+      "source": "s895_2",
+      "event": "e895_1",
+      "target": "s895_2",
+      "guard": null,
+      "action": "act895_4",
+      "output": null,
+      "timeout": null,
+      "delay": null,
+      "requirements": [],
+      "probability": null,
+      "is_nondeterministic": false,
+      "refusal": false,
+      "quiescence": false,
+      "discrete_time": null
+    },
+    {
+      "id": "t895_3__nd__44046",
+      "source": "s895_1",
+      "event": "e895_1",
+      "target": "s895_0",
+      "guard": null,
+      "action": "act895_3",
+      "output": null,
+      "timeout": null,
+      "delay": null,
+      "requirements": [],
+      "probability": null,
+      "is_nondeterministic": false,
+      "refusal": false,
+      "quiescence": false,
+      "discrete_time": null
+    }
+  ],
+  "variables": {},
+  "parent_fsm_id": "synthetic_895_3_2",
+  "reference_fsm_id": "synthetic_895_3_2",
+  "discrete_time_step": null,
+  "semantics_mode": null,
+  "cyclic_metadata": null
+}

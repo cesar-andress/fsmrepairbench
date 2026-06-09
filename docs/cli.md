@@ -46,6 +46,23 @@ fsmrepairbench analyze-error-propagation PATH --out PATH
 | `out` | `Path` | `--out` | required | Write propagation report JSON to this path. |
 | `quiet` | `bool` | `--quiet` | False | Print a short summary only. |
 
+### `analyze-multifamily-cohort`
+
+Analyze the v0.3.0 multi-family external-validity pilot cohort.
+
+**Usage**
+
+```bash
+fsmrepairbench analyze-multifamily-cohort DATASET_DIR
+```
+
+| Parameter | Type | Flags | Default | Description |
+|-----------|------|-------|---------|-------------|
+| `dataset_dir` | `Path` | positional | data/fsmrepairbench_multifamily_v0_3_smoke |  |
+| `out` | `Path` | `--out` | results/multifamily_v0_3_smoke | Directory for multi-family pilot analysis exports. |
+| `plan_path` | `Path` | `--plan` | plans/fsmrepairbench_multifamily_v0_3_smoke_plan.yaml | Stratified generation plan used to build the dataset. |
+| `paper_export_dir` | `Path | None` | `--paper-export-dir` | None | Paper export directory for multi-family pilot artifacts. |
+
 ### `analyze-novelty`
 
 Analyze benchmark novelty and detect synthetic dataset collapse.

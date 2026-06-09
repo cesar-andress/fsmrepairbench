@@ -3002,6 +3002,54 @@ def analyze_benchmark_cmd(
     raise typer.Exit(code=0)
 
 
+@app.command("analyze-multifamily-cohort")
+def analyze_multifamily_cohort_cmd(
+    dataset_dir: Path = typer.Argument(Path("data/fsmrepairbench_multifamily_v0_3_smoke")),
+    out: Path = typer.Option(
+        Path("results/multifamily_v0_3_smoke"),
+        "--out",
+        help="Directory for multi-family pilot analysis exports.",
+    ),
+    plan_path: Path = typer.Option(
+        Path("plans/fsmrepairbench_multifamily_v0_3_smoke_plan.yaml"),
+        "--plan",
+        help="Stratified generation plan used to build the dataset.",
+    ),
+    paper_export_dir: Path | None = typer.Option(
+        None,
+        "--paper-export-dir",
+        help="Paper export directory for multi-family pilot artifacts.",
+    ),
+) -> None:
+    """Analyze the v0.3.0 multi-family external-validity pilot cohort."""
+    from fsmrepairbench.multifamily_analysis import (
+        DEFAULT_PAPER_EXPORT,
+        MultifamilyAnalysisError,
+        analyze_multifamily_cohort,
+    )
+
+    try:
+        result = analyze_multifamily_cohort(
+            dataset_dir,
+            plan_path=plan_path,
+            output_dir=out,
+            paper_export_dir=paper_export_dir or DEFAULT_PAPER_EXPORT,
+        )
+    except MultifamilyAnalysisError as exc:
+        console.print(f"[red]ERROR[/red] {exc}")
+        raise typer.Exit(code=1) from exc
+
+    console.print(
+        f"[green]OK[/green] Multi-family pilot analysis on {result.case_count} cases "
+        f"from {dataset_dir}"
+    )
+    console.print(f"Family summary: {result.family_summary_path}")
+    console.print(f"Detection by family: {result.detection_by_family_path}")
+    console.print(f"Report: {result.report_path}")
+    console.print(f"Paper export: {result.paper_export_dir}")
+    raise typer.Exit(code=0)
+
+
 @app.command("run-oracle-depth-ablation")
 def run_oracle_depth_ablation_cmd(
     dataset_dir: Path,

@@ -168,19 +168,32 @@ def _build_case_for_cell(
     output_dir: Path,
 ) -> tuple[CaseFeatures, dict[str, object]]:
     case_id = format_case_id(case_number)
-    case_seed = plan.seed + case_number * 17 + cell_index * 101
-    reference = generate_reference_fsm_for_cell(cell, case_seed)
     depth = _oracle_depth_to_generator(cell.oracle_depth)
-    try:
-        oracle_result = generate_oracle_suite(reference, depth=depth)  # type: ignore[arg-type]
-    except OracleGeneratorError as exc:
-        msg = f"Oracle generation failed for {case_id}: {exc}"
-        raise StratifiedBuilderError(msg) from exc
+    last_error: Exception | None = None
+    reference = None
+    oracle_result = None
+    reference_bpr = 0.0
+    case_seed = plan.seed + case_number * 17 + cell_index * 101
 
-    reference_bpr = score_oracle_suite(reference, oracle_result.suite).bpr
-    if reference_bpr != 1.0:
-        msg = f"Reference FSM for {case_id} did not achieve BPR=1.0"
+    for attempt in range(MAX_MUTATION_RETRIES):
+        case_seed = plan.seed + case_number * 17 + cell_index * 101 + attempt * 7919
+        reference = generate_reference_fsm_for_cell(cell, case_seed)
+        try:
+            oracle_result = generate_oracle_suite(reference, depth=depth)  # type: ignore[arg-type]
+        except OracleGeneratorError as exc:
+            last_error = exc
+            continue
+        reference_bpr = score_oracle_suite(reference, oracle_result.suite).bpr
+        if reference_bpr == 1.0:
+            break
+        last_error = StratifiedBuilderError(
+            f"Reference FSM for {case_id} did not achieve BPR=1.0 (attempt {attempt + 1})"
+        )
+    else:
+        msg = f"Could not build reference/oracle for {case_id}: {last_error}"
         raise StratifiedBuilderError(msg)
+
+    assert reference is not None and oracle_result is not None
 
     faulty_fsm, bug_metadata = _try_mutate(reference, cell, plan.seed, case_number)
     faulty_bpr = score_oracle_suite(faulty_fsm, oracle_result.suite).bpr

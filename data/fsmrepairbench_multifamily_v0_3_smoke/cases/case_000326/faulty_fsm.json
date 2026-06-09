@@ -1,0 +1,58 @@
+{
+  "id": "synthetic_6901_3_2__faulty__guard_strengthen__326046",
+  "name": "Synthetic FSM (custom) (faulty: guard_strengthen)",
+  "description": "Synthetic FSM generated with seed=6901, states=3, events=2, branching_factor=2, deterministic=True, allow_dead_states=True",
+  "states": [
+    {
+      "id": "s6901_0",
+      "state_output": null,
+      "refusal": false,
+      "quiescence": false
+    },
+    {
+      "id": "s6901_1",
+      "state_output": null,
+      "refusal": false,
+      "quiescence": false
+    },
+    {
+      "id": "s6901_2",
+      "state_output": null,
+      "refusal": false,
+      "quiescence": false
+    }
+  ],
+  "initial_state": "s6901_0",
+  "events": [
+    "e6901_0",
+    "e6901_1"
+  ],
+  "transitions": [
+    {
+      "id": "t6901_2",
+      "source": "s6901_0",
+      "event": "e6901_1",
+      "target": "s6901_0",
+      "guard": "(x_6901_1 > 0 and y_6901_1 < 10) and strict_check",
+      "action": "act6901_2",
+      "output": null,
+      "timeout": null,
+      "delay": null,
+      "requirements": [],
+      "probability": null,
+      "is_nondeterministic": false,
+      "refusal": false,
+      "quiescence": false,
+      "discrete_time": null
+    }
+  ],
+  "variables": {
+    "x": "int",
+    "y": "int"
+  },
+  "parent_fsm_id": "synthetic_6901_3_2",
+  "reference_fsm_id": "synthetic_6901_3_2",
+  "discrete_time_step": null,
+  "semantics_mode": null,
+  "cyclic_metadata": null
+}

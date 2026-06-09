@@ -1,0 +1,106 @@
+{
+  "id": "synthetic_2524_3_2__faulty__action_corruption__122046",
+  "name": "Synthetic FSM (custom) (faulty: action_corruption)",
+  "description": "Synthetic FSM generated with seed=2524, states=3, events=2, branching_factor=1, deterministic=True, allow_dead_states=False",
+  "states": [
+    {
+      "id": "s2524_0",
+      "state_output": null,
+      "refusal": false,
+      "quiescence": false
+    },
+    {
+      "id": "s2524_1",
+      "state_output": null,
+      "refusal": false,
+      "quiescence": false
+    },
+    {
+      "id": "s2524_2",
+      "state_output": null,
+      "refusal": false,
+      "quiescence": false
+    }
+  ],
+  "initial_state": "s2524_0",
+  "events": [
+    "e2524_0",
+    "e2524_1"
+  ],
+  "transitions": [
+    {
+      "id": "t2524_1",
+      "source": "s2524_0",
+      "event": "e2524_0",
+      "target": "s2524_1",
+      "guard": "x_2524_0 > 0",
+      "action": "act2524_1",
+      "output": "out_2524_0",
+      "timeout": null,
+      "delay": null,
+      "requirements": [],
+      "probability": null,
+      "is_nondeterministic": false,
+      "refusal": false,
+      "quiescence": false,
+      "discrete_time": null
+    },
+    {
+      "id": "t2524_2",
+      "source": "s2524_0",
+      "event": "e2524_0",
+      "target": "s2524_2",
+      "guard": "x_2524_1 > 0",
+      "action": "act2524_2",
+      "output": "out_2524_1",
+      "timeout": null,
+      "delay": null,
+      "requirements": [],
+      "probability": null,
+      "is_nondeterministic": false,
+      "refusal": false,
+      "quiescence": false,
+      "discrete_time": null
+    },
+    {
+      "id": "t2524_3",
+      "source": "s2524_1",
+      "event": "e2524_0",
+      "target": "s2524_1",
+      "guard": "x_2524_2 > 0",
+      "action": "act2524_3",
+      "output": "out_2524_2",
+      "timeout": null,
+      "delay": null,
+      "requirements": [],
+      "probability": null,
+      "is_nondeterministic": false,
+      "refusal": false,
+      "quiescence": false,
+      "discrete_time": null
+    },
+    {
+      "id": "t2524_4",
+      "source": "s2524_2",
+      "event": "e2524_0",
+      "target": "s2524_2",
+      "guard": "x_2524_3 > 0",
+      "action": "wrong_act2524_4",
+      "output": "out_2524_3",
+      "timeout": null,
+      "delay": null,
+      "requirements": [],
+      "probability": null,
+      "is_nondeterministic": false,
+      "refusal": false,
+      "quiescence": false,
+      "discrete_time": null
+    }
+  ],
+  "variables": {},
+  "parent_fsm_id": "synthetic_2524_3_2",
+  "reference_fsm_id": "synthetic_2524_3_2",
+  "discrete_time_step": null,
+  "semantics_mode": null,
+  "cyclic_metadata": null
+}

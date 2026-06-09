@@ -1,0 +1,106 @@
+{
+  "id": "synthetic_8496_3_2__faulty__timeout_corruption__402046",
+  "name": "Synthetic FSM (custom) (faulty: timeout_corruption)",
+  "description": "Synthetic FSM generated with seed=8496, states=3, events=2, branching_factor=1, deterministic=True, allow_dead_states=False",
+  "states": [
+    {
+      "id": "s8496_0",
+      "state_output": null,
+      "refusal": false,
+      "quiescence": false
+    },
+    {
+      "id": "s8496_1",
+      "state_output": null,
+      "refusal": false,
+      "quiescence": false
+    },
+    {
+      "id": "s8496_2",
+      "state_output": null,
+      "refusal": false,
+      "quiescence": false
+    }
+  ],
+  "initial_state": "s8496_0",
+  "events": [
+    "e8496_0",
+    "e8496_1"
+  ],
+  "transitions": [
+    {
+      "id": "t8496_1",
+      "source": "s8496_0",
+      "event": "e8496_0",
+      "target": "s8496_1",
+      "guard": "x_8496_0 > 0",
+      "action": "act8496_1",
+      "output": null,
+      "timeout": 1.0,
+      "delay": null,
+      "requirements": [],
+      "probability": null,
+      "is_nondeterministic": false,
+      "refusal": false,
+      "quiescence": false,
+      "discrete_time": null
+    },
+    {
+      "id": "t8496_2",
+      "source": "s8496_0",
+      "event": "e8496_0",
+      "target": "s8496_2",
+      "guard": "x_8496_1 > 0",
+      "action": "act8496_2",
+      "output": null,
+      "timeout": 4.0,
+      "delay": null,
+      "requirements": [],
+      "probability": null,
+      "is_nondeterministic": false,
+      "refusal": false,
+      "quiescence": false,
+      "discrete_time": null
+    },
+    {
+      "id": "t8496_3",
+      "source": "s8496_1",
+      "event": "e8496_0",
+      "target": "s8496_1",
+      "guard": "x_8496_2 > 0",
+      "action": "act8496_3",
+      "output": null,
+      "timeout": 3.0,
+      "delay": null,
+      "requirements": [],
+      "probability": null,
+      "is_nondeterministic": false,
+      "refusal": false,
+      "quiescence": false,
+      "discrete_time": null
+    },
+    {
+      "id": "t8496_4",
+      "source": "s8496_2",
+      "event": "e8496_1",
+      "target": "s8496_2",
+      "guard": "x_8496_3 > 0",
+      "action": "act8496_4",
+      "output": null,
+      "timeout": 4.0,
+      "delay": null,
+      "requirements": [],
+      "probability": null,
+      "is_nondeterministic": false,
+      "refusal": false,
+      "quiescence": false,
+      "discrete_time": null
+    }
+  ],
+  "variables": {},
+  "parent_fsm_id": "synthetic_8496_3_2",
+  "reference_fsm_id": "synthetic_8496_3_2",
+  "discrete_time_step": null,
+  "semantics_mode": null,
+  "cyclic_metadata": null
+}

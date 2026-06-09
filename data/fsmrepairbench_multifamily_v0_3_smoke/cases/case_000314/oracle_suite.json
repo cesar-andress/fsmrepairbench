@@ -1,0 +1,92 @@
+{
+  "id": "synthetic_6596_3_2_oracles",
+  "fsm_id": "synthetic_6596_3_2",
+  "scenarios": [
+    {
+      "id": "cover_transition_t6596_1",
+      "description": "Covers transition 't6596_1' (s6596_0 --e6596_1--> s6596_1).",
+      "steps": [
+        {
+          "event": "e6596_1",
+          "expected_state": "s6596_1",
+          "guard": "x_6596_0 > 0 and y_6596_0 < 10",
+          "accepting_states": [],
+          "probability_threshold": null,
+          "refusal_expected": false,
+          "quiescence_expected": false,
+          "discrete_time": null
+        }
+      ]
+    },
+    {
+      "id": "cover_transition_t6596_2",
+      "description": "Covers transition 't6596_2' (s6596_0 --e6596_1--> s6596_2).",
+      "steps": [
+        {
+          "event": "e6596_1",
+          "expected_state": "s6596_2",
+          "guard": "x_6596_1 > 0 and y_6596_1 < 10",
+          "accepting_states": [],
+          "probability_threshold": null,
+          "refusal_expected": false,
+          "quiescence_expected": false,
+          "discrete_time": null
+        }
+      ]
+    },
+    {
+      "id": "cover_transition_t6596_3",
+      "description": "Covers transition 't6596_3' (s6596_1 --e6596_0--> s6596_2).",
+      "steps": [
+        {
+          "event": "e6596_1",
+          "expected_state": "s6596_1",
+          "guard": "x_6596_0 > 0 and y_6596_0 < 10",
+          "accepting_states": [],
+          "probability_threshold": null,
+          "refusal_expected": false,
+          "quiescence_expected": false,
+          "discrete_time": null
+        },
+        {
+          "event": "e6596_0",
+          "expected_state": "s6596_2",
+          "guard": "x_6596_2 > 0 and y_6596_2 < 10",
+          "accepting_states": [],
+          "probability_threshold": null,
+          "refusal_expected": false,
+          "quiescence_expected": false,
+          "discrete_time": null
+        }
+      ]
+    },
+    {
+      "id": "cover_transition_t6596_4",
+      "description": "Covers transition 't6596_4' (s6596_2 --e6596_0--> s6596_2).",
+      "steps": [
+        {
+          "event": "e6596_1",
+          "expected_state": "s6596_2",
+          "guard": "x_6596_1 > 0 and y_6596_1 < 10",
+          "accepting_states": [],
+          "probability_threshold": null,
+          "refusal_expected": false,
+          "quiescence_expected": false,
+          "discrete_time": null
+        },
+        {
+          "event": "e6596_0",
+          "expected_state": "s6596_2",
+          "guard": "x_6596_3 > 0 and y_6596_3 < 10",
+          "accepting_states": [],
+          "probability_threshold": null,
+          "refusal_expected": false,
+          "quiescence_expected": false,
+          "discrete_time": null
+        }
+      ]
+    }
+  ],
+  "semantics_mode": null,
+  "probability_threshold": null
+}

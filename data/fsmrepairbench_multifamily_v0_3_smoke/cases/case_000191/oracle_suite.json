@@ -1,0 +1,170 @@
+{
+  "id": "synthetic_4000_3_2_oracles",
+  "fsm_id": "synthetic_4000_3_2",
+  "scenarios": [
+    {
+      "id": "cover_transition_t4000_1",
+      "description": "Covers transition 't4000_1' (s4000_0 --e4000_1--> s4000_1).",
+      "steps": [
+        {
+          "event": "e4000_1",
+          "expected_state": "s4000_1",
+          "guard": "x_4000_0 > 0",
+          "accepting_states": [],
+          "probability_threshold": null,
+          "refusal_expected": false,
+          "quiescence_expected": false,
+          "discrete_time": null
+        }
+      ]
+    },
+    {
+      "id": "cover_transition_t4000_2",
+      "description": "Covers transition 't4000_2' (s4000_1 --e4000_0--> s4000_2).",
+      "steps": [
+        {
+          "event": "e4000_1",
+          "expected_state": "s4000_1",
+          "guard": "x_4000_0 > 0",
+          "accepting_states": [],
+          "probability_threshold": null,
+          "refusal_expected": false,
+          "quiescence_expected": false,
+          "discrete_time": null
+        },
+        {
+          "event": "e4000_0",
+          "expected_state": "s4000_2",
+          "guard": "x_4000_1 > 0",
+          "accepting_states": [],
+          "probability_threshold": null,
+          "refusal_expected": false,
+          "quiescence_expected": false,
+          "discrete_time": null
+        }
+      ]
+    },
+    {
+      "id": "cover_transition_t4000_3",
+      "description": "Covers transition 't4000_3' (s4000_0 --e4000_1--> s4000_2).",
+      "steps": [
+        {
+          "event": "e4000_1",
+          "expected_state": "s4000_2",
+          "guard": "x_4000_2 > 0",
+          "accepting_states": [],
+          "probability_threshold": null,
+          "refusal_expected": false,
+          "quiescence_expected": false,
+          "discrete_time": null
+        }
+      ]
+    },
+    {
+      "id": "cover_transition_t4000_4",
+      "description": "Covers transition 't4000_4' (s4000_1 --e4000_0--> s4000_2).",
+      "steps": [
+        {
+          "event": "e4000_1",
+          "expected_state": "s4000_1",
+          "guard": "x_4000_0 > 0",
+          "accepting_states": [],
+          "probability_threshold": null,
+          "refusal_expected": false,
+          "quiescence_expected": false,
+          "discrete_time": null
+        },
+        {
+          "event": "e4000_0",
+          "expected_state": "s4000_2",
+          "guard": "x_4000_3 > 0",
+          "accepting_states": [],
+          "probability_threshold": null,
+          "refusal_expected": false,
+          "quiescence_expected": false,
+          "discrete_time": null
+        }
+      ]
+    },
+    {
+      "id": "cover_transition_t4000_5",
+      "description": "Covers transition 't4000_5' (s4000_1 --e4000_1--> s4000_1).",
+      "steps": [
+        {
+          "event": "e4000_1",
+          "expected_state": "s4000_1",
+          "guard": "x_4000_0 > 0",
+          "accepting_states": [],
+          "probability_threshold": null,
+          "refusal_expected": false,
+          "quiescence_expected": false,
+          "discrete_time": null
+        },
+        {
+          "event": "e4000_1",
+          "expected_state": "s4000_1",
+          "guard": "x_4000_4 > 0",
+          "accepting_states": [],
+          "probability_threshold": null,
+          "refusal_expected": false,
+          "quiescence_expected": false,
+          "discrete_time": null
+        }
+      ]
+    },
+    {
+      "id": "cover_transition_t4000_6",
+      "description": "Covers transition 't4000_6' (s4000_2 --e4000_0--> s4000_2).",
+      "steps": [
+        {
+          "event": "e4000_1",
+          "expected_state": "s4000_2",
+          "guard": "x_4000_2 > 0",
+          "accepting_states": [],
+          "probability_threshold": null,
+          "refusal_expected": false,
+          "quiescence_expected": false,
+          "discrete_time": null
+        },
+        {
+          "event": "e4000_0",
+          "expected_state": "s4000_2",
+          "guard": "x_4000_5 > 0",
+          "accepting_states": [],
+          "probability_threshold": null,
+          "refusal_expected": false,
+          "quiescence_expected": false,
+          "discrete_time": null
+        }
+      ]
+    },
+    {
+      "id": "cover_transition_t4000_7",
+      "description": "Covers transition 't4000_7' (s4000_2 --e4000_1--> s4000_2).",
+      "steps": [
+        {
+          "event": "e4000_1",
+          "expected_state": "s4000_2",
+          "guard": "x_4000_2 > 0",
+          "accepting_states": [],
+          "probability_threshold": null,
+          "refusal_expected": false,
+          "quiescence_expected": false,
+          "discrete_time": null
+        },
+        {
+          "event": "e4000_1",
+          "expected_state": "s4000_2",
+          "guard": "x_4000_6 > 0",
+          "accepting_states": [],
+          "probability_threshold": null,
+          "refusal_expected": false,
+          "quiescence_expected": false,
+          "discrete_time": null
+        }
+      ]
+    }
+  ],
+  "semantics_mode": null,
+  "probability_threshold": null
+}

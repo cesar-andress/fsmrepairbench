@@ -1,0 +1,55 @@
+{
+  "id": "synthetic_4271_3_2__faulty__wrong_initial_state__201046",
+  "name": "Synthetic FSM (custom) (faulty: wrong_initial_state)",
+  "description": "Synthetic FSM generated with seed=4271, states=3, events=2, branching_factor=1, deterministic=True, allow_dead_states=True",
+  "states": [
+    {
+      "id": "s4271_0",
+      "state_output": "out_4271_0",
+      "refusal": false,
+      "quiescence": false
+    },
+    {
+      "id": "s4271_1",
+      "state_output": "out_4271_1",
+      "refusal": false,
+      "quiescence": false
+    },
+    {
+      "id": "s4271_2",
+      "state_output": "out_4271_2",
+      "refusal": false,
+      "quiescence": false
+    }
+  ],
+  "initial_state": "s4271_1",
+  "events": [
+    "e4271_0",
+    "e4271_1"
+  ],
+  "transitions": [
+    {
+      "id": "t4271_1",
+      "source": "s4271_0",
+      "event": "e4271_0",
+      "target": "s4271_0",
+      "guard": null,
+      "action": "act4271_1",
+      "output": null,
+      "timeout": null,
+      "delay": null,
+      "requirements": [],
+      "probability": null,
+      "is_nondeterministic": false,
+      "refusal": false,
+      "quiescence": false,
+      "discrete_time": null
+    }
+  ],
+  "variables": {},
+  "parent_fsm_id": "synthetic_4271_3_2",
+  "reference_fsm_id": "synthetic_4271_3_2",
+  "discrete_time_step": null,
+  "semantics_mode": null,
+  "cyclic_metadata": null
+}

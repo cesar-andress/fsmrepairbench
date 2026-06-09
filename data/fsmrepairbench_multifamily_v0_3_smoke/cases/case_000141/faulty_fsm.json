@@ -1,0 +1,89 @@
+{
+  "id": "synthetic_2948_3_2__faulty__guard_flip__141046",
+  "name": "Synthetic FSM (custom) (faulty: guard_flip)",
+  "description": "Synthetic FSM generated with seed=2948, states=3, events=2, branching_factor=2, deterministic=True, allow_dead_states=True",
+  "states": [
+    {
+      "id": "s2948_0",
+      "state_output": null,
+      "refusal": false,
+      "quiescence": false
+    },
+    {
+      "id": "s2948_1",
+      "state_output": null,
+      "refusal": false,
+      "quiescence": false
+    },
+    {
+      "id": "s2948_2",
+      "state_output": null,
+      "refusal": false,
+      "quiescence": false
+    }
+  ],
+  "initial_state": "s2948_0",
+  "events": [
+    "e2948_0",
+    "e2948_1"
+  ],
+  "transitions": [
+    {
+      "id": "t2948_1",
+      "source": "s2948_0",
+      "event": "e2948_1",
+      "target": "s2948_1",
+      "guard": "x_2948_0 > 0",
+      "action": "act2948_1",
+      "output": "out_2948_0",
+      "timeout": null,
+      "delay": null,
+      "requirements": [],
+      "probability": null,
+      "is_nondeterministic": false,
+      "refusal": false,
+      "quiescence": false,
+      "discrete_time": null
+    },
+    {
+      "id": "t2948_2",
+      "source": "s2948_0",
+      "event": "e2948_1",
+      "target": "s2948_1",
+      "guard": "x_2948_1 > 0",
+      "action": "act2948_2",
+      "output": "out_2948_1",
+      "timeout": null,
+      "delay": null,
+      "requirements": [],
+      "probability": null,
+      "is_nondeterministic": false,
+      "refusal": false,
+      "quiescence": false,
+      "discrete_time": null
+    },
+    {
+      "id": "t2948_4",
+      "source": "s2948_1",
+      "event": "e2948_0",
+      "target": "s2948_2",
+      "guard": "not_x_2948_3 > 0",
+      "action": "act2948_4",
+      "output": "out_2948_3",
+      "timeout": null,
+      "delay": null,
+      "requirements": [],
+      "probability": null,
+      "is_nondeterministic": false,
+      "refusal": false,
+      "quiescence": false,
+      "discrete_time": null
+    }
+  ],
+  "variables": {},
+  "parent_fsm_id": "synthetic_2948_3_2",
+  "reference_fsm_id": "synthetic_2948_3_2",
+  "discrete_time_step": null,
+  "semantics_mode": null,
+  "cyclic_metadata": null
+}

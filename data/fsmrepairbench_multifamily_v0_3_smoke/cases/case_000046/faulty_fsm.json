@@ -1,0 +1,72 @@
+{
+  "id": "synthetic_929_3_2__faulty__nondeterminism_intro__46046",
+  "name": "Synthetic FSM (custom) (faulty: nondeterminism_intro)",
+  "description": "Synthetic FSM generated with seed=929, states=3, events=2, branching_factor=1, deterministic=False, allow_dead_states=True",
+  "states": [
+    {
+      "id": "s929_0",
+      "state_output": null,
+      "refusal": false,
+      "quiescence": false
+    },
+    {
+      "id": "s929_1",
+      "state_output": null,
+      "refusal": false,
+      "quiescence": false
+    },
+    {
+      "id": "s929_2",
+      "state_output": null,
+      "refusal": false,
+      "quiescence": false
+    }
+  ],
+  "initial_state": "s929_0",
+  "events": [
+    "e929_0",
+    "e929_1"
+  ],
+  "transitions": [
+    {
+      "id": "t929_1",
+      "source": "s929_0",
+      "event": "e929_1",
+      "target": "s929_0",
+      "guard": null,
+      "action": "act929_1",
+      "output": null,
+      "timeout": null,
+      "delay": null,
+      "requirements": [],
+      "probability": null,
+      "is_nondeterministic": false,
+      "refusal": false,
+      "quiescence": false,
+      "discrete_time": null
+    },
+    {
+      "id": "t929_1__nd__46046",
+      "source": "s929_0",
+      "event": "e929_1",
+      "target": "s929_1",
+      "guard": null,
+      "action": "act929_1",
+      "output": null,
+      "timeout": null,
+      "delay": null,
+      "requirements": [],
+      "probability": null,
+      "is_nondeterministic": false,
+      "refusal": false,
+      "quiescence": false,
+      "discrete_time": null
+    }
+  ],
+  "variables": {},
+  "parent_fsm_id": "synthetic_929_3_2",
+  "reference_fsm_id": "synthetic_929_3_2",
+  "discrete_time_step": null,
+  "semantics_mode": null,
+  "cyclic_metadata": null
+}

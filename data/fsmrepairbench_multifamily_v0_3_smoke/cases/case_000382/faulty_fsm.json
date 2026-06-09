@@ -1,0 +1,126 @@
+{
+  "id": "synthetic_8055_3_2__faulty__missing_transition__382046",
+  "name": "Synthetic FSM (custom) (faulty: missing_transition)",
+  "description": "Synthetic FSM generated with seed=8055, states=3, events=2, branching_factor=2, deterministic=True, allow_dead_states=False",
+  "states": [
+    {
+      "id": "s8055_0",
+      "state_output": null,
+      "refusal": false,
+      "quiescence": false
+    },
+    {
+      "id": "s8055_1",
+      "state_output": null,
+      "refusal": false,
+      "quiescence": false
+    },
+    {
+      "id": "s8055_2",
+      "state_output": null,
+      "refusal": false,
+      "quiescence": false
+    }
+  ],
+  "initial_state": "s8055_0",
+  "events": [
+    "e8055_0",
+    "e8055_1"
+  ],
+  "transitions": [
+    {
+      "id": "t8055_1",
+      "source": "s8055_0",
+      "event": "e8055_0",
+      "target": "s8055_1",
+      "guard": "x_8055_0 > 0 and y_8055_0 < 10",
+      "action": "act8055_1",
+      "output": null,
+      "timeout": null,
+      "delay": null,
+      "requirements": [],
+      "probability": null,
+      "is_nondeterministic": false,
+      "refusal": false,
+      "quiescence": false,
+      "discrete_time": null
+    },
+    {
+      "id": "t8055_2",
+      "source": "s8055_1",
+      "event": "e8055_0",
+      "target": "s8055_2",
+      "guard": "x_8055_1 > 0 and y_8055_1 < 10",
+      "action": "act8055_2",
+      "output": null,
+      "timeout": null,
+      "delay": null,
+      "requirements": [],
+      "probability": null,
+      "is_nondeterministic": false,
+      "refusal": false,
+      "quiescence": false,
+      "discrete_time": null
+    },
+    {
+      "id": "t8055_4",
+      "source": "s8055_1",
+      "event": "e8055_0",
+      "target": "s8055_2",
+      "guard": "x_8055_3 > 0 and y_8055_3 < 10",
+      "action": "act8055_4",
+      "output": null,
+      "timeout": null,
+      "delay": null,
+      "requirements": [],
+      "probability": null,
+      "is_nondeterministic": false,
+      "refusal": false,
+      "quiescence": false,
+      "discrete_time": null
+    },
+    {
+      "id": "t8055_5",
+      "source": "s8055_2",
+      "event": "e8055_1",
+      "target": "s8055_2",
+      "guard": "x_8055_4 > 0 and y_8055_4 < 10",
+      "action": "act8055_5",
+      "output": null,
+      "timeout": null,
+      "delay": null,
+      "requirements": [],
+      "probability": null,
+      "is_nondeterministic": false,
+      "refusal": false,
+      "quiescence": false,
+      "discrete_time": null
+    },
+    {
+      "id": "t8055_6",
+      "source": "s8055_2",
+      "event": "e8055_0",
+      "target": "s8055_2",
+      "guard": "x_8055_5 > 0 and y_8055_5 < 10",
+      "action": "act8055_6",
+      "output": null,
+      "timeout": null,
+      "delay": null,
+      "requirements": [],
+      "probability": null,
+      "is_nondeterministic": false,
+      "refusal": false,
+      "quiescence": false,
+      "discrete_time": null
+    }
+  ],
+  "variables": {
+    "x": "int",
+    "y": "int"
+  },
+  "parent_fsm_id": "synthetic_8055_3_2",
+  "reference_fsm_id": "synthetic_8055_3_2",
+  "discrete_time_step": null,
+  "semantics_mode": null,
+  "cyclic_metadata": null
+}

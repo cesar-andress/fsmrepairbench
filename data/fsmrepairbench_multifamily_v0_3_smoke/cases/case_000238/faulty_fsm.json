@@ -1,0 +1,95 @@
+{
+  "id": "synthetic_5001_3_2__faulty__dead_state_intro__238046",
+  "name": "Synthetic FSM (custom) (faulty: dead_state_intro)",
+  "description": "Synthetic FSM generated with seed=5001, states=3, events=2, branching_factor=1, deterministic=True, allow_dead_states=True",
+  "states": [
+    {
+      "id": "s5001_0",
+      "state_output": "out_5001_0",
+      "refusal": false,
+      "quiescence": false
+    },
+    {
+      "id": "s5001_1",
+      "state_output": "out_5001_1",
+      "refusal": false,
+      "quiescence": false
+    },
+    {
+      "id": "s5001_2",
+      "state_output": "out_5001_2",
+      "refusal": false,
+      "quiescence": false
+    },
+    {
+      "id": "dead_238046",
+      "state_output": null,
+      "refusal": false,
+      "quiescence": false
+    }
+  ],
+  "initial_state": "s5001_0",
+  "events": [
+    "e5001_0",
+    "e5001_1"
+  ],
+  "transitions": [
+    {
+      "id": "t5001_1",
+      "source": "s5001_0",
+      "event": "e5001_1",
+      "target": "s5001_1",
+      "guard": null,
+      "action": "act5001_1",
+      "output": null,
+      "timeout": null,
+      "delay": null,
+      "requirements": [],
+      "probability": null,
+      "is_nondeterministic": false,
+      "refusal": false,
+      "quiescence": false,
+      "discrete_time": null
+    },
+    {
+      "id": "t5001_2",
+      "source": "s5001_0",
+      "event": "e5001_0",
+      "target": "s5001_2",
+      "guard": null,
+      "action": "act5001_2",
+      "output": null,
+      "timeout": null,
+      "delay": null,
+      "requirements": [],
+      "probability": null,
+      "is_nondeterministic": false,
+      "refusal": false,
+      "quiescence": false,
+      "discrete_time": null
+    },
+    {
+      "id": "t5001_4",
+      "source": "s5001_2",
+      "event": "e5001_1",
+      "target": "s5001_2",
+      "guard": null,
+      "action": "act5001_4",
+      "output": null,
+      "timeout": null,
+      "delay": null,
+      "requirements": [],
+      "probability": null,
+      "is_nondeterministic": false,
+      "refusal": false,
+      "quiescence": false,
+      "discrete_time": null
+    }
+  ],
+  "variables": {},
+  "parent_fsm_id": "synthetic_5001_3_2",
+  "reference_fsm_id": "synthetic_5001_3_2",
+  "discrete_time_step": null,
+  "semantics_mode": null,
+  "cyclic_metadata": null
+}

@@ -1,0 +1,72 @@
+{
+  "id": "synthetic_5069_3_2",
+  "name": "Synthetic FSM (custom)",
+  "description": "Synthetic FSM generated with seed=5069, states=3, events=2, branching_factor=1, deterministic=True, allow_dead_states=True",
+  "states": [
+    {
+      "id": "s5069_0",
+      "state_output": "out_5069_0",
+      "refusal": false,
+      "quiescence": false
+    },
+    {
+      "id": "s5069_1",
+      "state_output": "out_5069_1",
+      "refusal": false,
+      "quiescence": false
+    },
+    {
+      "id": "s5069_2",
+      "state_output": "out_5069_2",
+      "refusal": false,
+      "quiescence": false
+    }
+  ],
+  "initial_state": "s5069_0",
+  "events": [
+    "e5069_0",
+    "e5069_1"
+  ],
+  "transitions": [
+    {
+      "id": "t5069_1",
+      "source": "s5069_0",
+      "event": "e5069_1",
+      "target": "s5069_1",
+      "guard": null,
+      "action": "act5069_1",
+      "output": null,
+      "timeout": null,
+      "delay": null,
+      "requirements": [],
+      "probability": null,
+      "is_nondeterministic": false,
+      "refusal": false,
+      "quiescence": false,
+      "discrete_time": null
+    },
+    {
+      "id": "t5069_2",
+      "source": "s5069_1",
+      "event": "e5069_0",
+      "target": "s5069_2",
+      "guard": null,
+      "action": "act5069_2",
+      "output": null,
+      "timeout": null,
+      "delay": null,
+      "requirements": [],
+      "probability": null,
+      "is_nondeterministic": false,
+      "refusal": false,
+      "quiescence": false,
+      "discrete_time": null
+    }
+  ],
+  "variables": {},
+  "parent_fsm_id": null,
+  "reference_fsm_id": null,
+  "discrete_time_step": null,
+  "semantics_mode": null,
+  "cyclic_metadata": null
+}

@@ -1,0 +1,92 @@
+{
+  "id": "synthetic_6647_3_2_oracles",
+  "fsm_id": "synthetic_6647_3_2",
+  "scenarios": [
+    {
+      "id": "cover_transition_t6647_1",
+      "description": "Covers transition 't6647_1' (s6647_0 --e6647_0--> s6647_1).",
+      "steps": [
+        {
+          "event": "e6647_0",
+          "expected_state": "s6647_1",
+          "guard": "x_6647_0 > 0 and y_6647_0 < 10",
+          "accepting_states": [],
+          "probability_threshold": null,
+          "refusal_expected": false,
+          "quiescence_expected": false,
+          "discrete_time": null
+        }
+      ]
+    },
+    {
+      "id": "cover_transition_t6647_2",
+      "description": "Covers transition 't6647_2' (s6647_0 --e6647_0--> s6647_2).",
+      "steps": [
+        {
+          "event": "e6647_0",
+          "expected_state": "s6647_2",
+          "guard": "x_6647_1 > 0 and y_6647_1 < 10",
+          "accepting_states": [],
+          "probability_threshold": null,
+          "refusal_expected": false,
+          "quiescence_expected": false,
+          "discrete_time": null
+        }
+      ]
+    },
+    {
+      "id": "cover_transition_t6647_3",
+      "description": "Covers transition 't6647_3' (s6647_1 --e6647_0--> s6647_1).",
+      "steps": [
+        {
+          "event": "e6647_0",
+          "expected_state": "s6647_1",
+          "guard": "x_6647_0 > 0 and y_6647_0 < 10",
+          "accepting_states": [],
+          "probability_threshold": null,
+          "refusal_expected": false,
+          "quiescence_expected": false,
+          "discrete_time": null
+        },
+        {
+          "event": "e6647_0",
+          "expected_state": "s6647_1",
+          "guard": "x_6647_2 > 0 and y_6647_2 < 10",
+          "accepting_states": [],
+          "probability_threshold": null,
+          "refusal_expected": false,
+          "quiescence_expected": false,
+          "discrete_time": null
+        }
+      ]
+    },
+    {
+      "id": "cover_transition_t6647_4",
+      "description": "Covers transition 't6647_4' (s6647_2 --e6647_1--> s6647_2).",
+      "steps": [
+        {
+          "event": "e6647_0",
+          "expected_state": "s6647_2",
+          "guard": "x_6647_1 > 0 and y_6647_1 < 10",
+          "accepting_states": [],
+          "probability_threshold": null,
+          "refusal_expected": false,
+          "quiescence_expected": false,
+          "discrete_time": null
+        },
+        {
+          "event": "e6647_1",
+          "expected_state": "s6647_2",
+          "guard": "x_6647_3 > 0 and y_6647_3 < 10",
+          "accepting_states": [],
+          "probability_threshold": null,
+          "refusal_expected": false,
+          "quiescence_expected": false,
+          "discrete_time": null
+        }
+      ]
+    }
+  ],
+  "semantics_mode": null,
+  "probability_threshold": null
+}

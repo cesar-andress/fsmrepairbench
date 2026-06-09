@@ -1,0 +1,92 @@
+{
+  "id": "synthetic_6766_3_2_oracles",
+  "fsm_id": "synthetic_6766_3_2",
+  "scenarios": [
+    {
+      "id": "cover_transition_t6766_1",
+      "description": "Covers transition 't6766_1' (s6766_0 --e6766_0--> s6766_1).",
+      "steps": [
+        {
+          "event": "e6766_0",
+          "expected_state": "s6766_1",
+          "guard": "x_6766_0 > 0 and y_6766_0 < 10",
+          "accepting_states": [],
+          "probability_threshold": null,
+          "refusal_expected": false,
+          "quiescence_expected": false,
+          "discrete_time": null
+        }
+      ]
+    },
+    {
+      "id": "cover_transition_t6766_2",
+      "description": "Covers transition 't6766_2' (s6766_0 --e6766_0--> s6766_2).",
+      "steps": [
+        {
+          "event": "e6766_0",
+          "expected_state": "s6766_2",
+          "guard": "x_6766_1 > 0 and y_6766_1 < 10",
+          "accepting_states": [],
+          "probability_threshold": null,
+          "refusal_expected": false,
+          "quiescence_expected": false,
+          "discrete_time": null
+        }
+      ]
+    },
+    {
+      "id": "cover_transition_t6766_3",
+      "description": "Covers transition 't6766_3' (s6766_1 --e6766_0--> s6766_1).",
+      "steps": [
+        {
+          "event": "e6766_0",
+          "expected_state": "s6766_1",
+          "guard": "x_6766_0 > 0 and y_6766_0 < 10",
+          "accepting_states": [],
+          "probability_threshold": null,
+          "refusal_expected": false,
+          "quiescence_expected": false,
+          "discrete_time": null
+        },
+        {
+          "event": "e6766_0",
+          "expected_state": "s6766_1",
+          "guard": "x_6766_2 > 0 and y_6766_2 < 10",
+          "accepting_states": [],
+          "probability_threshold": null,
+          "refusal_expected": false,
+          "quiescence_expected": false,
+          "discrete_time": null
+        }
+      ]
+    },
+    {
+      "id": "cover_transition_t6766_4",
+      "description": "Covers transition 't6766_4' (s6766_2 --e6766_1--> s6766_2).",
+      "steps": [
+        {
+          "event": "e6766_0",
+          "expected_state": "s6766_2",
+          "guard": "x_6766_1 > 0 and y_6766_1 < 10",
+          "accepting_states": [],
+          "probability_threshold": null,
+          "refusal_expected": false,
+          "quiescence_expected": false,
+          "discrete_time": null
+        },
+        {
+          "event": "e6766_1",
+          "expected_state": "s6766_2",
+          "guard": "x_6766_3 > 0 and y_6766_3 < 10",
+          "accepting_states": [],
+          "probability_threshold": null,
+          "refusal_expected": false,
+          "quiescence_expected": false,
+          "discrete_time": null
+        }
+      ]
+    }
+  ],
+  "semantics_mode": null,
+  "probability_threshold": null
+}

@@ -1,0 +1,72 @@
+{
+  "id": "synthetic_4848_3_2",
+  "name": "Synthetic FSM (custom)",
+  "description": "Synthetic FSM generated with seed=4848, states=3, events=2, branching_factor=1, deterministic=True, allow_dead_states=True",
+  "states": [
+    {
+      "id": "s4848_0",
+      "state_output": "out_4848_0",
+      "refusal": false,
+      "quiescence": false
+    },
+    {
+      "id": "s4848_1",
+      "state_output": "out_4848_1",
+      "refusal": false,
+      "quiescence": false
+    },
+    {
+      "id": "s4848_2",
+      "state_output": "out_4848_2",
+      "refusal": false,
+      "quiescence": false
+    }
+  ],
+  "initial_state": "s4848_0",
+  "events": [
+    "e4848_0",
+    "e4848_1"
+  ],
+  "transitions": [
+    {
+      "id": "t4848_1",
+      "source": "s4848_0",
+      "event": "e4848_1",
+      "target": "s4848_1",
+      "guard": null,
+      "action": "act4848_1",
+      "output": null,
+      "timeout": null,
+      "delay": null,
+      "requirements": [],
+      "probability": null,
+      "is_nondeterministic": false,
+      "refusal": false,
+      "quiescence": false,
+      "discrete_time": null
+    },
+    {
+      "id": "t4848_2",
+      "source": "s4848_1",
+      "event": "e4848_1",
+      "target": "s4848_2",
+      "guard": null,
+      "action": "act4848_2",
+      "output": null,
+      "timeout": null,
+      "delay": null,
+      "requirements": [],
+      "probability": null,
+      "is_nondeterministic": false,
+      "refusal": false,
+      "quiescence": false,
+      "discrete_time": null
+    }
+  ],
+  "variables": {},
+  "parent_fsm_id": null,
+  "reference_fsm_id": null,
+  "discrete_time_step": null,
+  "semantics_mode": null,
+  "cyclic_metadata": null
+}

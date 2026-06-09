@@ -1,0 +1,170 @@
+{
+  "id": "synthetic_3779_3_2_oracles",
+  "fsm_id": "synthetic_3779_3_2",
+  "scenarios": [
+    {
+      "id": "cover_transition_t3779_1",
+      "description": "Covers transition 't3779_1' (s3779_0 --e3779_1--> s3779_1).",
+      "steps": [
+        {
+          "event": "e3779_1",
+          "expected_state": "s3779_1",
+          "guard": "x_3779_0 > 0",
+          "accepting_states": [],
+          "probability_threshold": null,
+          "refusal_expected": false,
+          "quiescence_expected": false,
+          "discrete_time": null
+        }
+      ]
+    },
+    {
+      "id": "cover_transition_t3779_2",
+      "description": "Covers transition 't3779_2' (s3779_1 --e3779_1--> s3779_2).",
+      "steps": [
+        {
+          "event": "e3779_1",
+          "expected_state": "s3779_1",
+          "guard": "x_3779_0 > 0",
+          "accepting_states": [],
+          "probability_threshold": null,
+          "refusal_expected": false,
+          "quiescence_expected": false,
+          "discrete_time": null
+        },
+        {
+          "event": "e3779_1",
+          "expected_state": "s3779_2",
+          "guard": "x_3779_1 > 0",
+          "accepting_states": [],
+          "probability_threshold": null,
+          "refusal_expected": false,
+          "quiescence_expected": false,
+          "discrete_time": null
+        }
+      ]
+    },
+    {
+      "id": "cover_transition_t3779_3",
+      "description": "Covers transition 't3779_3' (s3779_0 --e3779_0--> s3779_2).",
+      "steps": [
+        {
+          "event": "e3779_0",
+          "expected_state": "s3779_2",
+          "guard": "x_3779_2 > 0",
+          "accepting_states": [],
+          "probability_threshold": null,
+          "refusal_expected": false,
+          "quiescence_expected": false,
+          "discrete_time": null
+        }
+      ]
+    },
+    {
+      "id": "cover_transition_t3779_4",
+      "description": "Covers transition 't3779_4' (s3779_1 --e3779_1--> s3779_1).",
+      "steps": [
+        {
+          "event": "e3779_1",
+          "expected_state": "s3779_1",
+          "guard": "x_3779_0 > 0",
+          "accepting_states": [],
+          "probability_threshold": null,
+          "refusal_expected": false,
+          "quiescence_expected": false,
+          "discrete_time": null
+        },
+        {
+          "event": "e3779_1",
+          "expected_state": "s3779_1",
+          "guard": "x_3779_3 > 0",
+          "accepting_states": [],
+          "probability_threshold": null,
+          "refusal_expected": false,
+          "quiescence_expected": false,
+          "discrete_time": null
+        }
+      ]
+    },
+    {
+      "id": "cover_transition_t3779_5",
+      "description": "Covers transition 't3779_5' (s3779_1 --e3779_0--> s3779_2).",
+      "steps": [
+        {
+          "event": "e3779_1",
+          "expected_state": "s3779_1",
+          "guard": "x_3779_0 > 0",
+          "accepting_states": [],
+          "probability_threshold": null,
+          "refusal_expected": false,
+          "quiescence_expected": false,
+          "discrete_time": null
+        },
+        {
+          "event": "e3779_0",
+          "expected_state": "s3779_2",
+          "guard": "x_3779_4 > 0",
+          "accepting_states": [],
+          "probability_threshold": null,
+          "refusal_expected": false,
+          "quiescence_expected": false,
+          "discrete_time": null
+        }
+      ]
+    },
+    {
+      "id": "cover_transition_t3779_6",
+      "description": "Covers transition 't3779_6' (s3779_2 --e3779_1--> s3779_2).",
+      "steps": [
+        {
+          "event": "e3779_0",
+          "expected_state": "s3779_2",
+          "guard": "x_3779_2 > 0",
+          "accepting_states": [],
+          "probability_threshold": null,
+          "refusal_expected": false,
+          "quiescence_expected": false,
+          "discrete_time": null
+        },
+        {
+          "event": "e3779_1",
+          "expected_state": "s3779_2",
+          "guard": "x_3779_5 > 0",
+          "accepting_states": [],
+          "probability_threshold": null,
+          "refusal_expected": false,
+          "quiescence_expected": false,
+          "discrete_time": null
+        }
+      ]
+    },
+    {
+      "id": "cover_transition_t3779_7",
+      "description": "Covers transition 't3779_7' (s3779_2 --e3779_0--> s3779_2).",
+      "steps": [
+        {
+          "event": "e3779_0",
+          "expected_state": "s3779_2",
+          "guard": "x_3779_2 > 0",
+          "accepting_states": [],
+          "probability_threshold": null,
+          "refusal_expected": false,
+          "quiescence_expected": false,
+          "discrete_time": null
+        },
+        {
+          "event": "e3779_0",
+          "expected_state": "s3779_2",
+          "guard": "x_3779_6 > 0",
+          "accepting_states": [],
+          "probability_threshold": null,
+          "refusal_expected": false,
+          "quiescence_expected": false,
+          "discrete_time": null
+        }
+      ]
+    }
+  ],
+  "semantics_mode": null,
+  "probability_threshold": null
+}

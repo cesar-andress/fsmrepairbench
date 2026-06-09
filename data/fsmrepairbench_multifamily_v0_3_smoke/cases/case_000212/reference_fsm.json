@@ -1,0 +1,55 @@
+{
+  "id": "synthetic_4458_3_2",
+  "name": "Synthetic FSM (custom)",
+  "description": "Synthetic FSM generated with seed=4458, states=3, events=2, branching_factor=1, deterministic=True, allow_dead_states=True",
+  "states": [
+    {
+      "id": "s4458_0",
+      "state_output": "out_4458_0",
+      "refusal": false,
+      "quiescence": false
+    },
+    {
+      "id": "s4458_1",
+      "state_output": "out_4458_1",
+      "refusal": false,
+      "quiescence": false
+    },
+    {
+      "id": "s4458_2",
+      "state_output": "out_4458_2",
+      "refusal": false,
+      "quiescence": false
+    }
+  ],
+  "initial_state": "s4458_0",
+  "events": [
+    "e4458_0",
+    "e4458_1"
+  ],
+  "transitions": [
+    {
+      "id": "t4458_1",
+      "source": "s4458_0",
+      "event": "e4458_1",
+      "target": "s4458_0",
+      "guard": null,
+      "action": "act4458_1",
+      "output": null,
+      "timeout": null,
+      "delay": null,
+      "requirements": [],
+      "probability": null,
+      "is_nondeterministic": false,
+      "refusal": false,
+      "quiescence": false,
+      "discrete_time": null
+    }
+  ],
+  "variables": {},
+  "parent_fsm_id": null,
+  "reference_fsm_id": null,
+  "discrete_time_step": null,
+  "semantics_mode": null,
+  "cyclic_metadata": null
+}

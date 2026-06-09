@@ -1,0 +1,170 @@
+{
+  "id": "synthetic_4051_3_2_oracles",
+  "fsm_id": "synthetic_4051_3_2",
+  "scenarios": [
+    {
+      "id": "cover_transition_t4051_1",
+      "description": "Covers transition 't4051_1' (s4051_0 --e4051_1--> s4051_1).",
+      "steps": [
+        {
+          "event": "e4051_1",
+          "expected_state": "s4051_1",
+          "guard": "x_4051_0 > 0",
+          "accepting_states": [],
+          "probability_threshold": null,
+          "refusal_expected": false,
+          "quiescence_expected": false,
+          "discrete_time": null
+        }
+      ]
+    },
+    {
+      "id": "cover_transition_t4051_2",
+      "description": "Covers transition 't4051_2' (s4051_0 --e4051_0--> s4051_2).",
+      "steps": [
+        {
+          "event": "e4051_0",
+          "expected_state": "s4051_2",
+          "guard": "x_4051_1 > 0",
+          "accepting_states": [],
+          "probability_threshold": null,
+          "refusal_expected": false,
+          "quiescence_expected": false,
+          "discrete_time": null
+        }
+      ]
+    },
+    {
+      "id": "cover_transition_t4051_3",
+      "description": "Covers transition 't4051_3' (s4051_1 --e4051_0--> s4051_1).",
+      "steps": [
+        {
+          "event": "e4051_1",
+          "expected_state": "s4051_1",
+          "guard": "x_4051_0 > 0",
+          "accepting_states": [],
+          "probability_threshold": null,
+          "refusal_expected": false,
+          "quiescence_expected": false,
+          "discrete_time": null
+        },
+        {
+          "event": "e4051_0",
+          "expected_state": "s4051_1",
+          "guard": "x_4051_2 > 0",
+          "accepting_states": [],
+          "probability_threshold": null,
+          "refusal_expected": false,
+          "quiescence_expected": false,
+          "discrete_time": null
+        }
+      ]
+    },
+    {
+      "id": "cover_transition_t4051_4",
+      "description": "Covers transition 't4051_4' (s4051_1 --e4051_0--> s4051_2).",
+      "steps": [
+        {
+          "event": "e4051_1",
+          "expected_state": "s4051_1",
+          "guard": "x_4051_0 > 0",
+          "accepting_states": [],
+          "probability_threshold": null,
+          "refusal_expected": false,
+          "quiescence_expected": false,
+          "discrete_time": null
+        },
+        {
+          "event": "e4051_0",
+          "expected_state": "s4051_2",
+          "guard": "x_4051_3 > 0",
+          "accepting_states": [],
+          "probability_threshold": null,
+          "refusal_expected": false,
+          "quiescence_expected": false,
+          "discrete_time": null
+        }
+      ]
+    },
+    {
+      "id": "cover_transition_t4051_5",
+      "description": "Covers transition 't4051_5' (s4051_1 --e4051_1--> s4051_2).",
+      "steps": [
+        {
+          "event": "e4051_1",
+          "expected_state": "s4051_1",
+          "guard": "x_4051_0 > 0",
+          "accepting_states": [],
+          "probability_threshold": null,
+          "refusal_expected": false,
+          "quiescence_expected": false,
+          "discrete_time": null
+        },
+        {
+          "event": "e4051_1",
+          "expected_state": "s4051_2",
+          "guard": "x_4051_4 > 0",
+          "accepting_states": [],
+          "probability_threshold": null,
+          "refusal_expected": false,
+          "quiescence_expected": false,
+          "discrete_time": null
+        }
+      ]
+    },
+    {
+      "id": "cover_transition_t4051_6",
+      "description": "Covers transition 't4051_6' (s4051_2 --e4051_1--> s4051_2).",
+      "steps": [
+        {
+          "event": "e4051_0",
+          "expected_state": "s4051_2",
+          "guard": "x_4051_1 > 0",
+          "accepting_states": [],
+          "probability_threshold": null,
+          "refusal_expected": false,
+          "quiescence_expected": false,
+          "discrete_time": null
+        },
+        {
+          "event": "e4051_1",
+          "expected_state": "s4051_2",
+          "guard": "x_4051_5 > 0",
+          "accepting_states": [],
+          "probability_threshold": null,
+          "refusal_expected": false,
+          "quiescence_expected": false,
+          "discrete_time": null
+        }
+      ]
+    },
+    {
+      "id": "cover_transition_t4051_7",
+      "description": "Covers transition 't4051_7' (s4051_2 --e4051_0--> s4051_2).",
+      "steps": [
+        {
+          "event": "e4051_0",
+          "expected_state": "s4051_2",
+          "guard": "x_4051_1 > 0",
+          "accepting_states": [],
+          "probability_threshold": null,
+          "refusal_expected": false,
+          "quiescence_expected": false,
+          "discrete_time": null
+        },
+        {
+          "event": "e4051_0",
+          "expected_state": "s4051_2",
+          "guard": "x_4051_6 > 0",
+          "accepting_states": [],
+          "probability_threshold": null,
+          "refusal_expected": false,
+          "quiescence_expected": false,
+          "discrete_time": null
+        }
+      ]
+    }
+  ],
+  "semantics_mode": null,
+  "probability_threshold": null
+}
