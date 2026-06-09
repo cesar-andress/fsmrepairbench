@@ -1,0 +1,50 @@
+{
+  "id": "synthetic_704_3_2_oracles",
+  "fsm_id": "synthetic_704_3_2",
+  "scenarios": [
+    {
+      "id": "cover_transition_t704_1",
+      "description": "Covers transition 't704_1' (s704_0 --e704_1--> s704_1).",
+      "steps": [
+        {
+          "event": "e704_1",
+          "expected_state": "s704_1",
+          "guard": null,
+          "accepting_states": [],
+          "probability_threshold": null,
+          "refusal_expected": false,
+          "quiescence_expected": false,
+          "discrete_time": null
+        }
+      ]
+    },
+    {
+      "id": "cover_transition_t704_2",
+      "description": "Covers transition 't704_2' (s704_1 --e704_1--> s704_2).",
+      "steps": [
+        {
+          "event": "e704_1",
+          "expected_state": "s704_1",
+          "guard": null,
+          "accepting_states": [],
+          "probability_threshold": null,
+          "refusal_expected": false,
+          "quiescence_expected": false,
+          "discrete_time": null
+        },
+        {
+          "event": "e704_1",
+          "expected_state": "s704_2",
+          "guard": null,
+          "accepting_states": [],
+          "probability_threshold": null,
+          "refusal_expected": false,
+          "quiescence_expected": false,
+          "discrete_time": null
+        }
+      ]
+    }
+  ],
+  "semantics_mode": null,
+  "probability_threshold": null
+}

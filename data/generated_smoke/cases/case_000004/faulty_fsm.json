@@ -1,0 +1,50 @@
+{
+  "id": "parking_gate_001__faulty__missing_transition__4042",
+  "name": "Parking Gate (faulty: missing_transition)",
+  "description": "Controls access to a parking lot based on ticket validation.",
+  "states": [
+    {
+      "id": "closed",
+      "state_output": null
+    },
+    {
+      "id": "open",
+      "state_output": null
+    }
+  ],
+  "initial_state": "closed",
+  "events": [
+    "car_arrives",
+    "ticket_valid",
+    "timeout"
+  ],
+  "transitions": [
+    {
+      "id": "t1",
+      "source": "closed",
+      "event": "car_arrives",
+      "target": "closed",
+      "guard": "ticket_invalid",
+      "action": "display_error",
+      "output": null,
+      "timeout": null,
+      "delay": null,
+      "requirements": [
+        "R1"
+      ]
+    },
+    {
+      "id": "t2",
+      "source": "closed",
+      "event": "car_arrives",
+      "target": "open",
+      "guard": "ticket_valid",
+      "action": "open_gate",
+      "output": null,
+      "timeout": null,
+      "delay": null,
+      "requirements": []
+    }
+  ],
+  "variables": {}
+}

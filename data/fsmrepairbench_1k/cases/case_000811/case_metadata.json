@@ -1,0 +1,35 @@
+{
+  "case_id": "case_000811",
+  "benchmark_version": "v1.0",
+  "reference_fsm_id": "synthetic_854_20_10",
+  "faulty_fsm_id": "synthetic_854_20_10__faulty__delay_corruption__811043",
+  "complexity": "large",
+  "state_count": 20,
+  "transition_count": 83,
+  "event_count": 10,
+  "mutation_operator": "delay_corruption",
+  "difficulty_score": 35.05,
+  "difficulty_category": "medium",
+  "difficulty": {
+    "difficulty_score": 35.05,
+    "category": "medium",
+    "metrics": {
+      "state_count": 20,
+      "transition_count": 83,
+      "branching_factor": 4.15,
+      "average_path_length": 1.6842,
+      "cycles": 6,
+      "strongly_connected_components": 1
+    }
+  },
+  "oracle_coverage": {
+    "state_coverage": 1.0,
+    "transition_coverage": 1.0,
+    "event_coverage": 1.0
+  },
+  "reference_bpr": 1.0,
+  "faulty_bpr": 1.0,
+  "bpr_delta": 0.0,
+  "valid_reference": true,
+  "valid_faulty": true
+}

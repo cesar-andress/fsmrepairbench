@@ -1,0 +1,52 @@
+{
+  "id": "parking_gate_001__faulty__hom__wrong_target__guard_flip__missing_transition__42",
+  "name": "Parking Gate (higher-order: wrong_target, guard_flip, missing_transition)",
+  "description": "Controls access to a parking lot based on ticket validation.",
+  "states": [
+    {
+      "id": "closed",
+      "state_output": null
+    },
+    {
+      "id": "open",
+      "state_output": null
+    }
+  ],
+  "initial_state": "closed",
+  "events": [
+    "car_arrives",
+    "ticket_valid",
+    "timeout"
+  ],
+  "transitions": [
+    {
+      "id": "t1",
+      "source": "closed",
+      "event": "car_arrives",
+      "target": "closed",
+      "guard": "not_ticket_invalid",
+      "action": "display_error",
+      "output": null,
+      "timeout": null,
+      "delay": null,
+      "requirements": [
+        "R1"
+      ]
+    },
+    {
+      "id": "t3",
+      "source": "open",
+      "event": "timeout",
+      "target": "open",
+      "guard": null,
+      "action": "close_gate",
+      "output": null,
+      "timeout": null,
+      "delay": null,
+      "requirements": []
+    }
+  ],
+  "variables": {},
+  "parent_fsm_id": "parking_gate_001",
+  "reference_fsm_id": "parking_gate_001"
+}

@@ -2782,6 +2782,41 @@ def benchmark_report_cmd(dataset_dir: Path) -> None:
     raise typer.Exit(code=0)
 
 
+@app.command("analyze-benchmark")
+def analyze_benchmark_cmd(
+    dataset_dir: Path,
+    out: Path = typer.Option(
+        Path("results/analysis"),
+        "--out",
+        help="Directory for analysis CSVs, figures, and Markdown report.",
+    ),
+    max_cases: int | None = typer.Option(
+        None,
+        "--max-cases",
+        min=1,
+        help="Analyze at most this many cases from the dataset (in index order).",
+    ),
+) -> None:
+    """Generate publication-oriented analysis for an existing benchmark dataset."""
+    from fsmrepairbench.analytics import AnalyticsError, generate_analysis_report
+
+    try:
+        result = generate_analysis_report(dataset_dir, output_dir=out, max_cases=max_cases)
+    except AnalyticsError as exc:
+        console.print(f"[red]ERROR[/red] {exc}")
+        raise typer.Exit(code=1) from exc
+
+    console.print(
+        f"[green]OK[/green] Analyzed {result.case_count} cases from {dataset_dir}"
+    )
+    console.print(f"Summary: {result.summary_path}")
+    console.print(f"Distributions: {result.distributions_path}")
+    console.print(f"Correlations: {result.correlations_path}")
+    console.print(f"Figures: {result.figures_dir}")
+    console.print(f"Report: {result.markdown_path}")
+    raise typer.Exit(code=0)
+
+
 @app.command("export-hf")
 def export_hf_cmd(dataset_dir: Path) -> None:
     """Export a benchmark dataset to HuggingFace JSONL splits."""

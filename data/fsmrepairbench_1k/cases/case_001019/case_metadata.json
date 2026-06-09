@@ -1,0 +1,35 @@
+{
+  "case_id": "case_001019",
+  "benchmark_version": "v1.0",
+  "reference_fsm_id": "synthetic_1062_20_10",
+  "faulty_fsm_id": "synthetic_1062_20_10__faulty__timeout_corruption__1019043",
+  "complexity": "large",
+  "state_count": 20,
+  "transition_count": 80,
+  "event_count": 10,
+  "mutation_operator": "timeout_corruption",
+  "difficulty_score": 32.96,
+  "difficulty_category": "medium",
+  "difficulty": {
+    "difficulty_score": 32.96,
+    "category": "medium",
+    "metrics": {
+      "state_count": 20,
+      "transition_count": 80,
+      "branching_factor": 4.0,
+      "average_path_length": 2.1053,
+      "cycles": 4,
+      "strongly_connected_components": 1
+    }
+  },
+  "oracle_coverage": {
+    "state_coverage": 1.0,
+    "transition_coverage": 1.0,
+    "event_coverage": 1.0
+  },
+  "reference_bpr": 1.0,
+  "faulty_bpr": 1.0,
+  "bpr_delta": 0.0,
+  "valid_reference": true,
+  "valid_faulty": true
+}

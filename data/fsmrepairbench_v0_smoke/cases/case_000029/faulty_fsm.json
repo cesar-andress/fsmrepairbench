@@ -1,0 +1,89 @@
+{
+  "id": "synthetic_1040_3_2__faulty__guard_flip__29042",
+  "name": "Synthetic FSM (custom) (faulty: guard_flip)",
+  "description": "Synthetic FSM generated with seed=1040, states=3, events=2, branching_factor=2, deterministic=True, allow_dead_states=True",
+  "states": [
+    {
+      "id": "s1040_0",
+      "state_output": null,
+      "refusal": false,
+      "quiescence": false
+    },
+    {
+      "id": "s1040_1",
+      "state_output": null,
+      "refusal": false,
+      "quiescence": false
+    },
+    {
+      "id": "s1040_2",
+      "state_output": null,
+      "refusal": false,
+      "quiescence": false
+    }
+  ],
+  "initial_state": "s1040_0",
+  "events": [
+    "e1040_0",
+    "e1040_1"
+  ],
+  "transitions": [
+    {
+      "id": "t1040_1",
+      "source": "s1040_0",
+      "event": "e1040_0",
+      "target": "s1040_1",
+      "guard": "not_x_1040_0 > 0",
+      "action": "act1040_1",
+      "output": "out_1040_0",
+      "timeout": null,
+      "delay": null,
+      "requirements": [],
+      "probability": null,
+      "is_nondeterministic": false,
+      "refusal": false,
+      "quiescence": false,
+      "discrete_time": null
+    },
+    {
+      "id": "t1040_2",
+      "source": "s1040_0",
+      "event": "e1040_1",
+      "target": "s1040_1",
+      "guard": "x_1040_1 > 0",
+      "action": "act1040_2",
+      "output": "out_1040_1",
+      "timeout": null,
+      "delay": null,
+      "requirements": [],
+      "probability": null,
+      "is_nondeterministic": false,
+      "refusal": false,
+      "quiescence": false,
+      "discrete_time": null
+    },
+    {
+      "id": "t1040_4",
+      "source": "s1040_1",
+      "event": "e1040_1",
+      "target": "s1040_1",
+      "guard": "x_1040_3 > 0",
+      "action": "act1040_4",
+      "output": "out_1040_3",
+      "timeout": null,
+      "delay": null,
+      "requirements": [],
+      "probability": null,
+      "is_nondeterministic": false,
+      "refusal": false,
+      "quiescence": false,
+      "discrete_time": null
+    }
+  ],
+  "variables": {},
+  "parent_fsm_id": "synthetic_1040_3_2",
+  "reference_fsm_id": "synthetic_1040_3_2",
+  "discrete_time_step": null,
+  "semantics_mode": null,
+  "cyclic_metadata": null
+}

@@ -1,0 +1,34 @@
+{
+  "bug_id": "synthetic_1635_3_2__hom__wrong_target__missing_transition__58043",
+  "reference_fsm_id": "synthetic_1635_3_2",
+  "faulty_fsm_id": "synthetic_1635_3_2__faulty__hom__wrong_target__missing_transition__58043",
+  "mutation_operator": "wrong_target,missing_transition",
+  "changed_transition_id": "t1635_1",
+  "description": "Higher-order mutant applying 2 operators: wrong_target, missing_transition",
+  "seed": 58043,
+  "mutation_complexity": null,
+  "mutation_scope": null,
+  "mutation_mode": null,
+  "mutation_order": 2,
+  "component_faults": [
+    {
+      "operator": "wrong_target",
+      "seed": 58043,
+      "bug_id": "synthetic_1635_3_2__wrong_target__58043",
+      "changed_transition_id": "t1635_1",
+      "description": "Changed target of transition 't1635_1' from 's1635_0' to 's1635_2'"
+    },
+    {
+      "operator": "missing_transition",
+      "seed": 59043,
+      "bug_id": "synthetic_1635_3_2__faulty__wrong_target__58043__missing_transition__59043",
+      "changed_transition_id": "t1635_1",
+      "description": "Removed transition 't1635_1'"
+    }
+  ],
+  "is_higher_order": true,
+  "coupled_to_simple_faults": [
+    "synthetic_1635_3_2__wrong_target__58043",
+    "synthetic_1635_3_2__faulty__wrong_target__58043__missing_transition__59043"
+  ]
+}

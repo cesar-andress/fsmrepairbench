@@ -1,0 +1,35 @@
+{
+  "case_id": "case_000742",
+  "benchmark_version": "v1.0",
+  "reference_fsm_id": "synthetic_785_10_5",
+  "faulty_fsm_id": "synthetic_785_10_5__faulty__missing_transition__742043",
+  "complexity": "medium",
+  "state_count": 10,
+  "transition_count": 31,
+  "event_count": 5,
+  "mutation_operator": "missing_transition",
+  "difficulty_score": 20.75,
+  "difficulty_category": "easy",
+  "difficulty": {
+    "difficulty_score": 20.75,
+    "category": "easy",
+    "metrics": {
+      "state_count": 10,
+      "transition_count": 31,
+      "branching_factor": 3.1,
+      "average_path_length": 1.7778,
+      "cycles": 2,
+      "strongly_connected_components": 1
+    }
+  },
+  "oracle_coverage": {
+    "state_coverage": 1.0,
+    "transition_coverage": 1.0,
+    "event_coverage": 1.0
+  },
+  "reference_bpr": 1.0,
+  "faulty_bpr": 0.9113924050632911,
+  "bpr_delta": 0.08860759493670889,
+  "valid_reference": true,
+  "valid_faulty": true
+}

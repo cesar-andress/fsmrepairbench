@@ -1,0 +1,164 @@
+{
+  "id": "synthetic_128_3_2_oracles",
+  "fsm_id": "synthetic_128_3_2",
+  "scenarios": [
+    {
+      "id": "cover_transition_t128_1",
+      "description": "Covers transition 't128_1' (s128_0 --e128_1--> s128_1).",
+      "steps": [
+        {
+          "event": "e128_1",
+          "expected_state": "s128_1",
+          "guard": "x_128_0 > 0",
+          "accepting_states": [],
+          "probability_threshold": null,
+          "refusal_expected": false,
+          "quiescence_expected": false,
+          "discrete_time": null
+        }
+      ]
+    },
+    {
+      "id": "cover_transition_t128_2",
+      "description": "Covers transition 't128_2' (s128_1 --e128_0--> s128_2).",
+      "steps": [
+        {
+          "event": "e128_1",
+          "expected_state": "s128_1",
+          "guard": "x_128_0 > 0",
+          "accepting_states": [],
+          "probability_threshold": null,
+          "refusal_expected": false,
+          "quiescence_expected": false,
+          "discrete_time": null
+        },
+        {
+          "event": "e128_0",
+          "expected_state": "s128_2",
+          "guard": "x_128_1 > 0",
+          "accepting_states": [],
+          "probability_threshold": null,
+          "refusal_expected": false,
+          "quiescence_expected": false,
+          "discrete_time": null
+        }
+      ]
+    },
+    {
+      "id": "cover_transition_t128_3",
+      "description": "Covers transition 't128_3' (s128_0 --e128_0--> s128_1).",
+      "steps": [
+        {
+          "event": "e128_0",
+          "expected_state": "s128_1",
+          "guard": "x_128_2 > 0",
+          "accepting_states": [],
+          "probability_threshold": null,
+          "refusal_expected": false,
+          "quiescence_expected": false,
+          "discrete_time": null
+        }
+      ]
+    },
+    {
+      "id": "cover_transition_t128_4",
+      "description": "Covers transition 't128_4' (s128_1 --e128_1--> s128_2).",
+      "steps": [
+        {
+          "event": "e128_1",
+          "expected_state": "s128_1",
+          "guard": "x_128_0 > 0",
+          "accepting_states": [],
+          "probability_threshold": null,
+          "refusal_expected": false,
+          "quiescence_expected": false,
+          "discrete_time": null
+        },
+        {
+          "event": "e128_1",
+          "expected_state": "s128_2",
+          "guard": "x_128_3 > 0",
+          "accepting_states": [],
+          "probability_threshold": null,
+          "refusal_expected": false,
+          "quiescence_expected": false,
+          "discrete_time": null
+        }
+      ]
+    },
+    {
+      "id": "cover_transition_t128_5",
+      "description": "Covers transition 't128_5' (s128_2 --e128_0--> s128_2).",
+      "steps": [
+        {
+          "event": "e128_1",
+          "expected_state": "s128_1",
+          "guard": "x_128_0 > 0",
+          "accepting_states": [],
+          "probability_threshold": null,
+          "refusal_expected": false,
+          "quiescence_expected": false,
+          "discrete_time": null
+        },
+        {
+          "event": "e128_0",
+          "expected_state": "s128_2",
+          "guard": "x_128_1 > 0",
+          "accepting_states": [],
+          "probability_threshold": null,
+          "refusal_expected": false,
+          "quiescence_expected": false,
+          "discrete_time": null
+        },
+        {
+          "event": "e128_0",
+          "expected_state": "s128_2",
+          "guard": "x_128_4 > 0",
+          "accepting_states": [],
+          "probability_threshold": null,
+          "refusal_expected": false,
+          "quiescence_expected": false,
+          "discrete_time": null
+        }
+      ]
+    },
+    {
+      "id": "cover_transition_t128_6",
+      "description": "Covers transition 't128_6' (s128_2 --e128_1--> s128_2).",
+      "steps": [
+        {
+          "event": "e128_1",
+          "expected_state": "s128_1",
+          "guard": "x_128_0 > 0",
+          "accepting_states": [],
+          "probability_threshold": null,
+          "refusal_expected": false,
+          "quiescence_expected": false,
+          "discrete_time": null
+        },
+        {
+          "event": "e128_0",
+          "expected_state": "s128_2",
+          "guard": "x_128_1 > 0",
+          "accepting_states": [],
+          "probability_threshold": null,
+          "refusal_expected": false,
+          "quiescence_expected": false,
+          "discrete_time": null
+        },
+        {
+          "event": "e128_1",
+          "expected_state": "s128_2",
+          "guard": "x_128_5 > 0",
+          "accepting_states": [],
+          "probability_threshold": null,
+          "refusal_expected": false,
+          "quiescence_expected": false,
+          "discrete_time": null
+        }
+      ]
+    }
+  ],
+  "semantics_mode": null,
+  "probability_threshold": null
+}

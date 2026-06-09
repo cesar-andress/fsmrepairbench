@@ -1,0 +1,34 @@
+{
+  "bug_id": "synthetic_2176_3_2__hom__guard_flip__wrong_target__72043",
+  "reference_fsm_id": "synthetic_2176_3_2",
+  "faulty_fsm_id": "synthetic_2176_3_2__faulty__hom__guard_flip__wrong_target__72043",
+  "mutation_operator": "guard_flip,wrong_target",
+  "changed_transition_id": "t2176_7",
+  "description": "Higher-order mutant applying 2 operators: guard_flip, wrong_target",
+  "seed": 72043,
+  "mutation_complexity": null,
+  "mutation_scope": null,
+  "mutation_mode": null,
+  "mutation_order": 2,
+  "component_faults": [
+    {
+      "operator": "guard_flip",
+      "seed": 72043,
+      "bug_id": "synthetic_2176_3_2__guard_flip__72043",
+      "changed_transition_id": "t2176_7",
+      "description": "Changed guard of transition 't2176_7' from 'x_2176_6 > 0' to 'not_x_2176_6 > 0'"
+    },
+    {
+      "operator": "wrong_target",
+      "seed": 73043,
+      "bug_id": "synthetic_2176_3_2__faulty__guard_flip__72043__wrong_target__73043",
+      "changed_transition_id": "t2176_7",
+      "description": "Changed target of transition 't2176_7' from 's2176_2' to 's2176_0'"
+    }
+  ],
+  "is_higher_order": true,
+  "coupled_to_simple_faults": [
+    "synthetic_2176_3_2__guard_flip__72043",
+    "synthetic_2176_3_2__faulty__guard_flip__72043__wrong_target__73043"
+  ]
+}

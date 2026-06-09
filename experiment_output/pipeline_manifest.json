@@ -1,0 +1,43 @@
+{
+  "config": {
+    "alpha": 0.05,
+    "fsm_count": 3,
+    "generate_plots": false,
+    "models": [
+      "reference",
+      "missing-transition",
+      "wrong-target",
+      "random"
+    ],
+    "mutants_per_fsm": 4,
+    "num_events": 4,
+    "num_states": 6,
+    "optimizer_generations": 8,
+    "optimizer_iterations": 15,
+    "optimizer_population_size": 12,
+    "optimizers": [
+      "random_search"
+    ],
+    "output_root": "/home/cesar/papers/fsmrepairbench/fsmrepairbench/experiment_output",
+    "seed": 42
+  },
+  "figure_paths": [],
+  "instance_count": 3,
+  "metrics_count": 12,
+  "output_dirs": {
+    "figures": "/home/cesar/papers/fsmrepairbench/fsmrepairbench/experiment_output/figures",
+    "reports": "/home/cesar/papers/fsmrepairbench/fsmrepairbench/experiment_output/reports",
+    "results": "/home/cesar/papers/fsmrepairbench/fsmrepairbench/experiment_output/results",
+    "tables": "/home/cesar/papers/fsmrepairbench/fsmrepairbench/experiment_output/tables"
+  },
+  "pipeline_steps": [
+    "generate_fsms",
+    "generate_mutants",
+    "generate_oracle_suites",
+    "optimize_test_suites",
+    "evaluate_benchmark_models",
+    "compute_metrics",
+    "generate_plots"
+  ],
+  "statistics_count": 48
+}

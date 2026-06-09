@@ -1,0 +1,37 @@
+---
+description: Always run pytest after code changes and verify the suite passes
+alwaysApply: true
+---
+
+# Run pytest before finishing
+
+After making code changes in this repo, **always run the test suite** and confirm it passes before considering the task done.
+
+## Required workflow
+
+1. From the repo root (`fsmrepairbench/`), run:
+
+```bash
+pytest
+```
+
+2. If you changed a specific area, also run the focused test file(s) first, then the full suite:
+
+```bash
+pytest tests/test_<relevant_module>.py
+pytest
+```
+
+3. Treat the task as **incomplete** if pytest fails. Fix failures (or revert the breaking change) and re-run until green.
+
+4. Report the pytest result in your final message (pass count and any skips).
+
+## Do not skip tests when
+
+- Refactoring, bug fixes, or new features touch Python code
+- CLI, builders, generators, or schema behavior changed
+- The user asks for a commit or says the work is done
+
+## Optional follow-up checks
+
+Only after pytest passes, run related CLI smoke commands if the change affects them (e.g. `build-stratified-dataset`, `coupling-analysis`).

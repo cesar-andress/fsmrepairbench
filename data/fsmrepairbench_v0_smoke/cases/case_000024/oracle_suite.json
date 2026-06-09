@@ -1,0 +1,86 @@
+{
+  "id": "synthetic_854_3_2_oracles",
+  "fsm_id": "synthetic_854_3_2",
+  "scenarios": [
+    {
+      "id": "cover_transition_t854_1",
+      "description": "Covers transition 't854_1' (s854_0 --e854_1--> s854_1).",
+      "steps": [
+        {
+          "event": "e854_1",
+          "expected_state": "s854_1",
+          "guard": "x_854_0 > 0",
+          "accepting_states": [],
+          "probability_threshold": null,
+          "refusal_expected": false,
+          "quiescence_expected": false,
+          "discrete_time": null
+        }
+      ]
+    },
+    {
+      "id": "cover_transition_t854_2",
+      "description": "Covers transition 't854_2' (s854_1 --e854_0--> s854_2).",
+      "steps": [
+        {
+          "event": "e854_1",
+          "expected_state": "s854_1",
+          "guard": "x_854_0 > 0",
+          "accepting_states": [],
+          "probability_threshold": null,
+          "refusal_expected": false,
+          "quiescence_expected": false,
+          "discrete_time": null
+        },
+        {
+          "event": "e854_0",
+          "expected_state": "s854_2",
+          "guard": "x_854_1 > 0",
+          "accepting_states": [],
+          "probability_threshold": null,
+          "refusal_expected": false,
+          "quiescence_expected": false,
+          "discrete_time": null
+        }
+      ]
+    },
+    {
+      "id": "cover_transition_t854_3",
+      "description": "Covers transition 't854_3' (s854_2 --e854_1--> s854_2).",
+      "steps": [
+        {
+          "event": "e854_1",
+          "expected_state": "s854_1",
+          "guard": "x_854_0 > 0",
+          "accepting_states": [],
+          "probability_threshold": null,
+          "refusal_expected": false,
+          "quiescence_expected": false,
+          "discrete_time": null
+        },
+        {
+          "event": "e854_0",
+          "expected_state": "s854_2",
+          "guard": "x_854_1 > 0",
+          "accepting_states": [],
+          "probability_threshold": null,
+          "refusal_expected": false,
+          "quiescence_expected": false,
+          "discrete_time": null
+        },
+        {
+          "event": "e854_1",
+          "expected_state": "s854_2",
+          "guard": "x_854_2 > 0",
+          "accepting_states": [],
+          "probability_threshold": null,
+          "refusal_expected": false,
+          "quiescence_expected": false,
+          "discrete_time": null
+        }
+      ]
+    }
+  ],
+  "semantics_mode": null,
+  "probability_threshold": null
+}

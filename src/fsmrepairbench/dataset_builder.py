@@ -20,15 +20,17 @@ from fsmrepairbench.generators.synthetic_factory import (
     generate_synthetic_fsm,
     params_from_complexity,
 )
-from fsmrepairbench.models import FSM, BugMetadata
+from fsmrepairbench.models import BugMetadata, FSM
 from fsmrepairbench.mutators import MUTATION_OPERATORS, MutatorError, mutate
 from fsmrepairbench.oracle_generator import (
     DepthLevel,
     OracleGeneratorError,
+    compute_coverage,
     generate_oracle_suite,
 )
 from fsmrepairbench.scorer import score_oracle_suite
-from fsmrepairbench.validators import is_valid_fsm
+from fsmrepairbench.taxonomy import SizeClass
+from fsmrepairbench.validators import is_valid_fsm, load_fsm_json, load_oracle_suite
 from fsmrepairbench.versioning import (
     DEFAULT_BENCHMARK_VERSION,
     BenchmarkVersion,
@@ -414,31 +416,101 @@ def _parse_index_bool(value: str) -> bool:
     return value.strip().lower() in {"1", "true", "yes"}
 
 
+def is_stratified_case_complete(case_dir: Path) -> bool:
+    """Return whether *case_dir* contains a complete stratified benchmark case."""
+    return is_coupling_case_complete(case_dir) and (case_dir / "case_features.json").is_file()
+
+
+def _size_class_to_complexity(size_class: str) -> ComplexityLevel:
+    if size_class == SizeClass.TINY.value:
+        return "small"
+    if size_class == SizeClass.SMALL.value:
+        return "small"
+    if size_class == SizeClass.MEDIUM.value:
+        return "medium"
+    if size_class == SizeClass.LARGE.value:
+        return "large"
+    return "very_large"
+
+
+def _primary_mutation_operator(raw_operator: str) -> str:
+    return raw_operator.split(",")[0].strip() or raw_operator
+
+
+def load_stratified_case_row(case_dir: Path) -> DatasetCaseRow:
+    """Load an index row from a stratified case directory."""
+    features = json.loads((case_dir / "case_features.json").read_text(encoding="utf-8"))
+    bug_metadata = BugMetadata.model_validate(
+        json.loads((case_dir / "bug_metadata.json").read_text(encoding="utf-8"))
+    )
+    reference_path = resolve_coupling_case_file(case_dir, "reference_fsm.json")
+    faulty_path = resolve_coupling_case_file(case_dir, "faulty_fsm.json")
+    oracle_path = resolve_coupling_case_file(case_dir, "oracle_suite.json")
+    if reference_path is None or faulty_path is None or oracle_path is None:
+        msg = f"Incomplete stratified case files under {case_dir}"
+        raise DatasetBuilderError(msg)
+
+    reference = load_fsm_json(reference_path)
+    faulty = load_fsm_json(faulty_path)
+    oracle = load_oracle_suite(oracle_path)
+    coverage = compute_coverage(reference, oracle)
+    reference_bpr = score_oracle_suite(reference, oracle).bpr
+    faulty_bpr = score_oracle_suite(faulty, oracle).bpr
+    difficulty = estimate_difficulty(reference)
+    mutation_operator = _primary_mutation_operator(bug_metadata.mutation_operator)
+
+    return DatasetCaseRow(
+        case_id=str(features["case_id"]),
+        reference_fsm_id=reference.id,
+        faulty_fsm_id=faulty.id,
+        complexity=_size_class_to_complexity(str(features["size_class"])),
+        state_count=int(features["num_states"]),
+        transition_count=int(features["num_transitions"]),
+        event_count=int(features["num_events"]),
+        mutation_operator=mutation_operator,
+        difficulty_score=difficulty.difficulty_score,
+        oracle_state_coverage=coverage.state_coverage,
+        oracle_transition_coverage=coverage.transition_coverage,
+        oracle_event_coverage=coverage.event_coverage,
+        reference_bpr=reference_bpr,
+        faulty_bpr=faulty_bpr,
+        bpr_delta=reference_bpr - faulty_bpr,
+        valid_reference=is_valid_fsm(reference),
+        valid_faulty=is_valid_fsm(faulty),
+        status="completed",
+    )
+
+
 def load_dataset_cases(dataset_dir: Path) -> list[DatasetCaseRow]:
     """Load benchmark cases from *dataset_dir* index or case metadata."""
     if not dataset_dir.is_dir():
         msg = f"Dataset directory not found: {dataset_dir}"
         raise DatasetBuilderError(msg)
 
+    cases_root = dataset_dir / "cases"
+    if cases_root.is_dir():
+        rows: list[DatasetCaseRow] = []
+        for case_dir in sorted(path for path in cases_root.iterdir() if path.is_dir()):
+            if is_case_complete(case_dir):
+                rows.append(load_case_row(case_dir))
+            elif is_stratified_case_complete(case_dir):
+                rows.append(load_stratified_case_row(case_dir))
+        if rows:
+            return rows
+
     index_path = dataset_dir / "index.csv"
     if index_path.is_file():
-        return _load_cases_from_index(index_path)
+        rows = _load_cases_from_index(index_path)
+        completed = [
+            row
+            for row in rows
+            if row.reference_fsm_id and row.state_count > 0 and row.faulty_fsm_id
+        ]
+        if completed:
+            return completed
 
-    cases_root = dataset_dir / "cases"
-    if not cases_root.is_dir():
-        msg = f"No index.csv or cases/ directory found in {dataset_dir}"
-        raise DatasetBuilderError(msg)
-
-    rows: list[DatasetCaseRow] = []
-    for case_dir in sorted(path for path in cases_root.iterdir() if path.is_dir()):
-        if is_case_complete(case_dir):
-            rows.append(load_case_row(case_dir))
-
-    if not rows:
-        msg = f"No complete benchmark cases found under {cases_root}"
-        raise DatasetBuilderError(msg)
-
-    return rows
+    msg = f"No complete benchmark cases found under {dataset_dir}"
+    raise DatasetBuilderError(msg)
 
 
 def _load_cases_from_index(index_path: Path) -> list[DatasetCaseRow]:

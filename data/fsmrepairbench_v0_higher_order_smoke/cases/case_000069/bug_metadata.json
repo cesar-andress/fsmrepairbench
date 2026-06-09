@@ -1,0 +1,34 @@
+{
+  "bug_id": "synthetic_2024_3_2__hom__action_corruption__guard_flip__69043",
+  "reference_fsm_id": "synthetic_2024_3_2",
+  "faulty_fsm_id": "synthetic_2024_3_2__faulty__hom__action_corruption__guard_flip__69043",
+  "mutation_operator": "action_corruption,guard_flip",
+  "changed_transition_id": "t2024_3",
+  "description": "Higher-order mutant applying 2 operators: action_corruption, guard_flip",
+  "seed": 69043,
+  "mutation_complexity": null,
+  "mutation_scope": null,
+  "mutation_mode": null,
+  "mutation_order": 2,
+  "component_faults": [
+    {
+      "operator": "action_corruption",
+      "seed": 69043,
+      "bug_id": "synthetic_2024_3_2__action_corruption__69043",
+      "changed_transition_id": "t2024_4",
+      "description": "Changed action of transition 't2024_4' from 'act2024_4' to 'wrong_act2024_4'"
+    },
+    {
+      "operator": "guard_flip",
+      "seed": 70043,
+      "bug_id": "synthetic_2024_3_2__faulty__action_corruption__69043__guard_flip__70043",
+      "changed_transition_id": "t2024_3",
+      "description": "Changed guard of transition 't2024_3' from 'x_2024_2 > 0' to 'not_x_2024_2 > 0'"
+    }
+  ],
+  "is_higher_order": true,
+  "coupled_to_simple_faults": [
+    "synthetic_2024_3_2__action_corruption__69043",
+    "synthetic_2024_3_2__faulty__action_corruption__69043__guard_flip__70043"
+  ]
+}

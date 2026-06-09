@@ -1,0 +1,92 @@
+{
+  "id": "synthetic_2359_3_2_oracles",
+  "fsm_id": "synthetic_2359_3_2",
+  "scenarios": [
+    {
+      "id": "cover_transition_t2359_1",
+      "description": "Covers transition 't2359_1' (s2359_0 --e2359_0--> s2359_1).",
+      "steps": [
+        {
+          "event": "e2359_0",
+          "expected_state": "s2359_1",
+          "guard": "x_2359_0 > 0 and y_2359_0 < 10",
+          "accepting_states": [],
+          "probability_threshold": null,
+          "refusal_expected": false,
+          "quiescence_expected": false,
+          "discrete_time": null
+        }
+      ]
+    },
+    {
+      "id": "cover_transition_t2359_2",
+      "description": "Covers transition 't2359_2' (s2359_0 --e2359_1--> s2359_2).",
+      "steps": [
+        {
+          "event": "e2359_1",
+          "expected_state": "s2359_2",
+          "guard": "x_2359_1 > 0 and y_2359_1 < 10",
+          "accepting_states": [],
+          "probability_threshold": null,
+          "refusal_expected": false,
+          "quiescence_expected": false,
+          "discrete_time": null
+        }
+      ]
+    },
+    {
+      "id": "cover_transition_t2359_3",
+      "description": "Covers transition 't2359_3' (s2359_1 --e2359_0--> s2359_1).",
+      "steps": [
+        {
+          "event": "e2359_0",
+          "expected_state": "s2359_1",
+          "guard": "x_2359_0 > 0 and y_2359_0 < 10",
+          "accepting_states": [],
+          "probability_threshold": null,
+          "refusal_expected": false,
+          "quiescence_expected": false,
+          "discrete_time": null
+        },
+        {
+          "event": "e2359_0",
+          "expected_state": "s2359_1",
+          "guard": "x_2359_2 > 0 and y_2359_2 < 10",
+          "accepting_states": [],
+          "probability_threshold": null,
+          "refusal_expected": false,
+          "quiescence_expected": false,
+          "discrete_time": null
+        }
+      ]
+    },
+    {
+      "id": "cover_transition_t2359_4",
+      "description": "Covers transition 't2359_4' (s2359_2 --e2359_0--> s2359_2).",
+      "steps": [
+        {
+          "event": "e2359_1",
+          "expected_state": "s2359_2",
+          "guard": "x_2359_1 > 0 and y_2359_1 < 10",
+          "accepting_states": [],
+          "probability_threshold": null,
+          "refusal_expected": false,
+          "quiescence_expected": false,
+          "discrete_time": null
+        },
+        {
+          "event": "e2359_0",
+          "expected_state": "s2359_2",
+          "guard": "x_2359_3 > 0 and y_2359_3 < 10",
+          "accepting_states": [],
+          "probability_threshold": null,
+          "refusal_expected": false,
+          "quiescence_expected": false,
+          "discrete_time": null
+        }
+      ]
+    }
+  ],
+  "semantics_mode": null,
+  "probability_threshold": null
+}

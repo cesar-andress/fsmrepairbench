@@ -14,6 +14,22 @@ fsmrepairbench build-dataset --size 10 --seed 42 --output OUTPUT_DIR
 
 ## Commands
 
+### `analyze-benchmark`
+
+Generate publication-oriented analysis for an existing benchmark dataset.
+
+**Usage**
+
+```bash
+fsmrepairbench analyze-benchmark DATASET_DIR
+```
+
+| Parameter | Type | Flags | Default | Description |
+|-----------|------|-------|---------|-------------|
+| `dataset_dir` | `Path` | positional | required |  |
+| `out` | `Path` | `--out` | results/analysis | Directory for analysis CSVs, figures, and Markdown report. |
+| `max_cases` | `int | None` | `--max-cases` | None | Analyze at most this many cases from the dataset (in index order). |
+
 ### `analyze-error-propagation`
 
 Analyze fault activation, propagation, and masking for a benchmark case.
@@ -376,6 +392,42 @@ fsmrepairbench freeze RESULTS_DIR RELEASE_DIR
 | `results_dir` | `Path` | positional | required |  |
 | `release_dir` | `Path` | positional | required |  |
 
+### `generate-adversarial-fsm`
+
+Generate one adversarial FSM designed to challenge LLM reasoning.
+
+**Usage**
+
+```bash
+fsmrepairbench generate-adversarial-fsm --out PATH
+```
+
+| Parameter | Type | Flags | Default | Description |
+|-----------|------|-------|---------|-------------|
+| `out` | `Path` | `--out` | required | Output path for adversarial FSM JSON. |
+| `metadata` | `Path` | `--metadata` | required | Output path for difficulty metadata JSON. |
+| `pattern` | `str` | `--pattern` | 'highly_symmetric' | Adversarial pattern. Supported: highly_symmetric, long_dependency_chain, hidden_cycles, equivalent_states, deceptive_transitions, sparse_transitions, dense_transitions, delayed_effects, temporal_constraints |
+| `seed` | `int` | `--seed` | 42 | Deterministic generation seed. |
+| `quiet` | `bool` | `--quiet` | False | Print a short summary only. |
+
+### `generate-adversarial-fsms`
+
+Generate a dataset of adversarial FSMs with difficulty metadata.
+
+**Usage**
+
+```bash
+fsmrepairbench generate-adversarial-fsms
+```
+
+| Parameter | Type | Flags | Default | Description |
+|-----------|------|-------|---------|-------------|
+| `out` | `Path` | `--out` | adversarial_dataset | Output dataset directory. |
+| `count` | `int | None` | `--count` | None | Number of adversarial FSMs (defaults to one per selected pattern). |
+| `seed` | `int` | `--seed` | 42 | Global random seed. |
+| `pattern` | `list[str] | None` | `--pattern` | None | Adversarial pattern to include (repeatable). Defaults to all patterns. |
+| `quiet` | `bool` | `--quiet` | False | Print a short summary only. |
+
 ### `generate-benchmark`
 
 Generate benchmark cases from reference FSMs.
@@ -412,6 +464,45 @@ fsmrepairbench generate-constrained-inputs tests/fixtures/valid_fsm.json
 | `max_path_length` | `int` | `--max-path-length` | 8 |  |
 | `quiet` | `bool` | `--quiet` | False |  |
 
+### `generate-coverage-oracles`
+
+Generate minimized transition/state/path/boundary/mutation-killing oracle suites.
+
+**Usage**
+
+```bash
+fsmrepairbench generate-coverage-oracles tests/fixtures/valid_fsm.json --out PATH
+```
+
+| Parameter | Type | Flags | Default | Description |
+|-----------|------|-------|---------|-------------|
+| `fsm_path` | `Path` | positional | required |  |
+| `out` | `Path` | `--out` | required | Output JSON file or directory. |
+| `seed` | `int` | `--seed` | 42 | Deterministic generation seed. |
+| `max_depth` | `int` | `--max-depth` | 25 |  |
+| `path_length` | `int` | `--path-length` | 3 |  |
+| `mutant_count` | `int` | `--mutant-count` | 10 |  |
+| `quiet` | `bool` | `--quiet` | False | Print a short summary only. |
+
+### `generate-coverage-oracles-dir`
+
+Generate coverage oracle suites for every FSM JSON file in a dataset directory.
+
+**Usage**
+
+```bash
+fsmrepairbench generate-coverage-oracles-dir RESULTS_DIR --out PATH
+```
+
+| Parameter | Type | Flags | Default | Description |
+|-----------|------|-------|---------|-------------|
+| `input_dir` | `Path` | positional | required |  |
+| `out` | `Path` | `--out` | required | Output directory for oracle suites. |
+| `seed` | `int` | `--seed` | 42 | Deterministic generation seed. |
+| `max_depth` | `int` | `--max-depth` | 25 |  |
+| `path_length` | `int` | `--path-length` | 3 |  |
+| `quiet` | `bool` | `--quiet` | False | Print a short summary only. |
+
 ### `generate-fsm`
 
 Generate a synthetic FSM and export it as benchmark JSON.
@@ -433,6 +524,23 @@ fsmrepairbench generate-fsm --out PATH
 | `allow_dead_states` | `bool` | `--allow-dead-states` | False |  |
 | `complexity` | `ComplexityLevel | None` | `--complexity` | None | Optional preset: small, medium, large, very_large |
 
+### `generate-fsm-dataset`
+
+Generate a reproducible FSM benchmark dataset (DFA, NFA, Mealy, Moore, EFSM, timed).
+
+**Usage**
+
+```bash
+fsmrepairbench generate-fsm-dataset
+```
+
+| Parameter | Type | Flags | Default | Description |
+|-----------|------|-------|---------|-------------|
+| `out` | `Path` | `--out` | dataset | Output dataset directory. |
+| `count` | `int` | `--count` | 10000 | Number of FSMs to generate. |
+| `seed` | `int` | `--seed` | 42 | Global random seed for reproducible generation. |
+| `quiet` | `bool` | `--quiet` | False | Print a short summary only. |
+
 ### `generate-hierarchical-oracle`
 
 Generate multi-level oracles for a hierarchical FSM.
@@ -450,6 +558,61 @@ fsmrepairbench generate-hierarchical-oracle PATH
 | `out_csv` | `Path | None` | `--out-csv` | None |  |
 | `depth` | `str` | `--depth` | 'medium' |  |
 | `quiet` | `bool` | `--quiet` | False |  |
+
+### `generate-literature-mutants`
+
+Generate literature-inspired first-, second-, and higher-order FSM mutants.
+
+**Usage**
+
+```bash
+fsmrepairbench generate-literature-mutants tests/fixtures/valid_fsm.json --out PATH
+```
+
+| Parameter | Type | Flags | Default | Description |
+|-----------|------|-------|---------|-------------|
+| `fsm_path` | `Path` | positional | required |  |
+| `out` | `Path` | `--out` | required | Write mutant report JSON to this path. |
+| `seed` | `int` | `--seed` | 42 | Deterministic generation seed. |
+| `include_fsm` | `bool` | `--include-fsm/--no-include-fsm` | True | Embed full mutant FSM JSON in the report. |
+| `quiet` | `bool` | `--quiet` | False | Print a short summary only. |
+
+### `generate-literature-mutants-dir`
+
+Generate literature mutants for every fsm_*.json file in a dataset directory.
+
+**Usage**
+
+```bash
+fsmrepairbench generate-literature-mutants-dir RESULTS_DIR --out PATH
+```
+
+| Parameter | Type | Flags | Default | Description |
+|-----------|------|-------|---------|-------------|
+| `input_dir` | `Path` | positional | required |  |
+| `out` | `Path` | `--out` | required | Output directory for mutant reports. |
+| `seed` | `int` | `--seed` | 42 | Deterministic generation seed. |
+| `include_fsm` | `bool` | `--include-fsm/--no-include-fsm` | True | Embed full mutant FSM JSON in each report. |
+| `quiet` | `bool` | `--quiet` | False | Print a short summary only. |
+
+### `generate-llm-tasks`
+
+Generate LLM evaluation tasks (A-G) for every FSM and write JSONL.
+
+**Usage**
+
+```bash
+fsmrepairbench generate-llm-tasks PATH --out PATH
+```
+
+| Parameter | Type | Flags | Default | Description |
+|-----------|------|-------|---------|-------------|
+| `source_path` | `Path` | positional | required |  |
+| `out` | `Path` | `--out` | required | Write LLM evaluation tasks JSONL here. |
+| `task_type` | `list[str] | None` | `--task-type` | None | Task type letter to include (repeatable: A-G). Supported: A, B, C, D, E, F, G |
+| `seed` | `int` | `--seed` | 42 | Seed for synthetic repair tasks. |
+| `oracle_depth` | `str` | `--oracle-depth` | 'medium' | Oracle depth for generated test tasks (shallow, medium, deep, exhaustive_like). |
+| `quiet` | `bool` | `--quiet` | False | Print a short summary only. |
 
 ### `generate-metamorphic-cases`
 
@@ -655,6 +818,30 @@ fsmrepairbench mutate-higher-order tests/fixtures/valid_fsm.json --seed 42 --out
 | `out` | `Path` | `--out` | required | Output path for faulty FSM JSON. |
 | `meta` | `Path` | `--meta` | required | Output path for bug metadata JSON. |
 
+### `optimize-test-suite`
+
+Optimize test suites with multi-objective search and Pareto fronts.
+
+**Usage**
+
+```bash
+fsmrepairbench optimize-test-suite tests/fixtures/valid_fsm.json tests/fixtures/valid_oracle.json PATH --out PATH
+```
+
+| Parameter | Type | Flags | Default | Description |
+|-----------|------|-------|---------|-------------|
+| `fsm_path` | `Path` | positional | required |  |
+| `oracle_path` | `Path` | positional | required |  |
+| `mutants_path` | `Path` | positional | required |  |
+| `out` | `Path` | `--out` | required | Write optimization report JSON here. |
+| `plots_dir` | `Path | None` | `--plots-dir` | None | Optional directory for Pareto front plots. |
+| `algorithm` | `list[str] | None` | `--algorithm` | None | Optimizer to run (repeatable). Supported: random_search, hill_climbing, simulated_annealing, genetic_algorithm, nsga2 |
+| `seed` | `int` | `--seed` | 42 | Random seed for search algorithms. |
+| `iterations` | `int` | `--iterations` | 200 | Iterations for local/random search. |
+| `population_size` | `int` | `--population-size` | 40 | Population size for GA and NSGA-II. |
+| `generations` | `int` | `--generations` | 30 | Generations for GA and NSGA-II. |
+| `quiet` | `bool` | `--quiet` | False | Print a short summary only. |
+
 ### `plan-mutations`
 
 Plan selective first-order mutations without generating every possible mutant.
@@ -673,6 +860,24 @@ fsmrepairbench plan-mutations tests/fixtures/valid_fsm.json --out PATH
 | `out` | `Path` | `--out` | required | Write mutation plan JSON to this path. |
 | `seed` | `int` | `--seed` | 42 | Seed for random_sample strategy. |
 | `quiet` | `bool` | `--quiet` | False | Print a short summary only. |
+
+### `prepare-smoke-test-input`
+
+Generate a deterministic smoke-test input dataset with high oracle coverage.
+
+**Usage**
+
+```bash
+fsmrepairbench prepare-smoke-test-input
+```
+
+| Parameter | Type | Flags | Default | Description |
+|-----------|------|-------|---------|-------------|
+| `output_dir` | `Path` | `--output-dir` | data/smoke_test_input | Directory for generated FSM and oracle inputs. |
+| `seed` | `int` | `--seed` | 42 |  |
+| `fsm_count` | `int` | `--fsm-count` | 10 |  |
+| `examples_dir` | `Path` | `--examples-dir` | examples | Directory containing example FSM JSON files. |
+| `from_examples` | `bool` | `--from-examples` | False | Build input from examples/ instead of the parking-gate template. |
 
 ### `release-manifest`
 
@@ -718,6 +923,54 @@ fsmrepairbench run-experiment configs/experiment.yaml
 | `config_path` | `Path` | positional | required |  |
 | `resume` | `bool` | `--resume/--no-resume` | True |  |
 
+### `run-experiment-pipeline`
+
+Run the full seven-step FSMRepairBench experiment pipeline.
+
+**Usage**
+
+```bash
+fsmrepairbench run-experiment-pipeline
+```
+
+| Parameter | Type | Flags | Default | Description |
+|-----------|------|-------|---------|-------------|
+| `output_root` | `Path` | `--output-root` | experiment_output | Root directory for results/, figures/, tables/, and reports/. |
+| `seed` | `int` | `--seed` | 42 | Random seed for generation and search. |
+| `fsm_count` | `int` | `--fsm-count` | 6 | Number of synthetic FSMs. |
+| `num_states` | `int` | `--num-states` | 8 | States per synthetic FSM. |
+| `num_events` | `int` | `--num-events` | 4 | Events per synthetic FSM. |
+| `mutants_per_fsm` | `int` | `--mutants-per-fsm` | 5 | First-order mutants per FSM. |
+| `optimizer` | `list[str] | None` | `--optimizer` | None | Optimizer algorithms to run (repeatable). |
+| `optimizer_iterations` | `int` | `--optimizer-iterations` | 40 |  |
+| `optimizer_population_size` | `int` | `--optimizer-population-size` | 12 |  |
+| `optimizer_generations` | `int` | `--optimizer-generations` | 8 |  |
+| `alpha` | `float` | `--alpha` | 0.05 | Significance level for statistical tests. |
+| `skip_plots` | `bool` | `--skip-plots` | False | Skip matplotlib figure generation. |
+| `quiet` | `bool` | `--quiet` | False | Print a short summary only. |
+
+### `run-smoke-test`
+
+Run the end-to-end smoke-test validation pipeline.
+
+**Usage**
+
+```bash
+fsmrepairbench run-smoke-test
+```
+
+| Parameter | Type | Flags | Default | Description |
+|-----------|------|-------|---------|-------------|
+| `input_dir` | `Path` | `--input-dir` | data/smoke_test_input | Directory with fsms/ and oracles/ subdirectories. |
+| `output_dir` | `Path` | `--output-dir` | results/smoke_test | Consolidated smoke-test output directory. |
+| `seed` | `int` | `--seed` | 42 | Fixed random seed for reproducibility. |
+| `fsm_count` | `int` | `--fsm-count` | 10 |  |
+| `examples_dir` | `Path` | `--examples-dir` | examples | Directory containing example FSM JSON files. |
+| `from_examples` | `bool` | `--from-examples` | False | Build smoke-test input from examples/ FSMs and oracles. |
+| `prepare_input` | `bool` | `--prepare-input` | False | Generate a deterministic input dataset before running the pipeline. |
+| `use_cli` | `bool` | `--use-cli/--no-use-cli` | True | Invoke existing CLI commands for scoring, coverage, and localization. |
+| `quiet` | `bool` | `--quiet` | False | Suppress per-FSM progress logging. |
+
 ### `run-tools`
 
 Run multiple repair tools reproducibly on an FSMRepairBench dataset.
@@ -754,6 +1007,26 @@ fsmrepairbench score tests/fixtures/valid_fsm.json tests/fixtures/valid_oracle.j
 | `out_json` | `Path | None` | `--out-json` | None | Write the full ScoreResult as JSON to this path. |
 | `out_csv` | `Path | None` | `--out-csv` | None | Write scenario-level score rows as CSV to this path. |
 | `quiet` | `bool` | `--quiet` | False | Suppress detailed table output; print a short summary only. |
+
+### `score-bpr`
+
+Score candidate predictions with BPR, coverage, mutation score, and oracle accuracy.
+
+**Usage**
+
+```bash
+fsmrepairbench score-bpr PATH tests/fixtures/valid_oracle.json PATH --out PATH
+```
+
+| Parameter | Type | Flags | Default | Description |
+|-----------|------|-------|---------|-------------|
+| `reference_path` | `Path` | positional | required |  |
+| `oracle_path` | `Path` | positional | required |  |
+| `candidate_path` | `Path` | positional | required |  |
+| `out` | `Path` | `--out` | required | Output JSON file or directory for CSV summaries. |
+| `mutants_path` | `Path | None` | `--mutants` | None | Mutants JSON file or directory (optional). |
+| `path_length` | `int` | `--path-length` | 3 |  |
+| `quiet` | `bool` | `--quiet` | False | Print a short summary only. |
 
 ### `select-oracles`
 
@@ -812,6 +1085,24 @@ fsmrepairbench subset-overlap DATASET_DIR --out PATH
 | `a` | `str` | `--a` | required | Comma-separated predicate, e.g. determinism=deterministic |
 | `b` | `str` | `--b` | required | Comma-separated predicate for subset B. |
 | `out` | `Path` | `--out` | required | JSON output path. |
+
+### `tag-fsms`
+
+Analyze every FSM and assign structural tags into metadata.csv.
+
+**Usage**
+
+```bash
+fsmrepairbench tag-fsms PATH --out PATH
+```
+
+| Parameter | Type | Flags | Default | Description |
+|-----------|------|-------|---------|-------------|
+| `source_path` | `Path` | positional | required |  |
+| `out` | `Path | None` | `--out` | None | Output metadata.csv path (defaults to SOURCE/metadata.csv). |
+| `seed` | `int` | `--seed` | 42 | Seed for mutation-resistance sampling. |
+| `skip_mutation_score` | `bool` | `--skip-mutation-score` | False | Skip mutation-score analysis for faster tagging. |
+| `quiet` | `bool` | `--quiet` | False | Print a short summary only. |
 
 ### `validate-dataset`
 
@@ -872,4 +1163,24 @@ fsmrepairbench validate-semantics tests/fixtures/valid_fsm.json --out PATH
 | `mode` | `str` | `--mode` | required | Oracle semantics mode to validate. |
 | `oracle_path` | `Path | None` | `--oracle` | None | Optional oracle suite used to validate mode-specific step requirements. |
 | `out` | `Path | None` | `--out` | None | Optional path to write the semantics validation report JSON. |
+| `quiet` | `bool` | `--quiet` | False | Print a short summary only. |
+
+### `verify-metamorphic-relations`
+
+Verify all metamorphic relations and export pass/fail reports.
+
+**Usage**
+
+```bash
+fsmrepairbench verify-metamorphic-relations PATH --out PATH
+```
+
+| Parameter | Type | Flags | Default | Description |
+|-----------|------|-------|---------|-------------|
+| `source_path` | `Path` | positional | required |  |
+| `out` | `Path` | `--out` | required | Directory for pass/fail verification reports. |
+| `oracle_path` | `Path | None` | `--oracle` | None | Oracle suite JSON when *source_path* is an FSM file rather than a case directory. |
+| `relations` | `str | None` | `--relations` | None | Comma-separated relation ids (default: all supported relations). |
+| `core_only` | `bool` | `--core-only` | False | Verify only core MR1-MR4 relations. |
+| `catalog` | `Path | None` | `--catalog` | None | Optional path to write the metamorphic relation catalog JSON. |
 | `quiet` | `bool` | `--quiet` | False | Print a short summary only. |

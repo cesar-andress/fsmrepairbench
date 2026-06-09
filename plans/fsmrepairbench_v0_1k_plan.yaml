@@ -1,0 +1,268 @@
+# FSMRepairBench v0 1k stratified generation plan
+# Scaled from the smoke plan (100 cases × 10) for fast 1,000-case analysis builds.
+# Total planned cases: 1000
+
+name: fsmrepairbench_v0_1k
+version: "0.1.0"
+seed: 44
+cells:
+- machine_type: plain_fsm
+  determinism: deterministic
+  completeness: partial
+  arity_class: low
+  size_class: tiny
+  guard_complexity: none
+  time_features:
+  - none
+  graph_structure:
+  - hub_and_spoke
+  oracle_depth: shallow
+  bug_type: missing_transition
+  count: 50
+- machine_type: plain_fsm
+  determinism: deterministic
+  completeness: complete
+  arity_class: low
+  size_class: tiny
+  guard_complexity: none
+  time_features:
+  - none
+  graph_structure:
+  - acyclic
+  oracle_depth: shallow
+  bug_type: nondeterminism_intro
+  count: 50
+- machine_type: plain_fsm
+  determinism: deterministic
+  completeness: partial
+  arity_class: low
+  size_class: tiny
+  guard_complexity: none
+  time_features:
+  - none
+  graph_structure:
+  - hub_and_spoke
+  oracle_depth: shallow
+  bug_type: wrong_source
+  count: 50
+- machine_type: plain_fsm
+  determinism: deterministic
+  completeness: partial
+  arity_class: low
+  size_class: tiny
+  guard_complexity: none
+  time_features:
+  - none
+  graph_structure:
+  - hub_and_spoke
+  oracle_depth: shallow
+  bug_type: wrong_event
+  count: 50
+- machine_type: mealy
+  determinism: deterministic
+  completeness: complete
+  arity_class: low
+  size_class: tiny
+  guard_complexity: simple
+  time_features:
+  - none
+  graph_structure:
+  - acyclic
+  oracle_depth: shallow
+  bug_type: action_corruption
+  count: 50
+- machine_type: mealy
+  determinism: deterministic
+  completeness: partial
+  arity_class: medium
+  size_class: tiny
+  guard_complexity: simple
+  time_features:
+  - none
+  graph_structure:
+  - acyclic
+  oracle_depth: shallow
+  bug_type: guard_flip
+  count: 50
+- machine_type: mealy
+  determinism: nondeterministic
+  completeness: complete
+  arity_class: high
+  size_class: tiny
+  guard_complexity: simple
+  time_features:
+  - none
+  graph_structure:
+  - acyclic
+  oracle_depth: shallow
+  bug_type: duplicate_transition
+  count: 50
+- machine_type: mealy
+  determinism: deterministic
+  completeness: complete
+  arity_class: high
+  size_class: tiny
+  guard_complexity: simple
+  time_features:
+  - none
+  graph_structure:
+  - acyclic
+  oracle_depth: shallow
+  bug_type: wrong_target
+  count: 50
+- machine_type: moore
+  determinism: deterministic
+  completeness: partial
+  arity_class: low
+  size_class: tiny
+  guard_complexity: none
+  time_features:
+  - none
+  graph_structure:
+  - hub_and_spoke
+  oracle_depth: shallow
+  bug_type: wrong_initial_state
+  count: 50
+- machine_type: moore
+  determinism: deterministic
+  completeness: partial
+  arity_class: low
+  size_class: tiny
+  guard_complexity: none
+  time_features:
+  - none
+  graph_structure:
+  - hub_and_spoke
+  oracle_depth: shallow
+  bug_type: dead_state_intro
+  count: 50
+- machine_type: moore
+  determinism: nondeterministic
+  completeness: partial
+  arity_class: low
+  size_class: tiny
+  guard_complexity: none
+  time_features:
+  - none
+  graph_structure:
+  - hub_and_spoke
+  oracle_depth: shallow
+  bug_type: wrong_target
+  count: 50
+- machine_type: moore
+  determinism: deterministic
+  completeness: partial
+  arity_class: low
+  size_class: tiny
+  guard_complexity: none
+  time_features:
+  - none
+  graph_structure:
+  - hub_and_spoke
+  oracle_depth: shallow
+  bug_type: unreachable_state_intro
+  count: 50
+- machine_type: efsm
+  determinism: deterministic
+  completeness: complete
+  arity_class: low
+  size_class: tiny
+  guard_complexity: compound
+  time_features:
+  - none
+  graph_structure:
+  - acyclic
+  oracle_depth: shallow
+  bug_type: guard_weaken
+  count: 50
+- machine_type: efsm
+  determinism: deterministic
+  completeness: partial
+  arity_class: medium
+  size_class: tiny
+  guard_complexity: compound
+  time_features:
+  - none
+  graph_structure:
+  - acyclic
+  oracle_depth: shallow
+  bug_type: guard_strengthen
+  count: 50
+- machine_type: efsm
+  determinism: nondeterministic
+  completeness: complete
+  arity_class: high
+  size_class: tiny
+  guard_complexity: compound
+  time_features:
+  - none
+  graph_structure:
+  - acyclic
+  oracle_depth: shallow
+  bug_type: guard_flip
+  count: 50
+- machine_type: efsm
+  determinism: deterministic
+  completeness: complete
+  arity_class: medium
+  size_class: tiny
+  guard_complexity: compound
+  time_features:
+  - none
+  graph_structure:
+  - acyclic
+  oracle_depth: shallow
+  bug_type: missing_transition
+  count: 50
+- machine_type: timed_fsm
+  determinism: deterministic
+  completeness: complete
+  arity_class: low
+  size_class: tiny
+  guard_complexity: simple
+  time_features:
+  - timeout
+  graph_structure:
+  - acyclic
+  oracle_depth: shallow
+  bug_type: timeout_corruption
+  count: 50
+- machine_type: timed_fsm
+  determinism: deterministic
+  completeness: partial
+  arity_class: medium
+  size_class: tiny
+  guard_complexity: simple
+  time_features:
+  - timeout
+  graph_structure:
+  - acyclic
+  oracle_depth: shallow
+  bug_type: delay_corruption
+  count: 50
+- machine_type: timed_fsm
+  determinism: nondeterministic
+  completeness: complete
+  arity_class: high
+  size_class: tiny
+  guard_complexity: simple
+  time_features:
+  - timeout
+  graph_structure:
+  - acyclic
+  oracle_depth: shallow
+  bug_type: wrong_target
+  count: 50
+- machine_type: timed_fsm
+  determinism: deterministic
+  completeness: complete
+  arity_class: high
+  size_class: tiny
+  guard_complexity: simple
+  time_features:
+  - timeout
+  graph_structure:
+  - acyclic
+  oracle_depth: shallow
+  bug_type: missing_transition
+  count: 50

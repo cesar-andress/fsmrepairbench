@@ -1,0 +1,312 @@
+{
+  "name": "fsmrepairbench_v0_higher_order_smoke",
+  "version": "0.1.0",
+  "seed": 43,
+  "cells": [
+    {
+      "machine_type": "mealy",
+      "determinism": "deterministic",
+      "completeness": "complete",
+      "arity_class": "high",
+      "size_class": "tiny",
+      "guard_complexity": "simple",
+      "time_features": [
+        "none"
+      ],
+      "graph_structure": [
+        "acyclic"
+      ],
+      "oracle_depth": "shallow",
+      "bug_type": "wrong_target",
+      "mutation_operators": null,
+      "count": 10
+    },
+    {
+      "machine_type": "mealy",
+      "determinism": "deterministic",
+      "completeness": "complete",
+      "arity_class": "medium",
+      "size_class": "tiny",
+      "guard_complexity": "simple",
+      "time_features": [
+        "none"
+      ],
+      "graph_structure": [
+        "acyclic"
+      ],
+      "oracle_depth": "shallow",
+      "bug_type": "guard_flip",
+      "mutation_operators": null,
+      "count": 10
+    },
+    {
+      "machine_type": "plain_fsm",
+      "determinism": "deterministic",
+      "completeness": "partial",
+      "arity_class": "low",
+      "size_class": "tiny",
+      "guard_complexity": "none",
+      "time_features": [
+        "none"
+      ],
+      "graph_structure": [
+        "acyclic"
+      ],
+      "oracle_depth": "shallow",
+      "bug_type": "missing_transition",
+      "mutation_operators": null,
+      "count": 10
+    },
+    {
+      "machine_type": "plain_fsm",
+      "determinism": "deterministic",
+      "completeness": "partial",
+      "arity_class": "low",
+      "size_class": "tiny",
+      "guard_complexity": "none",
+      "time_features": [
+        "none"
+      ],
+      "graph_structure": [
+        "hub_and_spoke"
+      ],
+      "oracle_depth": "shallow",
+      "bug_type": "wrong_event",
+      "mutation_operators": null,
+      "count": 10
+    },
+    {
+      "machine_type": "mealy",
+      "determinism": "deterministic",
+      "completeness": "complete",
+      "arity_class": "low",
+      "size_class": "tiny",
+      "guard_complexity": "simple",
+      "time_features": [
+        "none"
+      ],
+      "graph_structure": [
+        "acyclic"
+      ],
+      "oracle_depth": "shallow",
+      "bug_type": "action_corruption",
+      "mutation_operators": null,
+      "count": 10
+    },
+    {
+      "machine_type": "mealy",
+      "determinism": "deterministic",
+      "completeness": "complete",
+      "arity_class": "high",
+      "size_class": "tiny",
+      "guard_complexity": "simple",
+      "time_features": [
+        "none"
+      ],
+      "graph_structure": [
+        "acyclic"
+      ],
+      "oracle_depth": "shallow",
+      "bug_type": "wrong_target",
+      "mutation_operators": [
+        "wrong_target",
+        "guard_flip"
+      ],
+      "count": 5
+    },
+    {
+      "machine_type": "plain_fsm",
+      "determinism": "deterministic",
+      "completeness": "partial",
+      "arity_class": "low",
+      "size_class": "tiny",
+      "guard_complexity": "none",
+      "time_features": [
+        "none"
+      ],
+      "graph_structure": [
+        "acyclic"
+      ],
+      "oracle_depth": "shallow",
+      "bug_type": "missing_transition",
+      "mutation_operators": [
+        "wrong_target",
+        "missing_transition"
+      ],
+      "count": 5
+    },
+    {
+      "machine_type": "plain_fsm",
+      "determinism": "deterministic",
+      "completeness": "partial",
+      "arity_class": "low",
+      "size_class": "tiny",
+      "guard_complexity": "none",
+      "time_features": [
+        "none"
+      ],
+      "graph_structure": [
+        "hub_and_spoke"
+      ],
+      "oracle_depth": "shallow",
+      "bug_type": "wrong_event",
+      "mutation_operators": [
+        "wrong_event",
+        "missing_transition"
+      ],
+      "count": 5
+    },
+    {
+      "machine_type": "mealy",
+      "determinism": "deterministic",
+      "completeness": "complete",
+      "arity_class": "medium",
+      "size_class": "tiny",
+      "guard_complexity": "simple",
+      "time_features": [
+        "none"
+      ],
+      "graph_structure": [
+        "acyclic"
+      ],
+      "oracle_depth": "shallow",
+      "bug_type": "action_corruption",
+      "mutation_operators": [
+        "action_corruption",
+        "guard_flip"
+      ],
+      "count": 5
+    },
+    {
+      "machine_type": "mealy",
+      "determinism": "deterministic",
+      "completeness": "complete",
+      "arity_class": "high",
+      "size_class": "tiny",
+      "guard_complexity": "simple",
+      "time_features": [
+        "none"
+      ],
+      "graph_structure": [
+        "acyclic"
+      ],
+      "oracle_depth": "shallow",
+      "bug_type": "guard_flip",
+      "mutation_operators": [
+        "guard_flip",
+        "wrong_target"
+      ],
+      "count": 5
+    },
+    {
+      "machine_type": "mealy",
+      "determinism": "deterministic",
+      "completeness": "complete",
+      "arity_class": "high",
+      "size_class": "tiny",
+      "guard_complexity": "simple",
+      "time_features": [
+        "none"
+      ],
+      "graph_structure": [
+        "acyclic"
+      ],
+      "oracle_depth": "shallow",
+      "bug_type": "wrong_target",
+      "mutation_operators": [
+        "wrong_target",
+        "guard_flip",
+        "missing_transition"
+      ],
+      "count": 5
+    },
+    {
+      "machine_type": "mealy",
+      "determinism": "deterministic",
+      "completeness": "complete",
+      "arity_class": "medium",
+      "size_class": "tiny",
+      "guard_complexity": "simple",
+      "time_features": [
+        "none"
+      ],
+      "graph_structure": [
+        "acyclic"
+      ],
+      "oracle_depth": "shallow",
+      "bug_type": "wrong_event",
+      "mutation_operators": [
+        "wrong_event",
+        "wrong_target",
+        "guard_flip"
+      ],
+      "count": 5
+    },
+    {
+      "machine_type": "mealy",
+      "determinism": "deterministic",
+      "completeness": "complete",
+      "arity_class": "high",
+      "size_class": "tiny",
+      "guard_complexity": "simple",
+      "time_features": [
+        "none"
+      ],
+      "graph_structure": [
+        "acyclic"
+      ],
+      "oracle_depth": "shallow",
+      "bug_type": "missing_transition",
+      "mutation_operators": [
+        "missing_transition",
+        "guard_flip",
+        "wrong_target"
+      ],
+      "count": 5
+    },
+    {
+      "machine_type": "mealy",
+      "determinism": "deterministic",
+      "completeness": "complete",
+      "arity_class": "low",
+      "size_class": "tiny",
+      "guard_complexity": "simple",
+      "time_features": [
+        "none"
+      ],
+      "graph_structure": [
+        "acyclic"
+      ],
+      "oracle_depth": "shallow",
+      "bug_type": "action_corruption",
+      "mutation_operators": [
+        "action_corruption",
+        "guard_flip",
+        "wrong_target"
+      ],
+      "count": 5
+    },
+    {
+      "machine_type": "mealy",
+      "determinism": "deterministic",
+      "completeness": "complete",
+      "arity_class": "medium",
+      "size_class": "tiny",
+      "guard_complexity": "simple",
+      "time_features": [
+        "none"
+      ],
+      "graph_structure": [
+        "acyclic"
+      ],
+      "oracle_depth": "shallow",
+      "bug_type": "guard_flip",
+      "mutation_operators": [
+        "guard_flip",
+        "wrong_target",
+        "missing_transition"
+      ],
+      "count": 5
+    }
+  ]
+}

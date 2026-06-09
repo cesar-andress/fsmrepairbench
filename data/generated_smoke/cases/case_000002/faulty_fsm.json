@@ -1,0 +1,46 @@
+{
+  "id": "toggle_001__faulty__wrong_target__2042",
+  "name": "Toggle (faulty: wrong_target)",
+  "description": "Simple two-state toggle machine.",
+  "states": [
+    {
+      "id": "off",
+      "state_output": null
+    },
+    {
+      "id": "on",
+      "state_output": null
+    }
+  ],
+  "initial_state": "off",
+  "events": [
+    "toggle"
+  ],
+  "transitions": [
+    {
+      "id": "t1",
+      "source": "off",
+      "event": "toggle",
+      "target": "on",
+      "guard": null,
+      "action": null,
+      "output": null,
+      "timeout": null,
+      "delay": null,
+      "requirements": []
+    },
+    {
+      "id": "t2",
+      "source": "on",
+      "event": "toggle",
+      "target": "on",
+      "guard": null,
+      "action": null,
+      "output": null,
+      "timeout": null,
+      "delay": null,
+      "requirements": []
+    }
+  ],
+  "variables": {}
+}

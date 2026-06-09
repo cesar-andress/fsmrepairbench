@@ -1,0 +1,42 @@
+{
+  "bug_id": "parking_gate_001__hom__wrong_target__guard_flip__missing_transition__42",
+  "reference_fsm_id": "parking_gate_001",
+  "faulty_fsm_id": "parking_gate_001__faulty__hom__wrong_target__guard_flip__missing_transition__42",
+  "mutation_operator": "wrong_target,guard_flip,missing_transition",
+  "changed_transition_id": "t2",
+  "description": "Higher-order mutant applying 3 operators: wrong_target, guard_flip, missing_transition",
+  "seed": 42,
+  "mutation_complexity": null,
+  "mutation_scope": null,
+  "mutation_mode": null,
+  "mutation_order": 3,
+  "component_faults": [
+    {
+      "operator": "wrong_target",
+      "seed": 42,
+      "bug_id": "parking_gate_001__wrong_target__42",
+      "changed_transition_id": "t3",
+      "description": "Changed target of transition 't3' from 'closed' to 'open'"
+    },
+    {
+      "operator": "guard_flip",
+      "seed": 1042,
+      "bug_id": "parking_gate_001__faulty__wrong_target__42__guard_flip__1042",
+      "changed_transition_id": "t1",
+      "description": "Changed guard of transition 't1' from 'ticket_invalid' to 'not_ticket_invalid'"
+    },
+    {
+      "operator": "missing_transition",
+      "seed": 2042,
+      "bug_id": "parking_gate_001__faulty__wrong_target__42__faulty__guard_flip__1042__missing_transition__2042",
+      "changed_transition_id": "t2",
+      "description": "Removed transition 't2'"
+    }
+  ],
+  "is_higher_order": true,
+  "coupled_to_simple_faults": [
+    "parking_gate_001__wrong_target__42",
+    "parking_gate_001__faulty__wrong_target__42__guard_flip__1042",
+    "parking_gate_001__faulty__wrong_target__42__faulty__guard_flip__1042__missing_transition__2042"
+  ]
+}

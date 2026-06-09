@@ -1,0 +1,34 @@
+{
+  "bug_id": "synthetic_1838_3_2__hom__wrong_event__missing_transition__64043",
+  "reference_fsm_id": "synthetic_1838_3_2",
+  "faulty_fsm_id": "synthetic_1838_3_2__faulty__hom__wrong_event__missing_transition__64043",
+  "mutation_operator": "wrong_event,missing_transition",
+  "changed_transition_id": "t1838_hub_2",
+  "description": "Higher-order mutant applying 2 operators: wrong_event, missing_transition",
+  "seed": 64043,
+  "mutation_complexity": null,
+  "mutation_scope": null,
+  "mutation_mode": null,
+  "mutation_order": 2,
+  "component_faults": [
+    {
+      "operator": "wrong_event",
+      "seed": 64043,
+      "bug_id": "synthetic_1838_3_2__wrong_event__64043",
+      "changed_transition_id": "t1838_hub_2",
+      "description": "Changed event of transition 't1838_hub_2' from 'e1838_1' to 'e1838_0'"
+    },
+    {
+      "operator": "missing_transition",
+      "seed": 65043,
+      "bug_id": "synthetic_1838_3_2__faulty__wrong_event__64043__missing_transition__65043",
+      "changed_transition_id": "t1838_hub_2",
+      "description": "Removed transition 't1838_hub_2'"
+    }
+  ],
+  "is_higher_order": true,
+  "coupled_to_simple_faults": [
+    "synthetic_1838_3_2__wrong_event__64043",
+    "synthetic_1838_3_2__faulty__wrong_event__64043__missing_transition__65043"
+  ]
+}

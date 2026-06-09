@@ -1,0 +1,140 @@
+{
+  "id": "synthetic_128_3_2__faulty__wrong_target__5043",
+  "name": "Synthetic FSM (custom) (faulty: wrong_target)",
+  "description": "Synthetic FSM generated with seed=128, states=3, events=2, branching_factor=4, deterministic=True, allow_dead_states=False",
+  "states": [
+    {
+      "id": "s128_0",
+      "state_output": null,
+      "refusal": false,
+      "quiescence": false
+    },
+    {
+      "id": "s128_1",
+      "state_output": null,
+      "refusal": false,
+      "quiescence": false
+    },
+    {
+      "id": "s128_2",
+      "state_output": null,
+      "refusal": false,
+      "quiescence": false
+    }
+  ],
+  "initial_state": "s128_0",
+  "events": [
+    "e128_0",
+    "e128_1"
+  ],
+  "transitions": [
+    {
+      "id": "t128_1",
+      "source": "s128_0",
+      "event": "e128_1",
+      "target": "s128_1",
+      "guard": "x_128_0 > 0",
+      "action": "act128_1",
+      "output": "out_128_0",
+      "timeout": null,
+      "delay": null,
+      "requirements": [],
+      "probability": null,
+      "is_nondeterministic": false,
+      "refusal": false,
+      "quiescence": false,
+      "discrete_time": null
+    },
+    {
+      "id": "t128_2",
+      "source": "s128_1",
+      "event": "e128_0",
+      "target": "s128_2",
+      "guard": "x_128_1 > 0",
+      "action": "act128_2",
+      "output": "out_128_1",
+      "timeout": null,
+      "delay": null,
+      "requirements": [],
+      "probability": null,
+      "is_nondeterministic": false,
+      "refusal": false,
+      "quiescence": false,
+      "discrete_time": null
+    },
+    {
+      "id": "t128_3",
+      "source": "s128_0",
+      "event": "e128_0",
+      "target": "s128_2",
+      "guard": "x_128_2 > 0",
+      "action": "act128_3",
+      "output": "out_128_2",
+      "timeout": null,
+      "delay": null,
+      "requirements": [],
+      "probability": null,
+      "is_nondeterministic": false,
+      "refusal": false,
+      "quiescence": false,
+      "discrete_time": null
+    },
+    {
+      "id": "t128_4",
+      "source": "s128_1",
+      "event": "e128_1",
+      "target": "s128_2",
+      "guard": "x_128_3 > 0",
+      "action": "act128_4",
+      "output": "out_128_3",
+      "timeout": null,
+      "delay": null,
+      "requirements": [],
+      "probability": null,
+      "is_nondeterministic": false,
+      "refusal": false,
+      "quiescence": false,
+      "discrete_time": null
+    },
+    {
+      "id": "t128_5",
+      "source": "s128_2",
+      "event": "e128_0",
+      "target": "s128_2",
+      "guard": "x_128_4 > 0",
+      "action": "act128_5",
+      "output": "out_128_4",
+      "timeout": null,
+      "delay": null,
+      "requirements": [],
+      "probability": null,
+      "is_nondeterministic": false,
+      "refusal": false,
+      "quiescence": false,
+      "discrete_time": null
+    },
+    {
+      "id": "t128_6",
+      "source": "s128_2",
+      "event": "e128_1",
+      "target": "s128_2",
+      "guard": "x_128_5 > 0",
+      "action": "act128_6",
+      "output": "out_128_5",
+      "timeout": null,
+      "delay": null,
+      "requirements": [],
+      "probability": null,
+      "is_nondeterministic": false,
+      "refusal": false,
+      "quiescence": false,
+      "discrete_time": null
+    }
+  ],
+  "variables": {},
+  "parent_fsm_id": "synthetic_128_3_2",
+  "reference_fsm_id": "synthetic_128_3_2",
+  "discrete_time_step": null,
+  "semantics_mode": null,
+  "cyclic_metadata": null
+}

@@ -1,0 +1,78 @@
+{
+  "id": "synthetic_2156_3_2__faulty__unreachable_state_intro__59042",
+  "name": "Synthetic FSM (custom) (faulty: unreachable_state_intro)",
+  "description": "Synthetic FSM generated with seed=2156, states=3, events=2, branching_factor=1, deterministic=True, allow_dead_states=True",
+  "states": [
+    {
+      "id": "s2156_0",
+      "state_output": "out_2156_0",
+      "refusal": false,
+      "quiescence": false
+    },
+    {
+      "id": "s2156_1",
+      "state_output": "out_2156_1",
+      "refusal": false,
+      "quiescence": false
+    },
+    {
+      "id": "s2156_2",
+      "state_output": "out_2156_2",
+      "refusal": false,
+      "quiescence": false
+    },
+    {
+      "id": "unreachable_59042",
+      "state_output": null,
+      "refusal": false,
+      "quiescence": false
+    }
+  ],
+  "initial_state": "s2156_0",
+  "events": [
+    "e2156_0",
+    "e2156_1"
+  ],
+  "transitions": [
+    {
+      "id": "t2156_1",
+      "source": "s2156_0",
+      "event": "e2156_0",
+      "target": "s2156_1",
+      "guard": null,
+      "action": "act2156_1",
+      "output": null,
+      "timeout": null,
+      "delay": null,
+      "requirements": [],
+      "probability": null,
+      "is_nondeterministic": false,
+      "refusal": false,
+      "quiescence": false,
+      "discrete_time": null
+    },
+    {
+      "id": "t2156_2",
+      "source": "s2156_1",
+      "event": "e2156_0",
+      "target": "s2156_2",
+      "guard": null,
+      "action": "act2156_2",
+      "output": null,
+      "timeout": null,
+      "delay": null,
+      "requirements": [],
+      "probability": null,
+      "is_nondeterministic": false,
+      "refusal": false,
+      "quiescence": false,
+      "discrete_time": null
+    }
+  ],
+  "variables": {},
+  "parent_fsm_id": "synthetic_2156_3_2",
+  "reference_fsm_id": "synthetic_2156_3_2",
+  "discrete_time_step": null,
+  "semantics_mode": null,
+  "cyclic_metadata": null
+}

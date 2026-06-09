@@ -1,0 +1,106 @@
+{
+  "id": "synthetic_837_3_2",
+  "name": "Synthetic FSM (custom)",
+  "description": "Synthetic FSM generated with seed=837, states=3, events=2, branching_factor=1, deterministic=True, allow_dead_states=False",
+  "states": [
+    {
+      "id": "s837_0",
+      "state_output": null,
+      "refusal": false,
+      "quiescence": false
+    },
+    {
+      "id": "s837_1",
+      "state_output": null,
+      "refusal": false,
+      "quiescence": false
+    },
+    {
+      "id": "s837_2",
+      "state_output": null,
+      "refusal": false,
+      "quiescence": false
+    }
+  ],
+  "initial_state": "s837_0",
+  "events": [
+    "e837_0",
+    "e837_1"
+  ],
+  "transitions": [
+    {
+      "id": "t837_1",
+      "source": "s837_0",
+      "event": "e837_1",
+      "target": "s837_1",
+      "guard": "x_837_0 > 0",
+      "action": "act837_1",
+      "output": "out_837_0",
+      "timeout": null,
+      "delay": null,
+      "requirements": [],
+      "probability": null,
+      "is_nondeterministic": false,
+      "refusal": false,
+      "quiescence": false,
+      "discrete_time": null
+    },
+    {
+      "id": "t837_2",
+      "source": "s837_0",
+      "event": "e837_1",
+      "target": "s837_2",
+      "guard": "x_837_1 > 0",
+      "action": "act837_2",
+      "output": "out_837_1",
+      "timeout": null,
+      "delay": null,
+      "requirements": [],
+      "probability": null,
+      "is_nondeterministic": false,
+      "refusal": false,
+      "quiescence": false,
+      "discrete_time": null
+    },
+    {
+      "id": "t837_3",
+      "source": "s837_1",
+      "event": "e837_0",
+      "target": "s837_2",
+      "guard": "x_837_2 > 0",
+      "action": "act837_3",
+      "output": "out_837_2",
+      "timeout": null,
+      "delay": null,
+      "requirements": [],
+      "probability": null,
+      "is_nondeterministic": false,
+      "refusal": false,
+      "quiescence": false,
+      "discrete_time": null
+    },
+    {
+      "id": "t837_4",
+      "source": "s837_2",
+      "event": "e837_1",
+      "target": "s837_2",
+      "guard": "x_837_3 > 0",
+      "action": "act837_4",
+      "output": "out_837_3",
+      "timeout": null,
+      "delay": null,
+      "requirements": [],
+      "probability": null,
+      "is_nondeterministic": false,
+      "refusal": false,
+      "quiescence": false,
+      "discrete_time": null
+    }
+  ],
+  "variables": {},
+  "parent_fsm_id": null,
+  "reference_fsm_id": null,
+  "discrete_time_step": null,
+  "semantics_mode": null,
+  "cyclic_metadata": null
+}

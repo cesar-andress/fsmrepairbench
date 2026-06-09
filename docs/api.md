@@ -4,6 +4,46 @@
 
 Pydantic models discovered under `src/fsmrepairbench/`.
 
+## `fsmrepairbench.adversarial_fsm`
+
+### `AdversarialDifficultyMetadata`
+
+Module: `fsmrepairbench.adversarial_fsm`
+
+Difficulty metadata for one adversarial FSM.
+
+| Field | Type | Required | Default | Description |
+|-------|------|----------|---------|-------------|
+| `rank` | `int` | yes | — |  |
+| `label` | `Literal['trivial', 'easy', 'moderate', 'hard', 'very_hard', 'expert']` | yes | — |  |
+| `pattern` | `Literal['highly_symmetric', 'long_dependency_chain', 'hidden_cycles', 'equivalent_states', 'deceptive_transitions', 'sparse_transitions', 'dense_transitions', 'delayed_effects', 'temporal_constraints']` | yes | — |  |
+| `pattern_base_rank` | `int` | yes | — |  |
+| `structural_adjustment` | `int` | yes | — |  |
+| `scale_factor` | `float` | yes | — |  |
+| `features` | `dict[str, int | float | bool | str | list[str]]` | no | PydanticUndefined |  |
+| `llm_trap_signals` | `list[str]` | no | PydanticUndefined |  |
+| `description` | `str` | no | '' |  |
+
+### `AdversarialFSMMetadata`
+
+Module: `fsmrepairbench.adversarial_fsm`
+
+Full metadata record for one adversarial FSM.
+
+| Field | Type | Required | Default | Description |
+|-------|------|----------|---------|-------------|
+| `fsm_id` | `str` | yes | — |  |
+| `filename` | `str` | yes | — |  |
+| `metadata_filename` | `str` | yes | — |  |
+| `pattern` | `Literal['highly_symmetric', 'long_dependency_chain', 'hidden_cycles', 'equivalent_states', 'deceptive_transitions', 'sparse_transitions', 'dense_transitions', 'delayed_effects', 'temporal_constraints']` | yes | — |  |
+| `seed` | `int` | yes | — |  |
+| `difficulty` | `AdversarialDifficultyMetadata` | yes | — |  |
+| `state_count` | `int` | yes | — |  |
+| `transition_count` | `int` | yes | — |  |
+| `event_count` | `int` | yes | — |  |
+| `initial_state` | `str` | yes | — |  |
+| `events` | `list[str]` | yes | — |  |
+
 ## `fsmrepairbench.artifact`
 
 ### `ArtifactManifest`
@@ -100,6 +140,196 @@ Deterministic seeds used by an artifact package.
 | `mutation` | `int | None` | no | None |  |
 | `reference` | `int | None` | no | None |  |
 
+## `fsmrepairbench.bpr_engine`
+
+### `BPRScoreReport`
+
+Module: `fsmrepairbench.bpr_engine`
+
+Aggregate BPR scoring output.
+
+| Field | Type | Required | Default | Description |
+|-------|------|----------|---------|-------------|
+| `reference_fsm_id` | `str` | yes | — |  |
+| `candidate_fsm_id` | `str` | yes | — |  |
+| `oracle_suite_id` | `str` | yes | — |  |
+| `bpr` | `float` | yes | — |  |
+| `coverage` | `CoverageMetrics` | yes | — |  |
+| `mutation_score` | `float` | yes | — |  |
+| `oracle_accuracy` | `float` | yes | — |  |
+| `oracle_agreement` | `float` | yes | — |  |
+| `execution_cost` | `int` | yes | — |  |
+| `mutant_count` | `int` | yes | — |  |
+| `scenario_count` | `int` | yes | — |  |
+| `scenarios` | `list[fsmrepairbench.bpr_engine.ScenarioScoreRow]` | no | PydanticUndefined |  |
+| `mutants` | `list[fsmrepairbench.bpr_engine.MutantScoreRow]` | no | PydanticUndefined |  |
+
+### `CandidatePrediction`
+
+Module: `fsmrepairbench.bpr_engine`
+
+Candidate model output for oracle agreement evaluation.
+
+| Field | Type | Required | Default | Description |
+|-------|------|----------|---------|-------------|
+| `candidate_fsm` | `fsmrepairbench.models.FSM | None` | no | None |  |
+| `scenario_predictions` | `list[fsmrepairbench.bpr_engine.ScenarioPrediction]` | no | PydanticUndefined |  |
+
+### `CoverageMetrics`
+
+Module: `fsmrepairbench.bpr_engine`
+
+Coverage ratios achieved by the oracle suite on the reference FSM.
+
+| Field | Type | Required | Default | Description |
+|-------|------|----------|---------|-------------|
+| `state` | `float` | yes | — |  |
+| `transition` | `float` | yes | — |  |
+| `path` | `float` | yes | — |  |
+| `aggregate` | `float` | yes | — |  |
+
+### `MutantScoreRow`
+
+Module: `fsmrepairbench.bpr_engine`
+
+Per-mutant detection summary.
+
+| Field | Type | Required | Default | Description |
+|-------|------|----------|---------|-------------|
+| `mutant_id` | `str` | yes | — |  |
+| `detectable_pairs` | `int` | yes | — |  |
+| `detected_pairs` | `int` | yes | — |  |
+| `mutation_score` | `float` | yes | — |  |
+| `killed` | `bool` | yes | — |  |
+
+### `ScenarioPrediction`
+
+Module: `fsmrepairbench.bpr_engine`
+
+Predicted outcomes for one oracle scenario.
+
+| Field | Type | Required | Default | Description |
+|-------|------|----------|---------|-------------|
+| `scenario_id` | `str` | yes | — |  |
+| `expected_states` | `list[str]` | no | PydanticUndefined |  |
+| `expected_outputs` | `list[str | None]` | no | PydanticUndefined |  |
+
+### `ScenarioScoreRow`
+
+Module: `fsmrepairbench.bpr_engine`
+
+Per-scenario scoring breakdown.
+
+| Field | Type | Required | Default | Description |
+|-------|------|----------|---------|-------------|
+| `scenario_id` | `str` | yes | — |  |
+| `passed` | `bool` | yes | — |  |
+| `passed_steps` | `int` | yes | — |  |
+| `total_steps` | `int` | yes | — |  |
+| `scenario_bpr` | `float` | yes | — |  |
+| `oracle_agreement` | `float` | yes | — |  |
+| `execution_cost` | `int` | yes | — |  |
+
+### `StepPrediction`
+
+Module: `fsmrepairbench.bpr_engine`
+
+Predicted outcome for one oracle step.
+
+| Field | Type | Required | Default | Description |
+|-------|------|----------|---------|-------------|
+| `expected_state` | `str | None` | no | None |  |
+| `expected_output` | `str | None` | no | None |  |
+
+## `fsmrepairbench.coverage_oracle_generator`
+
+### `CoverageOracleExport`
+
+Module: `fsmrepairbench.coverage_oracle_generator`
+
+All coverage oracle suites generated for one FSM.
+
+| Field | Type | Required | Default | Description |
+|-------|------|----------|---------|-------------|
+| `fsm_id` | `str` | yes | — |  |
+| `generation_seed` | `int` | yes | — |  |
+| `max_depth` | `int` | yes | — |  |
+| `path_length` | `int` | yes | — |  |
+| `suites` | `dict[Literal['transition_coverage', 'state_coverage', 'path_coverage', 'boundary_coverage', 'mutation_killing'], fsmrepairbench.coverage_oracle_generator.CoverageOracleSuite]` | yes | — |  |
+
+### `CoverageOracleSuite`
+
+Module: `fsmrepairbench.coverage_oracle_generator`
+
+One minimized oracle suite targeting a coverage criterion.
+
+| Field | Type | Required | Default | Description |
+|-------|------|----------|---------|-------------|
+| `suite_type` | `Literal['transition_coverage', 'state_coverage', 'path_coverage', 'boundary_coverage', 'mutation_killing']` | yes | — |  |
+| `suite_id` | `str` | yes | — |  |
+| `fsm_id` | `str` | yes | — |  |
+| `sequence_count` | `int` | yes | — |  |
+| `coverage_total` | `int` | yes | — |  |
+| `coverage_covered` | `int` | yes | — |  |
+| `coverage_ratio` | `float` | yes | — |  |
+| `sequences` | `list[fsmrepairbench.coverage_oracle_generator.TestSequence]` | yes | — |  |
+
+### `TestSequence`
+
+Module: `fsmrepairbench.coverage_oracle_generator`
+
+One observable test sequence exported from an oracle scenario.
+
+| Field | Type | Required | Default | Description |
+|-------|------|----------|---------|-------------|
+| `id` | `str` | yes | — |  |
+| `description` | `str` | no | '' |  |
+| `inputs` | `list[str]` | yes | — |  |
+| `expected_outputs` | `list[str | None]` | yes | — |  |
+| `expected_states` | `list[str]` | yes | — |  |
+
+## `fsmrepairbench.experiment_pipeline`
+
+### `ExperimentPipelineConfig`
+
+Module: `fsmrepairbench.experiment_pipeline`
+
+Configuration for a reproducible experiment pipeline run.
+
+| Field | Type | Required | Default | Description |
+|-------|------|----------|---------|-------------|
+| `output_root` | `Path` | no | experiment_output |  |
+| `seed` | `int` | no | 42 |  |
+| `fsm_count` | `int` | no | 6 |  |
+| `num_states` | `int` | no | 8 |  |
+| `num_events` | `int` | no | 4 |  |
+| `mutants_per_fsm` | `int` | no | 5 |  |
+| `optimizers` | `tuple[Literal['random_search', 'hill_climbing', 'simulated_annealing', 'genetic_algorithm', 'nsga2'], ...]` | no | ('random_search', 'nsga2') |  |
+| `models` | `tuple[str, ...]` | no | ('reference', 'missing-transition', 'wrong-target', 'random') |  |
+| `optimizer_iterations` | `int` | no | 40 |  |
+| `optimizer_population_size` | `int` | no | 12 |  |
+| `optimizer_generations` | `int` | no | 8 |  |
+| `generate_plots` | `bool` | no | True |  |
+| `alpha` | `float` | no | 0.05 |  |
+
+### `PipelineInstanceMetrics`
+
+Module: `fsmrepairbench.experiment_pipeline`
+
+Metrics collected for one FSM and one evaluated model.
+
+| Field | Type | Required | Default | Description |
+|-------|------|----------|---------|-------------|
+| `fsm_id` | `str` | yes | — |  |
+| `model` | `str` | yes | — |  |
+| `bpr` | `float` | yes | — |  |
+| `mutation_score` | `float` | yes | — |  |
+| `transition_coverage` | `float` | yes | — |  |
+| `oracle_scenarios` | `int` | yes | — |  |
+| `optimized_scenarios` | `int` | yes | — |  |
+| `pareto_front_size` | `int` | yes | — |  |
+| `execution_cost` | `int` | yes | — |  |
+
 ## `fsmrepairbench.experiments`
 
 ### `ExperimentConfig`
@@ -119,6 +349,34 @@ YAML experiment configuration.
 | `workers` | `int` | no | 4 |  |
 | `checkpoint_interval` | `int` | no | 100 |  |
 | `default_backend` | `ModelBackend` | no | ollama |  |
+
+## `fsmrepairbench.fsm_tagging`
+
+### `FSMTagRecord`
+
+Module: `fsmrepairbench.fsm_tagging`
+
+Tag metadata for one analyzed FSM.
+
+| Field | Type | Required | Default | Description |
+|-------|------|----------|---------|-------------|
+| `fsm_id` | `str` | yes | — |  |
+| `filename` | `str` | yes | — |  |
+| `source_kind` | `Literal['fsm', 'hierarchical_fsm']` | no | 'fsm' |  |
+| `num_states` | `int` | yes | — |  |
+| `num_transitions` | `int` | yes | — |  |
+| `num_events` | `int` | yes | — |  |
+| `reachable_states` | `int` | yes | — |  |
+| `avg_branching` | `float` | yes | — |  |
+| `max_out_degree` | `int` | yes | — |  |
+| `avg_path_length` | `float` | yes | — |  |
+| `cycle_count` | `int` | yes | — |  |
+| `mutation_score` | `float | None` | no | None |  |
+| `size_tag` | `Literal['small', 'medium', 'large']` | yes | — |  |
+| `determinism_tag` | `Literal['deterministic', 'non_deterministic']` | yes | — |  |
+| `graph_tag` | `Literal['acyclic', 'cyclic']` | yes | — |  |
+| `tags` | `list[str]` | no | PydanticUndefined |  |
+| `tag_flags` | `dict[str, bool]` | no | PydanticUndefined |  |
 
 ## `fsmrepairbench.generators.stratified_specs`
 
@@ -153,6 +411,7 @@ One stratum in a stratified benchmark generation plan.
 | `graph_structure` | `list[fsmrepairbench.taxonomy.GraphStructure]` | yes | — |  |
 | `oracle_depth` | `OracleDepth` | yes | — |  |
 | `bug_type` | `BugType` | yes | — |  |
+| `mutation_operators` | `list[str] | None` | no | None |  |
 | `count` | `int` | yes | — |  |
 
 ## `fsmrepairbench.hierarchical_fsm`
@@ -215,6 +474,76 @@ Top-level literature taxonomy document.
 | `version` | `str` | yes | — |  |
 | `description` | `str` | no | '' |  |
 | `entries` | `list[fsmrepairbench.literature.LiteratureEntry]` | yes | — |  |
+
+## `fsmrepairbench.literature_mutation`
+
+### `MutantGenerationReport`
+
+Module: `fsmrepairbench.literature_mutation`
+
+Full mutant generation output for one parent FSM.
+
+| Field | Type | Required | Default | Description |
+|-------|------|----------|---------|-------------|
+| `parent_fsm_id` | `str` | yes | — |  |
+| `generation_seed` | `int` | yes | — |  |
+| `statistics` | `MutantStatistics` | yes | — |  |
+| `mutants` | `list[fsmrepairbench.literature_mutation.MutantRecord]` | yes | — |  |
+
+### `MutantRecord`
+
+Module: `fsmrepairbench.literature_mutation`
+
+Metadata for one generated mutant FSM.
+
+| Field | Type | Required | Default | Description |
+|-------|------|----------|---------|-------------|
+| `mutant_id` | `str` | yes | — |  |
+| `parent_id` | `str` | yes | — |  |
+| `mutation_type` | `str` | yes | — |  |
+| `mutation_description` | `str` | yes | — |  |
+| `mutation_order` | `int` | yes | — |  |
+| `order_class` | `Literal['first_order', 'second_order', 'higher_order']` | yes | — |  |
+| `seed` | `int` | yes | — |  |
+| `operators` | `list[str]` | no | PydanticUndefined |  |
+| `fsm` | `fsmrepairbench.models.FSM | None` | no | None |  |
+
+### `MutantStatistics`
+
+Module: `fsmrepairbench.literature_mutation`
+
+Aggregate statistics for a mutant generation run.
+
+| Field | Type | Required | Default | Description |
+|-------|------|----------|---------|-------------|
+| `total_mutants` | `int` | yes | — |  |
+| `first_order_count` | `int` | yes | — |  |
+| `second_order_count` | `int` | yes | — |  |
+| `higher_order_count` | `int` | yes | — |  |
+| `by_mutation_type` | `dict[str, int]` | no | PydanticUndefined |  |
+| `by_order_class` | `dict[str, int]` | no | PydanticUndefined |  |
+| `by_operator` | `dict[str, int]` | no | PydanticUndefined |  |
+
+## `fsmrepairbench.llm_evaluation_tasks`
+
+### `LLMEvaluationTask`
+
+Module: `fsmrepairbench.llm_evaluation_tasks`
+
+One LLM evaluation task record.
+
+| Field | Type | Required | Default | Description |
+|-------|------|----------|---------|-------------|
+| `task_id` | `str` | yes | — |  |
+| `task_type` | `Literal['A', 'B', 'C', 'D', 'E', 'F', 'G']` | yes | — |  |
+| `task_name` | `str` | yes | — |  |
+| `fsm_id` | `str` | yes | — |  |
+| `instruction` | `str` | yes | — |  |
+| `input` | `dict[str, Any]` | yes | — |  |
+| `expected_output` | `dict[str, Any]` | yes | — |  |
+| `output_schema` | `dict[str, Any]` | yes | — |  |
+| `messages` | `list[dict[str, str]]` | yes | — |  |
+| `metadata` | `dict[str, Any]` | no | PydanticUndefined |  |
 
 ## `fsmrepairbench.models`
 
@@ -526,6 +855,30 @@ Replace the target state of a transition.
 | `transition_id` | `str` | yes | — |  |
 | `target` | `str` | yes | — |  |
 
+## `fsmrepairbench.smoke_test_pipeline`
+
+### `SmokeTestPipelineConfig`
+
+Module: `fsmrepairbench.smoke_test_pipeline`
+
+Configuration for a reproducible smoke-test run.
+
+| Field | Type | Required | Default | Description |
+|-------|------|----------|---------|-------------|
+| `input_dir` | `Path` | no | data/smoke_test_input |  |
+| `output_dir` | `Path` | no | results/smoke_test |  |
+| `seed` | `int` | no | 42 |  |
+| `fsm_count` | `int` | no | 10 |  |
+| `first_order_count` | `int` | no | 1 |  |
+| `second_order_count` | `int` | no | 1 |  |
+| `higher_order_count` | `int` | no | 1 |  |
+| `sequence_depth` | `int` | no | 3 |  |
+| `oracle_depth` | `Literal['shallow', 'medium', 'deep', 'exhaustive_like']` | no | 'deep' |  |
+| `prepare_input` | `bool` | no | False |  |
+| `use_cli` | `bool` | no | True |  |
+| `input_source` | `Literal['template', 'examples']` | no | 'template' |  |
+| `examples_dir` | `Path` | no | examples |  |
+
 ## `fsmrepairbench.taxonomy`
 
 ### `CaseFeatures`
@@ -566,6 +919,61 @@ Machine-readable taxonomic features for one benchmark case.
 | `strongly_connected_component_count` | `int | None` | no | None |  |
 | `semantics_features` | `list[fsmrepairbench.taxonomy.SemanticsFeature]` | no | PydanticUndefined |  |
 | `seed` | `int` | yes | — |  |
+
+## `fsmrepairbench.test_suite_optimizer`
+
+### `AlgorithmResult`
+
+Module: `fsmrepairbench.test_suite_optimizer`
+
+Optimization outcome for one algorithm.
+
+| Field | Type | Required | Default | Description |
+|-------|------|----------|---------|-------------|
+| `algorithm` | `Literal['random_search', 'hill_climbing', 'simulated_annealing', 'genetic_algorithm', 'nsga2']` | yes | — |  |
+| `evaluations` | `int` | yes | — |  |
+| `pareto_front` | `list[fsmrepairbench.test_suite_optimizer.ParetoSolution]` | yes | — |  |
+
+### `ObjectiveValues`
+
+Module: `fsmrepairbench.test_suite_optimizer`
+
+Multi-objective scores for one candidate test suite.
+
+| Field | Type | Required | Default | Description |
+|-------|------|----------|---------|-------------|
+| `mutation_score` | `float` | yes | — |  |
+| `transition_coverage` | `float` | yes | — |  |
+| `suite_size` | `int` | yes | — |  |
+| `execution_cost` | `int` | yes | — |  |
+
+### `ParetoSolution`
+
+Module: `fsmrepairbench.test_suite_optimizer`
+
+One non-dominated test suite on the Pareto front.
+
+| Field | Type | Required | Default | Description |
+|-------|------|----------|---------|-------------|
+| `algorithm` | `Literal['random_search', 'hill_climbing', 'simulated_annealing', 'genetic_algorithm', 'nsga2']` | yes | — |  |
+| `scenario_ids` | `list[str]` | yes | — |  |
+| `objectives` | `ObjectiveValues` | yes | — |  |
+
+### `TestSuiteOptimizationReport`
+
+Module: `fsmrepairbench.test_suite_optimizer`
+
+Combined optimization report across algorithms.
+
+| Field | Type | Required | Default | Description |
+|-------|------|----------|---------|-------------|
+| `reference_fsm_id` | `str` | yes | — |  |
+| `source_oracle_suite_id` | `str` | yes | — |  |
+| `seed` | `int` | yes | — |  |
+| `scenario_count` | `int` | yes | — |  |
+| `mutant_count` | `int` | yes | — |  |
+| `algorithms` | `dict[str, fsmrepairbench.test_suite_optimizer.AlgorithmResult]` | yes | — |  |
+| `combined_pareto_front` | `list[fsmrepairbench.test_suite_optimizer.ParetoSolution]` | yes | — |  |
 
 ## `fsmrepairbench.tool_runner`
 

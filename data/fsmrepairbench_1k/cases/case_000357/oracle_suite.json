@@ -1,0 +1,288 @@
+{
+  "id": "synthetic_400_5_3_oracles",
+  "fsm_id": "synthetic_400_5_3",
+  "scenarios": [
+    {
+      "id": "cover_transition_t400_1",
+      "description": "Covers transition 't400_1' (s400_0 --e400_2--> s400_1).",
+      "steps": [
+        {
+          "event": "e400_2",
+          "expected_state": "s400_1",
+          "guard": null,
+          "accepting_states": [],
+          "probability_threshold": null,
+          "refusal_expected": false,
+          "quiescence_expected": false,
+          "discrete_time": null
+        }
+      ]
+    },
+    {
+      "id": "cover_transition_t400_2",
+      "description": "Covers transition 't400_2' (s400_1 --e400_0--> s400_2).",
+      "steps": [
+        {
+          "event": "e400_2",
+          "expected_state": "s400_1",
+          "guard": null,
+          "accepting_states": [],
+          "probability_threshold": null,
+          "refusal_expected": false,
+          "quiescence_expected": false,
+          "discrete_time": null
+        },
+        {
+          "event": "e400_0",
+          "expected_state": "s400_2",
+          "guard": null,
+          "accepting_states": [],
+          "probability_threshold": null,
+          "refusal_expected": false,
+          "quiescence_expected": false,
+          "discrete_time": null
+        }
+      ]
+    },
+    {
+      "id": "cover_transition_t400_3",
+      "description": "Covers transition 't400_3' (s400_2 --e400_1--> s400_3).",
+      "steps": [
+        {
+          "event": "e400_2",
+          "expected_state": "s400_1",
+          "guard": null,
+          "accepting_states": [],
+          "probability_threshold": null,
+          "refusal_expected": false,
+          "quiescence_expected": false,
+          "discrete_time": null
+        },
+        {
+          "event": "e400_0",
+          "expected_state": "s400_2",
+          "guard": null,
+          "accepting_states": [],
+          "probability_threshold": null,
+          "refusal_expected": false,
+          "quiescence_expected": false,
+          "discrete_time": null
+        },
+        {
+          "event": "e400_1",
+          "expected_state": "s400_3",
+          "guard": null,
+          "accepting_states": [],
+          "probability_threshold": null,
+          "refusal_expected": false,
+          "quiescence_expected": false,
+          "discrete_time": null
+        }
+      ]
+    },
+    {
+      "id": "cover_transition_t400_4",
+      "description": "Covers transition 't400_4' (s400_3 --e400_1--> s400_4).",
+      "steps": [
+        {
+          "event": "e400_2",
+          "expected_state": "s400_3",
+          "guard": "g400_4_1",
+          "accepting_states": [],
+          "probability_threshold": null,
+          "refusal_expected": false,
+          "quiescence_expected": false,
+          "discrete_time": null
+        },
+        {
+          "event": "e400_1",
+          "expected_state": "s400_4",
+          "guard": null,
+          "accepting_states": [],
+          "probability_threshold": null,
+          "refusal_expected": false,
+          "quiescence_expected": false,
+          "discrete_time": null
+        }
+      ]
+    },
+    {
+      "id": "cover_transition_t400_5",
+      "description": "Covers transition 't400_5' (s400_0 --e400_2--> s400_3).",
+      "steps": [
+        {
+          "event": "e400_2",
+          "expected_state": "s400_3",
+          "guard": "g400_4_1",
+          "accepting_states": [],
+          "probability_threshold": null,
+          "refusal_expected": false,
+          "quiescence_expected": false,
+          "discrete_time": null
+        }
+      ]
+    },
+    {
+      "id": "cover_transition_t400_6",
+      "description": "Covers transition 't400_6' (s400_1 --e400_1--> s400_2).",
+      "steps": [
+        {
+          "event": "e400_2",
+          "expected_state": "s400_1",
+          "guard": null,
+          "accepting_states": [],
+          "probability_threshold": null,
+          "refusal_expected": false,
+          "quiescence_expected": false,
+          "discrete_time": null
+        },
+        {
+          "event": "e400_1",
+          "expected_state": "s400_2",
+          "guard": null,
+          "accepting_states": [],
+          "probability_threshold": null,
+          "refusal_expected": false,
+          "quiescence_expected": false,
+          "discrete_time": null
+        }
+      ]
+    },
+    {
+      "id": "cover_transition_t400_7",
+      "description": "Covers transition 't400_7' (s400_2 --e400_0--> s400_3).",
+      "steps": [
+        {
+          "event": "e400_2",
+          "expected_state": "s400_1",
+          "guard": null,
+          "accepting_states": [],
+          "probability_threshold": null,
+          "refusal_expected": false,
+          "quiescence_expected": false,
+          "discrete_time": null
+        },
+        {
+          "event": "e400_0",
+          "expected_state": "s400_2",
+          "guard": null,
+          "accepting_states": [],
+          "probability_threshold": null,
+          "refusal_expected": false,
+          "quiescence_expected": false,
+          "discrete_time": null
+        },
+        {
+          "event": "e400_0",
+          "expected_state": "s400_3",
+          "guard": null,
+          "accepting_states": [],
+          "probability_threshold": null,
+          "refusal_expected": false,
+          "quiescence_expected": false,
+          "discrete_time": null
+        }
+      ]
+    },
+    {
+      "id": "cover_transition_t400_8",
+      "description": "Covers transition 't400_8' (s400_3 --e400_0--> s400_3).",
+      "steps": [
+        {
+          "event": "e400_2",
+          "expected_state": "s400_3",
+          "guard": "g400_4_1",
+          "accepting_states": [],
+          "probability_threshold": null,
+          "refusal_expected": false,
+          "quiescence_expected": false,
+          "discrete_time": null
+        },
+        {
+          "event": "e400_0",
+          "expected_state": "s400_3",
+          "guard": null,
+          "accepting_states": [],
+          "probability_threshold": null,
+          "refusal_expected": false,
+          "quiescence_expected": false,
+          "discrete_time": null
+        }
+      ]
+    },
+    {
+      "id": "cover_transition_t400_9",
+      "description": "Covers transition 't400_9' (s400_4 --e400_0--> s400_0).",
+      "steps": [
+        {
+          "event": "e400_2",
+          "expected_state": "s400_3",
+          "guard": "g400_4_1",
+          "accepting_states": [],
+          "probability_threshold": null,
+          "refusal_expected": false,
+          "quiescence_expected": false,
+          "discrete_time": null
+        },
+        {
+          "event": "e400_1",
+          "expected_state": "s400_4",
+          "guard": null,
+          "accepting_states": [],
+          "probability_threshold": null,
+          "refusal_expected": false,
+          "quiescence_expected": false,
+          "discrete_time": null
+        },
+        {
+          "event": "e400_0",
+          "expected_state": "s400_0",
+          "guard": null,
+          "accepting_states": [],
+          "probability_threshold": null,
+          "refusal_expected": false,
+          "quiescence_expected": false,
+          "discrete_time": null
+        }
+      ]
+    },
+    {
+      "id": "cover_transition_t400_10",
+      "description": "Covers transition 't400_10' (s400_4 --e400_0--> s400_4).",
+      "steps": [
+        {
+          "event": "e400_2",
+          "expected_state": "s400_3",
+          "guard": "g400_4_1",
+          "accepting_states": [],
+          "probability_threshold": null,
+          "refusal_expected": false,
+          "quiescence_expected": false,
+          "discrete_time": null
+        },
+        {
+          "event": "e400_1",
+          "expected_state": "s400_4",
+          "guard": null,
+          "accepting_states": [],
+          "probability_threshold": null,
+          "refusal_expected": false,
+          "quiescence_expected": false,
+          "discrete_time": null
+        },
+        {
+          "event": "e400_0",
+          "expected_state": "s400_4",
+          "guard": "g400_9_1",
+          "accepting_states": [],
+          "probability_threshold": null,
+          "refusal_expected": false,
+          "quiescence_expected": false,
+          "discrete_time": null
+        }
+      ]
+    }
+  ],
+  "semantics_mode": null,
+  "probability_threshold": null
+}

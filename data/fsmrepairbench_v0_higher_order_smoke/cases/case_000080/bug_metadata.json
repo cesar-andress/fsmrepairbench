@@ -1,0 +1,42 @@
+{
+  "bug_id": "synthetic_2413_3_2__hom__wrong_target__guard_flip__missing_transition__80043",
+  "reference_fsm_id": "synthetic_2413_3_2",
+  "faulty_fsm_id": "synthetic_2413_3_2__faulty__hom__wrong_target__guard_flip__missing_transition__80043",
+  "mutation_operator": "wrong_target,guard_flip,missing_transition",
+  "changed_transition_id": "t2413_3",
+  "description": "Higher-order mutant applying 3 operators: wrong_target, guard_flip, missing_transition",
+  "seed": 80043,
+  "mutation_complexity": null,
+  "mutation_scope": null,
+  "mutation_mode": null,
+  "mutation_order": 3,
+  "component_faults": [
+    {
+      "operator": "wrong_target",
+      "seed": 80043,
+      "bug_id": "synthetic_2413_3_2__wrong_target__80043",
+      "changed_transition_id": "t2413_6",
+      "description": "Changed target of transition 't2413_6' from 's2413_2' to 's2413_1'"
+    },
+    {
+      "operator": "guard_flip",
+      "seed": 81043,
+      "bug_id": "synthetic_2413_3_2__faulty__wrong_target__80043__guard_flip__81043",
+      "changed_transition_id": "t2413_6",
+      "description": "Changed guard of transition 't2413_6' from 'x_2413_5 > 0' to 'not_x_2413_5 > 0'"
+    },
+    {
+      "operator": "missing_transition",
+      "seed": 82043,
+      "bug_id": "synthetic_2413_3_2__faulty__wrong_target__80043__faulty__guard_flip__81043__missing_transition__82043",
+      "changed_transition_id": "t2413_3",
+      "description": "Removed transition 't2413_3'"
+    }
+  ],
+  "is_higher_order": true,
+  "coupled_to_simple_faults": [
+    "synthetic_2413_3_2__wrong_target__80043",
+    "synthetic_2413_3_2__faulty__wrong_target__80043__guard_flip__81043",
+    "synthetic_2413_3_2__faulty__wrong_target__80043__faulty__guard_flip__81043__missing_transition__82043"
+  ]
+}

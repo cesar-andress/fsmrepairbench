@@ -1,0 +1,42 @@
+{
+  "bug_id": "synthetic_2582_3_2__hom__wrong_event__wrong_target__guard_flip__84043",
+  "reference_fsm_id": "synthetic_2582_3_2",
+  "faulty_fsm_id": "synthetic_2582_3_2__faulty__hom__wrong_event__wrong_target__guard_flip__84043",
+  "mutation_operator": "wrong_event,wrong_target,guard_flip",
+  "changed_transition_id": "t2582_4",
+  "description": "Higher-order mutant applying 3 operators: wrong_event, wrong_target, guard_flip",
+  "seed": 84043,
+  "mutation_complexity": null,
+  "mutation_scope": null,
+  "mutation_mode": null,
+  "mutation_order": 3,
+  "component_faults": [
+    {
+      "operator": "wrong_event",
+      "seed": 84043,
+      "bug_id": "synthetic_2582_3_2__wrong_event__84043",
+      "changed_transition_id": "t2582_2",
+      "description": "Changed event of transition 't2582_2' from 'e2582_1' to 'e2582_0'"
+    },
+    {
+      "operator": "wrong_target",
+      "seed": 85043,
+      "bug_id": "synthetic_2582_3_2__faulty__wrong_event__84043__wrong_target__85043",
+      "changed_transition_id": "t2582_5",
+      "description": "Changed target of transition 't2582_5' from 's2582_2' to 's2582_1'"
+    },
+    {
+      "operator": "guard_flip",
+      "seed": 86043,
+      "bug_id": "synthetic_2582_3_2__faulty__wrong_event__84043__faulty__wrong_target__85043__guard_flip__86043",
+      "changed_transition_id": "t2582_4",
+      "description": "Changed guard of transition 't2582_4' from 'x_2582_3 > 0' to 'not_x_2582_3 > 0'"
+    }
+  ],
+  "is_higher_order": true,
+  "coupled_to_simple_faults": [
+    "synthetic_2582_3_2__wrong_event__84043",
+    "synthetic_2582_3_2__faulty__wrong_event__84043__wrong_target__85043",
+    "synthetic_2582_3_2__faulty__wrong_event__84043__faulty__wrong_target__85043__guard_flip__86043"
+  ]
+}

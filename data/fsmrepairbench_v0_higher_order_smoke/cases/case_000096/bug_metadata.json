@@ -1,0 +1,42 @@
+{
+  "bug_id": "synthetic_3089_3_2__hom__guard_flip__wrong_target__missing_transition__96043",
+  "reference_fsm_id": "synthetic_3089_3_2",
+  "faulty_fsm_id": "synthetic_3089_3_2__faulty__hom__guard_flip__wrong_target__missing_transition__96043",
+  "mutation_operator": "guard_flip,wrong_target,missing_transition",
+  "changed_transition_id": "t3089_2",
+  "description": "Higher-order mutant applying 3 operators: guard_flip, wrong_target, missing_transition",
+  "seed": 96043,
+  "mutation_complexity": null,
+  "mutation_scope": null,
+  "mutation_mode": null,
+  "mutation_order": 3,
+  "component_faults": [
+    {
+      "operator": "guard_flip",
+      "seed": 96043,
+      "bug_id": "synthetic_3089_3_2__guard_flip__96043",
+      "changed_transition_id": "t3089_4",
+      "description": "Changed guard of transition 't3089_4' from 'x_3089_3 > 0' to 'not_x_3089_3 > 0'"
+    },
+    {
+      "operator": "wrong_target",
+      "seed": 97043,
+      "bug_id": "synthetic_3089_3_2__faulty__guard_flip__96043__wrong_target__97043",
+      "changed_transition_id": "t3089_2",
+      "description": "Changed target of transition 't3089_2' from 's3089_2' to 's3089_1'"
+    },
+    {
+      "operator": "missing_transition",
+      "seed": 98043,
+      "bug_id": "synthetic_3089_3_2__faulty__guard_flip__96043__faulty__wrong_target__97043__missing_transition__98043",
+      "changed_transition_id": "t3089_2",
+      "description": "Removed transition 't3089_2'"
+    }
+  ],
+  "is_higher_order": true,
+  "coupled_to_simple_faults": [
+    "synthetic_3089_3_2__guard_flip__96043",
+    "synthetic_3089_3_2__faulty__guard_flip__96043__wrong_target__97043",
+    "synthetic_3089_3_2__faulty__guard_flip__96043__faulty__wrong_target__97043__missing_transition__98043"
+  ]
+}

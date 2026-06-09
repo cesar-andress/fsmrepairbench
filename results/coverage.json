@@ -1,0 +1,48 @@
+{
+  "criteria": {
+    "state": {
+      "coverage": 1.0,
+      "covered": 2,
+      "covered_items": [
+        "off",
+        "on"
+      ],
+      "name": "state",
+      "total": 2
+    },
+    "transition": {
+      "coverage": 1.0,
+      "covered": 2,
+      "covered_items": [
+        "t1",
+        "t2"
+      ],
+      "name": "transition",
+      "total": 2
+    },
+    "transition_pair": {
+      "coverage": 0.5,
+      "covered": 1,
+      "covered_items": [
+        "t1->t2"
+      ],
+      "name": "transition_pair",
+      "total": 2
+    },
+    "transition_sequence": {
+      "coverage": 1.0,
+      "covered": 3,
+      "covered_items": [
+        "t1",
+        "t1->t2",
+        "t2"
+      ],
+      "name": "transition_sequence",
+      "total": 3
+    }
+  },
+  "fsm_id": "toggle_001",
+  "machine_type": "plain_fsm",
+  "oracle_suite_id": "toggle_oracles",
+  "sequence_depth": 3
+}

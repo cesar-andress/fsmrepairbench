@@ -1,0 +1,140 @@
+{
+  "id": "synthetic_2345_3_2__faulty__hom__wrong_target__guard_flip__missing_transition__76043",
+  "name": "Synthetic FSM (custom) (higher-order: wrong_target, guard_flip, missing_transition)",
+  "description": "Synthetic FSM generated with seed=2345, states=3, events=2, branching_factor=4, deterministic=True, allow_dead_states=False",
+  "states": [
+    {
+      "id": "s2345_0",
+      "state_output": null,
+      "refusal": false,
+      "quiescence": false
+    },
+    {
+      "id": "s2345_1",
+      "state_output": null,
+      "refusal": false,
+      "quiescence": false
+    },
+    {
+      "id": "s2345_2",
+      "state_output": null,
+      "refusal": false,
+      "quiescence": false
+    }
+  ],
+  "initial_state": "s2345_0",
+  "events": [
+    "e2345_0",
+    "e2345_1"
+  ],
+  "transitions": [
+    {
+      "id": "t2345_2",
+      "source": "s2345_0",
+      "event": "e2345_1",
+      "target": "s2345_2",
+      "guard": "x_2345_1 > 0",
+      "action": "act2345_2",
+      "output": "out_2345_1",
+      "timeout": null,
+      "delay": null,
+      "requirements": [],
+      "probability": null,
+      "is_nondeterministic": false,
+      "refusal": false,
+      "quiescence": false,
+      "discrete_time": null
+    },
+    {
+      "id": "t2345_3",
+      "source": "s2345_1",
+      "event": "e2345_1",
+      "target": "s2345_1",
+      "guard": "x_2345_2 > 0",
+      "action": "act2345_3",
+      "output": "out_2345_2",
+      "timeout": null,
+      "delay": null,
+      "requirements": [],
+      "probability": null,
+      "is_nondeterministic": false,
+      "refusal": false,
+      "quiescence": false,
+      "discrete_time": null
+    },
+    {
+      "id": "t2345_4",
+      "source": "s2345_1",
+      "event": "e2345_1",
+      "target": "s2345_1",
+      "guard": "x_2345_3 > 0",
+      "action": "act2345_4",
+      "output": "out_2345_3",
+      "timeout": null,
+      "delay": null,
+      "requirements": [],
+      "probability": null,
+      "is_nondeterministic": false,
+      "refusal": false,
+      "quiescence": false,
+      "discrete_time": null
+    },
+    {
+      "id": "t2345_5",
+      "source": "s2345_1",
+      "event": "e2345_0",
+      "target": "s2345_2",
+      "guard": "x_2345_4 > 0",
+      "action": "act2345_5",
+      "output": "out_2345_4",
+      "timeout": null,
+      "delay": null,
+      "requirements": [],
+      "probability": null,
+      "is_nondeterministic": false,
+      "refusal": false,
+      "quiescence": false,
+      "discrete_time": null
+    },
+    {
+      "id": "t2345_6",
+      "source": "s2345_2",
+      "event": "e2345_1",
+      "target": "s2345_0",
+      "guard": "x_2345_5 > 0",
+      "action": "act2345_6",
+      "output": "out_2345_5",
+      "timeout": null,
+      "delay": null,
+      "requirements": [],
+      "probability": null,
+      "is_nondeterministic": false,
+      "refusal": false,
+      "quiescence": false,
+      "discrete_time": null
+    },
+    {
+      "id": "t2345_7",
+      "source": "s2345_2",
+      "event": "e2345_0",
+      "target": "s2345_2",
+      "guard": "x_2345_6 > 0",
+      "action": "act2345_7",
+      "output": "out_2345_6",
+      "timeout": null,
+      "delay": null,
+      "requirements": [],
+      "probability": null,
+      "is_nondeterministic": false,
+      "refusal": false,
+      "quiescence": false,
+      "discrete_time": null
+    }
+  ],
+  "variables": {},
+  "parent_fsm_id": "synthetic_2345_3_2",
+  "reference_fsm_id": "synthetic_2345_3_2",
+  "discrete_time_step": null,
+  "semantics_mode": null,
+  "cyclic_metadata": null
+}

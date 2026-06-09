@@ -1,0 +1,72 @@
+{
+  "id": "synthetic_262_3_2__faulty__nondeterminism_intro__7042",
+  "name": "Synthetic FSM (custom) (faulty: nondeterminism_intro)",
+  "description": "Synthetic FSM generated with seed=262, states=3, events=2, branching_factor=1, deterministic=False, allow_dead_states=True",
+  "states": [
+    {
+      "id": "s262_0",
+      "state_output": null,
+      "refusal": false,
+      "quiescence": false
+    },
+    {
+      "id": "s262_1",
+      "state_output": null,
+      "refusal": false,
+      "quiescence": false
+    },
+    {
+      "id": "s262_2",
+      "state_output": null,
+      "refusal": false,
+      "quiescence": false
+    }
+  ],
+  "initial_state": "s262_0",
+  "events": [
+    "e262_0",
+    "e262_1"
+  ],
+  "transitions": [
+    {
+      "id": "t262_1",
+      "source": "s262_0",
+      "event": "e262_1",
+      "target": "s262_1",
+      "guard": null,
+      "action": "act262_1",
+      "output": null,
+      "timeout": null,
+      "delay": null,
+      "requirements": [],
+      "probability": null,
+      "is_nondeterministic": false,
+      "refusal": false,
+      "quiescence": false,
+      "discrete_time": null
+    },
+    {
+      "id": "t262_1__nd__7042",
+      "source": "s262_0",
+      "event": "e262_1",
+      "target": "s262_2",
+      "guard": null,
+      "action": "act262_1",
+      "output": null,
+      "timeout": null,
+      "delay": null,
+      "requirements": [],
+      "probability": null,
+      "is_nondeterministic": false,
+      "refusal": false,
+      "quiescence": false,
+      "discrete_time": null
+    }
+  ],
+  "variables": {},
+  "parent_fsm_id": "synthetic_262_3_2",
+  "reference_fsm_id": "synthetic_262_3_2",
+  "discrete_time_step": null,
+  "semantics_mode": null,
+  "cyclic_metadata": null
+}

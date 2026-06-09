@@ -1,0 +1,140 @@
+{
+  "id": "synthetic_399_3_2__faulty__guard_flip__15043",
+  "name": "Synthetic FSM (custom) (faulty: guard_flip)",
+  "description": "Synthetic FSM generated with seed=399, states=3, events=2, branching_factor=2, deterministic=True, allow_dead_states=False",
+  "states": [
+    {
+      "id": "s399_0",
+      "state_output": null,
+      "refusal": false,
+      "quiescence": false
+    },
+    {
+      "id": "s399_1",
+      "state_output": null,
+      "refusal": false,
+      "quiescence": false
+    },
+    {
+      "id": "s399_2",
+      "state_output": null,
+      "refusal": false,
+      "quiescence": false
+    }
+  ],
+  "initial_state": "s399_0",
+  "events": [
+    "e399_0",
+    "e399_1"
+  ],
+  "transitions": [
+    {
+      "id": "t399_1",
+      "source": "s399_0",
+      "event": "e399_0",
+      "target": "s399_1",
+      "guard": "x_399_0 > 0",
+      "action": "act399_1",
+      "output": "out_399_0",
+      "timeout": null,
+      "delay": null,
+      "requirements": [],
+      "probability": null,
+      "is_nondeterministic": false,
+      "refusal": false,
+      "quiescence": false,
+      "discrete_time": null
+    },
+    {
+      "id": "t399_2",
+      "source": "s399_0",
+      "event": "e399_0",
+      "target": "s399_2",
+      "guard": "x_399_1 > 0",
+      "action": "act399_2",
+      "output": "out_399_1",
+      "timeout": null,
+      "delay": null,
+      "requirements": [],
+      "probability": null,
+      "is_nondeterministic": false,
+      "refusal": false,
+      "quiescence": false,
+      "discrete_time": null
+    },
+    {
+      "id": "t399_3",
+      "source": "s399_1",
+      "event": "e399_0",
+      "target": "s399_2",
+      "guard": "x_399_2 > 0",
+      "action": "act399_3",
+      "output": "out_399_2",
+      "timeout": null,
+      "delay": null,
+      "requirements": [],
+      "probability": null,
+      "is_nondeterministic": false,
+      "refusal": false,
+      "quiescence": false,
+      "discrete_time": null
+    },
+    {
+      "id": "t399_4",
+      "source": "s399_1",
+      "event": "e399_0",
+      "target": "s399_2",
+      "guard": "x_399_3 > 0",
+      "action": "act399_4",
+      "output": "out_399_3",
+      "timeout": null,
+      "delay": null,
+      "requirements": [],
+      "probability": null,
+      "is_nondeterministic": false,
+      "refusal": false,
+      "quiescence": false,
+      "discrete_time": null
+    },
+    {
+      "id": "t399_5",
+      "source": "s399_2",
+      "event": "e399_0",
+      "target": "s399_2",
+      "guard": "x_399_4 > 0",
+      "action": "act399_5",
+      "output": "out_399_4",
+      "timeout": null,
+      "delay": null,
+      "requirements": [],
+      "probability": null,
+      "is_nondeterministic": false,
+      "refusal": false,
+      "quiescence": false,
+      "discrete_time": null
+    },
+    {
+      "id": "t399_6",
+      "source": "s399_2",
+      "event": "e399_0",
+      "target": "s399_2",
+      "guard": "not_x_399_5 > 0",
+      "action": "act399_6",
+      "output": "out_399_5",
+      "timeout": null,
+      "delay": null,
+      "requirements": [],
+      "probability": null,
+      "is_nondeterministic": false,
+      "refusal": false,
+      "quiescence": false,
+      "discrete_time": null
+    }
+  ],
+  "variables": {},
+  "parent_fsm_id": "synthetic_399_3_2",
+  "reference_fsm_id": "synthetic_399_3_2",
+  "discrete_time_step": null,
+  "semantics_mode": null,
+  "cyclic_metadata": null
+}

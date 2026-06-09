@@ -1,0 +1,55 @@
+{
+  "id": "synthetic_1987_3_2__faulty__wrong_target__55042",
+  "name": "Synthetic FSM (custom) (faulty: wrong_target)",
+  "description": "Synthetic FSM generated with seed=1987, states=3, events=2, branching_factor=1, deterministic=False, allow_dead_states=True",
+  "states": [
+    {
+      "id": "s1987_0",
+      "state_output": "out_1987_0",
+      "refusal": false,
+      "quiescence": false
+    },
+    {
+      "id": "s1987_1",
+      "state_output": "out_1987_1",
+      "refusal": false,
+      "quiescence": false
+    },
+    {
+      "id": "s1987_2",
+      "state_output": "out_1987_2",
+      "refusal": false,
+      "quiescence": false
+    }
+  ],
+  "initial_state": "s1987_0",
+  "events": [
+    "e1987_0",
+    "e1987_1"
+  ],
+  "transitions": [
+    {
+      "id": "t1987_hub_1",
+      "source": "s1987_0",
+      "event": "e1987_1",
+      "target": "s1987_0",
+      "guard": null,
+      "action": null,
+      "output": null,
+      "timeout": null,
+      "delay": null,
+      "requirements": [],
+      "probability": null,
+      "is_nondeterministic": false,
+      "refusal": false,
+      "quiescence": false,
+      "discrete_time": null
+    }
+  ],
+  "variables": {},
+  "parent_fsm_id": "synthetic_1987_3_2",
+  "reference_fsm_id": "synthetic_1987_3_2",
+  "discrete_time_step": null,
+  "semantics_mode": null,
+  "cyclic_metadata": null
+}

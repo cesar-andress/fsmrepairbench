@@ -1,0 +1,35 @@
+{
+  "case_id": "case_000194",
+  "benchmark_version": "v1.0",
+  "reference_fsm_id": "synthetic_237_10_5",
+  "faulty_fsm_id": "synthetic_237_10_5__faulty__wrong_event__194043",
+  "complexity": "medium",
+  "state_count": 10,
+  "transition_count": 31,
+  "event_count": 5,
+  "mutation_operator": "wrong_event",
+  "difficulty_score": 25.55,
+  "difficulty_category": "medium",
+  "difficulty": {
+    "difficulty_score": 25.55,
+    "category": "medium",
+    "metrics": {
+      "state_count": 10,
+      "transition_count": 31,
+      "branching_factor": 3.1,
+      "average_path_length": 1.7778,
+      "cycles": 8,
+      "strongly_connected_components": 2
+    }
+  },
+  "oracle_coverage": {
+    "state_coverage": 1.0,
+    "transition_coverage": 1.0,
+    "event_coverage": 1.0
+  },
+  "reference_bpr": 1.0,
+  "faulty_bpr": 0.9873417721518988,
+  "bpr_delta": 0.012658227848101222,
+  "valid_reference": true,
+  "valid_faulty": true
+}

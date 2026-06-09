@@ -1,0 +1,35 @@
+{
+  "case_id": "case_000008",
+  "benchmark_version": "v1.0",
+  "reference_fsm_id": "synthetic_51_50_15",
+  "faulty_fsm_id": "synthetic_51_50_15__faulty__guard_flip__8043",
+  "complexity": "very_large",
+  "state_count": 50,
+  "transition_count": 255,
+  "event_count": 15,
+  "mutation_operator": "guard_flip",
+  "difficulty_score": 61.05,
+  "difficulty_category": "hard",
+  "difficulty": {
+    "difficulty_score": 61.05,
+    "category": "hard",
+    "metrics": {
+      "state_count": 50,
+      "transition_count": 255,
+      "branching_factor": 5.1,
+      "average_path_length": 2.0816,
+      "cycles": 6,
+      "strongly_connected_components": 1
+    }
+  },
+  "oracle_coverage": {
+    "state_coverage": 1.0,
+    "transition_coverage": 1.0,
+    "event_coverage": 1.0
+  },
+  "reference_bpr": 1.0,
+  "faulty_bpr": 0.9856584093872229,
+  "bpr_delta": 0.014341590612777066,
+  "valid_reference": true,
+  "valid_faulty": true
+}

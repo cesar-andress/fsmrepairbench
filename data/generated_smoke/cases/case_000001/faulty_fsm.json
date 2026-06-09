@@ -1,0 +1,34 @@
+{
+  "id": "toggle_001__faulty__missing_transition__1042",
+  "name": "Toggle (faulty: missing_transition)",
+  "description": "Simple two-state toggle machine.",
+  "states": [
+    {
+      "id": "off",
+      "state_output": null
+    },
+    {
+      "id": "on",
+      "state_output": null
+    }
+  ],
+  "initial_state": "off",
+  "events": [
+    "toggle"
+  ],
+  "transitions": [
+    {
+      "id": "t2",
+      "source": "on",
+      "event": "toggle",
+      "target": "off",
+      "guard": null,
+      "action": null,
+      "output": null,
+      "timeout": null,
+      "delay": null,
+      "requirements": []
+    }
+  ],
+  "variables": {}
+}

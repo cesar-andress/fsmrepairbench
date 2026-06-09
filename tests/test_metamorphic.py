@@ -10,13 +10,19 @@ from typer.testing import CliRunner
 
 from fsmrepairbench.cli import app
 from fsmrepairbench.metamorphic import (
+    CORE_METAMORPHIC_RELATIONS,
     SUPPORTED_RELATIONS,
+    METAMORPHIC_RELATION_EXAMPLES,
     MetamorphicError,
     check_metamorphic_relation,
+    export_metamorphic_verification_report,
     generate_metamorphic_case,
     generate_metamorphic_cases,
+    generate_metamorphic_relation_catalog,
     load_score_result,
     metamorphic_check_to_dict,
+    verify_metamorphic_case,
+    verify_metamorphic_relations,
 )
 from fsmrepairbench.models import BugMetadata, FSM, OracleSuite
 from fsmrepairbench.mutators import mutate
@@ -286,3 +292,93 @@ def test_generate_metamorphic_case_missing_files(tmp_path: Path) -> None:
 
     with pytest.raises(MetamorphicError, match="Missing required case file"):
         generate_metamorphic_case(case_dir, relation="state_renaming_invariance")
+
+
+def test_core_metamorphic_relations_mr1_to_mr4(parking_case: Path) -> None:
+    reference = load_fsm(parking_case / "reference_fsm.json")
+    oracle = load_oracle_suite(parking_case / "oracle_suite.json")
+    report = verify_metamorphic_relations(
+        reference,
+        oracle,
+        relations=CORE_METAMORPHIC_RELATIONS,
+    )
+    assert report.overall_status == "pass"
+    assert report.failed == 0
+    assert report.passed == len(CORE_METAMORPHIC_RELATIONS)
+    labels = {item.mr_label for item in report.verifications}
+    assert labels == {"MR1", "MR2", "MR3", "MR4"}
+
+
+def test_metamorphic_relation_catalog_includes_core_examples() -> None:
+    catalog = generate_metamorphic_relation_catalog()
+    assert catalog["core_relations"]
+    assert METAMORPHIC_RELATION_EXAMPLES["MR1"] in str(catalog)
+    relation_ids = {item["relation_id"] for item in catalog["relations"]}
+    assert "determinization_language_preservation" in relation_ids
+    assert "minimization_language_preservation" in relation_ids
+
+
+def test_verify_metamorphic_case_exports_pass_fail_reports(
+    parking_case: Path,
+    tmp_path: Path,
+) -> None:
+    report = verify_metamorphic_case(parking_case, relations=CORE_METAMORPHIC_RELATIONS)
+    out_dir = tmp_path / "verification"
+    json_path, csv_path = export_metamorphic_verification_report(out_dir, report)
+
+    payload = json.loads(json_path.read_text(encoding="utf-8"))
+    assert payload["overall_status"] == "pass"
+    assert payload["passed"] == len(CORE_METAMORPHIC_RELATIONS)
+    assert csv_path.is_file()
+    assert "relation_id" in csv_path.read_text(encoding="utf-8")
+
+
+def test_cli_verify_metamorphic_relations(parking_case: Path, tmp_path: Path) -> None:
+    out_dir = tmp_path / "reports"
+    result = runner.invoke(
+        app,
+        [
+            "verify-metamorphic-relations",
+            str(parking_case),
+            "--out",
+            str(out_dir),
+            "--core-only",
+            "--quiet",
+        ],
+    )
+    assert result.exit_code == 0
+    assert (out_dir / "metamorphic_verification_report.json").is_file()
+    assert (out_dir / "metamorphic_verification.csv").is_file()
+
+
+def test_determinization_on_unguarded_nondeterministic_fsm() -> None:
+    fsm = FSM.model_validate(
+        {
+            "id": "nfa_like",
+            "name": "NFA-like",
+            "states": [{"id": "s0"}, {"id": "s1"}, {"id": "s2"}],
+            "initial_state": "s0",
+            "events": ["go"],
+            "transitions": [
+                {"id": "t1", "source": "s0", "event": "go", "target": "s1"},
+                {"id": "t2", "source": "s0", "event": "go", "target": "s2"},
+            ],
+        }
+    )
+    oracle = OracleSuite(
+        id="nfa_oracle",
+        fsm_id=fsm.id,
+        scenarios=[
+            {
+                "id": "to_s1",
+                "steps": [{"event": "go", "expected_state": "s1"}],
+            }
+        ],
+    )
+    report = verify_metamorphic_relations(
+        fsm,
+        oracle,
+        relations=("determinization_language_preservation",),
+    )
+    assert report.verifications[0].status == "pass"
+

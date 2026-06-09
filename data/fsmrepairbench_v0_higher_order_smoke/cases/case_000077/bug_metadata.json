@@ -1,0 +1,42 @@
+{
+  "bug_id": "synthetic_2362_3_2__hom__wrong_target__guard_flip__missing_transition__77043",
+  "reference_fsm_id": "synthetic_2362_3_2",
+  "faulty_fsm_id": "synthetic_2362_3_2__faulty__hom__wrong_target__guard_flip__missing_transition__77043",
+  "mutation_operator": "wrong_target,guard_flip,missing_transition",
+  "changed_transition_id": "t2362_2",
+  "description": "Higher-order mutant applying 3 operators: wrong_target, guard_flip, missing_transition",
+  "seed": 77043,
+  "mutation_complexity": null,
+  "mutation_scope": null,
+  "mutation_mode": null,
+  "mutation_order": 3,
+  "component_faults": [
+    {
+      "operator": "wrong_target",
+      "seed": 77043,
+      "bug_id": "synthetic_2362_3_2__wrong_target__77043",
+      "changed_transition_id": "t2362_2",
+      "description": "Changed target of transition 't2362_2' from 's2362_2' to 's2362_1'"
+    },
+    {
+      "operator": "guard_flip",
+      "seed": 78043,
+      "bug_id": "synthetic_2362_3_2__faulty__wrong_target__77043__guard_flip__78043",
+      "changed_transition_id": "t2362_2",
+      "description": "Changed guard of transition 't2362_2' from 'x_2362_1 > 0' to 'not_x_2362_1 > 0'"
+    },
+    {
+      "operator": "missing_transition",
+      "seed": 79043,
+      "bug_id": "synthetic_2362_3_2__faulty__wrong_target__77043__faulty__guard_flip__78043__missing_transition__79043",
+      "changed_transition_id": "t2362_2",
+      "description": "Removed transition 't2362_2'"
+    }
+  ],
+  "is_higher_order": true,
+  "coupled_to_simple_faults": [
+    "synthetic_2362_3_2__wrong_target__77043",
+    "synthetic_2362_3_2__faulty__wrong_target__77043__guard_flip__78043",
+    "synthetic_2362_3_2__faulty__wrong_target__77043__faulty__guard_flip__78043__missing_transition__79043"
+  ]
+}

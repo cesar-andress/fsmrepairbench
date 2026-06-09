@@ -1,0 +1,140 @@
+{
+  "id": "synthetic_365_3_2",
+  "name": "Synthetic FSM (custom)",
+  "description": "Synthetic FSM generated with seed=365, states=3, events=2, branching_factor=2, deterministic=True, allow_dead_states=False",
+  "states": [
+    {
+      "id": "s365_0",
+      "state_output": null,
+      "refusal": false,
+      "quiescence": false
+    },
+    {
+      "id": "s365_1",
+      "state_output": null,
+      "refusal": false,
+      "quiescence": false
+    },
+    {
+      "id": "s365_2",
+      "state_output": null,
+      "refusal": false,
+      "quiescence": false
+    }
+  ],
+  "initial_state": "s365_0",
+  "events": [
+    "e365_0",
+    "e365_1"
+  ],
+  "transitions": [
+    {
+      "id": "t365_1",
+      "source": "s365_0",
+      "event": "e365_0",
+      "target": "s365_1",
+      "guard": "x_365_0 > 0",
+      "action": "act365_1",
+      "output": "out_365_0",
+      "timeout": null,
+      "delay": null,
+      "requirements": [],
+      "probability": null,
+      "is_nondeterministic": false,
+      "refusal": false,
+      "quiescence": false,
+      "discrete_time": null
+    },
+    {
+      "id": "t365_2",
+      "source": "s365_1",
+      "event": "e365_0",
+      "target": "s365_2",
+      "guard": "x_365_1 > 0",
+      "action": "act365_2",
+      "output": "out_365_1",
+      "timeout": null,
+      "delay": null,
+      "requirements": [],
+      "probability": null,
+      "is_nondeterministic": false,
+      "refusal": false,
+      "quiescence": false,
+      "discrete_time": null
+    },
+    {
+      "id": "t365_3",
+      "source": "s365_0",
+      "event": "e365_1",
+      "target": "s365_2",
+      "guard": "x_365_2 > 0",
+      "action": "act365_3",
+      "output": "out_365_2",
+      "timeout": null,
+      "delay": null,
+      "requirements": [],
+      "probability": null,
+      "is_nondeterministic": false,
+      "refusal": false,
+      "quiescence": false,
+      "discrete_time": null
+    },
+    {
+      "id": "t365_4",
+      "source": "s365_1",
+      "event": "e365_1",
+      "target": "s365_2",
+      "guard": "x_365_3 > 0",
+      "action": "act365_4",
+      "output": "out_365_3",
+      "timeout": null,
+      "delay": null,
+      "requirements": [],
+      "probability": null,
+      "is_nondeterministic": false,
+      "refusal": false,
+      "quiescence": false,
+      "discrete_time": null
+    },
+    {
+      "id": "t365_5",
+      "source": "s365_2",
+      "event": "e365_0",
+      "target": "s365_2",
+      "guard": "x_365_4 > 0",
+      "action": "act365_5",
+      "output": "out_365_4",
+      "timeout": null,
+      "delay": null,
+      "requirements": [],
+      "probability": null,
+      "is_nondeterministic": false,
+      "refusal": false,
+      "quiescence": false,
+      "discrete_time": null
+    },
+    {
+      "id": "t365_6",
+      "source": "s365_2",
+      "event": "e365_0",
+      "target": "s365_2",
+      "guard": "x_365_5 > 0",
+      "action": "act365_6",
+      "output": "out_365_5",
+      "timeout": null,
+      "delay": null,
+      "requirements": [],
+      "probability": null,
+      "is_nondeterministic": false,
+      "refusal": false,
+      "quiescence": false,
+      "discrete_time": null
+    }
+  ],
+  "variables": {},
+  "parent_fsm_id": null,
+  "reference_fsm_id": null,
+  "discrete_time_step": null,
+  "semantics_mode": null,
+  "cyclic_metadata": null
+}

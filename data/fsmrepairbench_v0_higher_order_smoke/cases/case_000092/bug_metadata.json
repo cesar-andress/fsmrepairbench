@@ -1,0 +1,42 @@
+{
+  "bug_id": "synthetic_2920_3_2__hom__action_corruption__guard_flip__wrong_target__92043",
+  "reference_fsm_id": "synthetic_2920_3_2",
+  "faulty_fsm_id": "synthetic_2920_3_2__faulty__hom__action_corruption__guard_flip__wrong_target__92043",
+  "mutation_operator": "action_corruption,guard_flip,wrong_target",
+  "changed_transition_id": "t2920_2",
+  "description": "Higher-order mutant applying 3 operators: action_corruption, guard_flip, wrong_target",
+  "seed": 92043,
+  "mutation_complexity": null,
+  "mutation_scope": null,
+  "mutation_mode": null,
+  "mutation_order": 3,
+  "component_faults": [
+    {
+      "operator": "action_corruption",
+      "seed": 92043,
+      "bug_id": "synthetic_2920_3_2__action_corruption__92043",
+      "changed_transition_id": "t2920_3",
+      "description": "Changed action of transition 't2920_3' from 'act2920_3' to 'wrong_act2920_3'"
+    },
+    {
+      "operator": "guard_flip",
+      "seed": 93043,
+      "bug_id": "synthetic_2920_3_2__faulty__action_corruption__92043__guard_flip__93043",
+      "changed_transition_id": "t2920_2",
+      "description": "Changed guard of transition 't2920_2' from 'x_2920_1 > 0' to 'not_x_2920_1 > 0'"
+    },
+    {
+      "operator": "wrong_target",
+      "seed": 94043,
+      "bug_id": "synthetic_2920_3_2__faulty__action_corruption__92043__faulty__guard_flip__93043__wrong_target__94043",
+      "changed_transition_id": "t2920_2",
+      "description": "Changed target of transition 't2920_2' from 's2920_2' to 's2920_0'"
+    }
+  ],
+  "is_higher_order": true,
+  "coupled_to_simple_faults": [
+    "synthetic_2920_3_2__action_corruption__92043",
+    "synthetic_2920_3_2__faulty__action_corruption__92043__guard_flip__93043",
+    "synthetic_2920_3_2__faulty__action_corruption__92043__faulty__guard_flip__93043__wrong_target__94043"
+  ]
+}
