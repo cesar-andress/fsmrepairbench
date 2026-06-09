@@ -5,7 +5,8 @@
 [![Python 3.11+](https://img.shields.io/badge/python-3.11+-3776ab?logo=python&logoColor=white)](https://www.python.org/downloads/)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
 [![Package](https://img.shields.io/badge/package-0.1.0-blue)](pyproject.toml)
-[![Release](https://img.shields.io/badge/release-v0.2.0--analysis-green)](https://doi.org/10.5281/zenodo.20602528)
+[![Release](https://img.shields.io/badge/release-v0.2.1--stvr--polish-blue)](https://github.com/cesar-andress/fsmrepairbench/releases/tag/v0.2.1-stvr-polish)
+[![Dataset](https://img.shields.io/badge/dataset-v0.2.0--analysis-green)](https://doi.org/10.5281/zenodo.20602528)
 [![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.20602528.svg)](https://doi.org/10.5281/zenodo.20602528)
 
 **Behavioural finite-state machine repair benchmark — toolkit, generators, and experiment pipeline.**
@@ -15,15 +16,28 @@ faulty state machines using **oracle-based scoring**, not textual diff against a
 reference. The repository ships a working Python implementation: JSON schemas, validation,
 seeded mutation, dataset builders, LLM/baseline repair experiments, and governance tooling.
 
-> **Release:** **[v0.2.0-analysis](https://doi.org/10.5281/zenodo.20602528)** is the frozen
-> STVR paper release — 1,000-case analysis cohort, pinned manifests, campaign exports, and
-> Zenodo DOI **10.5281/zenodo.20602528**. Git tag: `v0.2.0-analysis`.
+> **The empirical dataset and paper metrics remain frozen at
+> [v0.2.0-analysis](https://doi.org/10.5281/zenodo.20602528) / Zenodo DOI
+> [10.5281/zenodo.20602528](https://doi.org/10.5281/zenodo.20602528).**
+>
+> **[v0.2.1-stvr-polish](https://github.com/cesar-andress/fsmrepairbench/releases/tag/v0.2.1-stvr-polish)**
+> is the latest GitHub release for reproducibility, documentation, manifests, and
+> submission polish. **v0.2.1-stvr-polish does not modify benchmark cases, oracle suites,
+> mutation operators, campaign cohorts, or reported empirical metrics.**
 >
 > **Package version** `0.1.0` (`pyproject.toml`) is the installable Python semver; it is
-> independent of the Zenodo release label.
+> independent of Zenodo and GitHub release labels.
 >
-> **v0.3 pilots** (multi-family smoke, negative controls, oracle-depth v2, random-secondary
-> coupling) are experimental and **not** part of the primary paper deposit.
+> **v0.3.x pilots** (multi-family smoke, negative controls, oracle-depth v2, random-secondary
+> coupling) are future experimental work and **not** part of the primary paper deposit.
+
+### Release labels
+
+| Label | Role | Cite / use |
+|-------|------|------------|
+| **[v0.2.0-analysis](https://doi.org/10.5281/zenodo.20602528)** | Frozen dataset and empirical campaign release | **Cite this in the STVR paper** (Zenodo DOI `10.5281/zenodo.20602528`) |
+| **[v0.2.1-stvr-polish](https://github.com/cesar-andress/fsmrepairbench/releases/tag/v0.2.1-stvr-polish)** | Reproducibility and submission-polish release | **Use this for latest tooling and public documentation** |
+| **v0.3.x** | Future pilots and extensions | Not paper evidence; experimental only |
 
 ---
 
@@ -170,6 +184,23 @@ fsmrepairbench summarize-campaign-partitions \
 
 Campaign guides: [docs/README.md](docs/README.md) · Dataset README:
 [data/fsmrepairbench_1k/README.md](data/fsmrepairbench_1k/README.md)
+
+---
+
+## Tooling release (v0.2.1-stvr-polish)
+
+GitHub release:
+**[v0.2.1-stvr-polish](https://github.com/cesar-andress/fsmrepairbench/releases/tag/v0.2.1-stvr-polish)**
+
+This tag improves reproducibility documentation, release audits, manifest metadata, and
+paper-export traceability. It **does not** change:
+
+- benchmark cases under `data/fsmrepairbench_1k/cases/`
+- oracle suites, mutation operators, or cohort manifests
+- frozen campaign CSV/PNG exports or the empirical metrics reported in the manuscript
+
+Clone or check out `v0.2.1-stvr-polish` for the latest public docs; cite Zenodo
+**`v0.2.0-analysis`** (`10.5281/zenodo.20602528`) for all paper tables and figures.
 
 ---
 
@@ -432,7 +463,11 @@ python ../paper1/scripts/verify_cohort_manifests.py
 Bundled example artifacts ship under `artifacts/` (ICSE/EMSE/TSE placeholder tracks).
 Details: [docs/reproducibility.md](docs/reproducibility.md) · Policies:
 [VERSIONING_POLICY.md](VERSIONING_POLICY.md), [DATASET_POLICY.md](DATASET_POLICY.md) ·
-Release audits: [../docs/zenodo_release_checklist.md](../docs/zenodo_release_checklist.md)
+Release audits (monorepo): [../docs/release_gap_report.md](../docs/release_gap_report.md),
+[../docs/reproducibility_matrix.md](../docs/reproducibility_matrix.md),
+[../docs/zenodo_release_checklist.md](../docs/zenodo_release_checklist.md)
+(polish release **[v0.2.1-stvr-polish](https://github.com/cesar-andress/fsmrepairbench/releases/tag/v0.2.1-stvr-polish)**;
+frozen dataset remains Zenodo **`v0.2.0-analysis`**)
 
 ---
 
@@ -463,7 +498,8 @@ FSMRepairBench continues to evolve beyond the frozen paper release:
 | Phase | Direction |
 |-------|-----------|
 | **Shipped (v0.2.0-analysis)** | 1k stratified cohort, Zenodo DOI, RQ1–RQ4 + C1 + C3 exports, manifests |
-| **Experimental (v0.3 pilots)** | Multi-family smoke, negative controls, depth-forced ablation — not Zenodo-primary |
+| **Polish (v0.2.1-stvr-polish)** | Public docs, reproducibility matrix, manifest alignment — no new empirical data |
+| **Experimental (v0.3.x)** | Multi-family smoke, negative controls, depth-forced ablation — not paper evidence |
 | **Next** | Public leaderboard protocol, held-out evaluation split, schema v2.0 scale-up |
 | **Later** | Timed oracle execution, curated industrial cases, multi-oracle consensus |
 
@@ -498,8 +534,9 @@ Full roadmap: [docs/roadmap.md](docs/roadmap.md) · Vision:
 
 ## Citation
 
-If you use this repository or the **`v0.2.0-analysis`** release in research, please cite
-the Zenodo deposit and software repository:
+If you use the **empirical dataset or paper metrics**, cite Zenodo **`v0.2.0-analysis`**
+(`10.5281/zenodo.20602528`). If you use the **software toolchain**, cite the GitHub
+repository (optionally tag **`v0.2.1-stvr-polish`** for the latest reproducibility bundle):
 
 ```bibtex
 @software{fsmrepairbench2026,

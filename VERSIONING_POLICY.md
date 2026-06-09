@@ -18,7 +18,20 @@ FSMRepairBench uses **three** complementary version axes:
 | **Schema version** | `v0.1`, `v1.0`, `v1.1`, `v2.0` | On-disk JSON contract |
 | **Evolution release** | `v0`, `v1`, `v2` | Major benchmark generation era |
 | **Paper / Zenodo release label** | `v0.2.0-analysis` | Frozen empirical campaign bundle (dataset + exports) |
+| **GitHub tooling release label** | `v0.2.1-stvr-polish` | Reproducibility, documentation, manifests — no new empirical data |
 | **Python package version** | `0.1.0` (`pyproject.toml`) | Installable CLI/library semver |
+
+**The empirical dataset and paper metrics remain frozen at
+[v0.2.0-analysis](https://doi.org/10.5281/zenodo.20602528) / Zenodo DOI
+[10.5281/zenodo.20602528](https://doi.org/10.5281/zenodo.20602528).**
+
+### Release labels (summary)
+
+| Label | Role |
+|-------|------|
+| **`v0.2.0-analysis`** | Frozen dataset and empirical campaign release — cite in the STVR paper |
+| **[v0.2.1-stvr-polish](https://github.com/cesar-andress/fsmrepairbench/releases/tag/v0.2.1-stvr-polish)** | Reproducibility and submission-polish release — use for latest tooling |
+| **`v0.3.x`** | Future pilots and extensions — not paper evidence |
 
 ### v0.2.0-analysis (frozen paper release)
 
@@ -36,7 +49,21 @@ cite **package version + git tag** for software reproducibility.
 
 Git tag: `v0.2.0-analysis` on this repository.
 
-### v0.3 experimental pilots (not a replacement release)
+### v0.2.1-stvr-polish (tooling and documentation release)
+
+GitHub release:
+**[v0.2.1-stvr-polish](https://github.com/cesar-andress/fsmrepairbench/releases/tag/v0.2.1-stvr-polish)**
+
+This label identifies documentation, reproducibility audits, manifest metadata alignment, and
+submission-polish updates shipped after the Zenodo deposit. **v0.2.1-stvr-polish does not
+modify benchmark cases, oracle suites, mutation operators, campaign cohorts, or reported
+empirical metrics.**
+
+- Dataset remains **`data/fsmrepairbench_1k`** pinned to Zenodo **`v0.2.0-analysis`**
+- Cite Zenodo DOI **`10.5281/zenodo.20602528`** for all paper tables and figures
+- Check out tag **`v0.2.1-stvr-polish`** for the latest public reproducibility bundle
+
+### v0.3.x experimental pilots (not a replacement release)
 
 Features under `results/multifamily_v0_3_smoke/`, `results/negative_controls/`,
 `results/oracle_depth_ablation_v2/`, and `results/rq4_coupling_250_random_secondary/`

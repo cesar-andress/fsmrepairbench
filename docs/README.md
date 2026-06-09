@@ -1,7 +1,25 @@
 # FSMRepairBench documentation index
 
-Technical specifications, campaign guides, and release audit notes for the
-**v0.2.0-analysis** paper release (Zenodo [10.5281/zenodo.20602528](https://doi.org/10.5281/zenodo.20602528)).
+Technical specifications, campaign guides, and release audit notes.
+
+**The empirical dataset and paper metrics remain frozen at
+[v0.2.0-analysis](https://doi.org/10.5281/zenodo.20602528) / Zenodo DOI
+[10.5281/zenodo.20602528](https://doi.org/10.5281/zenodo.20602528).**
+
+**[v0.2.1-stvr-polish](https://github.com/cesar-andress/fsmrepairbench/releases/tag/v0.2.1-stvr-polish)**
+is the latest GitHub release for reproducibility, documentation, manifests, and submission
+polish. **v0.2.1-stvr-polish does not modify benchmark cases, oracle suites, mutation
+operators, campaign cohorts, or reported empirical metrics.**
+
+## Release labels
+
+| Label | Role | Cite / use |
+|-------|------|------------|
+| **[v0.2.0-analysis](https://doi.org/10.5281/zenodo.20602528)** | Frozen dataset and empirical campaign release | **Cite this in the STVR paper** |
+| **[v0.2.1-stvr-polish](https://github.com/cesar-andress/fsmrepairbench/releases/tag/v0.2.1-stvr-polish)** | Reproducibility and submission-polish release | **Use this for latest tooling and docs** |
+| **v0.3.x** | Future pilots and extensions | Not paper evidence |
+
+All reproduction commands below use dataset **`data/fsmrepairbench_1k`**.
 
 ## Paper empirical campaigns (STVR)
 
@@ -23,16 +41,15 @@ Dataset and cohort pins: [../data/fsmrepairbench_1k/README.md](../data/fsmrepair
 |----------|---------|
 | [../../docs/release_gap_report.md](../../docs/release_gap_report.md) | STVR implementation gap audit |
 | [../../docs/reproducibility_matrix.md](../../docs/reproducibility_matrix.md) | Table/figure → CSV → script traceability |
-| [../../docs/zenodo_release_checklist.md](../../docs/zenodo_release_checklist.md) | Pre-Zenodo release checklist |
-| [../../docs/coverage_report.md](../../docs/coverage_report.md) | Test coverage of the toolchain |
+| [../../docs/zenodo_release_checklist.md](../../docs/zenodo_release_checklist.md) | Pre-Zenodo release checklist (`v0.2.0-analysis`) |
 
 Paths above are relative to the monorepo root (`~/papers/fsmrepairbench/`). The Python
 package git root is this directory (`fsmrepairbench/`).
 
-## v0.3 experimental pilots (not part of Zenodo v0.2.0-analysis)
+## v0.3.x experimental pilots (not part of paper evidence)
 
 These modules and exports inform future work; they **do not** replace the frozen
-1,000-case paper cohort:
+1,000-case paper cohort or Zenodo **`v0.2.0-analysis`**:
 
 | Pilot | Doc |
 |-------|-----|
