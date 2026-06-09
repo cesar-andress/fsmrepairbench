@@ -98,6 +98,30 @@ def test_confidence_interval_rows_to_dicts_preserves_columns() -> None:
     }
 
 
+def test_csv_bool_parsing_for_string_false() -> None:
+    from fsmrepairbench.statistics import compute_rq3_confidence_intervals
+
+    rows = [
+        {
+            "localized": "False",
+            "top1_hit": "False",
+            "top3_hit": "False",
+            "top5_hit": "False",
+            "reciprocal_rank": "0.0",
+        },
+        {
+            "localized": "True",
+            "top1_hit": "True",
+            "top3_hit": "True",
+            "top5_hit": "True",
+            "reciprocal_rank": "1.0",
+        },
+    ]
+    ci_rows = compute_rq3_confidence_intervals(rows)
+    assert ci_rows[0].n_cases == 1
+    assert ci_rows[0].mean == 1.0
+
+
 def test_compute_rq2_confidence_intervals_returns_three_metrics() -> None:
     cases = [
         _Case(bpr_delta=0.1, faulty_bpr=0.9),
@@ -139,3 +163,4 @@ def test_compute_c1_confidence_intervals_includes_detectable_only() -> None:
     )
     metrics = [row.metric for row in ci_rows]
     assert "complete_repair_rate_detectable_only" in metrics
+    assert "effective_repair_rate_detectable_only" in metrics

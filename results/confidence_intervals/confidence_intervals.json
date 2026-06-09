@@ -1,0 +1,317 @@
+{
+  "campaign": "paper-headline-metrics",
+  "method": "percentile_case_resample",
+  "unit": "case",
+  "ci": 0.95,
+  "resamples": 10000,
+  "seed": 44,
+  "generated_at_utc": "2026-06-09T11:58:08.002976+00:00",
+  "metrics": [
+    {
+      "metric": "overall_detection_rate",
+      "group": "RQ2",
+      "subgroup": "",
+      "n_cases": 1000,
+      "mean": 0.495,
+      "ci95_low": 0.465,
+      "ci95_high": 0.525
+    },
+    {
+      "metric": "mean_faulty_bpr",
+      "group": "RQ2",
+      "subgroup": "",
+      "n_cases": 1000,
+      "mean": 0.916578,
+      "ci95_low": 0.901501,
+      "ci95_high": 0.931421
+    },
+    {
+      "metric": "mean_bpr_delta",
+      "group": "RQ2",
+      "subgroup": "",
+      "n_cases": 1000,
+      "mean": 0.083422,
+      "ci95_low": 0.068579,
+      "ci95_high": 0.098499
+    },
+    {
+      "metric": "complete_repair_rate_detectable_only",
+      "group": "C1",
+      "subgroup": "baseline_missing_transition",
+      "n_cases": 495,
+      "mean": 0.684848,
+      "ci95_low": 0.644444,
+      "ci95_high": 0.725253
+    },
+    {
+      "metric": "effective_repair_rate_detectable_only",
+      "group": "C1",
+      "subgroup": "baseline_missing_transition",
+      "n_cases": 495,
+      "mean": 0.779798,
+      "ci95_low": 0.743434,
+      "ci95_high": 0.816162
+    },
+    {
+      "metric": "complete_repair_rate_detectable_only",
+      "group": "C1",
+      "subgroup": "baseline_wrong_target",
+      "n_cases": 495,
+      "mean": 0.121212,
+      "ci95_low": 0.092929,
+      "ci95_high": 0.149495
+    },
+    {
+      "metric": "effective_repair_rate_detectable_only",
+      "group": "C1",
+      "subgroup": "baseline_wrong_target",
+      "n_cases": 495,
+      "mean": 0.220202,
+      "ci95_low": 0.183838,
+      "ci95_high": 0.256566
+    },
+    {
+      "metric": "complete_repair_rate_detectable_only",
+      "group": "C1",
+      "subgroup": "baseline_random",
+      "n_cases": 495,
+      "mean": 0.00202,
+      "ci95_low": 0.0,
+      "ci95_high": 0.006061
+    },
+    {
+      "metric": "effective_repair_rate_detectable_only",
+      "group": "C1",
+      "subgroup": "baseline_random",
+      "n_cases": 495,
+      "mean": 0.006061,
+      "ci95_low": 0.0,
+      "ci95_high": 0.014141
+    },
+    {
+      "metric": "top_1_hit_rate",
+      "group": "RQ3",
+      "subgroup": "",
+      "n_cases": 495,
+      "mean": 0.149495,
+      "ci95_low": 0.119192,
+      "ci95_high": 0.181818
+    },
+    {
+      "metric": "top_3_hit_rate",
+      "group": "RQ3",
+      "subgroup": "",
+      "n_cases": 495,
+      "mean": 0.187879,
+      "ci95_low": 0.153535,
+      "ci95_high": 0.222222
+    },
+    {
+      "metric": "top_5_hit_rate",
+      "group": "RQ3",
+      "subgroup": "",
+      "n_cases": 495,
+      "mean": 0.228283,
+      "ci95_low": 0.191919,
+      "ci95_high": 0.264646
+    },
+    {
+      "metric": "mrr",
+      "group": "RQ3",
+      "subgroup": "",
+      "n_cases": 495,
+      "mean": 0.201018,
+      "ci95_low": 0.170688,
+      "ci95_high": 0.231904
+    },
+    {
+      "metric": "detection_rate",
+      "group": "RQ4",
+      "subgroup": "order_1",
+      "n_cases": 250,
+      "mean": 0.472,
+      "ci95_low": 0.412,
+      "ci95_high": 0.536
+    },
+    {
+      "metric": "complete_repair_rate",
+      "group": "RQ4",
+      "subgroup": "order_1",
+      "n_cases": 250,
+      "mean": 0.892,
+      "ci95_low": 0.852,
+      "ci95_high": 0.928
+    },
+    {
+      "metric": "effective_repair_rate",
+      "group": "RQ4",
+      "subgroup": "order_1",
+      "n_cases": 250,
+      "mean": 0.42,
+      "ci95_low": 0.36,
+      "ci95_high": 0.484
+    },
+    {
+      "metric": "mean_bpr_delta",
+      "group": "RQ4",
+      "subgroup": "order_1",
+      "n_cases": 250,
+      "mean": 0.0677,
+      "ci95_low": 0.041874,
+      "ci95_high": 0.096662
+    },
+    {
+      "metric": "detection_rate",
+      "group": "RQ4",
+      "subgroup": "order_2",
+      "n_cases": 250,
+      "mean": 0.992,
+      "ci95_low": 0.98,
+      "ci95_high": 1.0
+    },
+    {
+      "metric": "complete_repair_rate",
+      "group": "RQ4",
+      "subgroup": "order_2",
+      "n_cases": 250,
+      "mean": 0.6,
+      "ci95_low": 0.54,
+      "ci95_high": 0.66
+    },
+    {
+      "metric": "effective_repair_rate",
+      "group": "RQ4",
+      "subgroup": "order_2",
+      "n_cases": 250,
+      "mean": 0.92,
+      "ci95_low": 0.884,
+      "ci95_high": 0.952
+    },
+    {
+      "metric": "mean_bpr_delta",
+      "group": "RQ4",
+      "subgroup": "order_2",
+      "n_cases": 250,
+      "mean": 0.267039,
+      "ci95_low": 0.220809,
+      "ci95_high": 0.315454
+    },
+    {
+      "metric": "detection_rate",
+      "group": "RQ4",
+      "subgroup": "order_3",
+      "n_cases": 250,
+      "mean": 1.0,
+      "ci95_low": 1.0,
+      "ci95_high": 1.0
+    },
+    {
+      "metric": "complete_repair_rate",
+      "group": "RQ4",
+      "subgroup": "order_3",
+      "n_cases": 250,
+      "mean": 0.404,
+      "ci95_low": 0.344,
+      "ci95_high": 0.464
+    },
+    {
+      "metric": "effective_repair_rate",
+      "group": "RQ4",
+      "subgroup": "order_3",
+      "n_cases": 250,
+      "mean": 0.98,
+      "ci95_low": 0.96,
+      "ci95_high": 0.996
+    },
+    {
+      "metric": "mean_bpr_delta",
+      "group": "RQ4",
+      "subgroup": "order_3",
+      "n_cases": 250,
+      "mean": 0.388064,
+      "ci95_low": 0.335051,
+      "ci95_high": 0.441553
+    },
+    {
+      "metric": "detection_rate",
+      "group": "C3",
+      "subgroup": "shallow",
+      "n_cases": 200,
+      "mean": 0.485,
+      "ci95_low": 0.415,
+      "ci95_high": 0.555
+    },
+    {
+      "metric": "mean_faulty_bpr",
+      "group": "C3",
+      "subgroup": "shallow",
+      "n_cases": 200,
+      "mean": 0.918245,
+      "ci95_low": 0.882656,
+      "ci95_high": 0.950025
+    },
+    {
+      "metric": "mean_bpr_delta",
+      "group": "C3",
+      "subgroup": "shallow",
+      "n_cases": 200,
+      "mean": 0.081755,
+      "ci95_low": 0.049975,
+      "ci95_high": 0.117344
+    },
+    {
+      "metric": "detection_rate",
+      "group": "C3",
+      "subgroup": "medium",
+      "n_cases": 200,
+      "mean": 0.485,
+      "ci95_low": 0.415,
+      "ci95_high": 0.555
+    },
+    {
+      "metric": "mean_faulty_bpr",
+      "group": "C3",
+      "subgroup": "medium",
+      "n_cases": 200,
+      "mean": 0.918245,
+      "ci95_low": 0.882656,
+      "ci95_high": 0.950025
+    },
+    {
+      "metric": "mean_bpr_delta",
+      "group": "C3",
+      "subgroup": "medium",
+      "n_cases": 200,
+      "mean": 0.081755,
+      "ci95_low": 0.049975,
+      "ci95_high": 0.117344
+    },
+    {
+      "metric": "detection_rate",
+      "group": "C3",
+      "subgroup": "deep",
+      "n_cases": 200,
+      "mean": 0.485,
+      "ci95_low": 0.415,
+      "ci95_high": 0.555
+    },
+    {
+      "metric": "mean_faulty_bpr",
+      "group": "C3",
+      "subgroup": "deep",
+      "n_cases": 200,
+      "mean": 0.918245,
+      "ci95_low": 0.882656,
+      "ci95_high": 0.950025
+    },
+    {
+      "metric": "mean_bpr_delta",
+      "group": "C3",
+      "subgroup": "deep",
+      "n_cases": 200,
+      "mean": 0.081755,
+      "ci95_low": 0.049975,
+      "ci95_high": 0.117344
+    }
+  ]
+}

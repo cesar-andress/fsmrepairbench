@@ -3432,6 +3432,46 @@ def audit_rq3_localization_localizability_cmd(
     raise typer.Exit(code=0)
 
 
+@app.command("export-paper-confidence-intervals")
+def export_paper_confidence_intervals_cmd(
+    out: Path = typer.Option(
+        Path("results/confidence_intervals"),
+        "--out",
+        help="Directory for consolidated CI CSV/JSON/LaTeX exports.",
+    ),
+    paper_out: Path = typer.Option(
+        Path("../paper1/results/confidence_intervals"),
+        "--paper-out",
+        help="Paper mirror directory for CI exports.",
+    ),
+) -> None:
+    """Aggregate bootstrap 95% CIs for headline paper metrics from frozen per-case CSVs."""
+    from fsmrepairbench.paper_confidence_intervals import (
+        PaperConfidenceIntervalError,
+        export_paper_confidence_intervals,
+    )
+
+    try:
+        result = export_paper_confidence_intervals(
+            out,
+            paper_export_dir=paper_out,
+        )
+    except PaperConfidenceIntervalError as exc:
+        console.print(f"[red]ERROR[/red] {exc}")
+        raise typer.Exit(code=1) from exc
+
+    console.print(
+        "[green]OK[/green] Paper CI export: "
+        f"{len(result.main_rows)} headline metrics, {len(result.rows)} total rows"
+    )
+    console.print(f"CSV: {result.csv_path}")
+    console.print(f"JSON: {result.json_path}")
+    console.print(f"Main LaTeX table: {result.main_tex_path}")
+    if result.paper_main_tex_path is not None:
+        console.print(f"Paper LaTeX table: {result.paper_main_tex_path}")
+    raise typer.Exit(code=0)
+
+
 @app.command("run-coupling-campaign")
 def run_coupling_campaign_cmd(
     dataset_dir: Path,

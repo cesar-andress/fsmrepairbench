@@ -318,10 +318,32 @@ def compute_rq2_confidence_intervals(cases: Sequence[Any]) -> list[ConfidenceInt
     faulty_bpr = [float(case.faulty_bpr) for case in cases]
     bpr_delta = [float(case.bpr_delta) for case in cases]
     return [
-        bootstrap_rate_ci(detected, "overall_detection_rate"),
-        bootstrap_mean_ci(faulty_bpr, "mean_faulty_bpr"),
-        bootstrap_mean_ci(bpr_delta, "mean_bpr_delta"),
+        bootstrap_rate_ci(detected, "overall_detection_rate", group="RQ2"),
+        bootstrap_mean_ci(faulty_bpr, "mean_faulty_bpr", group="RQ2"),
+        bootstrap_mean_ci(bpr_delta, "mean_bpr_delta", group="RQ2"),
     ]
+
+
+C1_BASELINE_TOOL_IDS: tuple[str, ...] = (
+    "baseline_missing_transition",
+    "baseline_wrong_target",
+    "baseline_random",
+)
+
+
+def _csv_bool(row: Any, name: str) -> bool:
+    value = _row_value(row, name, False)
+    if isinstance(value, str):
+        return value.strip().lower() == "true"
+    return bool(value)
+
+
+def _csv_float(row: Any, name: str) -> float:
+    return float(_row_value(row, name, 0.0))
+
+
+def _csv_case_id(row: Any) -> str:
+    return str(_row_value(row, "case_id"))
 
 
 def compute_c1_confidence_intervals(
@@ -335,21 +357,9 @@ def compute_c1_confidence_intervals(
     if not rows:
         return []
 
-    def _case_id(row: Any) -> str:
-        return str(_row_value(row, "case_id"))
-
-    def _flag(row: Any, name: str) -> bool:
-        value = _row_value(row, name, False)
-        if isinstance(value, str):
-            return value.strip().lower() == "true"
-        return bool(value)
-
-    def _float(row: Any, name: str) -> float:
-        return float(_row_value(row, name, 0.0))
-
-    complete = [_flag(row, "complete_repair") for row in rows]
-    effective = [_flag(row, "effective_repair") for row in rows]
-    delta = [_float(row, "delta_bpr") for row in rows]
+    complete = [_csv_bool(row, "complete_repair") for row in rows]
+    effective = [_csv_bool(row, "effective_repair") for row in rows]
+    delta = [_csv_float(row, "delta_bpr") for row in rows]
 
     ci_rows = [
         bootstrap_rate_ci(complete, "complete_repair_rate", subgroup=tool_id),
@@ -358,36 +368,89 @@ def compute_c1_confidence_intervals(
     ]
 
     if detectable_case_ids is not None:
-        detectable_rows = [row for row in rows if _case_id(row) in detectable_case_ids]
-        detectable_complete = [_flag(row, "complete_repair") for row in detectable_rows]
-        ci_rows.append(
-            bootstrap_rate_ci(
-                detectable_complete,
-                "complete_repair_rate_detectable_only",
-                subgroup=tool_id,
-            )
+        detectable_rows = [row for row in rows if _csv_case_id(row) in detectable_case_ids]
+        detectable_complete = [_csv_bool(row, "complete_repair") for row in detectable_rows]
+        detectable_effective = [_csv_bool(row, "effective_repair") for row in detectable_rows]
+        ci_rows.extend(
+            [
+                bootstrap_rate_ci(
+                    detectable_complete,
+                    "complete_repair_rate_detectable_only",
+                    subgroup=tool_id,
+                ),
+                bootstrap_rate_ci(
+                    detectable_effective,
+                    "effective_repair_rate_detectable_only",
+                    subgroup=tool_id,
+                ),
+            ]
         )
 
     return ci_rows
 
 
+def compute_c1_detectable_confidence_intervals(
+    tool_rows: Sequence[Any],
+    *,
+    detectable_case_ids: set[str],
+    tool_ids: Sequence[str] = C1_BASELINE_TOOL_IDS,
+) -> list[ConfidenceIntervalRow]:
+    """Bootstrap CIs for detectable-only C1 complete and effective repair by tool."""
+    ci_rows: list[ConfidenceIntervalRow] = []
+    for tool_id in tool_ids:
+        rows = [
+            row
+            for row in tool_rows
+            if _row_value(row, "tool_id") == tool_id and _csv_case_id(row) in detectable_case_ids
+        ]
+        if not rows:
+            continue
+        ci_rows.extend(
+            [
+                bootstrap_rate_ci(
+                    [_csv_bool(row, "complete_repair") for row in rows],
+                    "complete_repair_rate_detectable_only",
+                    group="C1",
+                    subgroup=tool_id,
+                ),
+                bootstrap_rate_ci(
+                    [_csv_bool(row, "effective_repair") for row in rows],
+                    "effective_repair_rate_detectable_only",
+                    group="C1",
+                    subgroup=tool_id,
+                ),
+            ]
+        )
+    return ci_rows
+
+
 def compute_rq3_confidence_intervals(rows: Sequence[Any]) -> list[ConfidenceIntervalRow]:
     """Bootstrap CIs for RQ3 localization metrics among localized cases."""
-    localized = [row for row in rows if bool(_row_value(row, "localized", True))]
+    localized = [row for row in rows if _csv_bool(row, "localized")]
     if not localized:
         localized = list(rows)
 
-    def _flag(row: Any, name: str) -> bool:
-        return bool(_row_value(row, name, False))
-
-    def _float(row: Any, name: str) -> float:
-        return float(_row_value(row, name, 0.0))
-
     return [
-        bootstrap_rate_ci([_flag(row, "top1_hit") for row in localized], "top_1_hit_rate"),
-        bootstrap_rate_ci([_flag(row, "top3_hit") for row in localized], "top_3_hit_rate"),
-        bootstrap_rate_ci([_flag(row, "top5_hit") for row in localized], "top_5_hit_rate"),
-        bootstrap_mean_ci([_float(row, "reciprocal_rank") for row in localized], "mrr"),
+        bootstrap_rate_ci(
+            [_csv_bool(row, "top1_hit") for row in localized],
+            "top_1_hit_rate",
+            group="RQ3",
+        ),
+        bootstrap_rate_ci(
+            [_csv_bool(row, "top3_hit") for row in localized],
+            "top_3_hit_rate",
+            group="RQ3",
+        ),
+        bootstrap_rate_ci(
+            [_csv_bool(row, "top5_hit") for row in localized],
+            "top_5_hit_rate",
+            group="RQ3",
+        ),
+        bootstrap_mean_ci(
+            [_csv_float(row, "reciprocal_rank") for row in localized],
+            "mrr",
+            group="RQ3",
+        ),
     ]
 
 
@@ -403,34 +466,32 @@ def compute_rq4_confidence_intervals(rows: Sequence[Any]) -> list[ConfidenceInte
         if not group:
             continue
 
-        def _flag(row: Any, name: str) -> bool:
-            return bool(_row_value(row, name, False))
-
-        def _float(row: Any, name: str) -> float:
-            return float(_row_value(row, name, 0.0))
-
         order_label = f"order_{order}"
         ci_rows.extend(
             [
                 bootstrap_rate_ci(
-                    [_flag(row, "fault_detected") for row in group],
+                    [_csv_bool(row, "fault_detected") for row in group],
                     "detection_rate",
-                    group=order_label,
+                    group="RQ4",
+                    subgroup=order_label,
                 ),
                 bootstrap_rate_ci(
-                    [_flag(row, "complete_repair") for row in group],
+                    [_csv_bool(row, "complete_repair") for row in group],
                     "complete_repair_rate",
-                    group=order_label,
+                    group="RQ4",
+                    subgroup=order_label,
                 ),
                 bootstrap_rate_ci(
-                    [_flag(row, "effective_repair") for row in group],
+                    [_csv_bool(row, "effective_repair") for row in group],
                     "effective_repair_rate",
-                    group=order_label,
+                    group="RQ4",
+                    subgroup=order_label,
                 ),
                 bootstrap_mean_ci(
-                    [_float(row, "bpr_delta") for row in group],
+                    [_csv_float(row, "bpr_delta") for row in group],
                     "mean_bpr_delta",
-                    group=order_label,
+                    group="RQ4",
+                    subgroup=order_label,
                 ),
             ]
         )
@@ -445,29 +506,130 @@ def compute_c3_confidence_intervals(depth_rows: dict[str, Sequence[Any]]) -> lis
         if not rows:
             continue
 
-        def _flag(row: Any, name: str) -> bool:
-            return bool(_row_value(row, name, False))
-
-        def _float(row: Any, name: str) -> float:
-            return float(_row_value(row, name, 0.0))
-
         ci_rows.extend(
             [
                 bootstrap_rate_ci(
-                    [_flag(row, "fault_detected") for row in rows],
+                    [_csv_bool(row, "fault_detected") for row in rows],
                     "detection_rate",
-                    group=depth,
+                    group="C3",
+                    subgroup=depth,
                 ),
                 bootstrap_mean_ci(
-                    [_float(row, "faulty_bpr") for row in rows],
+                    [_csv_float(row, "faulty_bpr") for row in rows],
                     "mean_faulty_bpr",
-                    group=depth,
+                    group="C3",
+                    subgroup=depth,
                 ),
                 bootstrap_mean_ci(
-                    [_float(row, "bpr_delta") for row in rows],
+                    [_csv_float(row, "bpr_delta") for row in rows],
                     "mean_bpr_delta",
-                    group=depth,
+                    group="C3",
+                    subgroup=depth,
                 ),
             ]
         )
     return ci_rows
+
+
+PAPER_MAIN_CI_METRICS: frozenset[tuple[str, str, str]] = frozenset(
+    {
+        ("RQ2", "", "overall_detection_rate"),
+        ("RQ2", "", "mean_faulty_bpr"),
+        ("RQ2", "", "mean_bpr_delta"),
+        ("C1", "baseline_missing_transition", "complete_repair_rate_detectable_only"),
+        ("C1", "baseline_missing_transition", "effective_repair_rate_detectable_only"),
+        ("C1", "baseline_wrong_target", "complete_repair_rate_detectable_only"),
+        ("C1", "baseline_wrong_target", "effective_repair_rate_detectable_only"),
+        ("C1", "baseline_random", "complete_repair_rate_detectable_only"),
+        ("C1", "baseline_random", "effective_repair_rate_detectable_only"),
+        ("RQ3", "", "top_1_hit_rate"),
+        ("RQ3", "", "top_3_hit_rate"),
+        ("RQ3", "", "top_5_hit_rate"),
+        ("RQ3", "", "mrr"),
+        ("RQ4", "order_1", "detection_rate"),
+        ("RQ4", "order_2", "detection_rate"),
+        ("RQ4", "order_3", "detection_rate"),
+        ("RQ4", "order_1", "complete_repair_rate"),
+        ("RQ4", "order_2", "complete_repair_rate"),
+        ("RQ4", "order_3", "complete_repair_rate"),
+        ("RQ4", "order_1", "effective_repair_rate"),
+        ("RQ4", "order_2", "effective_repair_rate"),
+        ("RQ4", "order_3", "effective_repair_rate"),
+        ("C3", "shallow", "detection_rate"),
+        ("C3", "medium", "detection_rate"),
+        ("C3", "deep", "detection_rate"),
+    }
+)
+
+
+def filter_paper_main_ci_rows(
+    rows: Sequence[ConfidenceIntervalRow],
+) -> list[ConfidenceIntervalRow]:
+    """Return headline paper metrics in stable presentation order."""
+    ordered: list[ConfidenceIntervalRow] = []
+    for row in rows:
+        key = (row.group, row.subgroup, row.metric)
+        if key in PAPER_MAIN_CI_METRICS:
+            ordered.append(row)
+
+    def _sort_key(row: ConfidenceIntervalRow) -> tuple[str, str, str]:
+        metric_order = {
+            "overall_detection_rate": 0,
+            "mean_faulty_bpr": 1,
+            "mean_bpr_delta": 2,
+            "complete_repair_rate_detectable_only": 3,
+            "effective_repair_rate_detectable_only": 4,
+            "top_1_hit_rate": 5,
+            "top_3_hit_rate": 6,
+            "top_5_hit_rate": 7,
+            "mrr": 8,
+            "detection_rate": 9,
+            "complete_repair_rate": 10,
+            "effective_repair_rate": 11,
+        }
+        subgroup_order = {
+            "": 0,
+            "baseline_missing_transition": 1,
+            "baseline_wrong_target": 2,
+            "baseline_random": 3,
+            "order_1": 4,
+            "order_2": 5,
+            "order_3": 6,
+            "shallow": 7,
+            "medium": 8,
+            "deep": 9,
+        }
+        group_order = {"RQ2": 0, "C1": 1, "RQ3": 2, "RQ4": 3, "C3": 4}
+        return (
+            group_order.get(row.group, 99),
+            subgroup_order.get(row.subgroup, 99),
+            metric_order.get(row.metric, 99),
+        )
+
+    return sorted(ordered, key=_sort_key)
+
+
+def render_paper_main_ci_tex(rows: Sequence[ConfidenceIntervalRow]) -> str:
+    """Render the consolidated headline CI table for the STVR manuscript."""
+    lines = [
+        "% Auto-generated by fsmrepairbench.paper_confidence_intervals",
+        "\\begin{table}[t]",
+        "\\caption{Bootstrap 95\\% confidence intervals for headline empirical results "
+        f"(non-parametric case resampling; {BOOTSTRAP_RESAMPLES:,} resamples; seed {BOOTSTRAP_SEED}).}}",
+        "\\label{tab:ci-main-results}",
+        "\\small",
+        "\\begin{tabular}{@{}lllrrrr@{}}",
+        "\\toprule",
+        "Campaign & Metric & Subgroup & $n$ & Mean & CI low & CI high \\\\",
+        "\\midrule",
+    ]
+    for row in rows:
+        campaign = row.group.replace("_", "\\_") if row.group else "---"
+        metric = row.metric.replace("_", "\\_")
+        subgroup = row.subgroup.replace("_", "\\_") if row.subgroup else "---"
+        lines.append(
+            f"{campaign} & {metric} & {subgroup} & {row.n_cases} & "
+            f"{row.mean:.4f} & {row.ci95_low:.4f} & {row.ci95_high:.4f} \\\\"
+        )
+    lines.extend(["\\bottomrule", "\\end{tabular}", "\\end{table}", ""])
+    return "\n".join(lines)
