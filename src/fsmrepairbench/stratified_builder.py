@@ -16,6 +16,7 @@ from fsmrepairbench.generators.stratified_specs import (
     total_planned_cases,
 )
 from fsmrepairbench.generator import MAX_MUTATION_RETRIES, write_benchmark_case
+from fsmrepairbench.higher_order_mutation import HigherOrderMutationError, mutate_higher_order
 from fsmrepairbench.mutators import MutatorError, mutate
 from fsmrepairbench.oracle_generator import OracleGeneratorError, generate_oracle_suite
 from fsmrepairbench.scorer import score_oracle_suite
@@ -63,14 +64,25 @@ def _mutation_seed(plan_seed: int, case_number: int, attempt: int) -> int:
     return plan_seed + case_number * 1000 + attempt
 
 
-def _try_mutate(reference, operator: str, plan_seed: int, case_number: int):
-    last_error: MutatorError | None = None
+def _mutation_operators_for_cell(cell: GenerationCell) -> list[str]:
+    if cell.mutation_operators:
+        return list(cell.mutation_operators)
+    return [bug_type_to_operator(cell.bug_type)]
+
+
+def _try_mutate(reference, cell: GenerationCell, plan_seed: int, case_number: int):
+    operators = _mutation_operators_for_cell(cell)
+    operator_label = ",".join(operators)
+    last_error: Exception | None = None
     for attempt in range(MAX_MUTATION_RETRIES):
+        seed = _mutation_seed(plan_seed, case_number, attempt)
         try:
-            return mutate(reference, operator, _mutation_seed(plan_seed, case_number, attempt))
-        except MutatorError as exc:
+            if len(operators) == 1:
+                return mutate(reference, operators[0], seed)
+            return mutate_higher_order(reference, operators, seed)
+        except (MutatorError, HigherOrderMutationError) as exc:
             last_error = exc
-    msg = f"Could not apply operator '{operator}' for case {case_number}: {last_error}"
+    msg = f"Could not apply operator(s) '{operator_label}' for case {case_number}: {last_error}"
     raise StratifiedBuilderError(msg)
 
 
@@ -170,8 +182,7 @@ def _build_case_for_cell(
         msg = f"Reference FSM for {case_id} did not achieve BPR=1.0"
         raise StratifiedBuilderError(msg)
 
-    operator = bug_type_to_operator(cell.bug_type)
-    faulty_fsm, bug_metadata = _try_mutate(reference, operator, plan.seed, case_number)
+    faulty_fsm, bug_metadata = _try_mutate(reference, cell, plan.seed, case_number)
     faulty_bpr = score_oracle_suite(faulty_fsm, oracle_result.suite).bpr
 
     features = compute_case_features(

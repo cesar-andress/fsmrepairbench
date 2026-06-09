@@ -1,0 +1,192 @@
+# FSMRepairBench v0 higher-order smoke stratified generation plan
+# Seed 43 keeps CI and local higher-order smoke builds reproducible.
+# Total planned cases: 100 (50 first-order, 50 higher-order; tiny/shallow for speed)
+
+name: fsmrepairbench_v0_higher_order_smoke
+version: "0.1.0"
+seed: 43
+cells:
+
+  # Block 1 — First-order mutants (50 cases)
+  # Why: One operator per case; mutation_order=1 in bug_metadata.json.
+  - machine_type: mealy
+    determinism: deterministic
+    completeness: complete
+    arity_class: high
+    size_class: tiny
+    guard_complexity: simple
+    time_features: [none]
+    graph_structure: [acyclic]
+    oracle_depth: shallow
+    bug_type: wrong_target
+    count: 10
+  - machine_type: mealy
+    determinism: deterministic
+    completeness: complete
+    arity_class: medium
+    size_class: tiny
+    guard_complexity: simple
+    time_features: [none]
+    graph_structure: [acyclic]
+    oracle_depth: shallow
+    bug_type: guard_flip
+    count: 10
+  - machine_type: plain_fsm
+    determinism: deterministic
+    completeness: partial
+    arity_class: low
+    size_class: tiny
+    guard_complexity: none
+    time_features: [none]
+    graph_structure: [acyclic]
+    oracle_depth: shallow
+    bug_type: missing_transition
+    count: 10
+  - machine_type: plain_fsm
+    determinism: deterministic
+    completeness: partial
+    arity_class: low
+    size_class: tiny
+    guard_complexity: none
+    time_features: [none]
+    graph_structure: [hub_and_spoke]
+    oracle_depth: shallow
+    bug_type: wrong_event
+    count: 10
+  - machine_type: mealy
+    determinism: deterministic
+    completeness: complete
+    arity_class: low
+    size_class: tiny
+    guard_complexity: simple
+    time_features: [none]
+    graph_structure: [acyclic]
+    oracle_depth: shallow
+    bug_type: action_corruption
+    count: 10
+
+  # Block 2 — Second-order mutants (25 cases)
+  # Why: Two chained operators; mutation_order=2 in bug_metadata.json.
+  - machine_type: mealy
+    determinism: deterministic
+    completeness: complete
+    arity_class: high
+    size_class: tiny
+    guard_complexity: simple
+    time_features: [none]
+    graph_structure: [acyclic]
+    oracle_depth: shallow
+    bug_type: wrong_target
+    mutation_operators: [wrong_target, guard_flip]
+    count: 5
+  - machine_type: plain_fsm
+    determinism: deterministic
+    completeness: partial
+    arity_class: low
+    size_class: tiny
+    guard_complexity: none
+    time_features: [none]
+    graph_structure: [acyclic]
+    oracle_depth: shallow
+    bug_type: missing_transition
+    mutation_operators: [wrong_target, missing_transition]
+    count: 5
+  - machine_type: plain_fsm
+    determinism: deterministic
+    completeness: partial
+    arity_class: low
+    size_class: tiny
+    guard_complexity: none
+    time_features: [none]
+    graph_structure: [hub_and_spoke]
+    oracle_depth: shallow
+    bug_type: wrong_event
+    mutation_operators: [wrong_event, missing_transition]
+    count: 5
+  - machine_type: mealy
+    determinism: deterministic
+    completeness: complete
+    arity_class: medium
+    size_class: tiny
+    guard_complexity: simple
+    time_features: [none]
+    graph_structure: [acyclic]
+    oracle_depth: shallow
+    bug_type: action_corruption
+    mutation_operators: [action_corruption, guard_flip]
+    count: 5
+  - machine_type: mealy
+    determinism: deterministic
+    completeness: complete
+    arity_class: high
+    size_class: tiny
+    guard_complexity: simple
+    time_features: [none]
+    graph_structure: [acyclic]
+    oracle_depth: shallow
+    bug_type: guard_flip
+    mutation_operators: [guard_flip, wrong_target]
+    count: 5
+
+  # Block 3 — Third-order mutants (25 cases)
+  # Why: Three chained operators; mutation_order=3 in bug_metadata.json.
+  - machine_type: mealy
+    determinism: deterministic
+    completeness: complete
+    arity_class: high
+    size_class: tiny
+    guard_complexity: simple
+    time_features: [none]
+    graph_structure: [acyclic]
+    oracle_depth: shallow
+    bug_type: wrong_target
+    mutation_operators: [wrong_target, guard_flip, missing_transition]
+    count: 5
+  - machine_type: mealy
+    determinism: deterministic
+    completeness: complete
+    arity_class: medium
+    size_class: tiny
+    guard_complexity: simple
+    time_features: [none]
+    graph_structure: [acyclic]
+    oracle_depth: shallow
+    bug_type: wrong_event
+    mutation_operators: [wrong_event, wrong_target, guard_flip]
+    count: 5
+  - machine_type: mealy
+    determinism: deterministic
+    completeness: complete
+    arity_class: high
+    size_class: tiny
+    guard_complexity: simple
+    time_features: [none]
+    graph_structure: [acyclic]
+    oracle_depth: shallow
+    bug_type: missing_transition
+    mutation_operators: [missing_transition, guard_flip, wrong_target]
+    count: 5
+  - machine_type: mealy
+    determinism: deterministic
+    completeness: complete
+    arity_class: low
+    size_class: tiny
+    guard_complexity: simple
+    time_features: [none]
+    graph_structure: [acyclic]
+    oracle_depth: shallow
+    bug_type: action_corruption
+    mutation_operators: [action_corruption, guard_flip, wrong_target]
+    count: 5
+  - machine_type: mealy
+    determinism: deterministic
+    completeness: complete
+    arity_class: medium
+    size_class: tiny
+    guard_complexity: simple
+    time_features: [none]
+    graph_structure: [acyclic]
+    oracle_depth: shallow
+    bug_type: guard_flip
+    mutation_operators: [guard_flip, wrong_target, missing_transition]
+    count: 5

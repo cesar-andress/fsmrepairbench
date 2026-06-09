@@ -39,6 +39,7 @@ class GenerationCell(BaseModel):
     graph_structure: list[GraphStructure]
     oracle_depth: OracleDepth
     bug_type: BugType
+    mutation_operators: list[str] | None = None
     count: int = Field(ge=1)
 
     @field_validator(
@@ -61,6 +62,15 @@ class GenerationCell(BaseModel):
     def _coerce_list(cls, value: list[str] | str) -> list[str]:
         if isinstance(value, str):
             return [value]
+        return value
+
+    @field_validator("mutation_operators", mode="before")
+    @classmethod
+    def _coerce_mutation_operators(cls, value: list[str] | str | None) -> list[str] | None:
+        if value is None:
+            return None
+        if isinstance(value, str):
+            return [item.strip() for item in value.split(",") if item.strip()]
         return value
 
 
