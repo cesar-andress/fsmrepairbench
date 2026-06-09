@@ -2137,6 +2137,11 @@ def coupling_analysis_cmd(
 
     write_dataset_coupling_report(out, report)
 
+    if report.discovery.skipped:
+        console.print("[yellow]WARN[/yellow] Skipped incomplete case directories:")
+        for inspection in report.discovery.skipped:
+            console.print(f"  - {inspection.skip_reason}")
+
     if quiet:
         console.print(
             f"[green]OK[/green] coupling_effect={report.coupling_effect_estimate:.2%}, "
@@ -2146,7 +2151,8 @@ def coupling_analysis_cmd(
         console.print(
             f"[green]OK[/green] Analyzed {report.case_count} cases "
             f"({report.first_order_case_count} first-order, "
-            f"{report.higher_order_case_count} higher-order)"
+            f"{report.higher_order_case_count} higher-order) "
+            f"from {report.discovery.total_directories} directories"
         )
         console.print(
             f"First-order detection rate: {report.first_order_detection_rate:.2%}"

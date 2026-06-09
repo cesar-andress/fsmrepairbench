@@ -15,10 +15,30 @@ from fsmrepairbench.higher_order_mutation import (
     mutate_higher_order,
     write_dataset_coupling_report,
 )
+from fsmrepairbench.dataset_builder import (
+    COUPLING_CASE_FILES,
+    STRATIFIED_CASE_LAYOUT_FILES,
+    discover_coupling_case_directories,
+    format_coupling_case_discovery,
+    inspect_coupling_case_directory,
+)
 from fsmrepairbench.models import OracleSuite
 from fsmrepairbench.mutators import mutate
 from fsmrepairbench.oracle_generator import generate_oracle_suite
 from fsmrepairbench.scorer import score_oracle_suite
+from fsmrepairbench.taxonomy import (
+    ArityClass,
+    BugType,
+    CaseFeatures,
+    Completeness,
+    Determinism,
+    GraphStructure,
+    GuardComplexity,
+    MachineType,
+    OracleDepth,
+    SizeClass,
+    TimeFeature,
+)
 from fsmrepairbench.validators import load_fsm, load_oracle_suite
 
 FIXTURES = Path(__file__).parent / "fixtures"
@@ -101,6 +121,61 @@ def _write_complete_case(
     )
 
 
+def _write_stratified_case(
+    case_dir: Path,
+    *,
+    reference,
+    faulty,
+    oracle: OracleSuite,
+    metadata,
+) -> None:
+    case_dir.mkdir(parents=True, exist_ok=True)
+    (case_dir / "reference_fsm.json").write_text(
+        reference.model_dump_json(indent=2) + "\n",
+        encoding="utf-8",
+    )
+    (case_dir / "faulty_fsm.json").write_text(
+        faulty.model_dump_json(indent=2) + "\n",
+        encoding="utf-8",
+    )
+    (case_dir / "oracle_suite.json").write_text(
+        oracle.model_dump_json(indent=2) + "\n",
+        encoding="utf-8",
+    )
+    (case_dir / "bug_metadata.json").write_text(
+        metadata.model_dump_json(indent=2) + "\n",
+        encoding="utf-8",
+    )
+    features = CaseFeatures(
+        case_id=case_dir.name,
+        machine_type=MachineType.PLAIN_FSM,
+        determinism=Determinism.DETERMINISTIC,
+        completeness=Completeness.COMPLETE,
+        arity_class=ArityClass.LOW,
+        size_class=SizeClass.TINY,
+        guard_complexity=GuardComplexity.NONE,
+        time_features=[TimeFeature.NONE],
+        graph_structure=[GraphStructure.ACYCLIC],
+        oracle_depth=OracleDepth.SHALLOW,
+        bug_type=BugType.WRONG_TARGET,
+        num_states=len(reference.states),
+        num_events=len(reference.events),
+        num_transitions=len(reference.transitions),
+        avg_out_degree=1.0,
+        max_out_degree=1,
+        num_guards=0,
+        num_timed_guards=0,
+        num_timeouts=0,
+        num_cycles=0,
+        scc_count=1,
+        seed=42,
+    )
+    (case_dir / "case_features.json").write_text(
+        features.model_dump_json(indent=2) + "\n",
+        encoding="utf-8",
+    )
+
+
 def test_first_order_mutant_via_higher_order_api() -> None:
     reference = load_fsm(FIXTURES / "valid_fsm.json")
     faulty, metadata = mutate_higher_order(reference, "wrong_target", 42)
@@ -177,6 +252,100 @@ def test_coupling_analysis_estimates_detection_relationship(tmp_path: Path) -> N
     assert report.first_order_detection_rate == 1.0
     assert report.higher_order_detection_rate == 1.0
     assert report.coupling_effect_estimate == 1.0
+
+
+def test_coupling_analysis_works_on_legacy_dataset(tmp_path: Path) -> None:
+    reference = load_fsm(FIXTURES / "valid_fsm.json")
+    oracle = load_oracle_suite(FIXTURES / "valid_oracle.json")
+    faulty, metadata = mutate(reference, "wrong_target", 0)
+
+    dataset_dir = tmp_path / "legacy_dataset"
+    _write_complete_case(
+        dataset_dir / "cases" / "case_000001",
+        reference=reference,
+        faulty=faulty,
+        oracle=oracle,
+        metadata=metadata,
+    )
+
+    inspection = inspect_coupling_case_directory(dataset_dir / "cases" / "case_000001")
+    assert inspection.is_complete
+    assert inspection.layout == "legacy"
+    assert set(inspection.detected_files) >= set(COUPLING_CASE_FILES)
+
+    report = analyze_dataset_coupling(dataset_dir)
+    assert report.case_count == 1
+    assert report.discovery.complete_count == 1
+
+
+def test_coupling_analysis_works_on_stratified_dataset(tmp_path: Path) -> None:
+    reference = load_fsm(FIXTURES / "valid_fsm.json")
+    oracle = load_oracle_suite(FIXTURES / "valid_oracle.json")
+    faulty, metadata = mutate_higher_order(
+        reference,
+        "wrong_target,guard_flip,missing_transition",
+        42,
+    )
+
+    dataset_dir = tmp_path / "stratified_dataset"
+    _write_stratified_case(
+        dataset_dir / "cases" / "case_000001",
+        reference=reference,
+        faulty=faulty,
+        oracle=oracle,
+        metadata=metadata,
+    )
+
+    inspection = inspect_coupling_case_directory(dataset_dir / "cases" / "case_000001")
+    assert inspection.is_complete
+    assert inspection.layout == "stratified"
+    assert set(inspection.expected_files) == set(STRATIFIED_CASE_LAYOUT_FILES)
+
+    report = analyze_dataset_coupling(dataset_dir)
+    assert report.case_count == 1
+    assert report.higher_order_case_count == 1
+
+
+def test_coupling_analysis_skips_incomplete_cases_with_diagnostics(tmp_path: Path) -> None:
+    reference = load_fsm(FIXTURES / "valid_fsm.json")
+    oracle = load_oracle_suite(FIXTURES / "valid_oracle.json")
+    faulty, metadata = mutate(reference, "wrong_target", 0)
+
+    dataset_dir = tmp_path / "mixed_dataset"
+    complete_dir = dataset_dir / "cases" / "case_000001"
+    incomplete_dir = dataset_dir / "cases" / "case_000002"
+    _write_stratified_case(
+        complete_dir,
+        reference=reference,
+        faulty=faulty,
+        oracle=oracle,
+        metadata=metadata,
+    )
+    incomplete_dir.mkdir(parents=True)
+    (incomplete_dir / "reference_fsm.json").write_text(
+        reference.model_dump_json(indent=2) + "\n",
+        encoding="utf-8",
+    )
+
+    discovery = discover_coupling_case_directories(dataset_dir / "cases")
+    assert discovery.total_directories == 2
+    assert discovery.complete_count == 1
+    assert len(discovery.skipped) == 1
+    skipped = discovery.skipped[0]
+    assert skipped.case_id == "case_000002"
+    assert "missing required file(s)" in (skipped.skip_reason or "")
+    assert set(skipped.detected_files) == {"reference_fsm.json"}
+
+    diagnostics = format_coupling_case_discovery(discovery)
+    assert "Case directories found: 2" in diagnostics
+    assert "Complete cases: 1" in diagnostics
+    assert "Expected legacy layout:" in diagnostics
+    assert "Expected stratified layout:" in diagnostics
+    assert "case_000002" in diagnostics
+
+    report = analyze_dataset_coupling(dataset_dir)
+    assert report.case_count == 1
+    assert report.discovery.skipped[0].case_id == "case_000002"
 
 
 def test_cli_mutate_higher_order(tmp_path: Path) -> None:

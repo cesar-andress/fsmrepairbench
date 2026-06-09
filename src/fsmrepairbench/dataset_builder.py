@@ -69,14 +69,160 @@ INDEX_COLUMNS: tuple[str, ...] = (
     "valid_faulty",
 )
 PROGRESS_COLUMNS: tuple[str, ...] = INDEX_COLUMNS + ("status",)
-REQUIRED_CASE_FILES: tuple[str, ...] = (
+COUPLING_CASE_FILES: tuple[str, ...] = (
     "reference_fsm.json",
     "faulty_fsm.json",
     "bug_metadata.json",
     "oracle_suite.json",
-    "case_metadata.json",
 )
+LEGACY_CASE_METADATA_FILE = "case_metadata.json"
+STRATIFIED_CASE_METADATA_FILE = "case_features.json"
+LEGACY_CASE_LAYOUT_FILES: tuple[str, ...] = COUPLING_CASE_FILES + (LEGACY_CASE_METADATA_FILE,)
+STRATIFIED_CASE_LAYOUT_FILES: tuple[str, ...] = COUPLING_CASE_FILES + (
+    STRATIFIED_CASE_METADATA_FILE,
+)
+REQUIRED_CASE_FILES: tuple[str, ...] = LEGACY_CASE_LAYOUT_FILES
 
+
+@dataclass(frozen=True)
+class CaseDirectoryInspection:
+    """Diagnostic view of one benchmark case directory."""
+
+    case_id: str
+    case_dir: Path
+    is_complete: bool
+    layout: str
+    expected_files: tuple[str, ...]
+    detected_files: tuple[str, ...]
+    missing_files: tuple[str, ...]
+    skip_reason: str | None = None
+
+
+@dataclass(frozen=True)
+class CouplingCaseDiscovery:
+    """Outcome of scanning a dataset ``cases/`` tree for coupling analysis."""
+
+    cases_root: Path
+    total_directories: int
+    complete_count: int
+    complete_case_dirs: tuple[Path, ...]
+    skipped: tuple[CaseDirectoryInspection, ...]
+    expected_legacy_files: tuple[str, ...] = LEGACY_CASE_LAYOUT_FILES
+    expected_stratified_files: tuple[str, ...] = STRATIFIED_CASE_LAYOUT_FILES
+
+
+def _detected_case_files(case_dir: Path) -> tuple[str, ...]:
+    return tuple(sorted(path.name for path in case_dir.iterdir() if path.is_file()))
+
+
+def inspect_coupling_case_directory(case_dir: Path) -> CaseDirectoryInspection:
+    """Inspect *case_dir* for coupling-analysis compatibility."""
+    case_id = case_dir.name
+    detected_files = _detected_case_files(case_dir) if case_dir.is_dir() else ()
+    if not case_dir.is_dir():
+        return CaseDirectoryInspection(
+            case_id=case_id,
+            case_dir=case_dir,
+            is_complete=False,
+            layout="missing",
+            expected_files=COUPLING_CASE_FILES,
+            detected_files=detected_files,
+            missing_files=COUPLING_CASE_FILES,
+            skip_reason=f"{case_id}: not a directory",
+        )
+
+    missing_core = tuple(
+        filename for filename in COUPLING_CASE_FILES if filename not in detected_files
+    )
+    if missing_core:
+        return CaseDirectoryInspection(
+            case_id=case_id,
+            case_dir=case_dir,
+            is_complete=False,
+            layout="incomplete",
+            expected_files=COUPLING_CASE_FILES,
+            detected_files=detected_files,
+            missing_files=missing_core,
+            skip_reason=(
+                f"{case_id}: missing required file(s): {', '.join(missing_core)}; "
+                f"detected: {', '.join(detected_files) or '(none)'}"
+            ),
+        )
+
+    if LEGACY_CASE_METADATA_FILE in detected_files:
+        layout = "legacy"
+        expected_files = LEGACY_CASE_LAYOUT_FILES
+    elif STRATIFIED_CASE_METADATA_FILE in detected_files:
+        layout = "stratified"
+        expected_files = STRATIFIED_CASE_LAYOUT_FILES
+    else:
+        layout = "core"
+        expected_files = COUPLING_CASE_FILES
+
+    return CaseDirectoryInspection(
+        case_id=case_id,
+        case_dir=case_dir,
+        is_complete=True,
+        layout=layout,
+        expected_files=expected_files,
+        detected_files=detected_files,
+        missing_files=(),
+        skip_reason=None,
+    )
+
+
+def is_coupling_case_complete(case_dir: Path) -> bool:
+    """Return whether *case_dir* contains the files needed for coupling analysis."""
+    return inspect_coupling_case_directory(case_dir).is_complete
+
+
+def discover_coupling_case_directories(cases_root: Path) -> CouplingCaseDiscovery:
+    """Discover complete coupling-analysis cases under *cases_root*."""
+    if not cases_root.is_dir():
+        return CouplingCaseDiscovery(
+            cases_root=cases_root,
+            total_directories=0,
+            complete_count=0,
+            complete_case_dirs=(),
+            skipped=(),
+        )
+
+    inspections = [
+        inspect_coupling_case_directory(case_dir)
+        for case_dir in sorted(path for path in cases_root.iterdir() if path.is_dir())
+    ]
+    complete = tuple(
+        inspection.case_dir for inspection in inspections if inspection.is_complete
+    )
+    skipped = tuple(inspection for inspection in inspections if not inspection.is_complete)
+    return CouplingCaseDiscovery(
+        cases_root=cases_root,
+        total_directories=len(inspections),
+        complete_count=len(complete),
+        complete_case_dirs=complete,
+        skipped=skipped,
+    )
+
+
+def format_coupling_case_discovery(discovery: CouplingCaseDiscovery) -> str:
+    """Format coupling case discovery diagnostics for CLI and error messages."""
+    lines = [
+        f"Case directories found: {discovery.total_directories}",
+        f"Complete cases: {discovery.complete_count}",
+        (
+            "Expected legacy layout: "
+            + ", ".join(discovery.expected_legacy_files)
+        ),
+        (
+            "Expected stratified layout: "
+            + ", ".join(discovery.expected_stratified_files)
+        ),
+    ]
+    if discovery.skipped:
+        lines.append("Skipped cases:")
+        for inspection in discovery.skipped:
+            lines.append(f"  - {inspection.skip_reason}")
+    return "\n".join(lines)
 
 class DatasetBuilderError(RuntimeError):
     """Raised when dataset construction cannot complete."""

@@ -6,7 +6,12 @@ import json
 from dataclasses import dataclass
 from pathlib import Path
 
-from fsmrepairbench.dataset_builder import is_case_complete
+from fsmrepairbench.dataset_builder import (
+    CouplingCaseDiscovery,
+    discover_coupling_case_directories,
+    format_coupling_case_discovery,
+    inspect_coupling_case_directory,
+)
 from fsmrepairbench.models import BugMetadata, FSM, OracleSuite
 from fsmrepairbench.mutators import MUTATION_OPERATORS, MutatorError, mutate
 from fsmrepairbench.scorer import score_oracle_suite
@@ -204,11 +209,13 @@ class DatasetCouplingReport:
     higher_order_detection_rate: float
     coupling_effect_estimate: float
     cases: tuple[CaseCouplingRecord, ...]
+    discovery: CouplingCaseDiscovery
 
 
 def analyze_case_coupling(case_dir: Path) -> CaseCouplingRecord | None:
     """Analyze coupling for one complete benchmark case directory."""
-    if not is_case_complete(case_dir):
+    inspection = inspect_coupling_case_directory(case_dir)
+    if not inspection.is_complete:
         return None
 
     reference = load_fsm_json(case_dir / "reference_fsm.json")
@@ -262,14 +269,16 @@ def analyze_dataset_coupling(dataset_dir: Path) -> DatasetCouplingReport:
         msg = f"No cases/ directory found in {dataset_dir}"
         raise HigherOrderMutationError(msg)
 
+    discovery = discover_coupling_case_directories(cases_root)
     records: list[CaseCouplingRecord] = []
-    for case_dir in sorted(path for path in cases_root.iterdir() if path.is_dir()):
+    for case_dir in discovery.complete_case_dirs:
         record = analyze_case_coupling(case_dir)
         if record is not None:
             records.append(record)
 
     if not records:
-        msg = f"No complete benchmark cases found under {cases_root}"
+        diagnostics = format_coupling_case_discovery(discovery)
+        msg = f"No complete benchmark cases found under {cases_root}\n{diagnostics}"
         raise HigherOrderMutationError(msg)
 
     first_order_cases = [record for record in records if not record.is_higher_order]
@@ -298,11 +307,13 @@ def analyze_dataset_coupling(dataset_dir: Path) -> DatasetCouplingReport:
         higher_order_detection_rate=ho_rate,
         coupling_effect_estimate=coupling_estimate,
         cases=tuple(records),
+        discovery=discovery,
     )
 
 
 def dataset_coupling_report_to_dict(report: DatasetCouplingReport) -> dict[str, object]:
     """Convert a dataset coupling report to JSON."""
+    discovery = report.discovery
     return {
         "dataset_dir": str(report.dataset_dir),
         "case_count": report.case_count,
@@ -311,6 +322,25 @@ def dataset_coupling_report_to_dict(report: DatasetCouplingReport) -> dict[str, 
         "first_order_detection_rate": report.first_order_detection_rate,
         "higher_order_detection_rate": report.higher_order_detection_rate,
         "coupling_effect_estimate": report.coupling_effect_estimate,
+        "discovery": {
+            "cases_root": str(discovery.cases_root),
+            "total_directories": discovery.total_directories,
+            "complete_count": discovery.complete_count,
+            "skipped_count": len(discovery.skipped),
+            "expected_legacy_files": list(discovery.expected_legacy_files),
+            "expected_stratified_files": list(discovery.expected_stratified_files),
+            "skipped_cases": [
+                {
+                    "case_id": inspection.case_id,
+                    "layout": inspection.layout,
+                    "expected_files": list(inspection.expected_files),
+                    "detected_files": list(inspection.detected_files),
+                    "missing_files": list(inspection.missing_files),
+                    "reason": inspection.skip_reason,
+                }
+                for inspection in discovery.skipped
+            ],
+        },
         "cases": [
             {
                 "case_id": record.case_id,
