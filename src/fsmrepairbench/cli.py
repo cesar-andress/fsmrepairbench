@@ -2881,6 +2881,51 @@ def run_oracle_depth_ablation_cmd(
     raise typer.Exit(code=0)
 
 
+@app.command("generate-taxonomy-coverage")
+def generate_taxonomy_coverage_cmd(
+    dataset_dir: Path,
+    out: Path = typer.Option(
+        Path("results/taxonomy_coverage"),
+        "--out",
+        help="Directory for taxonomy coverage CSVs, figures, tables, and report.",
+    ),
+    cohort_file: Path | None = typer.Option(
+        None,
+        "--cohort-file",
+        help="Optional cohort manifest (one case ID per line).",
+    ),
+) -> None:
+    """Report empirical taxonomy coverage for an existing benchmark dataset."""
+    from fsmrepairbench.taxonomy_coverage import (
+        TaxonomyCoverageError,
+        generate_taxonomy_coverage_report,
+    )
+
+    try:
+        result = generate_taxonomy_coverage_report(
+            dataset_dir,
+            output_dir=out,
+            cohort_path=cohort_file,
+        )
+    except TaxonomyCoverageError as exc:
+        console.print(f"[red]ERROR[/red] {exc}")
+        raise typer.Exit(code=1) from exc
+
+    console.print(
+        f"[green]OK[/green] Taxonomy coverage report for {result.case_count} cases "
+        f"from {dataset_dir}"
+    )
+    console.print(f"Report: {result.report_path}")
+    console.print(f"Summary: {result.summary_path}")
+    console.print(f"Dimension summary: {result.dimension_summary_path}")
+    console.print(f"FSM families: {result.fsm_family_path}")
+    console.print(f"Mutation operators: {result.mutation_operator_path}")
+    console.print(f"Complexity tiers: {result.complexity_tier_path}")
+    console.print(f"Figures: {result.figures_dir}")
+    console.print(f"Tables: {result.tables_dir}")
+    raise typer.Exit(code=0)
+
+
 @app.command("run-benchmark-campaign")
 def run_benchmark_campaign_cmd(
     plan_path: Path,

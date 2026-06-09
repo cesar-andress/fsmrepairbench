@@ -663,6 +663,22 @@ fsmrepairbench generate-requirements tests/fixtures/valid_fsm.json --out PATH
 | `out` | `Path` | `--out` | required | Output path for requirements.txt. |
 | `style` | `RequirementStyle` | `--style` | 'concise' | Requirement wording style: concise, verbose, ambiguous, or industrial. |
 
+### `generate-taxonomy-coverage`
+
+Report empirical taxonomy coverage for an existing benchmark dataset.
+
+**Usage**
+
+```bash
+fsmrepairbench generate-taxonomy-coverage DATASET_DIR
+```
+
+| Parameter | Type | Flags | Default | Description |
+|-----------|------|-------|---------|-------------|
+| `dataset_dir` | `Path` | positional | required |  |
+| `out` | `Path` | `--out` | results/taxonomy_coverage | Directory for taxonomy coverage CSVs, figures, tables, and report. |
+| `cohort_file` | `Path | None` | `--cohort-file` | None | Optional cohort manifest (one case ID per line). |
+
 ### `inject-ambiguity`
 
 Inject controlled ambiguity into clear natural-language requirements.

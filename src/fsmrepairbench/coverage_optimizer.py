@@ -341,16 +341,16 @@ def suggest_additional_cases(
     }
 
 
-def analyze_feature_coverage(
-    feature_matrix_path: Path,
+def build_feature_coverage_report(
+    rows: list[dict[str, str]],
     *,
+    feature_matrix_path: str,
     suggestion_count: int = 200,
 ) -> dict[str, Any]:
-    """Compute feature-space coverage metrics for *feature_matrix_path*."""
-    rows = load_feature_matrix(feature_matrix_path)
+    """Compute feature-space coverage metrics for pre-loaded feature-matrix rows."""
     return {
         "generated_at": datetime.now(tz=UTC).isoformat(),
-        "feature_matrix_path": str(feature_matrix_path),
+        "feature_matrix_path": feature_matrix_path,
         "case_count": len(rows),
         "unique_feature_combinations": _unique_feature_combinations(rows),
         "feature_entropy": _feature_entropy(rows),
@@ -362,6 +362,20 @@ def analyze_feature_coverage(
         "missing_triple_sample": _missing_triple_cells(rows),
         "suggestions": suggest_additional_cases(rows, target_count=suggestion_count),
     }
+
+
+def analyze_feature_coverage(
+    feature_matrix_path: Path,
+    *,
+    suggestion_count: int = 200,
+) -> dict[str, Any]:
+    """Compute feature-space coverage metrics for *feature_matrix_path*."""
+    rows = load_feature_matrix(feature_matrix_path)
+    return build_feature_coverage_report(
+        rows,
+        feature_matrix_path=str(feature_matrix_path),
+        suggestion_count=suggestion_count,
+    )
 
 
 def generate_coverage_report(

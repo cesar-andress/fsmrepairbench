@@ -1,0 +1,1493 @@
+{
+  "generated_at": "2026-06-09T03:10:03.025804+00:00",
+  "feature_matrix_path": "results/taxonomy_coverage/feature_matrix_snapshot.csv",
+  "case_count": 1000,
+  "unique_feature_combinations": {
+    "features": [
+      "machine_type",
+      "determinism",
+      "completeness",
+      "arity_class",
+      "size_class",
+      "guard_complexity",
+      "time_features",
+      "graph_structure",
+      "oracle_depth",
+      "bug_type"
+    ],
+    "unique_count": 200,
+    "case_count": 1000,
+    "duplicate_combinations": 800,
+    "top_combinations": [
+      {
+        "combination": {
+          "machine_type": "plain_fsm",
+          "determinism": "deterministic",
+          "completeness": "partial",
+          "arity_class": "high",
+          "size_class": "large",
+          "guard_complexity": "simple",
+          "time_features": "none",
+          "graph_structure": "cyclic|strongly_connected|dense",
+          "oracle_depth": "deep",
+          "bug_type": "wrong_source"
+        },
+        "count": 15
+      },
+      {
+        "combination": {
+          "machine_type": "plain_fsm",
+          "determinism": "deterministic",
+          "completeness": "partial",
+          "arity_class": "high",
+          "size_class": "large",
+          "guard_complexity": "simple",
+          "time_features": "none",
+          "graph_structure": "cyclic|strongly_connected|dense",
+          "oracle_depth": "deep",
+          "bug_type": "action_corruption"
+        },
+        "count": 15
+      },
+      {
+        "combination": {
+          "machine_type": "plain_fsm",
+          "determinism": "deterministic",
+          "completeness": "partial",
+          "arity_class": "high",
+          "size_class": "large",
+          "guard_complexity": "simple",
+          "time_features": "none",
+          "graph_structure": "cyclic|strongly_connected|dense",
+          "oracle_depth": "deep",
+          "bug_type": "wrong_event"
+        },
+        "count": 15
+      },
+      {
+        "combination": {
+          "machine_type": "plain_fsm",
+          "determinism": "deterministic",
+          "completeness": "partial",
+          "arity_class": "high",
+          "size_class": "large",
+          "guard_complexity": "simple",
+          "time_features": "none",
+          "graph_structure": "cyclic|strongly_connected|dense",
+          "oracle_depth": "deep",
+          "bug_type": "timeout_corruption"
+        },
+        "count": 15
+      },
+      {
+        "combination": {
+          "machine_type": "plain_fsm",
+          "determinism": "deterministic",
+          "completeness": "partial",
+          "arity_class": "high",
+          "size_class": "large",
+          "guard_complexity": "simple",
+          "time_features": "none",
+          "graph_structure": "cyclic|strongly_connected|dense",
+          "oracle_depth": "deep",
+          "bug_type": "guard_weaken"
+        },
+        "count": 15
+      },
+      {
+        "combination": {
+          "machine_type": "plain_fsm",
+          "determinism": "deterministic",
+          "completeness": "partial",
+          "arity_class": "high",
+          "size_class": "large",
+          "guard_complexity": "simple",
+          "time_features": "none",
+          "graph_structure": "cyclic|strongly_connected|dense",
+          "oracle_depth": "deep",
+          "bug_type": "guard_inter_class"
+        },
+        "count": 15
+      },
+      {
+        "combination": {
+          "machine_type": "plain_fsm",
+          "determinism": "deterministic",
+          "completeness": "partial",
+          "arity_class": "high",
+          "size_class": "large",
+          "guard_complexity": "simple",
+          "time_features": "none",
+          "graph_structure": "cyclic|strongly_connected|dense",
+          "oracle_depth": "deep",
+          "bug_type": "wrong_target"
+        },
+        "count": 15
+      },
+      {
+        "combination": {
+          "machine_type": "plain_fsm",
+          "determinism": "deterministic",
+          "completeness": "partial",
+          "arity_class": "high",
+          "size_class": "large",
+          "guard_complexity": "simple",
+          "time_features": "none",
+          "graph_structure": "cyclic|strongly_connected|dense",
+          "oracle_depth": "deep",
+          "bug_type": "guard_flip"
+        },
+        "count": 14
+      },
+      {
+        "combination": {
+          "machine_type": "plain_fsm",
+          "determinism": "deterministic",
+          "completeness": "partial",
+          "arity_class": "high",
+          "size_class": "large",
+          "guard_complexity": "simple",
+          "time_features": "none",
+          "graph_structure": "cyclic|strongly_connected|dense",
+          "oracle_depth": "deep",
+          "bug_type": "missing_transition"
+        },
+        "count": 14
+      },
+      {
+        "combination": {
+          "machine_type": "plain_fsm",
+          "determinism": "deterministic",
+          "completeness": "partial",
+          "arity_class": "high",
+          "size_class": "large",
+          "guard_complexity": "simple",
+          "time_features": "none",
+          "graph_structure": "cyclic|strongly_connected|dense",
+          "oracle_depth": "deep",
+          "bug_type": "wrong_initial_state"
+        },
+        "count": 14
+      }
+    ]
+  },
+  "feature_entropy": {
+    "machine_type": 0.0,
+    "determinism": 0.0,
+    "completeness": 0.0,
+    "arity_class": 1.439892,
+    "size_class": 1.999936,
+    "guard_complexity": 0.141441,
+    "time_features": 0.0,
+    "graph_structure": 1.748384,
+    "oracle_depth": 0.804876,
+    "bug_type": 4.086977
+  },
+  "pairwise_coverage": {
+    "machine_type__determinism": {
+      "feature_a": "machine_type",
+      "feature_b": "determinism",
+      "observed_pairs": 1,
+      "possible_pairs": 16,
+      "coverage": 0.0625,
+      "missing_pairs": 15
+    },
+    "machine_type__bug_type": {
+      "feature_a": "machine_type",
+      "feature_b": "bug_type",
+      "observed_pairs": 17,
+      "possible_pairs": 136,
+      "coverage": 0.125,
+      "missing_pairs": 119
+    },
+    "machine_type__size_class": {
+      "feature_a": "machine_type",
+      "feature_b": "size_class",
+      "observed_pairs": 4,
+      "possible_pairs": 40,
+      "coverage": 0.1,
+      "missing_pairs": 36
+    },
+    "machine_type__arity_class": {
+      "feature_a": "machine_type",
+      "feature_b": "arity_class",
+      "observed_pairs": 3,
+      "possible_pairs": 32,
+      "coverage": 0.09375,
+      "missing_pairs": 29
+    },
+    "machine_type__guard_complexity": {
+      "feature_a": "machine_type",
+      "feature_b": "guard_complexity",
+      "observed_pairs": 2,
+      "possible_pairs": 32,
+      "coverage": 0.0625,
+      "missing_pairs": 30
+    },
+    "machine_type__oracle_depth": {
+      "feature_a": "machine_type",
+      "feature_b": "oracle_depth",
+      "observed_pairs": 2,
+      "possible_pairs": 32,
+      "coverage": 0.0625,
+      "missing_pairs": 30
+    },
+    "determinism__bug_type": {
+      "feature_a": "determinism",
+      "feature_b": "bug_type",
+      "observed_pairs": 17,
+      "possible_pairs": 34,
+      "coverage": 0.5,
+      "missing_pairs": 17
+    },
+    "determinism__size_class": {
+      "feature_a": "determinism",
+      "feature_b": "size_class",
+      "observed_pairs": 4,
+      "possible_pairs": 10,
+      "coverage": 0.4,
+      "missing_pairs": 6
+    },
+    "determinism__arity_class": {
+      "feature_a": "determinism",
+      "feature_b": "arity_class",
+      "observed_pairs": 3,
+      "possible_pairs": 8,
+      "coverage": 0.375,
+      "missing_pairs": 5
+    },
+    "determinism__guard_complexity": {
+      "feature_a": "determinism",
+      "feature_b": "guard_complexity",
+      "observed_pairs": 2,
+      "possible_pairs": 8,
+      "coverage": 0.25,
+      "missing_pairs": 6
+    },
+    "determinism__oracle_depth": {
+      "feature_a": "determinism",
+      "feature_b": "oracle_depth",
+      "observed_pairs": 2,
+      "possible_pairs": 8,
+      "coverage": 0.25,
+      "missing_pairs": 6
+    },
+    "bug_type__size_class": {
+      "feature_a": "bug_type",
+      "feature_b": "size_class",
+      "observed_pairs": 68,
+      "possible_pairs": 85,
+      "coverage": 0.8,
+      "missing_pairs": 17
+    },
+    "bug_type__arity_class": {
+      "feature_a": "bug_type",
+      "feature_b": "arity_class",
+      "observed_pairs": 51,
+      "possible_pairs": 68,
+      "coverage": 0.75,
+      "missing_pairs": 17
+    },
+    "bug_type__guard_complexity": {
+      "feature_a": "bug_type",
+      "feature_b": "guard_complexity",
+      "observed_pairs": 29,
+      "possible_pairs": 68,
+      "coverage": 0.426471,
+      "missing_pairs": 39
+    },
+    "bug_type__oracle_depth": {
+      "feature_a": "bug_type",
+      "feature_b": "oracle_depth",
+      "observed_pairs": 34,
+      "possible_pairs": 68,
+      "coverage": 0.5,
+      "missing_pairs": 34
+    },
+    "size_class__arity_class": {
+      "feature_a": "size_class",
+      "feature_b": "arity_class",
+      "observed_pairs": 6,
+      "possible_pairs": 20,
+      "coverage": 0.3,
+      "missing_pairs": 14
+    },
+    "size_class__guard_complexity": {
+      "feature_a": "size_class",
+      "feature_b": "guard_complexity",
+      "observed_pairs": 5,
+      "possible_pairs": 20,
+      "coverage": 0.25,
+      "missing_pairs": 15
+    },
+    "size_class__oracle_depth": {
+      "feature_a": "size_class",
+      "feature_b": "oracle_depth",
+      "observed_pairs": 4,
+      "possible_pairs": 20,
+      "coverage": 0.2,
+      "missing_pairs": 16
+    },
+    "arity_class__guard_complexity": {
+      "feature_a": "arity_class",
+      "feature_b": "guard_complexity",
+      "observed_pairs": 4,
+      "possible_pairs": 16,
+      "coverage": 0.25,
+      "missing_pairs": 12
+    },
+    "arity_class__oracle_depth": {
+      "feature_a": "arity_class",
+      "feature_b": "oracle_depth",
+      "observed_pairs": 4,
+      "possible_pairs": 16,
+      "coverage": 0.25,
+      "missing_pairs": 12
+    },
+    "guard_complexity__oracle_depth": {
+      "feature_a": "guard_complexity",
+      "feature_b": "oracle_depth",
+      "observed_pairs": 3,
+      "possible_pairs": 16,
+      "coverage": 0.1875,
+      "missing_pairs": 13
+    }
+  },
+  "triple_coverage": {
+    "features": [
+      "machine_type",
+      "bug_type",
+      "size_class"
+    ],
+    "observed_triples": 68,
+    "possible_triples": 680,
+    "coverage": 0.1,
+    "missing_triples": 612
+  },
+  "rare_combinations": [],
+  "missing_combinations": {
+    "features": [
+      "machine_type",
+      "determinism",
+      "bug_type",
+      "size_class",
+      "arity_class"
+    ],
+    "observed_count": 102,
+    "possible_count": 5440,
+    "missing_count": 5338,
+    "missing_sample": [
+      {
+        "machine_type": "efsm",
+        "determinism": "deterministic",
+        "bug_type": "action_corruption",
+        "size_class": "large",
+        "arity_class": "high"
+      },
+      {
+        "machine_type": "efsm",
+        "determinism": "deterministic",
+        "bug_type": "action_corruption",
+        "size_class": "large",
+        "arity_class": "low"
+      },
+      {
+        "machine_type": "efsm",
+        "determinism": "deterministic",
+        "bug_type": "action_corruption",
+        "size_class": "large",
+        "arity_class": "medium"
+      },
+      {
+        "machine_type": "efsm",
+        "determinism": "deterministic",
+        "bug_type": "action_corruption",
+        "size_class": "large",
+        "arity_class": "very_high"
+      },
+      {
+        "machine_type": "efsm",
+        "determinism": "deterministic",
+        "bug_type": "action_corruption",
+        "size_class": "medium",
+        "arity_class": "high"
+      },
+      {
+        "machine_type": "efsm",
+        "determinism": "deterministic",
+        "bug_type": "action_corruption",
+        "size_class": "medium",
+        "arity_class": "low"
+      },
+      {
+        "machine_type": "efsm",
+        "determinism": "deterministic",
+        "bug_type": "action_corruption",
+        "size_class": "medium",
+        "arity_class": "medium"
+      },
+      {
+        "machine_type": "efsm",
+        "determinism": "deterministic",
+        "bug_type": "action_corruption",
+        "size_class": "medium",
+        "arity_class": "very_high"
+      },
+      {
+        "machine_type": "efsm",
+        "determinism": "deterministic",
+        "bug_type": "action_corruption",
+        "size_class": "small",
+        "arity_class": "high"
+      },
+      {
+        "machine_type": "efsm",
+        "determinism": "deterministic",
+        "bug_type": "action_corruption",
+        "size_class": "small",
+        "arity_class": "low"
+      },
+      {
+        "machine_type": "efsm",
+        "determinism": "deterministic",
+        "bug_type": "action_corruption",
+        "size_class": "small",
+        "arity_class": "medium"
+      },
+      {
+        "machine_type": "efsm",
+        "determinism": "deterministic",
+        "bug_type": "action_corruption",
+        "size_class": "small",
+        "arity_class": "very_high"
+      },
+      {
+        "machine_type": "efsm",
+        "determinism": "deterministic",
+        "bug_type": "action_corruption",
+        "size_class": "tiny",
+        "arity_class": "high"
+      },
+      {
+        "machine_type": "efsm",
+        "determinism": "deterministic",
+        "bug_type": "action_corruption",
+        "size_class": "tiny",
+        "arity_class": "low"
+      },
+      {
+        "machine_type": "efsm",
+        "determinism": "deterministic",
+        "bug_type": "action_corruption",
+        "size_class": "tiny",
+        "arity_class": "medium"
+      },
+      {
+        "machine_type": "efsm",
+        "determinism": "deterministic",
+        "bug_type": "action_corruption",
+        "size_class": "tiny",
+        "arity_class": "very_high"
+      },
+      {
+        "machine_type": "efsm",
+        "determinism": "deterministic",
+        "bug_type": "action_corruption",
+        "size_class": "very_large",
+        "arity_class": "high"
+      },
+      {
+        "machine_type": "efsm",
+        "determinism": "deterministic",
+        "bug_type": "action_corruption",
+        "size_class": "very_large",
+        "arity_class": "low"
+      },
+      {
+        "machine_type": "efsm",
+        "determinism": "deterministic",
+        "bug_type": "action_corruption",
+        "size_class": "very_large",
+        "arity_class": "medium"
+      },
+      {
+        "machine_type": "efsm",
+        "determinism": "deterministic",
+        "bug_type": "action_corruption",
+        "size_class": "very_large",
+        "arity_class": "very_high"
+      },
+      {
+        "machine_type": "efsm",
+        "determinism": "deterministic",
+        "bug_type": "action_full_mutation",
+        "size_class": "large",
+        "arity_class": "high"
+      },
+      {
+        "machine_type": "efsm",
+        "determinism": "deterministic",
+        "bug_type": "action_full_mutation",
+        "size_class": "large",
+        "arity_class": "low"
+      },
+      {
+        "machine_type": "efsm",
+        "determinism": "deterministic",
+        "bug_type": "action_full_mutation",
+        "size_class": "large",
+        "arity_class": "medium"
+      },
+      {
+        "machine_type": "efsm",
+        "determinism": "deterministic",
+        "bug_type": "action_full_mutation",
+        "size_class": "large",
+        "arity_class": "very_high"
+      },
+      {
+        "machine_type": "efsm",
+        "determinism": "deterministic",
+        "bug_type": "action_full_mutation",
+        "size_class": "medium",
+        "arity_class": "high"
+      },
+      {
+        "machine_type": "efsm",
+        "determinism": "deterministic",
+        "bug_type": "action_full_mutation",
+        "size_class": "medium",
+        "arity_class": "low"
+      },
+      {
+        "machine_type": "efsm",
+        "determinism": "deterministic",
+        "bug_type": "action_full_mutation",
+        "size_class": "medium",
+        "arity_class": "medium"
+      },
+      {
+        "machine_type": "efsm",
+        "determinism": "deterministic",
+        "bug_type": "action_full_mutation",
+        "size_class": "medium",
+        "arity_class": "very_high"
+      },
+      {
+        "machine_type": "efsm",
+        "determinism": "deterministic",
+        "bug_type": "action_full_mutation",
+        "size_class": "small",
+        "arity_class": "high"
+      },
+      {
+        "machine_type": "efsm",
+        "determinism": "deterministic",
+        "bug_type": "action_full_mutation",
+        "size_class": "small",
+        "arity_class": "low"
+      },
+      {
+        "machine_type": "efsm",
+        "determinism": "deterministic",
+        "bug_type": "action_full_mutation",
+        "size_class": "small",
+        "arity_class": "medium"
+      },
+      {
+        "machine_type": "efsm",
+        "determinism": "deterministic",
+        "bug_type": "action_full_mutation",
+        "size_class": "small",
+        "arity_class": "very_high"
+      },
+      {
+        "machine_type": "efsm",
+        "determinism": "deterministic",
+        "bug_type": "action_full_mutation",
+        "size_class": "tiny",
+        "arity_class": "high"
+      },
+      {
+        "machine_type": "efsm",
+        "determinism": "deterministic",
+        "bug_type": "action_full_mutation",
+        "size_class": "tiny",
+        "arity_class": "low"
+      },
+      {
+        "machine_type": "efsm",
+        "determinism": "deterministic",
+        "bug_type": "action_full_mutation",
+        "size_class": "tiny",
+        "arity_class": "medium"
+      },
+      {
+        "machine_type": "efsm",
+        "determinism": "deterministic",
+        "bug_type": "action_full_mutation",
+        "size_class": "tiny",
+        "arity_class": "very_high"
+      },
+      {
+        "machine_type": "efsm",
+        "determinism": "deterministic",
+        "bug_type": "action_full_mutation",
+        "size_class": "very_large",
+        "arity_class": "high"
+      },
+      {
+        "machine_type": "efsm",
+        "determinism": "deterministic",
+        "bug_type": "action_full_mutation",
+        "size_class": "very_large",
+        "arity_class": "low"
+      },
+      {
+        "machine_type": "efsm",
+        "determinism": "deterministic",
+        "bug_type": "action_full_mutation",
+        "size_class": "very_large",
+        "arity_class": "medium"
+      },
+      {
+        "machine_type": "efsm",
+        "determinism": "deterministic",
+        "bug_type": "action_full_mutation",
+        "size_class": "very_large",
+        "arity_class": "very_high"
+      },
+      {
+        "machine_type": "efsm",
+        "determinism": "deterministic",
+        "bug_type": "dead_state_intro",
+        "size_class": "large",
+        "arity_class": "high"
+      },
+      {
+        "machine_type": "efsm",
+        "determinism": "deterministic",
+        "bug_type": "dead_state_intro",
+        "size_class": "large",
+        "arity_class": "low"
+      },
+      {
+        "machine_type": "efsm",
+        "determinism": "deterministic",
+        "bug_type": "dead_state_intro",
+        "size_class": "large",
+        "arity_class": "medium"
+      },
+      {
+        "machine_type": "efsm",
+        "determinism": "deterministic",
+        "bug_type": "dead_state_intro",
+        "size_class": "large",
+        "arity_class": "very_high"
+      },
+      {
+        "machine_type": "efsm",
+        "determinism": "deterministic",
+        "bug_type": "dead_state_intro",
+        "size_class": "medium",
+        "arity_class": "high"
+      },
+      {
+        "machine_type": "efsm",
+        "determinism": "deterministic",
+        "bug_type": "dead_state_intro",
+        "size_class": "medium",
+        "arity_class": "low"
+      },
+      {
+        "machine_type": "efsm",
+        "determinism": "deterministic",
+        "bug_type": "dead_state_intro",
+        "size_class": "medium",
+        "arity_class": "medium"
+      },
+      {
+        "machine_type": "efsm",
+        "determinism": "deterministic",
+        "bug_type": "dead_state_intro",
+        "size_class": "medium",
+        "arity_class": "very_high"
+      },
+      {
+        "machine_type": "efsm",
+        "determinism": "deterministic",
+        "bug_type": "dead_state_intro",
+        "size_class": "small",
+        "arity_class": "high"
+      },
+      {
+        "machine_type": "efsm",
+        "determinism": "deterministic",
+        "bug_type": "dead_state_intro",
+        "size_class": "small",
+        "arity_class": "low"
+      }
+    ]
+  },
+  "missing_pairwise_sample": [
+    {
+      "feature_a": "machine_type",
+      "value_a": "efsm",
+      "feature_b": "determinism",
+      "value_b": "deterministic"
+    },
+    {
+      "feature_a": "machine_type",
+      "value_a": "efsm",
+      "feature_b": "determinism",
+      "value_b": "nondeterministic"
+    },
+    {
+      "feature_a": "machine_type",
+      "value_a": "mealy",
+      "feature_b": "determinism",
+      "value_b": "deterministic"
+    },
+    {
+      "feature_a": "machine_type",
+      "value_a": "mealy",
+      "feature_b": "determinism",
+      "value_b": "nondeterministic"
+    },
+    {
+      "feature_a": "machine_type",
+      "value_a": "moore",
+      "feature_b": "determinism",
+      "value_b": "deterministic"
+    },
+    {
+      "feature_a": "machine_type",
+      "value_a": "moore",
+      "feature_b": "determinism",
+      "value_b": "nondeterministic"
+    },
+    {
+      "feature_a": "machine_type",
+      "value_a": "nondeterministic_fsm",
+      "feature_b": "determinism",
+      "value_b": "deterministic"
+    },
+    {
+      "feature_a": "machine_type",
+      "value_a": "nondeterministic_fsm",
+      "feature_b": "determinism",
+      "value_b": "nondeterministic"
+    },
+    {
+      "feature_a": "machine_type",
+      "value_a": "plain_fsm",
+      "feature_b": "determinism",
+      "value_b": "nondeterministic"
+    },
+    {
+      "feature_a": "machine_type",
+      "value_a": "probabilistic_fsm",
+      "feature_b": "determinism",
+      "value_b": "deterministic"
+    },
+    {
+      "feature_a": "machine_type",
+      "value_a": "probabilistic_fsm",
+      "feature_b": "determinism",
+      "value_b": "nondeterministic"
+    },
+    {
+      "feature_a": "machine_type",
+      "value_a": "timed_efsm",
+      "feature_b": "determinism",
+      "value_b": "deterministic"
+    },
+    {
+      "feature_a": "machine_type",
+      "value_a": "timed_efsm",
+      "feature_b": "determinism",
+      "value_b": "nondeterministic"
+    },
+    {
+      "feature_a": "machine_type",
+      "value_a": "timed_fsm",
+      "feature_b": "determinism",
+      "value_b": "deterministic"
+    },
+    {
+      "feature_a": "machine_type",
+      "value_a": "timed_fsm",
+      "feature_b": "determinism",
+      "value_b": "nondeterministic"
+    },
+    {
+      "feature_a": "machine_type",
+      "value_a": "efsm",
+      "feature_b": "bug_type",
+      "value_b": "action_corruption"
+    },
+    {
+      "feature_a": "machine_type",
+      "value_a": "efsm",
+      "feature_b": "bug_type",
+      "value_b": "action_full_mutation"
+    },
+    {
+      "feature_a": "machine_type",
+      "value_a": "efsm",
+      "feature_b": "bug_type",
+      "value_b": "dead_state_intro"
+    },
+    {
+      "feature_a": "machine_type",
+      "value_a": "efsm",
+      "feature_b": "bug_type",
+      "value_b": "delay_corruption"
+    },
+    {
+      "feature_a": "machine_type",
+      "value_a": "efsm",
+      "feature_b": "bug_type",
+      "value_b": "duplicate_transition"
+    },
+    {
+      "feature_a": "machine_type",
+      "value_a": "efsm",
+      "feature_b": "bug_type",
+      "value_b": "guard_flip"
+    },
+    {
+      "feature_a": "machine_type",
+      "value_a": "efsm",
+      "feature_b": "bug_type",
+      "value_b": "guard_inter_class"
+    },
+    {
+      "feature_a": "machine_type",
+      "value_a": "efsm",
+      "feature_b": "bug_type",
+      "value_b": "guard_strengthen"
+    },
+    {
+      "feature_a": "machine_type",
+      "value_a": "efsm",
+      "feature_b": "bug_type",
+      "value_b": "guard_weaken"
+    },
+    {
+      "feature_a": "machine_type",
+      "value_a": "efsm",
+      "feature_b": "bug_type",
+      "value_b": "missing_transition"
+    },
+    {
+      "feature_a": "machine_type",
+      "value_a": "efsm",
+      "feature_b": "bug_type",
+      "value_b": "nondeterminism_intro"
+    },
+    {
+      "feature_a": "machine_type",
+      "value_a": "efsm",
+      "feature_b": "bug_type",
+      "value_b": "timeout_corruption"
+    },
+    {
+      "feature_a": "machine_type",
+      "value_a": "efsm",
+      "feature_b": "bug_type",
+      "value_b": "unreachable_state_intro"
+    },
+    {
+      "feature_a": "machine_type",
+      "value_a": "efsm",
+      "feature_b": "bug_type",
+      "value_b": "wrong_event"
+    },
+    {
+      "feature_a": "machine_type",
+      "value_a": "efsm",
+      "feature_b": "bug_type",
+      "value_b": "wrong_initial_state"
+    },
+    {
+      "feature_a": "machine_type",
+      "value_a": "efsm",
+      "feature_b": "bug_type",
+      "value_b": "wrong_source"
+    },
+    {
+      "feature_a": "machine_type",
+      "value_a": "efsm",
+      "feature_b": "bug_type",
+      "value_b": "wrong_target"
+    },
+    {
+      "feature_a": "machine_type",
+      "value_a": "mealy",
+      "feature_b": "bug_type",
+      "value_b": "action_corruption"
+    },
+    {
+      "feature_a": "machine_type",
+      "value_a": "mealy",
+      "feature_b": "bug_type",
+      "value_b": "action_full_mutation"
+    },
+    {
+      "feature_a": "machine_type",
+      "value_a": "mealy",
+      "feature_b": "bug_type",
+      "value_b": "dead_state_intro"
+    },
+    {
+      "feature_a": "machine_type",
+      "value_a": "mealy",
+      "feature_b": "bug_type",
+      "value_b": "delay_corruption"
+    },
+    {
+      "feature_a": "machine_type",
+      "value_a": "mealy",
+      "feature_b": "bug_type",
+      "value_b": "duplicate_transition"
+    },
+    {
+      "feature_a": "machine_type",
+      "value_a": "mealy",
+      "feature_b": "bug_type",
+      "value_b": "guard_flip"
+    },
+    {
+      "feature_a": "machine_type",
+      "value_a": "mealy",
+      "feature_b": "bug_type",
+      "value_b": "guard_inter_class"
+    },
+    {
+      "feature_a": "machine_type",
+      "value_a": "mealy",
+      "feature_b": "bug_type",
+      "value_b": "guard_strengthen"
+    },
+    {
+      "feature_a": "machine_type",
+      "value_a": "mealy",
+      "feature_b": "bug_type",
+      "value_b": "guard_weaken"
+    },
+    {
+      "feature_a": "machine_type",
+      "value_a": "mealy",
+      "feature_b": "bug_type",
+      "value_b": "missing_transition"
+    },
+    {
+      "feature_a": "machine_type",
+      "value_a": "mealy",
+      "feature_b": "bug_type",
+      "value_b": "nondeterminism_intro"
+    },
+    {
+      "feature_a": "machine_type",
+      "value_a": "mealy",
+      "feature_b": "bug_type",
+      "value_b": "timeout_corruption"
+    },
+    {
+      "feature_a": "machine_type",
+      "value_a": "mealy",
+      "feature_b": "bug_type",
+      "value_b": "unreachable_state_intro"
+    },
+    {
+      "feature_a": "machine_type",
+      "value_a": "mealy",
+      "feature_b": "bug_type",
+      "value_b": "wrong_event"
+    },
+    {
+      "feature_a": "machine_type",
+      "value_a": "mealy",
+      "feature_b": "bug_type",
+      "value_b": "wrong_initial_state"
+    },
+    {
+      "feature_a": "machine_type",
+      "value_a": "mealy",
+      "feature_b": "bug_type",
+      "value_b": "wrong_source"
+    },
+    {
+      "feature_a": "machine_type",
+      "value_a": "mealy",
+      "feature_b": "bug_type",
+      "value_b": "wrong_target"
+    },
+    {
+      "feature_a": "machine_type",
+      "value_a": "moore",
+      "feature_b": "bug_type",
+      "value_b": "action_corruption"
+    }
+  ],
+  "missing_triple_sample": [
+    {
+      "machine_type": "efsm",
+      "bug_type": "action_corruption",
+      "size_class": "large"
+    },
+    {
+      "machine_type": "efsm",
+      "bug_type": "action_corruption",
+      "size_class": "medium"
+    },
+    {
+      "machine_type": "efsm",
+      "bug_type": "action_corruption",
+      "size_class": "small"
+    },
+    {
+      "machine_type": "efsm",
+      "bug_type": "action_corruption",
+      "size_class": "tiny"
+    },
+    {
+      "machine_type": "efsm",
+      "bug_type": "action_corruption",
+      "size_class": "very_large"
+    },
+    {
+      "machine_type": "efsm",
+      "bug_type": "action_full_mutation",
+      "size_class": "large"
+    },
+    {
+      "machine_type": "efsm",
+      "bug_type": "action_full_mutation",
+      "size_class": "medium"
+    },
+    {
+      "machine_type": "efsm",
+      "bug_type": "action_full_mutation",
+      "size_class": "small"
+    },
+    {
+      "machine_type": "efsm",
+      "bug_type": "action_full_mutation",
+      "size_class": "tiny"
+    },
+    {
+      "machine_type": "efsm",
+      "bug_type": "action_full_mutation",
+      "size_class": "very_large"
+    },
+    {
+      "machine_type": "efsm",
+      "bug_type": "dead_state_intro",
+      "size_class": "large"
+    },
+    {
+      "machine_type": "efsm",
+      "bug_type": "dead_state_intro",
+      "size_class": "medium"
+    },
+    {
+      "machine_type": "efsm",
+      "bug_type": "dead_state_intro",
+      "size_class": "small"
+    },
+    {
+      "machine_type": "efsm",
+      "bug_type": "dead_state_intro",
+      "size_class": "tiny"
+    },
+    {
+      "machine_type": "efsm",
+      "bug_type": "dead_state_intro",
+      "size_class": "very_large"
+    },
+    {
+      "machine_type": "efsm",
+      "bug_type": "delay_corruption",
+      "size_class": "large"
+    },
+    {
+      "machine_type": "efsm",
+      "bug_type": "delay_corruption",
+      "size_class": "medium"
+    },
+    {
+      "machine_type": "efsm",
+      "bug_type": "delay_corruption",
+      "size_class": "small"
+    },
+    {
+      "machine_type": "efsm",
+      "bug_type": "delay_corruption",
+      "size_class": "tiny"
+    },
+    {
+      "machine_type": "efsm",
+      "bug_type": "delay_corruption",
+      "size_class": "very_large"
+    },
+    {
+      "machine_type": "efsm",
+      "bug_type": "duplicate_transition",
+      "size_class": "large"
+    },
+    {
+      "machine_type": "efsm",
+      "bug_type": "duplicate_transition",
+      "size_class": "medium"
+    },
+    {
+      "machine_type": "efsm",
+      "bug_type": "duplicate_transition",
+      "size_class": "small"
+    },
+    {
+      "machine_type": "efsm",
+      "bug_type": "duplicate_transition",
+      "size_class": "tiny"
+    },
+    {
+      "machine_type": "efsm",
+      "bug_type": "duplicate_transition",
+      "size_class": "very_large"
+    },
+    {
+      "machine_type": "efsm",
+      "bug_type": "guard_flip",
+      "size_class": "large"
+    },
+    {
+      "machine_type": "efsm",
+      "bug_type": "guard_flip",
+      "size_class": "medium"
+    },
+    {
+      "machine_type": "efsm",
+      "bug_type": "guard_flip",
+      "size_class": "small"
+    },
+    {
+      "machine_type": "efsm",
+      "bug_type": "guard_flip",
+      "size_class": "tiny"
+    },
+    {
+      "machine_type": "efsm",
+      "bug_type": "guard_flip",
+      "size_class": "very_large"
+    },
+    {
+      "machine_type": "efsm",
+      "bug_type": "guard_inter_class",
+      "size_class": "large"
+    },
+    {
+      "machine_type": "efsm",
+      "bug_type": "guard_inter_class",
+      "size_class": "medium"
+    },
+    {
+      "machine_type": "efsm",
+      "bug_type": "guard_inter_class",
+      "size_class": "small"
+    },
+    {
+      "machine_type": "efsm",
+      "bug_type": "guard_inter_class",
+      "size_class": "tiny"
+    },
+    {
+      "machine_type": "efsm",
+      "bug_type": "guard_inter_class",
+      "size_class": "very_large"
+    },
+    {
+      "machine_type": "efsm",
+      "bug_type": "guard_strengthen",
+      "size_class": "large"
+    },
+    {
+      "machine_type": "efsm",
+      "bug_type": "guard_strengthen",
+      "size_class": "medium"
+    },
+    {
+      "machine_type": "efsm",
+      "bug_type": "guard_strengthen",
+      "size_class": "small"
+    },
+    {
+      "machine_type": "efsm",
+      "bug_type": "guard_strengthen",
+      "size_class": "tiny"
+    },
+    {
+      "machine_type": "efsm",
+      "bug_type": "guard_strengthen",
+      "size_class": "very_large"
+    },
+    {
+      "machine_type": "efsm",
+      "bug_type": "guard_weaken",
+      "size_class": "large"
+    },
+    {
+      "machine_type": "efsm",
+      "bug_type": "guard_weaken",
+      "size_class": "medium"
+    },
+    {
+      "machine_type": "efsm",
+      "bug_type": "guard_weaken",
+      "size_class": "small"
+    },
+    {
+      "machine_type": "efsm",
+      "bug_type": "guard_weaken",
+      "size_class": "tiny"
+    },
+    {
+      "machine_type": "efsm",
+      "bug_type": "guard_weaken",
+      "size_class": "very_large"
+    },
+    {
+      "machine_type": "efsm",
+      "bug_type": "missing_transition",
+      "size_class": "large"
+    },
+    {
+      "machine_type": "efsm",
+      "bug_type": "missing_transition",
+      "size_class": "medium"
+    },
+    {
+      "machine_type": "efsm",
+      "bug_type": "missing_transition",
+      "size_class": "small"
+    },
+    {
+      "machine_type": "efsm",
+      "bug_type": "missing_transition",
+      "size_class": "tiny"
+    },
+    {
+      "machine_type": "efsm",
+      "bug_type": "missing_transition",
+      "size_class": "very_large"
+    }
+  ],
+  "suggestions": {
+    "target_additional_cases": 200,
+    "recommended_total_cases": 200,
+    "message": "generate 200 additional cases in these regions",
+    "regions": [
+      {
+        "region_type": "triple",
+        "features": {
+          "machine_type": "efsm",
+          "bug_type": "action_corruption",
+          "size_class": "large"
+        },
+        "recommended_cases": 10,
+        "reason": "Missing machine_type/bug_type/size_class triple"
+      },
+      {
+        "region_type": "triple",
+        "features": {
+          "machine_type": "efsm",
+          "bug_type": "action_corruption",
+          "size_class": "medium"
+        },
+        "recommended_cases": 10,
+        "reason": "Missing machine_type/bug_type/size_class triple"
+      },
+      {
+        "region_type": "triple",
+        "features": {
+          "machine_type": "efsm",
+          "bug_type": "action_corruption",
+          "size_class": "small"
+        },
+        "recommended_cases": 10,
+        "reason": "Missing machine_type/bug_type/size_class triple"
+      },
+      {
+        "region_type": "triple",
+        "features": {
+          "machine_type": "efsm",
+          "bug_type": "action_corruption",
+          "size_class": "tiny"
+        },
+        "recommended_cases": 10,
+        "reason": "Missing machine_type/bug_type/size_class triple"
+      },
+      {
+        "region_type": "triple",
+        "features": {
+          "machine_type": "efsm",
+          "bug_type": "action_corruption",
+          "size_class": "very_large"
+        },
+        "recommended_cases": 10,
+        "reason": "Missing machine_type/bug_type/size_class triple"
+      },
+      {
+        "region_type": "triple",
+        "features": {
+          "machine_type": "efsm",
+          "bug_type": "action_full_mutation",
+          "size_class": "large"
+        },
+        "recommended_cases": 10,
+        "reason": "Missing machine_type/bug_type/size_class triple"
+      },
+      {
+        "region_type": "triple",
+        "features": {
+          "machine_type": "efsm",
+          "bug_type": "action_full_mutation",
+          "size_class": "medium"
+        },
+        "recommended_cases": 10,
+        "reason": "Missing machine_type/bug_type/size_class triple"
+      },
+      {
+        "region_type": "triple",
+        "features": {
+          "machine_type": "efsm",
+          "bug_type": "action_full_mutation",
+          "size_class": "small"
+        },
+        "recommended_cases": 10,
+        "reason": "Missing machine_type/bug_type/size_class triple"
+      },
+      {
+        "region_type": "triple",
+        "features": {
+          "machine_type": "efsm",
+          "bug_type": "action_full_mutation",
+          "size_class": "tiny"
+        },
+        "recommended_cases": 10,
+        "reason": "Missing machine_type/bug_type/size_class triple"
+      },
+      {
+        "region_type": "triple",
+        "features": {
+          "machine_type": "efsm",
+          "bug_type": "action_full_mutation",
+          "size_class": "very_large"
+        },
+        "recommended_cases": 10,
+        "reason": "Missing machine_type/bug_type/size_class triple"
+      },
+      {
+        "region_type": "triple",
+        "features": {
+          "machine_type": "efsm",
+          "bug_type": "dead_state_intro",
+          "size_class": "large"
+        },
+        "recommended_cases": 10,
+        "reason": "Missing machine_type/bug_type/size_class triple"
+      },
+      {
+        "region_type": "triple",
+        "features": {
+          "machine_type": "efsm",
+          "bug_type": "dead_state_intro",
+          "size_class": "medium"
+        },
+        "recommended_cases": 10,
+        "reason": "Missing machine_type/bug_type/size_class triple"
+      },
+      {
+        "region_type": "triple",
+        "features": {
+          "machine_type": "efsm",
+          "bug_type": "dead_state_intro",
+          "size_class": "small"
+        },
+        "recommended_cases": 10,
+        "reason": "Missing machine_type/bug_type/size_class triple"
+      },
+      {
+        "region_type": "triple",
+        "features": {
+          "machine_type": "efsm",
+          "bug_type": "dead_state_intro",
+          "size_class": "tiny"
+        },
+        "recommended_cases": 10,
+        "reason": "Missing machine_type/bug_type/size_class triple"
+      },
+      {
+        "region_type": "triple",
+        "features": {
+          "machine_type": "efsm",
+          "bug_type": "dead_state_intro",
+          "size_class": "very_large"
+        },
+        "recommended_cases": 10,
+        "reason": "Missing machine_type/bug_type/size_class triple"
+      },
+      {
+        "region_type": "triple",
+        "features": {
+          "machine_type": "efsm",
+          "bug_type": "delay_corruption",
+          "size_class": "large"
+        },
+        "recommended_cases": 10,
+        "reason": "Missing machine_type/bug_type/size_class triple"
+      },
+      {
+        "region_type": "triple",
+        "features": {
+          "machine_type": "efsm",
+          "bug_type": "delay_corruption",
+          "size_class": "medium"
+        },
+        "recommended_cases": 10,
+        "reason": "Missing machine_type/bug_type/size_class triple"
+      },
+      {
+        "region_type": "triple",
+        "features": {
+          "machine_type": "efsm",
+          "bug_type": "delay_corruption",
+          "size_class": "small"
+        },
+        "recommended_cases": 10,
+        "reason": "Missing machine_type/bug_type/size_class triple"
+      },
+      {
+        "region_type": "triple",
+        "features": {
+          "machine_type": "efsm",
+          "bug_type": "delay_corruption",
+          "size_class": "tiny"
+        },
+        "recommended_cases": 10,
+        "reason": "Missing machine_type/bug_type/size_class triple"
+      },
+      {
+        "region_type": "triple",
+        "features": {
+          "machine_type": "efsm",
+          "bug_type": "delay_corruption",
+          "size_class": "very_large"
+        },
+        "recommended_cases": 10,
+        "reason": "Missing machine_type/bug_type/size_class triple"
+      }
+    ]
+  }
+}
