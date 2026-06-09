@@ -59,6 +59,10 @@ from fsmrepairbench.baseline_repair_campaign import (
     parse_random_seeds,
     publish_c1_manifests,
 )
+from fsmrepairbench.campaign_partitions import (
+    CampaignPartitionError,
+    summarize_campaign_partitions,
+)
 from fsmrepairbench.experiments import (
     ExperimentConfigError,
     load_experiment_config,
@@ -2107,6 +2111,49 @@ def write_c1_manifest_cmd(
         console.print(f"[green]OK[/green] Wrote {CAMPAIGN_LABEL} manifests")
         console.print(f"Raw runs: {result.raw_manifest_path}")
         console.print(f"Paper export: {result.paper_manifest_path}")
+
+    raise typer.Exit(code=0)
+
+
+@app.command("summarize-campaign-partitions")
+def summarize_campaign_partitions_cmd(
+    dataset_dir: Path = typer.Option(
+        Path("data/fsmrepairbench_1k"),
+        "--dataset",
+        help="Benchmark dataset directory containing pinned cohort manifests.",
+    ),
+    out: Path = typer.Option(
+        Path("results/campaign_partitions"),
+        "--out",
+        help="Write partition summary artefacts to this directory.",
+    ),
+    paper_export_dir: Path = typer.Option(
+        Path("../paper1/results/campaign_partitions"),
+        "--paper-export-dir",
+        help="Frozen paper export directory for CSV and LaTeX table copies.",
+    ),
+    quiet: bool = typer.Option(False, "--quiet", help="Print a short summary only."),
+) -> None:
+    """Summarize cohort partitions and denominators across paper campaigns."""
+    try:
+        result = summarize_campaign_partitions(
+            dataset_dir=dataset_dir,
+            output_dir=out,
+            paper_export_dir=paper_export_dir,
+        )
+    except CampaignPartitionError as exc:
+        console.print(f"[red]ERROR[/red] {exc}")
+        raise typer.Exit(code=1) from exc
+
+    if quiet:
+        console.print(f"[green]OK[/green] partitions={result.csv_path.name}")
+    else:
+        console.print(f"[green]OK[/green] Wrote campaign partition summary to '{out}'")
+        console.print(f"CSV: {result.csv_path}")
+        console.print(f"JSON: {result.json_path}")
+        console.print(f"Report: {result.report_path}")
+        if result.paper_tex_path is not None:
+            console.print(f"LaTeX: {result.paper_tex_path}")
 
     raise typer.Exit(code=0)
 

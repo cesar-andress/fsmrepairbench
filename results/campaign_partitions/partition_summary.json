@@ -1,0 +1,85 @@
+{
+  "zenodo_doi": "10.5281/zenodo.20602528",
+  "dataset_path": "data/fsmrepairbench_1k",
+  "generated_at_utc": "2026-06-09T06:48:18.636782+00:00",
+  "columns": [
+    "campaign",
+    "research_question",
+    "release_label",
+    "cohort_file",
+    "cohort_sha256",
+    "cases_total",
+    "cases_detectable",
+    "cases_skipped",
+    "denominator_used_for_primary_metric",
+    "primary_metrics",
+    "notes"
+  ],
+  "campaigns": [
+    {
+      "campaign": "v0.2.0-analysis",
+      "research_question": "RQ1 (taxonomy coverage) / RQ2 (mutation detection and BPR)",
+      "release_label": "v0.2.0-analysis",
+      "cohort_file": "data/fsmrepairbench_1k/analysis_cohort_1k.txt",
+      "cohort_sha256": "c03c4d5981259510bccfced987c5175f28058d7bdccc164e7ce2ba22410f04f8",
+      "cases_total": 1000,
+      "cases_detectable": 495,
+      "cases_skipped": 0,
+      "denominator_used_for_primary_metric": "n=1000 (full pinned cohort)",
+      "primary_metrics": "RQ2: overall_detection_rate, mean_faulty_bpr, mean_bpr_delta; RQ1: taxonomy dimension/operator coverage on the same cohort",
+      "notes": "Oracle-detectable subset n=495 (bpr_delta>0) used for operator-conditional detection rates; cohort-wide aggregates use all 1,000 cases."
+    },
+    {
+      "campaign": "C1-baseline-repair",
+      "research_question": "RQ6 (deterministic baseline repair)",
+      "release_label": "C1-baseline-repair",
+      "cohort_file": "data/fsmrepairbench_1k/analysis_cohort_1k.txt",
+      "cohort_sha256": "c03c4d5981259510bccfced987c5175f28058d7bdccc164e7ce2ba22410f04f8",
+      "cases_total": 1000,
+      "cases_detectable": 495,
+      "cases_skipped": 0,
+      "denominator_used_for_primary_metric": "n=1000 cohort-wide; n=495 for detectable-only repair rates",
+      "primary_metrics": "complete_repair_rate, effective_repair_rate, mean_delta_bpr, complete_repair_rate_detectable_only",
+      "notes": "Leaderboard reports cohort-wide rates for three baselines; detectable-only complete repair conditions on oracle-visible faults (n=495)."
+    },
+    {
+      "campaign": "RQ3-localization-ochiai-1k",
+      "research_question": "RQ3 (transition-level fault localization)",
+      "release_label": "RQ3-localization-ochiai-1k",
+      "cohort_file": "data/fsmrepairbench_1k/localization_cohort_1k.txt",
+      "cohort_sha256": "c03c4d5981259510bccfced987c5175f28058d7bdccc164e7ce2ba22410f04f8",
+      "cases_total": 1000,
+      "cases_detectable": 495,
+      "cases_skipped": 505,
+      "denominator_used_for_primary_metric": "n=495 localized cases with changed_transition_id",
+      "primary_metrics": "top_1_hit_rate, top_3_hit_rate, top_5_hit_rate, mrr",
+      "notes": "Skipped cases lack localizable transition ground truth or missing case assets; hit rates and MRR exclude the 505 skipped cases."
+    },
+    {
+      "campaign": "RQ4-higher-order-coupling-250",
+      "research_question": "RQ4 (higher-order mutation coupling)",
+      "release_label": "RQ4-higher-order-coupling-250",
+      "cohort_file": "data/fsmrepairbench_1k/coupling_campaign_250.txt",
+      "cohort_sha256": "86222a059d56a7c913ecf9f847bbc8650ad1ce0f3cea0decbe124d7147bd7979",
+      "cases_total": 250,
+      "cases_detectable": 118,
+      "cases_skipped": 0,
+      "denominator_used_for_primary_metric": "n=250 pinned source cases; n=250 order-1, n=250 order-2, n=250 order-3 generated cases per metric stratum",
+      "primary_metrics": "detection_rate, complete_repair_rate, effective_repair_rate, mean_bpr_delta by mutation order; coupling_effect_estimate",
+      "notes": "Pinned cohort selects 250 stratified source cases; campaign analyzes 750 generated first-/higher-order instances. Order-specific denominators are 250 per stratum in exported tables."
+    },
+    {
+      "campaign": "C3-oracle-depth-ablation-200",
+      "research_question": "C3 (oracle depth sensitivity ablation)",
+      "release_label": "C3-oracle-depth-ablation-200",
+      "cohort_file": "data/fsmrepairbench_1k/oracle_depth_ablation_200.txt",
+      "cohort_sha256": "144e8efb3b810248e0c9a0852f2fdcd41b3a9ea1b287f4c4500ddbe36371d5c9",
+      "cases_total": 200,
+      "cases_detectable": 97,
+      "cases_skipped": 0,
+      "denominator_used_for_primary_metric": "n=200 fixed cases per depth preset",
+      "primary_metrics": "overall_detection_rate, mean_faulty_bpr, mean_bpr_delta by oracle depth (shallow/medium/deep)",
+      "notes": "Same 200-case stratified cohort rescored under regenerated shallow, medium, and deep oracle suites; detectable count reflects bpr_delta>0 at each depth."
+    }
+  ]
+}
