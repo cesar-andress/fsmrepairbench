@@ -11,12 +11,43 @@ See also:
 
 ## Version layers
 
-FSMRepairBench uses two complementary version axes:
+FSMRepairBench uses **three** complementary version axes:
 
 | Layer | Examples | Meaning |
 |-------|----------|---------|
 | **Schema version** | `v0.1`, `v1.0`, `v1.1`, `v2.0` | On-disk JSON contract |
 | **Evolution release** | `v0`, `v1`, `v2` | Major benchmark generation era |
+| **Paper / Zenodo release label** | `v0.2.0-analysis` | Frozen empirical campaign bundle (dataset + exports) |
+| **Python package version** | `0.1.0` (`pyproject.toml`) | Installable CLI/library semver |
+
+### v0.2.0-analysis (frozen paper release)
+
+The STVR manuscript and Zenodo deposit [10.5281/zenodo.20602528](https://doi.org/10.5281/zenodo.20602528)
+use release label **`v0.2.0-analysis`**. This label identifies:
+
+- Dataset `data/fsmrepairbench_1k/` (1,024 completed builds; **1,000** pinned analysis cases)
+- Pinned cohort manifests (`analysis_cohort_1k.txt`, `localization_cohort_1k.txt`,
+  `coupling_campaign_250.txt`, `oracle_depth_ablation_200.txt`)
+- Frozen campaign exports under `results/` (RQ1–RQ4, C1, C3) with `manifest.json`
+
+The Python package may remain at **`0.1.0`** while the Zenodo release label stays
+`v0.2.0-analysis`. Cite the **Zenodo DOI and release label** for empirical results;
+cite **package version + git tag** for software reproducibility.
+
+Git tag: `v0.2.0-analysis` on this repository.
+
+### v0.3 experimental pilots (not a replacement release)
+
+Features under `results/multifamily_v0_3_smoke/`, `results/negative_controls/`,
+`results/oracle_depth_ablation_v2/`, and `results/rq4_coupling_250_random_secondary/`
+are **experimental** robustness pilots. They:
+
+- Do **not** supersede `v0.2.0-analysis`
+- Are **not** part of the primary Zenodo deposit for the STVR paper
+- May change without a Zenodo version bump until promoted to a future release label
+
+See [docs/implementation_audit_v0_3.md](docs/implementation_audit_v0_3.md) and
+[docs/README.md](docs/README.md).
 
 Mapping (implemented in `benchmark_evolution.py`):
 

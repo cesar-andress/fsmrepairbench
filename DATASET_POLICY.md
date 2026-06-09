@@ -19,6 +19,34 @@ See also:
 4. **Traceability** — every release links to predecessor releases and migration
    artefacts.
 
+## Frozen Zenodo release (`v0.2.0-analysis`)
+
+The STVR paper release is archived at Zenodo DOI
+[10.5281/zenodo.20602528](https://doi.org/10.5281/zenodo.20602528) with release label
+**`v0.2.0-analysis`**.
+
+| Item | Policy |
+|------|--------|
+| **Canonical dataset** | `data/fsmrepairbench_1k/` |
+| **Analysis cohort** | First 1,000 completed cases; pinned in `analysis_cohort_1k.txt` (+ JSON manifest with SHA-256) |
+| **Campaign cohorts** | Separate pinned manifests for RQ3, RQ4, and C3 (see dataset README) |
+| **Frozen exports** | `results/taxonomy_coverage/`, `results/analysis/`, `results/rq3_localization_1k/`, `results/rq4_coupling_250/`, `results/baseline_repair_C1/`, `results/oracle_depth_ablation/` each ship `manifest.json` recording cohort SHA and DOI |
+| **Silent edits** | **Forbidden** — do not in-place edit case JSON, oracle suites, or frozen CSV exports referenced by the manuscript without a new release label and Zenodo version |
+| **Regeneration** | Allowed when reproducing from pinned cohorts + documented CLI commands; outputs must match frozen checksums/metrics before replacing paper exports |
+
+Verify cohort integrity:
+
+```bash
+python ../paper1/scripts/verify_cohort_manifests.py
+```
+
+### v0.3 pilot datasets (non-authoritative for the paper)
+
+Pilot trees such as `data/fsmrepairbench_multifamily_v0_3_smoke/` and
+`data/fsmrepairbench_negative_controls/` are **not** part of the Zenodo
+`v0.2.0-analysis` deposit. They must not be substituted for `fsmrepairbench_1k` in
+paper tables without an explicit new release.
+
 ## Stable ID policy
 
 ### Case IDs

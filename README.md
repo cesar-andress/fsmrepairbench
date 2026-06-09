@@ -4,7 +4,9 @@
 [![Docs](https://img.shields.io/badge/docs-auto--generated-lightgrey)](https://github.com/cesar-andress/fsmrepairbench/actions/workflows/docs.yml)
 [![Python 3.11+](https://img.shields.io/badge/python-3.11+-3776ab?logo=python&logoColor=white)](https://www.python.org/downloads/)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
-[![Version](https://img.shields.io/badge/version-0.1.0-blue)](pyproject.toml)
+[![Package](https://img.shields.io/badge/package-0.1.0-blue)](pyproject.toml)
+[![Release](https://img.shields.io/badge/release-v0.2.0--analysis-green)](https://doi.org/10.5281/zenodo.20602528)
+[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.20602528.svg)](https://doi.org/10.5281/zenodo.20602528)
 
 **Behavioural finite-state machine repair benchmark — toolkit, generators, and experiment pipeline.**
 
@@ -13,15 +15,22 @@ faulty state machines using **oracle-based scoring**, not textual diff against a
 reference. The repository ships a working Python implementation: JSON schemas, validation,
 seeded mutation, dataset builders, LLM/baseline repair experiments, and governance tooling.
 
-> **Status:** under active development (v0.1.0). The implementation is substantial and
-> tested, but there is **no official frozen public release or peer-reviewed paper yet**.
-> APIs, dataset contents, and leaderboard protocols may change before v2.0.
+> **Release:** **[v0.2.0-analysis](https://doi.org/10.5281/zenodo.20602528)** is the frozen
+> STVR paper release — 1,000-case analysis cohort, pinned manifests, campaign exports, and
+> Zenodo DOI **10.5281/zenodo.20602528**. Git tag: `v0.2.0-analysis`.
+>
+> **Package version** `0.1.0` (`pyproject.toml`) is the installable Python semver; it is
+> independent of the Zenodo release label.
+>
+> **v0.3 pilots** (multi-family smoke, negative controls, oracle-depth v2, random-secondary
+> coupling) are experimental and **not** part of the primary paper deposit.
 
 ---
 
 ## Table of contents
 
 - [Project pitch](#project-pitch)
+- [Paper release (v0.2.0-analysis)](#paper-release-v020-analysis)
 - [Current capabilities](#current-capabilities)
 - [Installation](#installation)
 - [Quick start](#quick-start)
@@ -60,6 +69,110 @@ candidate FSM. See [docs/oracle_spec.md](docs/oracle_spec.md).
 
 ---
 
+## Paper release (v0.2.0-analysis)
+
+Empirical campaigns reported in the STVR manuscript use release label **`v0.2.0-analysis`**
+(Zenodo [10.5281/zenodo.20602528](https://doi.org/10.5281/zenodo.20602528)).
+
+| Item | Value |
+|------|-------|
+| **Dataset** | `data/fsmrepairbench_1k/` (1,024 completed builds; **1,000** pinned analysis cases) |
+| **Build plan** | `plans/fsmrepairbench_v0_1k_plan.yaml` (plan seed 44) |
+| **Cohort manifests** | `analysis_cohort_1k.txt`, `localization_cohort_1k.txt`, `coupling_campaign_250.txt`, `oracle_depth_ablation_200.txt` |
+| **Mutation operators** | **19 registered**, **17 realised** in the analysis cohort (`timed_selective_mutation`, `variable_intra_class`: 0 cases) |
+| **Frozen exports** | `results/taxonomy_coverage/`, `results/analysis/`, `results/rq3_localization_1k/`, `results/rq4_coupling_250/`, `results/baseline_repair_C1/`, `results/oracle_depth_ablation/` |
+| **Paper mirror** | `../paper1/results/` (LaTeX/PNG copies; see monorepo layout) |
+
+Verify pinned cohort SHA-256 digests:
+
+```bash
+python ../paper1/scripts/verify_cohort_manifests.py
+```
+
+### Reproduce published campaigns
+
+Run from this directory (`fsmrepairbench/`) with the package installed
+(`pip install -e ".[dev,analytics]"`). Skip dataset build if `data/fsmrepairbench_1k/`
+is already present (Zenodo download or prior build).
+
+**Validate dataset artefacts**
+
+```bash
+fsmrepairbench validate-dataset data/fsmrepairbench_1k
+fsmrepairbench validate-fsm data/fsmrepairbench_1k/cases/case_000001/reference_fsm.json
+fsmrepairbench validate-oracle data/fsmrepairbench_1k/cases/case_000001/oracle_suite.json
+```
+
+**RQ1 — taxonomy coverage**
+
+```bash
+fsmrepairbench generate-taxonomy-coverage data/fsmrepairbench_1k \
+  --out results/taxonomy_coverage \
+  --cohort-file data/fsmrepairbench_1k/analysis_cohort_1k.txt
+```
+
+**RQ2 — mutation detectability (v0.2.0-analysis analysis export)**
+
+```bash
+fsmrepairbench analyze-benchmark data/fsmrepairbench_1k --out results/analysis
+```
+
+**C1 — baseline repair**
+
+```bash
+fsmrepairbench run-tools data/fsmrepairbench_1k tools/baselines_c1/ \
+  --out results/repair_baseline_1k_c1 \
+  --cohort-file data/fsmrepairbench_1k/analysis_cohort_1k.txt \
+  --workers 4
+fsmrepairbench export-c1-baseline-repair data/fsmrepairbench_1k \
+  --out results/repair_baseline_1k_c1 \
+  --paper-export-dir ../paper1/results/baseline_repair_C1 \
+  --workers 4
+```
+
+One-shot alternative: `fsmrepairbench run-c1-baseline-repair data/fsmrepairbench_1k …`
+
+**RQ3 — Ochiai localization**
+
+```bash
+fsmrepairbench run-localization-campaign data/fsmrepairbench_1k \
+  --cohort-file data/fsmrepairbench_1k/localization_cohort_1k.txt \
+  --out results/rq3_localization_1k
+```
+
+**RQ4 — higher-order coupling**
+
+```bash
+fsmrepairbench run-coupling-campaign data/fsmrepairbench_1k \
+  --cohort-file data/fsmrepairbench_1k/coupling_campaign_250.txt \
+  --out results/rq4_coupling_250 \
+  --subset-dir results/rq4_coupling_subset \
+  --seed 44
+```
+
+**C3 — oracle depth ablation**
+
+```bash
+fsmrepairbench run-oracle-depth-ablation data/fsmrepairbench_1k \
+  --out results/oracle_depth_ablation \
+  --cohort-file data/fsmrepairbench_1k/oracle_depth_ablation_200.txt \
+  --no-write-cohort
+```
+
+**Campaign partition summary (cross-campaign denominators)**
+
+```bash
+fsmrepairbench summarize-campaign-partitions \
+  --dataset data/fsmrepairbench_1k \
+  --out results/campaign_partitions \
+  --paper-export-dir ../paper1/results/campaign_partitions
+```
+
+Campaign guides: [docs/README.md](docs/README.md) · Dataset README:
+[data/fsmrepairbench_1k/README.md](data/fsmrepairbench_1k/README.md)
+
+---
+
 ## Current capabilities
 
 The following is **implemented and covered by tests** in this repository:
@@ -70,7 +183,9 @@ The following is **implemented and covered by tests** in this repository:
 | **Validation** | `validate-fsm`, `validate-oracle`, semantic FSM checks |
 | **Scoring** | Oracle execution, BPR, repair result aggregation |
 | **Generation** | Synthetic FSMs, oracle suites, requirements, ambiguity injection |
-| **Fault injection** | 15 seeded mutation operators with reproducible metadata |
+| **Fault injection** | **19** registered mutation operators (**17** realised in `v0.2.0-analysis`); seeded metadata |
+| **Paper campaigns** | RQ1 taxonomy, RQ2 analysis, RQ3 localization, RQ4 coupling, C1 baselines, C3 oracle depth |
+| **Frozen exports** | CSV/LaTeX/PNG + `manifest.json` per campaign; Zenodo DOI on manifests |
 | **Datasets** | Mass build (`build-dataset`), stratified build from YAML plans, feature matrix |
 | **Experiments** | Parallel executor, LLM backends (Ollama, vLLM, OpenAI-compat), baselines |
 | **Analytics** | Difficulty calibration, coverage/gap analysis, quality & novelty reports |
@@ -78,8 +193,9 @@ The following is **implemented and covered by tests** in this repository:
 | **Artifacts** | Paper-style bundles with `reproduce` command |
 | **Docs** | Technical specs under `docs/`, auto-generated API/CLI/schema reference |
 
-Not yet available as a **published benchmark product**: frozen leaderboard track, held-out
-evaluation split, Zenodo DOI, or community-maintained reference dataset at scale.
+Experimental **v0.3** pilots (multi-family, negative controls, depth-forced ablation) ship
+in the repository but are **not** part of the Zenodo `v0.2.0-analysis` deposit. Future work
+includes public leaderboard tracks and held-out evaluation splits beyond the frozen paper cohort.
 
 ---
 
@@ -88,8 +204,8 @@ evaluation split, Zenodo DOI, or community-maintained reference dataset at scale
 **Requirements:** Python 3.11+ (3.12 recommended). Use a project virtual environment.
 
 ```bash
-git clone https://github.com/ORG/FSMRepairBench.git
-cd FSMRepairBench
+git clone https://github.com/cesar-andress/fsmrepairbench.git
+cd fsmrepairbench/fsmrepairbench
 python3.12 -m venv .venv
 source .venv/bin/activate
 python -m pip install -U pip
@@ -165,7 +281,8 @@ Entry point: `fsmrepairbench`. Full reference: [docs/cli.md](docs/cli.md) (auto-
 | **Scoring & repair** | `score`, `mutate`, `apply-patch`, `baseline-repair`, `llm-repair` |
 | **FSM / oracle tools** | `generate-fsm`, `generate-oracles`, `generate-requirements`, `inject-ambiguity` |
 | **Dataset build** | `build-dataset`, `build-stratified-dataset`, `generate-benchmark` |
-| **Analysis** | `estimate-difficulty`, `calibrate-difficulty`, `benchmark-report`, `coverage-optimizer`, `detect-gaps`, `analyze-novelty`, `mine-failure-patterns` |
+| **Analysis** | `analyze-benchmark`, `generate-taxonomy-coverage`, `run-localization-campaign`, `run-coupling-campaign`, `run-oracle-depth-ablation`, `summarize-campaign-partitions`, `estimate-difficulty`, `calibrate-difficulty`, `benchmark-report`, `coverage-optimizer`, `detect-gaps`, `analyze-novelty`, `mine-failure-patterns` |
+| **Paper repair baselines** | `run-tools`, `export-c1-baseline-repair`, `run-c1-baseline-repair`, `write-c1-manifest` |
 | **Filtering** | `filter-cases`, `subset-overlap` |
 | **Experiments & release** | `run-experiment`, `leaderboard`, `freeze-release`, `export-hf`, `reproduce` |
 | **Versioning** | `benchmark-version`, `migrate-benchmark`, `release-manifest`, `benchmark-evolution compare`, `benchmark-evolution trace` |
@@ -252,12 +369,21 @@ Semantics: [docs/oracle_spec.md](docs/oracle_spec.md)
 
 ## Mutation operators
 
-Fifteen **seeded** operators inject controlled faults with documented `bug_metadata.json`:
+**Nineteen** operators are registered in the mutation catalogue (`MUTATION_OPERATORS` in
+`mutators.py` + `mutation_advanced.py`). The **`v0.2.0-analysis`** cohort realises **17**
+operators; `timed_selective_mutation` and `variable_intra_class` have zero cases because
+build failures excluded them from the stratified 1k export.
+
+Core operators:
 
 `missing_transition`, `wrong_target`, `wrong_source`, `wrong_event`, `wrong_initial_state`,
 `duplicate_transition`, `dead_state_intro`, `guard_flip`, `guard_weaken`, `guard_strengthen`,
 `action_corruption`, `timeout_corruption`, `delay_corruption`, `nondeterminism_intro`,
 `unreachable_state_intro`
+
+Advanced operators:
+
+`guard_inter_class`, `action_full_mutation`, `variable_intra_class`, `timed_selective_mutation`
 
 ```bash
 fsmrepairbench mutate reference.json --operator missing_transition --seed 42 \
@@ -294,17 +420,19 @@ Each case under `OUTPUT_DIR/cases/case_NNNNNN/` contains `reference_fsm.json`,
 ## Artifact reproducibility
 
 Paper-style artifact bundles pin dataset seeds, experiment configs, prompts, and models.
-The `reproduce` command rebuilds datasets (when configured), runs experiments, and can
-freeze results with SHA-256 checksums.
+Campaign exports for **`v0.2.0-analysis`** additionally record cohort SHA-256, Zenodo DOI, and
+regeneration commands in each `manifest.json`.
 
 ```bash
 fsmrepairbench reproduce artifacts/icse2027/
 fsmrepairbench freeze-release results/ --release-dir releases/frozen_run
+python ../paper1/scripts/verify_cohort_manifests.py
 ```
 
 Bundled example artifacts ship under `artifacts/` (ICSE/EMSE/TSE placeholder tracks).
 Details: [docs/reproducibility.md](docs/reproducibility.md) · Policies:
-[VERSIONING_POLICY.md](VERSIONING_POLICY.md), [DATASET_POLICY.md](DATASET_POLICY.md)
+[VERSIONING_POLICY.md](VERSIONING_POLICY.md), [DATASET_POLICY.md](DATASET_POLICY.md) ·
+Release audits: [../docs/zenodo_release_checklist.md](../docs/zenodo_release_checklist.md)
 
 ---
 
@@ -330,12 +458,13 @@ python scripts/update_docs.py   # refresh docs/api.md, docs/cli.md, docs/schemas
 
 ## Roadmap
 
-FSMRepairBench is evolving toward a community-maintained reference benchmark. Highlights:
+FSMRepairBench continues to evolve beyond the frozen paper release:
 
 | Phase | Direction |
 |-------|-----------|
-| **Implemented** | Core toolchain, 15 mutators, stratified builder, LLM experiments, governance, docs |
-| **Next** | Frozen v2.0 release, public leaderboard protocol, held-out evaluation split |
+| **Shipped (v0.2.0-analysis)** | 1k stratified cohort, Zenodo DOI, RQ1–RQ4 + C1 + C3 exports, manifests |
+| **Experimental (v0.3 pilots)** | Multi-family smoke, negative controls, depth-forced ablation — not Zenodo-primary |
+| **Next** | Public leaderboard protocol, held-out evaluation split, schema v2.0 scale-up |
 | **Later** | Timed oracle execution, curated industrial cases, multi-oracle consensus |
 
 Full roadmap: [docs/roadmap.md](docs/roadmap.md) · Vision:
@@ -347,6 +476,7 @@ Full roadmap: [docs/roadmap.md](docs/roadmap.md) · Vision:
 
 | Document | Description |
 |----------|-------------|
+| [docs/README.md](docs/README.md) | **Documentation index** (campaigns, specs, release audits) |
 | [docs/architecture.md](docs/architecture.md) | System architecture |
 | [docs/benchmark_spec.md](docs/benchmark_spec.md) | Goals, scope, limitations |
 | [docs/dataset_format.md](docs/dataset_format.md) | On-disk JSON contract |
@@ -354,25 +484,32 @@ Full roadmap: [docs/roadmap.md](docs/roadmap.md) · Vision:
 | [docs/mutation_spec.md](docs/mutation_spec.md) | Mutation operators |
 | [docs/metrics.md](docs/metrics.md) | Evaluation metrics |
 | [docs/reproducibility.md](docs/reproducibility.md) | Seeds, versioning, freeze |
-| [docs/c1_baseline_repair.md](docs/c1_baseline_repair.md) | C1 campaign manifests, multi-seed random floor, regeneration |
+| [docs/taxonomy_coverage.md](docs/taxonomy_coverage.md) | RQ1 taxonomy coverage campaign |
+| [docs/localization_campaign.md](docs/localization_campaign.md) | RQ3 Ochiai localization |
+| [docs/coupling_campaign.md](docs/coupling_campaign.md) | RQ4 higher-order coupling |
+| [docs/c1_baseline_repair.md](docs/c1_baseline_repair.md) | C1 baseline repair exports |
+| [docs/oracle_depth_ablation.md](docs/oracle_depth_ablation.md) | C3 oracle depth ablation |
 | [docs/development.md](docs/development.md) | Developer setup |
 | [docs/cli.md](docs/cli.md) | Auto-generated CLI reference |
 | [BENCHMARK_SPEC.md](BENCHMARK_SPEC.md) | Normative contract |
+| [data/fsmrepairbench_1k/README.md](data/fsmrepairbench_1k/README.md) | Frozen 1k dataset & cohort pins |
 
 ---
 
 ## Citation
 
-If you use this repository in research, please cite the software (paper citation TBD):
+If you use this repository or the **`v0.2.0-analysis`** release in research, please cite
+the Zenodo deposit and software repository:
 
 ```bibtex
 @software{fsmrepairbench2026,
   title        = {FSMRepairBench: A Benchmark for Behavioural Finite-State Machine Repair},
-  author       = {FSMRepairBench Contributors},
+  author       = {Andr{\'e}s, C{\'e}sar and FSMRepairBench Contributors},
   year         = {2026},
   url          = {https://github.com/cesar-andress/fsmrepairbench},
   version      = {0.1.0},
-  note         = {Under active development; not yet a published benchmark release}
+  doi          = {10.5281/zenodo.20602528},
+  note         = {Release label v0.2.0-analysis; frozen 1{,}000-case empirical campaign}
 }
 ```
 
