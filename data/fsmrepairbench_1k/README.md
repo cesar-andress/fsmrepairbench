@@ -33,6 +33,19 @@ python ../paper1/scripts/pin_analysis_cohort.py
 | v0.2.0-analysis | `analyze-benchmark` | `results/analysis/` | `paper1/results/v0_2_analysis/` |
 | C1 baseline repair | `run-tools` + `tools/baselines_c1/` | `results/repair_baseline_1k_c1/` | `paper1/results/baseline_repair_C1/` |
 | C3 oracle depth ablation | `run-oracle-depth-ablation` | `results/oracle_depth_ablation/` | (pending) |
+| RQ3 localization (planned) | `paper1/scripts/run_rq3_localization.py` | `results/rq3_localization_1k/` | (pending) |
+| RQ4 coupling (planned) | `paper1/scripts/run_rq4_coupling_campaign.py` | `results/rq4_coupling_250/` | (pending) |
+
+## Pinned experiment cohorts
+
+| Cohort | Cases | Manifest |
+|--------|------:|----------|
+| Analysis | 1,000 | `analysis_cohort_1k.txt` |
+| RQ3 localization | 1,000 | `localization_cohort_1k.txt` |
+| RQ4 coupling | 250 | `coupling_campaign_250.txt` |
+| C3 oracle depth | 200 | `oracle_depth_ablation_200.txt` |
+
+Regenerate RQ3/RQ4 pins: `python ../paper1/scripts/pin_rq3_rq4_cohorts.py`
 
 ## Pinned ablation cohort (200 cases)
 
