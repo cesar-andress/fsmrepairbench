@@ -2932,6 +2932,66 @@ def run_localization_campaign_cmd(
     raise typer.Exit(code=0)
 
 
+@app.command("run-coupling-campaign")
+def run_coupling_campaign_cmd(
+    dataset_dir: Path,
+    out: Path = typer.Option(
+        Path("results/rq4_coupling_250"),
+        "--out",
+        help="Directory for coupling CSVs, figures, tables, and report.",
+    ),
+    subset_dir: Path = typer.Option(
+        Path("results/rq4_coupling_subset"),
+        "--subset-dir",
+        help="Enriched dataset workspace with first- and higher-order cases.",
+    ),
+    cohort_file: Path | None = typer.Option(
+        None,
+        "--cohort-file",
+        help="Pinned cohort manifest (one case ID per line).",
+    ),
+    seed: int = typer.Option(
+        44,
+        "--seed",
+        help="Deterministic campaign seed for HO generation and repair.",
+    ),
+    copy_cases: bool = typer.Option(
+        False,
+        "--copy-cases",
+        help="Copy first-order cases instead of symlinking them.",
+    ),
+) -> None:
+    """Run RQ4 higher-order coupling campaign on a pinned cohort."""
+    from fsmrepairbench.coupling_campaign import CouplingCampaignError, run_coupling_campaign
+
+    try:
+        result = run_coupling_campaign(
+            dataset_dir,
+            output_dir=out,
+            cohort_path=cohort_file,
+            subset_dir=subset_dir,
+            campaign_seed=seed,
+            use_symlinks=not copy_cases,
+        )
+    except CouplingCampaignError as exc:
+        console.print(f"[red]ERROR[/red] {exc}")
+        raise typer.Exit(code=1) from exc
+
+    console.print(
+        f"[green]OK[/green] RQ4 coupling campaign on {result.cohort_size} cohort cases "
+        f"({result.case_count} analyzed) from {dataset_dir}"
+    )
+    console.print(f"Cohort: {result.cohort_path}")
+    console.print(f"Subset: {result.subset_dir}")
+    console.print(f"Summary: {result.summary_path}")
+    console.print(f"Metrics: {result.coupling_metrics_path}")
+    console.print(f"Per-case: {result.per_case_path}")
+    console.print(f"Figures: {result.figures_dir}")
+    console.print(f"Tables: {result.tables_dir}")
+    console.print(f"Report: {result.report_path}")
+    raise typer.Exit(code=0)
+
+
 @app.command("generate-taxonomy-coverage")
 def generate_taxonomy_coverage_cmd(
     dataset_dir: Path,

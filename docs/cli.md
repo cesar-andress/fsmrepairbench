@@ -1018,6 +1018,25 @@ fsmrepairbench run-localization-campaign DATASET_DIR
 | `cohort_file` | `Path \| None` | `--cohort-file` | None | Pinned cohort manifest (one case ID per line). |
 | `method` | `str` | `--method` | ochiai | Suspiciousness coefficient (`ochiai`, `tarantula`, `jaccard`). |
 
+### `run-coupling-campaign`
+
+Run RQ4 higher-order coupling campaign on a pinned cohort (generates orders 2/3 mutants, coupling metrics, repair rates).
+
+**Usage**
+
+```bash
+fsmrepairbench run-coupling-campaign DATASET_DIR
+```
+
+| Parameter | Type | Flags | Default | Description |
+|-----------|------|-------|---------|-------------|
+| `dataset_dir` | `Path` | positional | required | Source dataset root (e.g. `data/fsmrepairbench_1k`). |
+| `out` | `Path` | `--out` | results/rq4_coupling_250 | Output directory for CSVs, figures, tables, and report. |
+| `subset_dir` | `Path` | `--subset-dir` | results/rq4_coupling_subset | Enriched workspace with FO + HO cases. |
+| `cohort_file` | `Path \| None` | `--cohort-file` | None | Pinned cohort manifest (one case ID per line). |
+| `seed` | `int` | `--seed` | 44 | Campaign seed for HO chains and repair baseline. |
+| `copy_cases` | `bool` | `--copy-cases` | False | Copy first-order cases instead of symlinking. |
+
 ### `run-smoke-test`
 
 Run the end-to-end smoke-test validation pipeline.
