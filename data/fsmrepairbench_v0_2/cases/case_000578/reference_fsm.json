@@ -1,0 +1,92 @@
+{
+  "id": "synthetic_10982_3_2",
+  "name": "Synthetic FSM (custom)",
+  "description": "Synthetic FSM generated with seed=10982, states=3, events=2, branching_factor=1, deterministic=True, allow_dead_states=False",
+  "states": [
+    {
+      "id": "s10982_0",
+      "state_output": null,
+      "refusal": false,
+      "quiescence": false
+    },
+    {
+      "id": "s10982_1",
+      "state_output": null,
+      "refusal": false,
+      "quiescence": false
+    },
+    {
+      "id": "s10982_2",
+      "state_output": null,
+      "refusal": false,
+      "quiescence": false
+    }
+  ],
+  "initial_state": "s10982_0",
+  "events": [
+    "e10982_0",
+    "e10982_1"
+  ],
+  "transitions": [
+    {
+      "id": "t10982_1",
+      "source": "s10982_0",
+      "event": "e10982_0",
+      "target": "s10982_1",
+      "guard": "x_10982_0 > 0 and y_10982_0 < 10",
+      "action": "act10982_1",
+      "output": null,
+      "timeout": null,
+      "delay": null,
+      "requirements": [],
+      "probability": null,
+      "is_nondeterministic": false,
+      "refusal": false,
+      "quiescence": false,
+      "discrete_time": null
+    },
+    {
+      "id": "t10982_2",
+      "source": "s10982_1",
+      "event": "e10982_1",
+      "target": "s10982_2",
+      "guard": "x_10982_1 > 0 and y_10982_1 < 10",
+      "action": "act10982_2",
+      "output": null,
+      "timeout": null,
+      "delay": null,
+      "requirements": [],
+      "probability": null,
+      "is_nondeterministic": false,
+      "refusal": false,
+      "quiescence": false,
+      "discrete_time": null
+    },
+    {
+      "id": "t10982_3",
+      "source": "s10982_2",
+      "event": "e10982_1",
+      "target": "s10982_2",
+      "guard": "x_10982_2 > 0 and y_10982_2 < 10",
+      "action": "act10982_3",
+      "output": null,
+      "timeout": null,
+      "delay": null,
+      "requirements": [],
+      "probability": null,
+      "is_nondeterministic": false,
+      "refusal": false,
+      "quiescence": false,
+      "discrete_time": null
+    }
+  ],
+  "variables": {
+    "x": "int",
+    "y": "int"
+  },
+  "parent_fsm_id": null,
+  "reference_fsm_id": null,
+  "discrete_time_step": null,
+  "semantics_mode": null,
+  "cyclic_metadata": null
+}

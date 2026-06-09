@@ -1,7 +1,7 @@
 # FSMRepairBench
 
-[![CI](https://img.shields.io/badge/CI-placeholder-lightgrey)](https://github.com/ORG/FSMRepairBench/actions)
-[![Docs](https://img.shields.io/badge/docs-auto--generated-lightgrey)](https://github.com/ORG/FSMRepairBench/actions/workflows/docs.yml)
+[![CI](https://img.shields.io/badge/CI-placeholder-lightgrey)](https://github.com/cesar-andress/fsmrepairbench/actions)
+[![Docs](https://img.shields.io/badge/docs-auto--generated-lightgrey)](https://github.com/cesar-andress/fsmrepairbench/actions/workflows/docs.yml)
 [![Python 3.11+](https://img.shields.io/badge/python-3.11+-3776ab?logo=python&logoColor=white)](https://www.python.org/downloads/)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
 [![Version](https://img.shields.io/badge/version-0.1.0-blue)](pyproject.toml)
@@ -369,7 +369,7 @@ If you use this repository in research, please cite the software (paper citation
   title        = {FSMRepairBench: A Benchmark for Behavioural Finite-State Machine Repair},
   author       = {FSMRepairBench Contributors},
   year         = {2026},
-  url          = {https://github.com/ORG/FSMRepairBench},
+  url          = {https://github.com/cesar-andress/fsmrepairbench},
   version      = {0.1.0},
   note         = {Under active development; not yet a published benchmark release}
 }

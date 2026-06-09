@@ -908,6 +908,23 @@ fsmrepairbench reproduce PATH
 | `artifact_path` | `Path` | positional | required |  |
 | `resume` | `bool` | `--resume/--no-resume` | True |  |
 
+### `run-benchmark-campaign`
+
+Build and analyze the FSMRepairBench v0.2 benchmark campaign.
+
+**Usage**
+
+```bash
+fsmrepairbench run-benchmark-campaign plans/fsmrepairbench_v0_10k_plan.yaml DATASET_DIR
+```
+
+| Parameter | Type | Flags | Default | Description |
+|-----------|------|-------|---------|-------------|
+| `plan_path` | `Path` | positional | required |  |
+| `dataset_dir` | `Path` | positional | required |  |
+| `out` | `Path` | `--out` | results/v0_2_campaign | Campaign report output directory. |
+| `skip_build` | `bool` | `--skip-build` | False | Reuse an existing dataset in DATASET_DIR and only run analyses. |
+
 ### `run-experiment`
 
 Run a batch repair experiment from a YAML config file.

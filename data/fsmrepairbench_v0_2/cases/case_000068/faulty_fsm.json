@@ -1,0 +1,55 @@
+{
+  "id": "synthetic_1302_3_2__faulty__wrong_source__68045",
+  "name": "Synthetic FSM (custom) (faulty: wrong_source)",
+  "description": "Synthetic FSM generated with seed=1302, states=3, events=2, branching_factor=1, deterministic=True, allow_dead_states=True",
+  "states": [
+    {
+      "id": "s1302_0",
+      "state_output": null,
+      "refusal": false,
+      "quiescence": false
+    },
+    {
+      "id": "s1302_1",
+      "state_output": null,
+      "refusal": false,
+      "quiescence": false
+    },
+    {
+      "id": "s1302_2",
+      "state_output": null,
+      "refusal": false,
+      "quiescence": false
+    }
+  ],
+  "initial_state": "s1302_0",
+  "events": [
+    "e1302_0",
+    "e1302_1"
+  ],
+  "transitions": [
+    {
+      "id": "t1302_hub_1",
+      "source": "s1302_2",
+      "event": "e1302_1",
+      "target": "s1302_1",
+      "guard": null,
+      "action": null,
+      "output": null,
+      "timeout": null,
+      "delay": null,
+      "requirements": [],
+      "probability": null,
+      "is_nondeterministic": false,
+      "refusal": false,
+      "quiescence": false,
+      "discrete_time": null
+    }
+  ],
+  "variables": {},
+  "parent_fsm_id": "synthetic_1302_3_2",
+  "reference_fsm_id": "synthetic_1302_3_2",
+  "discrete_time_step": null,
+  "semantics_mode": null,
+  "cyclic_metadata": null
+}

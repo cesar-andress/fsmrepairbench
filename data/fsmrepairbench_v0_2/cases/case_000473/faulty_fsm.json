@@ -1,0 +1,61 @@
+{
+  "id": "synthetic_8995_3_2__faulty__dead_state_intro__473045",
+  "name": "Synthetic FSM (custom) (faulty: dead_state_intro)",
+  "description": "Synthetic FSM generated with seed=8995, states=3, events=2, branching_factor=1, deterministic=True, allow_dead_states=True",
+  "states": [
+    {
+      "id": "s8995_0",
+      "state_output": "out_8995_0",
+      "refusal": false,
+      "quiescence": false
+    },
+    {
+      "id": "s8995_1",
+      "state_output": "out_8995_1",
+      "refusal": false,
+      "quiescence": false
+    },
+    {
+      "id": "s8995_2",
+      "state_output": "out_8995_2",
+      "refusal": false,
+      "quiescence": false
+    },
+    {
+      "id": "dead_473045",
+      "state_output": null,
+      "refusal": false,
+      "quiescence": false
+    }
+  ],
+  "initial_state": "s8995_0",
+  "events": [
+    "e8995_0",
+    "e8995_1"
+  ],
+  "transitions": [
+    {
+      "id": "t8995_hub_1",
+      "source": "s8995_0",
+      "event": "e8995_1",
+      "target": "s8995_1",
+      "guard": null,
+      "action": null,
+      "output": null,
+      "timeout": null,
+      "delay": null,
+      "requirements": [],
+      "probability": null,
+      "is_nondeterministic": false,
+      "refusal": false,
+      "quiescence": false,
+      "discrete_time": null
+    }
+  ],
+  "variables": {},
+  "parent_fsm_id": "synthetic_8995_3_2",
+  "reference_fsm_id": "synthetic_8995_3_2",
+  "discrete_time_step": null,
+  "semantics_mode": null,
+  "cyclic_metadata": null
+}

@@ -1,0 +1,106 @@
+{
+  "id": "synthetic_13733_3_2__faulty__timeout_corruption__722045",
+  "name": "Synthetic FSM (custom) (faulty: timeout_corruption)",
+  "description": "Synthetic FSM generated with seed=13733, states=3, events=2, branching_factor=1, deterministic=True, allow_dead_states=False",
+  "states": [
+    {
+      "id": "s13733_0",
+      "state_output": null,
+      "refusal": false,
+      "quiescence": false
+    },
+    {
+      "id": "s13733_1",
+      "state_output": null,
+      "refusal": false,
+      "quiescence": false
+    },
+    {
+      "id": "s13733_2",
+      "state_output": null,
+      "refusal": false,
+      "quiescence": false
+    }
+  ],
+  "initial_state": "s13733_0",
+  "events": [
+    "e13733_0",
+    "e13733_1"
+  ],
+  "transitions": [
+    {
+      "id": "t13733_1",
+      "source": "s13733_0",
+      "event": "e13733_0",
+      "target": "s13733_1",
+      "guard": "x_13733_0 > 0",
+      "action": "act13733_1",
+      "output": null,
+      "timeout": 2.0,
+      "delay": null,
+      "requirements": [],
+      "probability": null,
+      "is_nondeterministic": false,
+      "refusal": false,
+      "quiescence": false,
+      "discrete_time": null
+    },
+    {
+      "id": "t13733_2",
+      "source": "s13733_0",
+      "event": "e13733_0",
+      "target": "s13733_2",
+      "guard": "x_13733_1 > 0",
+      "action": "act13733_2",
+      "output": null,
+      "timeout": 2.0,
+      "delay": null,
+      "requirements": [],
+      "probability": null,
+      "is_nondeterministic": false,
+      "refusal": false,
+      "quiescence": false,
+      "discrete_time": null
+    },
+    {
+      "id": "t13733_3",
+      "source": "s13733_1",
+      "event": "e13733_0",
+      "target": "s13733_2",
+      "guard": "x_13733_2 > 0",
+      "action": "act13733_3",
+      "output": null,
+      "timeout": 3.0,
+      "delay": null,
+      "requirements": [],
+      "probability": null,
+      "is_nondeterministic": false,
+      "refusal": false,
+      "quiescence": false,
+      "discrete_time": null
+    },
+    {
+      "id": "t13733_4",
+      "source": "s13733_2",
+      "event": "e13733_0",
+      "target": "s13733_2",
+      "guard": "x_13733_3 > 0",
+      "action": "act13733_4",
+      "output": null,
+      "timeout": 4.0,
+      "delay": null,
+      "requirements": [],
+      "probability": null,
+      "is_nondeterministic": false,
+      "refusal": false,
+      "quiescence": false,
+      "discrete_time": null
+    }
+  ],
+  "variables": {},
+  "parent_fsm_id": "synthetic_13733_3_2",
+  "reference_fsm_id": "synthetic_13733_3_2",
+  "discrete_time_step": null,
+  "semantics_mode": null,
+  "cyclic_metadata": null
+}

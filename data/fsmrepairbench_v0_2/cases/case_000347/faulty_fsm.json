@@ -1,0 +1,123 @@
+{
+  "id": "synthetic_6550_3_2__faulty__guard_flip__347045",
+  "name": "Synthetic FSM (custom) (faulty: guard_flip)",
+  "description": "Synthetic FSM generated with seed=6550, states=3, events=2, branching_factor=2, deterministic=True, allow_dead_states=True",
+  "states": [
+    {
+      "id": "s6550_0",
+      "state_output": null,
+      "refusal": false,
+      "quiescence": false
+    },
+    {
+      "id": "s6550_1",
+      "state_output": null,
+      "refusal": false,
+      "quiescence": false
+    },
+    {
+      "id": "s6550_2",
+      "state_output": null,
+      "refusal": false,
+      "quiescence": false
+    }
+  ],
+  "initial_state": "s6550_0",
+  "events": [
+    "e6550_0",
+    "e6550_1"
+  ],
+  "transitions": [
+    {
+      "id": "t6550_1",
+      "source": "s6550_0",
+      "event": "e6550_1",
+      "target": "s6550_1",
+      "guard": "x_6550_0 > 0",
+      "action": "act6550_1",
+      "output": "out_6550_0",
+      "timeout": null,
+      "delay": null,
+      "requirements": [],
+      "probability": null,
+      "is_nondeterministic": false,
+      "refusal": false,
+      "quiescence": false,
+      "discrete_time": null
+    },
+    {
+      "id": "t6550_2",
+      "source": "s6550_1",
+      "event": "e6550_0",
+      "target": "s6550_2",
+      "guard": "x_6550_1 > 0",
+      "action": "act6550_2",
+      "output": "out_6550_1",
+      "timeout": null,
+      "delay": null,
+      "requirements": [],
+      "probability": null,
+      "is_nondeterministic": false,
+      "refusal": false,
+      "quiescence": false,
+      "discrete_time": null
+    },
+    {
+      "id": "t6550_3",
+      "source": "s6550_0",
+      "event": "e6550_0",
+      "target": "s6550_2",
+      "guard": "not_x_6550_2 > 0",
+      "action": "act6550_3",
+      "output": "out_6550_2",
+      "timeout": null,
+      "delay": null,
+      "requirements": [],
+      "probability": null,
+      "is_nondeterministic": false,
+      "refusal": false,
+      "quiescence": false,
+      "discrete_time": null
+    },
+    {
+      "id": "t6550_4",
+      "source": "s6550_1",
+      "event": "e6550_1",
+      "target": "s6550_1",
+      "guard": "x_6550_3 > 0",
+      "action": "act6550_4",
+      "output": "out_6550_3",
+      "timeout": null,
+      "delay": null,
+      "requirements": [],
+      "probability": null,
+      "is_nondeterministic": false,
+      "refusal": false,
+      "quiescence": false,
+      "discrete_time": null
+    },
+    {
+      "id": "t6550_5",
+      "source": "s6550_2",
+      "event": "e6550_0",
+      "target": "s6550_2",
+      "guard": "x_6550_4 > 0",
+      "action": "act6550_5",
+      "output": "out_6550_4",
+      "timeout": null,
+      "delay": null,
+      "requirements": [],
+      "probability": null,
+      "is_nondeterministic": false,
+      "refusal": false,
+      "quiescence": false,
+      "discrete_time": null
+    }
+  ],
+  "variables": {},
+  "parent_fsm_id": "synthetic_6550_3_2",
+  "reference_fsm_id": "synthetic_6550_3_2",
+  "discrete_time_step": null,
+  "semantics_mode": null,
+  "cyclic_metadata": null
+}

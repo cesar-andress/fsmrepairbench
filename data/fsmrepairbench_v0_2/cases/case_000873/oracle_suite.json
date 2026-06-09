@@ -1,0 +1,160 @@
+{
+  "id": "synthetic_16603_3_2_oracles",
+  "fsm_id": "synthetic_16603_3_2",
+  "scenarios": [
+    {
+      "id": "cover_transition_t16603_1",
+      "description": "Covers transition 't16603_1' (s16603_0 --e16603_0--> s16603_1).",
+      "steps": [
+        {
+          "event": "e16603_0",
+          "expected_state": "s16603_1",
+          "guard": "x_16603_0 > 0",
+          "accepting_states": [],
+          "probability_threshold": null,
+          "refusal_expected": false,
+          "quiescence_expected": false,
+          "discrete_time": null
+        }
+      ]
+    },
+    {
+      "id": "cover_transition_t16603_2",
+      "description": "Covers transition 't16603_2' (s16603_1 --e16603_0--> s16603_2).",
+      "steps": [
+        {
+          "event": "e16603_0",
+          "expected_state": "s16603_1",
+          "guard": "x_16603_0 > 0",
+          "accepting_states": [],
+          "probability_threshold": null,
+          "refusal_expected": false,
+          "quiescence_expected": false,
+          "discrete_time": null
+        },
+        {
+          "event": "e16603_0",
+          "expected_state": "s16603_2",
+          "guard": "x_16603_1 > 0",
+          "accepting_states": [],
+          "probability_threshold": null,
+          "refusal_expected": false,
+          "quiescence_expected": false,
+          "discrete_time": null
+        }
+      ]
+    },
+    {
+      "id": "cover_transition_t16603_3",
+      "description": "Covers transition 't16603_3' (s16603_0 --e16603_0--> s16603_2).",
+      "steps": [
+        {
+          "event": "e16603_0",
+          "expected_state": "s16603_2",
+          "guard": "x_16603_2 > 0",
+          "accepting_states": [],
+          "probability_threshold": null,
+          "refusal_expected": false,
+          "quiescence_expected": false,
+          "discrete_time": null
+        }
+      ]
+    },
+    {
+      "id": "cover_transition_t16603_4",
+      "description": "Covers transition 't16603_4' (s16603_0 --e16603_1--> s16603_2).",
+      "steps": [
+        {
+          "event": "e16603_1",
+          "expected_state": "s16603_2",
+          "guard": "x_16603_3 > 0",
+          "accepting_states": [],
+          "probability_threshold": null,
+          "refusal_expected": false,
+          "quiescence_expected": false,
+          "discrete_time": null
+        }
+      ]
+    },
+    {
+      "id": "cover_transition_t16603_5",
+      "description": "Covers transition 't16603_5' (s16603_1 --e16603_1--> s16603_2).",
+      "steps": [
+        {
+          "event": "e16603_0",
+          "expected_state": "s16603_1",
+          "guard": "x_16603_0 > 0",
+          "accepting_states": [],
+          "probability_threshold": null,
+          "refusal_expected": false,
+          "quiescence_expected": false,
+          "discrete_time": null
+        },
+        {
+          "event": "e16603_1",
+          "expected_state": "s16603_2",
+          "guard": "x_16603_4 > 0",
+          "accepting_states": [],
+          "probability_threshold": null,
+          "refusal_expected": false,
+          "quiescence_expected": false,
+          "discrete_time": null
+        }
+      ]
+    },
+    {
+      "id": "cover_transition_t16603_6",
+      "description": "Covers transition 't16603_6' (s16603_2 --e16603_0--> s16603_2).",
+      "steps": [
+        {
+          "event": "e16603_0",
+          "expected_state": "s16603_2",
+          "guard": "x_16603_2 > 0",
+          "accepting_states": [],
+          "probability_threshold": null,
+          "refusal_expected": false,
+          "quiescence_expected": false,
+          "discrete_time": null
+        },
+        {
+          "event": "e16603_0",
+          "expected_state": "s16603_2",
+          "guard": "x_16603_5 > 0",
+          "accepting_states": [],
+          "probability_threshold": null,
+          "refusal_expected": false,
+          "quiescence_expected": false,
+          "discrete_time": null
+        }
+      ]
+    },
+    {
+      "id": "cover_transition_t16603_7",
+      "description": "Covers transition 't16603_7' (s16603_2 --e16603_1--> s16603_2).",
+      "steps": [
+        {
+          "event": "e16603_0",
+          "expected_state": "s16603_2",
+          "guard": "x_16603_2 > 0",
+          "accepting_states": [],
+          "probability_threshold": null,
+          "refusal_expected": false,
+          "quiescence_expected": false,
+          "discrete_time": null
+        },
+        {
+          "event": "e16603_1",
+          "expected_state": "s16603_2",
+          "guard": "x_16603_6 > 0",
+          "accepting_states": [],
+          "probability_threshold": null,
+          "refusal_expected": false,
+          "quiescence_expected": false,
+          "discrete_time": null
+        }
+      ]
+    }
+  ],
+  "semantics_mode": null,
+  "probability_threshold": null
+}

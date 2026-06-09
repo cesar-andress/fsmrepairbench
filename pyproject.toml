@@ -10,6 +10,18 @@ readme = "README.md"
 requires-python = ">=3.11"
 license = { text = "MIT" }
 authors = [{ name = "FSMRepairBench Contributors" }]
+keywords = [
+    "benchmark",
+    "finite-state-machines",
+    "fsm",
+    "mutation-testing",
+    "oracle-testing",
+    "software-repair",
+    "llm",
+    "mealy",
+    "moore",
+    "efsm",
+]
 dependencies = [
     "pydantic>=2.0",
     "pyyaml>=6.0",
@@ -29,6 +41,12 @@ dev = [
     "mypy>=1.10",
     "types-PyYAML>=6.0",
 ]
+
+[project.urls]
+Homepage = "https://github.com/cesar-andress/fsmrepairbench"
+Documentation = "https://github.com/cesar-andress/fsmrepairbench/tree/main/docs"
+Repository = "https://github.com/cesar-andress/fsmrepairbench"
+Issues = "https://github.com/cesar-andress/fsmrepairbench/issues"
 
 [project.scripts]
 fsmrepairbench = "fsmrepairbench.cli:app"

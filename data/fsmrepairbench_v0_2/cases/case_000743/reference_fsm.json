@@ -1,0 +1,106 @@
+{
+  "id": "synthetic_14090_3_2",
+  "name": "Synthetic FSM (custom)",
+  "description": "Synthetic FSM generated with seed=14090, states=3, events=2, branching_factor=1, deterministic=True, allow_dead_states=False",
+  "states": [
+    {
+      "id": "s14090_0",
+      "state_output": null,
+      "refusal": false,
+      "quiescence": false
+    },
+    {
+      "id": "s14090_1",
+      "state_output": null,
+      "refusal": false,
+      "quiescence": false
+    },
+    {
+      "id": "s14090_2",
+      "state_output": null,
+      "refusal": false,
+      "quiescence": false
+    }
+  ],
+  "initial_state": "s14090_0",
+  "events": [
+    "e14090_0",
+    "e14090_1"
+  ],
+  "transitions": [
+    {
+      "id": "t14090_1",
+      "source": "s14090_0",
+      "event": "e14090_0",
+      "target": "s14090_1",
+      "guard": "x_14090_0 > 0",
+      "action": "act14090_1",
+      "output": null,
+      "timeout": 1.0,
+      "delay": null,
+      "requirements": [],
+      "probability": null,
+      "is_nondeterministic": false,
+      "refusal": false,
+      "quiescence": false,
+      "discrete_time": null
+    },
+    {
+      "id": "t14090_2",
+      "source": "s14090_0",
+      "event": "e14090_0",
+      "target": "s14090_2",
+      "guard": "x_14090_1 > 0",
+      "action": "act14090_2",
+      "output": null,
+      "timeout": 2.0,
+      "delay": null,
+      "requirements": [],
+      "probability": null,
+      "is_nondeterministic": false,
+      "refusal": false,
+      "quiescence": false,
+      "discrete_time": null
+    },
+    {
+      "id": "t14090_3",
+      "source": "s14090_1",
+      "event": "e14090_0",
+      "target": "s14090_2",
+      "guard": "x_14090_2 > 0",
+      "action": "act14090_3",
+      "output": null,
+      "timeout": 3.0,
+      "delay": null,
+      "requirements": [],
+      "probability": null,
+      "is_nondeterministic": false,
+      "refusal": false,
+      "quiescence": false,
+      "discrete_time": null
+    },
+    {
+      "id": "t14090_4",
+      "source": "s14090_2",
+      "event": "e14090_0",
+      "target": "s14090_2",
+      "guard": "x_14090_3 > 0",
+      "action": "act14090_4",
+      "output": null,
+      "timeout": 4.0,
+      "delay": null,
+      "requirements": [],
+      "probability": null,
+      "is_nondeterministic": false,
+      "refusal": false,
+      "quiescence": false,
+      "discrete_time": null
+    }
+  ],
+  "variables": {},
+  "parent_fsm_id": null,
+  "reference_fsm_id": null,
+  "discrete_time_step": null,
+  "semantics_mode": null,
+  "cyclic_metadata": null
+}
