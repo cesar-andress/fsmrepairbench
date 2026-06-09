@@ -9,6 +9,7 @@ from collections import Counter, defaultdict
 from dataclasses import dataclass
 from datetime import UTC, datetime
 from pathlib import Path
+from typing import cast
 
 from fsmrepairbench.analytics import (
     _pyplot,
@@ -40,6 +41,7 @@ from fsmrepairbench.statistics import (
     compute_c3_confidence_intervals,
     write_confidence_interval_exports,
 )
+from fsmrepairbench.freeze import get_git_commit, sha256_file
 from fsmrepairbench.validators import load_fsm_json
 
 ABLATION_DEPTHS: tuple[DepthLevel, ...] = ("shallow", "medium", "deep")
@@ -49,6 +51,9 @@ DEFAULT_V2_OUTPUT = Path("results/oracle_depth_ablation_v2")
 DEFAULT_V2_PAPER_EXPORT = Path("../paper1/results/oracle_depth_ablation_v2")
 SCENARIO_POLICIES: tuple[ScenarioPolicy, ...] = ("shortest-path", "depth-forced")
 V2_EXPERIMENT = "C3-oracle-depth-ablation-v2"
+RELEASE_LABEL = "C3-oracle-depth-ablation-200"
+V2_RELEASE_LABEL = "C3-oracle-depth-ablation-v2"
+ZENODO_DOI = "10.5281/zenodo.20602528"
 COHORT_FILENAME = "oracle_depth_ablation_200.txt"
 COHORT_JSON_FILENAME = "oracle_depth_ablation_200.json"
 PER_CASE_COLUMNS: tuple[str, ...] = (
@@ -1101,6 +1106,110 @@ def _write_v2_publication_tables(
     )
 
 
+def _list_output_files(out: Path) -> list[str]:
+    files: list[str] = []
+    for path in sorted(out.rglob("*")):
+        if path.is_file():
+            files.append(path.relative_to(out).as_posix())
+    return files
+
+
+def _default_regeneration_commands(*, out: Path, cohort_path: Path) -> list[str]:
+    return [
+        (
+            "fsmrepairbench run-oracle-depth-ablation data/fsmrepairbench_1k "
+            f"--out {out} "
+            f"--cohort-file {cohort_path} "
+            "--no-write-cohort"
+        ),
+        "python ../paper1/scripts/generate_oracle_depth_ablation_outputs.py",
+    ]
+
+
+def _build_frozen_manifest(
+    *,
+    dataset_dir: Path,
+    out: Path,
+    cohort_path: Path,
+    cohort_json: Path | None,
+    case_count: int,
+    scenario_policy: ScenarioPolicy,
+    depth_summaries: list[dict[str, object]],
+    skipped_by_depth: dict[str, int] | Counter[DepthLevel],
+    paired_detection_rows: list[dict[str, object]] | None,
+    release_label: str,
+) -> dict[str, object]:
+    cohort_resolved = cohort_path if cohort_path.is_file() else dataset_dir / cohort_path.name
+    cohort_sha256 = sha256_file(cohort_resolved) if cohort_resolved.is_file() else ""
+    timestamp_utc = datetime.now(UTC).isoformat()
+    git_commit_hash = get_git_commit()
+    manifest: dict[str, object] = {
+        "release_label": release_label,
+        "zenodo_doi": ZENODO_DOI,
+        "dataset_path": str(dataset_dir),
+        "cohort_file": str(cohort_path),
+        "cohort_sha256": cohort_sha256,
+        "case_count": case_count,
+        "oracle_depths": list(ABLATION_DEPTHS),
+        "timestamp_utc": timestamp_utc,
+        "regeneration_commands": _default_regeneration_commands(out=out, cohort_path=cohort_path),
+        "experiment": V2_EXPERIMENT if scenario_policy == "depth-forced" else "C3-oracle-depth-ablation",
+        "dataset_dir": str(dataset_dir),
+        "output_dir": str(out),
+        "cohort_size": case_count,
+        "cohort_path": str(cohort_path),
+        "cohort_manifest_path": str(cohort_json or (dataset_dir / COHORT_JSON_FILENAME)),
+        "scenario_policy": scenario_policy,
+        "depths": list(ABLATION_DEPTHS),
+        "depth_presets": {depth: DEPTH_MAX_STEPS[depth] for depth in ABLATION_DEPTHS},
+        "depth_summaries": depth_summaries,
+        "paired_detection_changes": paired_detection_rows if scenario_policy == "depth-forced" else None,
+        "skipped_by_depth": dict(skipped_by_depth),
+        "output_files": sorted(set(_list_output_files(out) + ["manifest.json"])),
+        "generated_at": timestamp_utc,
+    }
+    if git_commit_hash:
+        manifest["git_commit_hash"] = git_commit_hash
+    return manifest
+
+
+def refresh_oracle_depth_manifest(output_dir: Path) -> Path:
+    """Rewrite *output_dir/manifest.json* metadata without re-scoring cases."""
+    manifest_path = output_dir / "manifest.json"
+    if not manifest_path.is_file():
+        msg = f"Missing manifest to refresh: {manifest_path}"
+        raise OracleDepthAblationError(msg)
+
+    existing = json.loads(manifest_path.read_text(encoding="utf-8"))
+    dataset_dir = Path(str(existing.get("dataset_path") or existing["dataset_dir"]))
+    cohort_path = Path(str(existing.get("cohort_file") or existing["cohort_path"]))
+    cohort_json_raw = existing.get("cohort_manifest_path")
+    cohort_json = Path(str(cohort_json_raw)) if cohort_json_raw else None
+    scenario_policy = cast(ScenarioPolicy, existing.get("scenario_policy", "shortest-path"))
+    case_count = int(existing.get("case_count") or existing.get("cohort_size") or 0)
+    depth_summaries = list(existing.get("depth_summaries") or [])
+    skipped_by_depth = existing.get("skipped_by_depth") or {}
+    paired_detection_rows = existing.get("paired_detection_changes")
+    release_label = (
+        V2_RELEASE_LABEL if scenario_policy == "depth-forced" else RELEASE_LABEL
+    )
+
+    manifest = _build_frozen_manifest(
+        dataset_dir=dataset_dir,
+        out=output_dir,
+        cohort_path=cohort_path,
+        cohort_json=cohort_json,
+        case_count=case_count,
+        scenario_policy=scenario_policy,
+        depth_summaries=depth_summaries,
+        skipped_by_depth=skipped_by_depth,
+        paired_detection_rows=paired_detection_rows,
+        release_label=release_label,
+    )
+    manifest_path.write_text(json.dumps(manifest, indent=2) + "\n", encoding="utf-8")
+    return manifest_path
+
+
 def _copy_paper_exports(
     *,
     output_dir: Path,
@@ -1278,21 +1387,18 @@ def run_oracle_depth_ablation(
     )
     append_ci_section_to_report(report_path, ci_rows)
 
-    manifest = {
-        "experiment": V2_EXPERIMENT if scenario_policy == "depth-forced" else "C3-oracle-depth-ablation",
-        "dataset_dir": str(dataset_dir),
-        "output_dir": str(out),
-        "cohort_size": len(case_ids),
-        "cohort_path": str(cohort_txt),
-        "cohort_manifest_path": str(cohort_json or (dataset_dir / COHORT_JSON_FILENAME)),
-        "scenario_policy": scenario_policy,
-        "depths": list(ABLATION_DEPTHS),
-        "depth_presets": {depth: DEPTH_MAX_STEPS[depth] for depth in ABLATION_DEPTHS},
-        "depth_summaries": depth_summaries,
-        "paired_detection_changes": paired_detection_rows if scenario_policy == "depth-forced" else None,
-        "skipped_by_depth": dict(skipped_by_depth),
-        "generated_at": datetime.now(UTC).isoformat(),
-    }
+    manifest = _build_frozen_manifest(
+        dataset_dir=dataset_dir,
+        out=out,
+        cohort_path=cohort_txt or (dataset_dir / COHORT_FILENAME),
+        cohort_json=cohort_json,
+        case_count=len(case_ids),
+        scenario_policy=scenario_policy,
+        depth_summaries=depth_summaries,
+        skipped_by_depth=skipped_by_depth,
+        paired_detection_rows=paired_detection_rows if scenario_policy == "depth-forced" else None,
+        release_label=V2_RELEASE_LABEL if scenario_policy == "depth-forced" else RELEASE_LABEL,
+    )
     manifest_path.write_text(json.dumps(manifest, indent=2) + "\n", encoding="utf-8")
 
     if scenario_policy == "depth-forced" and paper_dir is not None:

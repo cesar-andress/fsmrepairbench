@@ -1,4 +1,20 @@
 {
+  "release_label": "C3-oracle-depth-ablation-200",
+  "zenodo_doi": "10.5281/zenodo.20602528",
+  "dataset_path": "data/fsmrepairbench_1k",
+  "cohort_file": "data/fsmrepairbench_1k/oracle_depth_ablation_200.txt",
+  "cohort_sha256": "144e8efb3b810248e0c9a0852f2fdcd41b3a9ea1b287f4c4500ddbe36371d5c9",
+  "case_count": 200,
+  "oracle_depths": [
+    "shallow",
+    "medium",
+    "deep"
+  ],
+  "timestamp_utc": "2026-06-09T09:16:31.005283+00:00",
+  "regeneration_commands": [
+    "fsmrepairbench run-oracle-depth-ablation data/fsmrepairbench_1k --out results/oracle_depth_ablation --cohort-file data/fsmrepairbench_1k/oracle_depth_ablation_200.txt --no-write-cohort",
+    "python ../paper1/scripts/generate_oracle_depth_ablation_outputs.py"
+  ],
   "experiment": "C3-oracle-depth-ablation",
   "dataset_dir": "data/fsmrepairbench_1k",
   "output_dir": "results/oracle_depth_ablation",
@@ -74,5 +90,29 @@
   ],
   "paired_detection_changes": null,
   "skipped_by_depth": {},
-  "generated_at": "2026-06-09T07:41:31.987749+00:00"
+  "output_files": [
+    "confidence_intervals.csv",
+    "confidence_intervals.json",
+    "depth_summary.csv",
+    "distributions.csv",
+    "figures/bpr_delta_distribution_deep.png",
+    "figures/bpr_delta_distribution_medium.png",
+    "figures/bpr_delta_distribution_shallow.png",
+    "figures/detection_delta_vs_shallow_deep.png",
+    "figures/detection_delta_vs_shallow_medium.png",
+    "figures/detection_rate_by_depth.png",
+    "figures/max_path_length_by_depth.png",
+    "figures/mean_bpr_delta_by_depth.png",
+    "figures/mean_max_path_length_by_depth.png",
+    "figures/mutation_detection_by_operator_depth.png",
+    "figures/oracle_transition_coverage_by_depth.png",
+    "manifest.json",
+    "per_case_results.csv",
+    "report.md",
+    "summary.csv",
+    "tables/table_depth_summary.tex",
+    "tables/table_detection_by_operator_depth.tex"
+  ],
+  "generated_at": "2026-06-09T09:16:31.005283+00:00",
+  "git_commit_hash": "eb5587d436ef066a2e823d7b9be493f72eb8b3bb"
 }
