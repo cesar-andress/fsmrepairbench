@@ -2817,6 +2817,47 @@ def analyze_benchmark_cmd(
     raise typer.Exit(code=0)
 
 
+@app.command("run-benchmark-campaign")
+def run_benchmark_campaign_cmd(
+    plan_path: Path,
+    dataset_dir: Path,
+    out: Path = typer.Option(
+        Path("results/v0_2_campaign"),
+        "--out",
+        help="Campaign report output directory.",
+    ),
+    skip_build: bool = typer.Option(
+        False,
+        "--skip-build",
+        help="Reuse an existing dataset in DATASET_DIR and only run analyses.",
+    ),
+) -> None:
+    """Build and analyze the FSMRepairBench v0.2 benchmark campaign."""
+    from fsmrepairbench.benchmark_campaign import BenchmarkCampaignError, run_benchmark_campaign
+
+    try:
+        result = run_benchmark_campaign(
+            plan_path,
+            dataset_dir,
+            output_dir=out,
+            skip_build=skip_build,
+        )
+    except BenchmarkCampaignError as exc:
+        console.print(f"[red]ERROR[/red] {exc}")
+        raise typer.Exit(code=1) from exc
+
+    console.print(
+        f"[green]OK[/green] Completed v0.2 campaign for {result.case_count} cases"
+    )
+    console.print(f"Dataset: {result.dataset_dir}")
+    console.print(f"Mutation summary: {result.mutation_summary_path}")
+    console.print(f"Coverage report: {result.coverage_report_path}")
+    console.print(f"Coupling report: {result.coupling_report_path}")
+    console.print(f"Campaign summary: {result.summary_json_path}")
+    console.print(f"Benchmark report: {result.benchmark_report_path}")
+    raise typer.Exit(code=0)
+
+
 @app.command("export-hf")
 def export_hf_cmd(dataset_dir: Path) -> None:
     """Export a benchmark dataset to HuggingFace JSONL splits."""
