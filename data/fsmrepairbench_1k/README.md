@@ -1,0 +1,36 @@
+# Stratified Dataset: fsmrepairbench_1k
+
+- **Dataset:** fsmrepairbench_1k
+- **Version:** 0.2.0-analysis
+- **Number of completed FSM cases:** 1,024
+- **Number of analyzed FSM cases:** 1,000 (pinned cohort)
+- **Files:** reference_fsm.json, faulty_fsm.json, oracle_suite.json, bug_metadata.json, case_features.json
+- **Seed:** 43 (Zenodo metadata); build plan uses seed **44** — see `plans/fsmrepairbench_v0_1k_plan.yaml`
+- **DOI:** [10.5281/zenodo.20602528](https://doi.org/10.5281/zenodo.20602528)
+- **Notes:** some candidate cases failed due to unsupported mutation operators
+
+Build plan: `plans/fsmrepairbench_v0_1k_plan.yaml`. Per-case metrics and build status: `progress.csv`.
+
+## Pinned analysis cohort (1,000 cases)
+
+Paper experiments use the first **1,000** `completed` rows in `progress.csv` order:
+
+| File | Role |
+|------|------|
+| `analysis_cohort_1k.txt` | One case ID per line (canonical order) |
+| `analysis_cohort_1k.json` | Manifest with SHA-256, DOI, plan seed, timestamps |
+
+Regenerate from paper workspace:
+
+```bash
+python ../paper1/scripts/pin_analysis_cohort.py
+```
+
+## Implemented campaigns on this dataset
+
+| Campaign | CLI | Results (code repo) | Paper export |
+|----------|-----|---------------------|--------------|
+| v0.2.0-analysis | `analyze-benchmark` | `results/analysis/` | `paper1/results/v0_2_analysis/` |
+| C1 baseline repair | `run-tools` + `tools/baselines_c1/` | `results/repair_baseline_1k_c1/` | `paper1/results/baseline_repair_C1/` |
+
+Each completed case directory under `cases/` contains reference and faulty FSM serialisations, oracle suite, and bug metadata.
