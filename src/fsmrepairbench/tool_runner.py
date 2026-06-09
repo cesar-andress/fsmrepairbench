@@ -276,6 +276,18 @@ def _backend_from_environment(environment: dict[str, str]) -> ModelBackend:
         raise ToolRunnerError(msg) from exc
 
 
+def _baseline_seed(tool: ToolConfig) -> int:
+    """Return the deterministic seed for baseline engines (default 0)."""
+    raw = tool.environment.get("baseline_seed") or tool.environment.get("random_seed")
+    if raw is None:
+        return 0
+    try:
+        return int(raw)
+    except ValueError as exc:
+        msg = f"Invalid baseline seed in tool environment: {raw!r}"
+        raise ToolRunnerError(msg) from exc
+
+
 def _model_spec_from_tool(tool: ToolConfig) -> Any:
     backend = _backend_from_environment(tool.environment)
     base_url = tool.environment.get("OLLAMA_HOST") or tool.environment.get("OPENAI_BASE_URL")
@@ -295,8 +307,10 @@ def _run_baseline_tool(task: ToolRunTask) -> RepairResult:
     current_fsm = case.faulty_fsm.model_copy(deep=True)
     iterations: list[dict[str, Any]] = []
 
+    baseline_seed = _baseline_seed(tool)
+
     try:
-        get_baseline_engine(tool.command)
+        get_baseline_engine(tool.command, seed=baseline_seed)
     except BaselineEngineError as exc:
         msg = str(exc)
         raise ToolRunnerError(msg) from exc
@@ -316,7 +330,7 @@ def _run_baseline_tool(task: ToolRunTask) -> RepairResult:
             break
 
         try:
-            engine = get_baseline_engine(tool.command)
+            engine = get_baseline_engine(tool.command, seed=baseline_seed)
             patch = engine.propose_patch(current_fsm, case.oracle_suite)
             record["patch"] = patch.model_dump()
             validation_errors = validate_patch(current_fsm, patch)
@@ -349,6 +363,7 @@ def _run_baseline_tool(task: ToolRunTask) -> RepairResult:
             "model": tool.tool_id,
             "backend": "baseline",
             "baseline_engine": tool.command,
+            "baseline_seed": baseline_seed,
             "temperature": tool.temperature,
             "max_iterations": tool.iterations,
             "runtime_seconds": runtime_seconds,

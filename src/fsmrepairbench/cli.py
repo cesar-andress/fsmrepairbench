@@ -50,6 +50,13 @@ from fsmrepairbench.semantics import (
     write_semantics_report_json,
 )
 from fsmrepairbench.tool_runner import ToolRunnerError, load_tool_configs, run_tools
+from fsmrepairbench.baseline_repair_campaign import (
+    BaselineRepairCampaignError,
+    DEFAULT_COHORT_FILE,
+    export_c1_multi_seed_analysis,
+    parse_seeds,
+    RELEASE_LABEL,
+)
 from fsmrepairbench.experiments import (
     ExperimentConfigError,
     load_experiment_config,
@@ -1969,6 +1976,66 @@ def run_tools_cmd(
         console.print(f"Summary: {result.summary_path}")
         console.print(f"Leaderboard: {result.leaderboard_path}")
         console.print(f"Manifest: {result.output_dir / 'tool_run_manifest.json'}")
+
+    raise typer.Exit(code=0)
+
+
+@app.command("export-c1-baseline-repair")
+def export_c1_baseline_repair_cmd(
+    dataset_dir: Path,
+    out: Path = typer.Option(..., "--out", help="Write C1 export artefacts to this directory."),
+    cohort_file: Path | None = typer.Option(
+        None,
+        "--cohort-file",
+        help="Pinned cohort manifest (default: analysis_cohort_1k.txt under dataset).",
+    ),
+    tools_dir: Path = typer.Option(
+        Path("tools/baselines_c1"),
+        "--tools-dir",
+        help="Directory containing baseline tool YAML configs.",
+    ),
+    seeds: str | None = typer.Option(
+        None,
+        "--seeds",
+        help="Comma-separated random baseline seeds or an integer count (default: 10 seeds 0-9).",
+    ),
+    workers: int = typer.Option(1, "--workers", min=1),
+    no_per_seed_runs: bool = typer.Option(
+        False,
+        "--no-per-seed-runs",
+        help="Skip writing per-seed JSON outputs under multi_seed/.",
+    ),
+    quiet: bool = typer.Option(False, "--quiet", help="Print a short summary only."),
+) -> None:
+    """Run multi-seed random baseline analysis and write C1 manifest exports."""
+    cohort = cohort_file or (dataset_dir / DEFAULT_COHORT_FILE)
+    try:
+        parsed_seeds = parse_seeds(seeds)
+        result = export_c1_multi_seed_analysis(
+            dataset_dir,
+            cohort,
+            tools_dir,
+            out,
+            seeds=parsed_seeds,
+            workers=workers,
+            write_per_seed_runs=not no_per_seed_runs,
+        )
+    except BaselineRepairCampaignError as exc:
+        console.print(f"[red]ERROR[/red] {exc}")
+        raise typer.Exit(code=1) from exc
+
+    if quiet:
+        console.print(
+            f"[green]OK[/green] {RELEASE_LABEL} manifest={result.manifest_path.name} "
+            f"seeds={len(parsed_seeds)}"
+        )
+    else:
+        console.print(
+            f"[green]OK[/green] Exported {RELEASE_LABEL} multi-seed analysis to '{out}'"
+        )
+        console.print(f"Manifest: {result.manifest_path}")
+        console.print(f"Multi-seed summary: {result.multi_seed_summary_path.name}")
+        console.print(f"Multi-seed aggregate: {result.multi_seed_json_path.name}")
 
     raise typer.Exit(code=0)
 
