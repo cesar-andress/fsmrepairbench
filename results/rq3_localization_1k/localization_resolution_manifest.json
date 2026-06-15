@@ -1,0 +1,53 @@
+{
+  "release_label": "RQ3-localization-ochiai-1k",
+  "dataset_dir": "/home/cesar/papers/fsmrepairbench/fsmrepairbench/data/fsmrepairbench_1k",
+  "source_audit": "/home/cesar/papers/fsmrepairbench/paper1/results/rq3_localization_1k/localizability_audit.csv",
+  "partition": "localized_transition_localizable_gt",
+  "method": "ochiai",
+  "n_cases": 376,
+  "correlation": {
+    "spearman_rho": 0.560489,
+    "spearman_pvalue": 0.0,
+    "kendall_tau": 0.435787,
+    "kendall_pvalue": 0.0
+  },
+  "quartiles": [
+    {
+      "quartile": "Q1 (lowest)",
+      "n_cases": 94,
+      "spectral_resolution_min": 0.032,
+      "spectral_resolution_max": 0.068182,
+      "top1_rate": 0.191489,
+      "top5_rate": 0.202128,
+      "mrr": 0.211371
+    },
+    {
+      "quartile": "Q2",
+      "n_cases": 94,
+      "spectral_resolution_min": 0.073171,
+      "spectral_resolution_max": 0.125,
+      "top1_rate": 0.159574,
+      "top5_rate": 0.180851,
+      "mrr": 0.19342
+    },
+    {
+      "quartile": "Q3",
+      "n_cases": 94,
+      "spectral_resolution_min": 0.125,
+      "spectral_resolution_max": 0.25,
+      "top1_rate": 0.191489,
+      "top5_rate": 0.276596,
+      "mrr": 0.268981
+    },
+    {
+      "quartile": "Q4 (highest)",
+      "n_cases": 94,
+      "spectral_resolution_min": 0.25,
+      "spectral_resolution_max": 1.0,
+      "top1_rate": 0.244681,
+      "top5_rate": 0.542553,
+      "mrr": 0.384782
+    }
+  ],
+  "generated_at_utc": "2026-06-15T18:52:56.102334+00:00"
+}
