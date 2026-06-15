@@ -1,0 +1,64 @@
+{
+  "generated_at_utc": "2026-06-15T18:37:59.767247+00:00",
+  "source_per_case": "/home/cesar/papers/fsmrepairbench/paper1/results/baseline_repair_C1/per_case_results.csv",
+  "operator_mix_sensitivity": {
+    "tool_ids": [
+      "baseline_missing_transition",
+      "baseline_wrong_target",
+      "baseline_random"
+    ],
+    "baseline_rates": {
+      "missing-transition": 0.6848484848484848,
+      "wrong-target": 0.12121212121212122,
+      "random": 0.00202020202020202
+    },
+    "baseline_ranks": {
+      "missing-transition": 1,
+      "wrong-target": 2,
+      "random": 3
+    },
+    "baseline_kendall_tau": 0.111111,
+    "flip_probabilities": {
+      "missing-transition|wrong-target": 0.0,
+      "missing-transition|random": 0.0,
+      "wrong-target|random": 0.0
+    },
+    "kendall_tau_distribution": {
+      "mean": 0.101444,
+      "std": 0.017328,
+      "ci95_low": 0.074074,
+      "ci95_high": 0.111111
+    },
+    "n_resamples": 1000,
+    "bootstrap_seed": 44
+  },
+  "minimum_detectable_effects": [
+    {
+      "scope": "all_detectable",
+      "n_cases": 495,
+      "assumed_pooled_rate": 0.26936,
+      "alpha": 0.05,
+      "power": 0.8,
+      "mde_pp": 7.9,
+      "assumption": "Independent two-proportion normal approximation with equal sample sizes; alpha=0.05 two-sided; power=0.80; conservative pooled rate shown."
+    },
+    {
+      "scope": "all_detectable_pooled_0.5",
+      "n_cases": 495,
+      "assumed_pooled_rate": 0.5,
+      "alpha": 0.05,
+      "power": 0.8,
+      "mde_pp": 8.904,
+      "assumption": "Independent two-proportion normal approximation with equal sample sizes; alpha=0.05 two-sided; power=0.80; conservative pooled rate shown. Pooled rate fixed at 0.5 for conservative upper bound."
+    },
+    {
+      "scope": "per_operator_cell",
+      "n_cases": 55,
+      "assumed_pooled_rate": 0.5,
+      "alpha": 0.05,
+      "power": 0.8,
+      "mde_pp": 26.712,
+      "assumption": "Independent two-proportion normal approximation with equal sample sizes; alpha=0.05 two-sided; power=0.80; conservative pooled rate shown. Uses mean detectable cases per operator cell."
+    }
+  ]
+}

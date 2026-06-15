@@ -1,0 +1,24 @@
+% Auto-generated from fsmrepairbench.benchmark_utility_calibration
+\begin{table}[t]
+\caption{Operator-mix sensitivity for the shipped C1 trio on detectable-only complete repair ($n=495$). Current ranking uses the actual operator mix; flip probabilities come from 1,000 bootstrap-resampled operator mixes (seed~44). Mean Kendall $\tau$ across resampled mixes is 0.101 [0.074--0.111] (baseline actual mix: 0.111). Takeaway: aggregate engine ordering is stable under operator-mix perturbation, but operator-level rank profiles remain weakly aligned across engines.}
+\label{tab:operator-mix-sensitivity}
+\scriptsize
+\setlength{\tabcolsep}{3pt}
+\begin{tabular}{@{}lrr@{}}
+\toprule
+Engine & Rank & Complete repair (detectable-only) \\
+\midrule
+\texttt{missing-transition} & 1 & 68.5\% \\
+\texttt{wrong-target} & 2 & 12.1\% \\
+\texttt{random} & 3 & 0.2\% \\
+\midrule
+\multicolumn{3}{l}{\textbf{Pairwise ordering flip probability}} \\
+\midrule
+Engine A & Engine B & Flip probability \\
+\midrule
+\texttt{missing-transition} & \texttt{wrong-target} & 0.0\% \\
+\texttt{missing-transition} & \texttt{random} & 0.0\% \\
+\texttt{wrong-target} & \texttt{random} & 0.0\% \\
+\bottomrule
+\end{tabular}
+\end{table}

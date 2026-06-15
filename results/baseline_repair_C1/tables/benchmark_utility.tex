@@ -1,5 +1,5 @@
 \begin{table}[t]
-\caption{Benchmark utility analysis for C1 engine-specific baselines on the 1{,}000-case \texttt{plain\_fsm}/shallow-oracle cohort. Pairwise Cohen's $h$ and McNemar tests use paired per-case outcomes; detectable-only complete-repair BDI~$=0.881$, utility index~$=0.891$, operator rank stability (mean Kendall $\tau$)~=~0.348, random-pair distinguishability~=~80\%. Takeaway: the benchmark separates the three shipped engines on detectable-only complete and effective repair; cohort-wide partitions inherit oracle-saturation confounds.}
+\caption{Benchmark utility analysis for C1 engine-specific baselines on the 1{,}000-case \texttt{plain\_fsm}/shallow-oracle cohort. Pairwise Cohen's $h$ and McNemar tests use paired per-case outcomes; detectable-only complete-repair BDI~$=0.806$, utility index~$=0.999$, operator rank stability (mean Kendall $\tau$ on nine detectable operators)~=~0.111, random-pair distinguishability~=~100\%. Takeaway: the benchmark separates the shipped trio on detectable-only complete and effective repair, but operator-level rank agreement is low because engines are operator-aligned rather than sharing one difficulty ordering; cohort-wide partitions inherit oracle-saturation confounds.}
 \label{tab:benchmark-utility}
 \begin{tabular}{@{}llllrrrrl@{}}
 \toprule
@@ -7,64 +7,16 @@ Metric & Partition & Tool A & Tool B & Rate A & Rate B & Cohen's $h$ & Disagree 
 \midrule
 complete-repair & detectable-only & missing-transition & wrong-target & 68.5\% & 12.1\% & 1.238 & 80.6\% & yes \\
 complete-repair & detectable-only & missing-transition & random & 68.5\% & 0.2\% & 1.860 & 68.3\% & yes \\
-complete-repair & detectable-only & missing-transition & search-bpr & 68.5\% & 86.3\% & -0.433 & 21.4\% & yes \\
-complete-repair & detectable-only & missing-transition & oracle-composite & 68.5\% & 67.5\% & 0.022 & 36.2\% & no \\
-complete-repair & detectable-only & missing-transition & llm-template & 68.5\% & 67.5\% & 0.022 & 36.2\% & no \\
 complete-repair & detectable-only & wrong-target & random & 12.1\% & 0.2\% & 0.621 & 12.3\% & yes \\
-complete-repair & detectable-only & wrong-target & search-bpr & 12.1\% & 86.3\% & -1.671 & 74.1\% & yes \\
-complete-repair & detectable-only & wrong-target & oracle-composite & 12.1\% & 67.5\% & -1.217 & 55.4\% & yes \\
-complete-repair & detectable-only & wrong-target & llm-template & 12.1\% & 67.5\% & -1.217 & 55.4\% & yes \\
-complete-repair & detectable-only & random & search-bpr & 0.2\% & 86.3\% & -2.292 & 86.1\% & yes \\
-complete-repair & detectable-only & random & oracle-composite & 0.2\% & 67.5\% & -1.838 & 67.7\% & yes \\
-complete-repair & detectable-only & random & llm-template & 0.2\% & 67.5\% & -1.838 & 67.7\% & yes \\
-complete-repair & detectable-only & search-bpr & oracle-composite & 86.3\% & 67.5\% & 0.454 & 19.2\% & yes \\
-complete-repair & detectable-only & search-bpr & llm-template & 86.3\% & 67.5\% & 0.454 & 19.2\% & yes \\
-complete-repair & detectable-only & oracle-composite & llm-template & 67.5\% & 67.5\% & 0.000 & 0.0\% & no \\
 complete-repair & cohort-wide & missing-transition & wrong-target & 84.4\% & 56.5\% & 0.628 & 39.9\% & yes \\
 complete-repair & cohort-wide & missing-transition & random & 84.4\% & 50.6\% & 0.747 & 33.8\% & yes \\
-complete-repair & cohort-wide & missing-transition & search-bpr & 84.4\% & 93.2\% & -0.284 & 10.6\% & yes \\
-complete-repair & cohort-wide & missing-transition & oracle-composite & 84.4\% & 83.9\% & 0.014 & 17.9\% & no \\
-complete-repair & cohort-wide & missing-transition & llm-template & 84.4\% & 83.9\% & 0.014 & 17.9\% & no \\
 complete-repair & cohort-wide & wrong-target & random & 56.5\% & 50.6\% & 0.118 & 6.1\% & yes \\
-complete-repair & cohort-wide & wrong-target & search-bpr & 56.5\% & 93.2\% & -0.913 & 36.7\% & yes \\
-complete-repair & cohort-wide & wrong-target & oracle-composite & 56.5\% & 83.9\% & -0.615 & 27.4\% & yes \\
-complete-repair & cohort-wide & wrong-target & llm-template & 56.5\% & 83.9\% & -0.615 & 27.4\% & yes \\
-complete-repair & cohort-wide & random & search-bpr & 50.6\% & 93.2\% & -1.031 & 42.6\% & yes \\
-complete-repair & cohort-wide & random & oracle-composite & 50.6\% & 83.9\% & -0.733 & 33.5\% & yes \\
-complete-repair & cohort-wide & random & llm-template & 50.6\% & 83.9\% & -0.733 & 33.5\% & yes \\
-complete-repair & cohort-wide & search-bpr & oracle-composite & 93.2\% & 83.9\% & 0.298 & 9.5\% & yes \\
-complete-repair & cohort-wide & search-bpr & llm-template & 93.2\% & 83.9\% & 0.298 & 9.5\% & yes \\
-complete-repair & cohort-wide & oracle-composite & llm-template & 83.9\% & 83.9\% & 0.000 & 0.0\% & no \\
 effective-repair & detectable-only & missing-transition & wrong-target & 78.0\% & 22.0\% & 1.188 & 81.0\% & yes \\
 effective-repair & detectable-only & missing-transition & random & 78.0\% & 0.6\% & 2.009 & 78.2\% & yes \\
-effective-repair & detectable-only & missing-transition & search-bpr & 78.0\% & 98.0\% & -0.692 & 20.0\% & yes \\
-effective-repair & detectable-only & missing-transition & oracle-composite & 78.0\% & 82.6\% & -0.117 & 31.7\% & no \\
-effective-repair & detectable-only & missing-transition & llm-template & 78.0\% & 82.6\% & -0.117 & 31.7\% & no \\
 effective-repair & detectable-only & wrong-target & random & 22.0\% & 0.6\% & 0.821 & 22.6\% & yes \\
-effective-repair & detectable-only & wrong-target & search-bpr & 22.0\% & 98.0\% & -1.879 & 76.0\% & yes \\
-effective-repair & detectable-only & wrong-target & oracle-composite & 22.0\% & 82.6\% & -1.305 & 60.6\% & yes \\
-effective-repair & detectable-only & wrong-target & llm-template & 22.0\% & 82.6\% & -1.305 & 60.6\% & yes \\
-effective-repair & detectable-only & random & search-bpr & 0.6\% & 98.0\% & -2.701 & 97.4\% & yes \\
-effective-repair & detectable-only & random & oracle-composite & 0.6\% & 82.6\% & -2.126 & 82.0\% & yes \\
-effective-repair & detectable-only & random & llm-template & 0.6\% & 82.6\% & -2.126 & 82.0\% & yes \\
-effective-repair & detectable-only & search-bpr & oracle-composite & 98.0\% & 82.6\% & 0.575 & 15.4\% & yes \\
-effective-repair & detectable-only & search-bpr & llm-template & 98.0\% & 82.6\% & 0.575 & 15.4\% & yes \\
-effective-repair & detectable-only & oracle-composite & llm-template & 82.6\% & 82.6\% & 0.000 & 0.0\% & no \\
 effective-repair & cohort-wide & missing-transition & wrong-target & 38.6\% & 10.9\% & 0.668 & 40.1\% & yes \\
 effective-repair & cohort-wide & missing-transition & random & 38.6\% & 0.3\% & 1.231 & 38.7\% & yes \\
-effective-repair & cohort-wide & missing-transition & search-bpr & 38.6\% & 48.5\% & -0.200 & 9.9\% & yes \\
-effective-repair & cohort-wide & missing-transition & oracle-composite & 38.6\% & 40.9\% & -0.047 & 15.7\% & no \\
-effective-repair & cohort-wide & missing-transition & llm-template & 38.6\% & 40.9\% & -0.047 & 15.7\% & no \\
 effective-repair & cohort-wide & wrong-target & random & 10.9\% & 0.3\% & 0.563 & 11.2\% & yes \\
-effective-repair & cohort-wide & wrong-target & search-bpr & 10.9\% & 48.5\% & -0.868 & 37.6\% & yes \\
-effective-repair & cohort-wide & wrong-target & oracle-composite & 10.9\% & 40.9\% & -0.715 & 30.0\% & yes \\
-effective-repair & cohort-wide & wrong-target & llm-template & 10.9\% & 40.9\% & -0.715 & 30.0\% & yes \\
-effective-repair & cohort-wide & random & search-bpr & 0.3\% & 48.5\% & -1.431 & 48.2\% & yes \\
-effective-repair & cohort-wide & random & oracle-composite & 0.3\% & 40.9\% & -1.278 & 40.6\% & yes \\
-effective-repair & cohort-wide & random & llm-template & 0.3\% & 40.9\% & -1.278 & 40.6\% & yes \\
-effective-repair & cohort-wide & search-bpr & oracle-composite & 48.5\% & 40.9\% & 0.153 & 7.6\% & yes \\
-effective-repair & cohort-wide & search-bpr & llm-template & 48.5\% & 40.9\% & 0.153 & 7.6\% & yes \\
-effective-repair & cohort-wide & oracle-composite & llm-template & 40.9\% & 40.9\% & 0.000 & 0.0\% & no \\
 \bottomrule
 \end{tabular}
 \end{table}

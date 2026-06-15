@@ -25,6 +25,12 @@ C1_TOOL_IDS: tuple[str, ...] = (
     "baseline_llm_template",
 )
 
+SHIPPED_C1_TOOL_IDS: tuple[str, ...] = (
+    "baseline_missing_transition",
+    "baseline_wrong_target",
+    "baseline_random",
+)
+
 C1_DETERMINISTIC_TOOL_IDS: tuple[str, ...] = (
     "baseline_missing_transition",
     "baseline_wrong_target",
@@ -199,7 +205,7 @@ def _rate(values: Sequence[bool]) -> float:
 def compute_benchmark_utility(
     per_case_rows: Sequence[dict[str, Any]],
     *,
-    tool_ids: Sequence[str] = C1_TOOL_IDS,
+    tool_ids: Sequence[str] = SHIPPED_C1_TOOL_IDS,
     alpha: float = 0.05,
 ) -> dict[str, Any]:
     """Compute benchmark utility metrics from paired per-case repair outcomes."""
@@ -488,10 +494,11 @@ def _write_benchmark_utility_tex(path: Path, summary: dict[str, Any]) -> None:
         "1{,}000-case \\texttt{plain\\_fsm}/shallow-oracle cohort. "
         "Pairwise Cohen's $h$ and McNemar tests use paired per-case outcomes; "
         f"detectable-only complete-repair BDI~$={bdi:.3f}$, utility index~$={utility:.3f}$, "
-        f"operator rank stability (mean Kendall $\\tau$)~=~{rank_tau:.3f}, "
+        f"operator rank stability (mean Kendall $\\tau$ on nine detectable operators)~=~{rank_tau:.3f}, "
         f"random-pair distinguishability~=~{p_dist * 100:.0f}\\%. "
-        "Takeaway: the benchmark separates the three shipped engines on detectable-only "
-        "complete and effective repair; cohort-wide partitions inherit oracle-saturation confounds.}\n"
+        "Takeaway: the benchmark separates the shipped trio on detectable-only complete and effective repair, "
+        "but operator-level rank agreement is low because engines are operator-aligned rather than sharing one "
+        "difficulty ordering; cohort-wide partitions inherit oracle-saturation confounds.}\n"
         "\\label{tab:benchmark-utility}\n"
         + "\n".join(body_lines)
         + "\n\\end{table}\n"
@@ -505,7 +512,7 @@ def write_benchmark_utility_exports(
     out_dir: Path,
     *,
     paper_export_dir: Path | None = None,
-    tool_ids: Sequence[str] = C1_TOOL_IDS,
+    tool_ids: Sequence[str] = SHIPPED_C1_TOOL_IDS,
 ) -> BenchmarkUtilityExportResult:
     """Write benchmark utility CSV/JSON/LaTeX/PNG exports from C1 per-case results."""
     per_case_rows = _load_per_case_rows(per_case_path)
