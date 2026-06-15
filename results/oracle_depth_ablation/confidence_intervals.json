@@ -1,92 +1,161 @@
 {
-  "campaign": "C3-oracle-depth-ablation",
+  "campaign": "C3-oracle-depth-ablation-enhanced",
   "method": "percentile_case_resample",
   "unit": "case",
   "ci": 0.95,
   "resamples": 10000,
   "seed": 44,
-  "generated_at_utc": "2026-06-09T07:41:31.987384+00:00",
+  "generated_at_utc": "2026-06-09T18:32:04.986438+00:00",
   "metrics": [
     {
       "metric": "detection_rate",
-      "group": "shallow",
-      "subgroup": "",
-      "n_cases": 200,
-      "mean": 0.485,
-      "ci95_low": 0.415,
-      "ci95_high": 0.555
-    },
-    {
-      "metric": "mean_faulty_bpr",
-      "group": "shallow",
-      "subgroup": "",
-      "n_cases": 200,
-      "mean": 0.918245,
-      "ci95_low": 0.882656,
-      "ci95_high": 0.950025
+      "group": "C3-extended",
+      "partition": "cohort_wide",
+      "subgroup": "shallow",
+      "n_cases": 500,
+      "mean": 0.476,
+      "ci95_low": 0.432,
+      "ci95_high": 0.52
     },
     {
       "metric": "mean_bpr_delta",
-      "group": "shallow",
-      "subgroup": "",
-      "n_cases": 200,
-      "mean": 0.081755,
-      "ci95_low": 0.049975,
-      "ci95_high": 0.117344
+      "group": "C3-extended",
+      "partition": "cohort_wide",
+      "subgroup": "shallow",
+      "n_cases": 500,
+      "mean": 0.085419,
+      "ci95_low": 0.066553,
+      "ci95_high": 0.106013
+    },
+    {
+      "metric": "complete_repair_rate",
+      "group": "C3-extended",
+      "partition": "cohort_wide",
+      "subgroup": "shallow",
+      "n_cases": 500,
+      "mean": 0.88,
+      "ci95_low": 0.85,
+      "ci95_high": 0.906
+    },
+    {
+      "metric": "effective_repair_rate",
+      "group": "C3-extended",
+      "partition": "cohort_wide",
+      "subgroup": "shallow",
+      "n_cases": 500,
+      "mean": 0.416,
+      "ci95_low": 0.374,
+      "ci95_high": 0.46
+    },
+    {
+      "metric": "mean_repair_delta_bpr",
+      "group": "C3-extended",
+      "partition": "cohort_wide",
+      "subgroup": "shallow",
+      "n_cases": 500,
+      "mean": 0.056979,
+      "ci95_low": 0.044656,
+      "ci95_high": 0.070779
     },
     {
       "metric": "detection_rate",
-      "group": "medium",
-      "subgroup": "",
-      "n_cases": 200,
-      "mean": 0.485,
-      "ci95_low": 0.415,
-      "ci95_high": 0.555
-    },
-    {
-      "metric": "mean_faulty_bpr",
-      "group": "medium",
-      "subgroup": "",
-      "n_cases": 200,
-      "mean": 0.918245,
-      "ci95_low": 0.882656,
-      "ci95_high": 0.950025
+      "group": "C3-extended",
+      "partition": "cohort_wide",
+      "subgroup": "medium",
+      "n_cases": 500,
+      "mean": 0.476,
+      "ci95_low": 0.432,
+      "ci95_high": 0.52
     },
     {
       "metric": "mean_bpr_delta",
-      "group": "medium",
-      "subgroup": "",
-      "n_cases": 200,
-      "mean": 0.081755,
-      "ci95_low": 0.049975,
-      "ci95_high": 0.117344
+      "group": "C3-extended",
+      "partition": "cohort_wide",
+      "subgroup": "medium",
+      "n_cases": 500,
+      "mean": 0.11822,
+      "ci95_low": 0.097992,
+      "ci95_high": 0.140162
+    },
+    {
+      "metric": "complete_repair_rate",
+      "group": "C3-extended",
+      "partition": "cohort_wide",
+      "subgroup": "medium",
+      "n_cases": 500,
+      "mean": 0.88,
+      "ci95_low": 0.85,
+      "ci95_high": 0.906
+    },
+    {
+      "metric": "effective_repair_rate",
+      "group": "C3-extended",
+      "partition": "cohort_wide",
+      "subgroup": "medium",
+      "n_cases": 500,
+      "mean": 0.416,
+      "ci95_low": 0.374,
+      "ci95_high": 0.46
+    },
+    {
+      "metric": "mean_repair_delta_bpr",
+      "group": "C3-extended",
+      "partition": "cohort_wide",
+      "subgroup": "medium",
+      "n_cases": 500,
+      "mean": 0.08385,
+      "ci95_low": 0.069483,
+      "ci95_high": 0.099158
     },
     {
       "metric": "detection_rate",
-      "group": "deep",
-      "subgroup": "",
-      "n_cases": 200,
-      "mean": 0.485,
-      "ci95_low": 0.415,
-      "ci95_high": 0.555
-    },
-    {
-      "metric": "mean_faulty_bpr",
-      "group": "deep",
-      "subgroup": "",
-      "n_cases": 200,
-      "mean": 0.918245,
-      "ci95_low": 0.882656,
-      "ci95_high": 0.950025
+      "group": "C3-extended",
+      "partition": "cohort_wide",
+      "subgroup": "deep",
+      "n_cases": 500,
+      "mean": 0.476,
+      "ci95_low": 0.432,
+      "ci95_high": 0.52
     },
     {
       "metric": "mean_bpr_delta",
-      "group": "deep",
-      "subgroup": "",
-      "n_cases": 200,
-      "mean": 0.081755,
-      "ci95_low": 0.049975,
-      "ci95_high": 0.117344
+      "group": "C3-extended",
+      "partition": "cohort_wide",
+      "subgroup": "deep",
+      "n_cases": 500,
+      "mean": 0.156615,
+      "ci95_low": 0.133563,
+      "ci95_high": 0.181135
+    },
+    {
+      "metric": "complete_repair_rate",
+      "group": "C3-extended",
+      "partition": "cohort_wide",
+      "subgroup": "deep",
+      "n_cases": 500,
+      "mean": 0.88,
+      "ci95_low": 0.85,
+      "ci95_high": 0.906
+    },
+    {
+      "metric": "effective_repair_rate",
+      "group": "C3-extended",
+      "partition": "cohort_wide",
+      "subgroup": "deep",
+      "n_cases": 500,
+      "mean": 0.416,
+      "ci95_low": 0.374,
+      "ci95_high": 0.46
+    },
+    {
+      "metric": "mean_repair_delta_bpr",
+      "group": "C3-extended",
+      "partition": "cohort_wide",
+      "subgroup": "deep",
+      "n_cases": 500,
+      "mean": 0.118017,
+      "ci95_low": 0.099936,
+      "ci95_high": 0.137155
     }
   ]
 }

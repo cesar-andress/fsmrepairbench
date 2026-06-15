@@ -1,0 +1,35 @@
+{
+  "bug_id": "synthetic_8792_3_2__hom__dead_state_intro__wrong_target__76089",
+  "reference_fsm_id": "synthetic_8792_3_2",
+  "faulty_fsm_id": "synthetic_8792_3_2__faulty__hom__dead_state_intro__wrong_target__76089",
+  "mutation_operator": "dead_state_intro,wrong_target",
+  "changed_transition_id": "t8792_3",
+  "description": "Higher-order mutant applying 2 operators: dead_state_intro, wrong_target",
+  "seed": 76089,
+  "mutation_complexity": null,
+  "mutation_scope": null,
+  "mutation_mode": null,
+  "mutation_order": 2,
+  "component_faults": [
+    {
+      "operator": "dead_state_intro",
+      "seed": 76089,
+      "bug_id": "synthetic_8792_3_2__dead_state_intro__76089",
+      "changed_transition_id": null,
+      "description": "Added unreachable state 'dead_76089'"
+    },
+    {
+      "operator": "wrong_target",
+      "seed": 77089,
+      "bug_id": "synthetic_8792_3_2__faulty__dead_state_intro__76089__wrong_target__77089",
+      "changed_transition_id": "t8792_3",
+      "description": "Changed target of transition 't8792_3' from 's8792_1' to 'dead_76089'"
+    }
+  ],
+  "is_higher_order": true,
+  "coupled_to_simple_faults": [
+    "synthetic_8792_3_2__dead_state_intro__76089",
+    "synthetic_8792_3_2__faulty__dead_state_intro__76089__wrong_target__77089"
+  ],
+  "is_negative_control": false
+}

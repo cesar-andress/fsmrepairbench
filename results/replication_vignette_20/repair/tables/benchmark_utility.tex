@@ -1,0 +1,22 @@
+\begin{table}[t]
+\caption{Benchmark utility analysis for C1 engine-specific baselines on the 1{,}000-case \texttt{plain\_fsm}/shallow-oracle cohort. Pairwise Cohen's $h$ and McNemar tests use paired per-case outcomes; detectable-only complete-repair BDI~$=0.600$, utility index~$=0.628$, operator rank stability (mean Kendall $\tau$)~=~0.370, random-pair distinguishability~=~0\%. Takeaway: the benchmark separates the three shipped engines on detectable-only complete and effective repair; cohort-wide partitions inherit oracle-saturation confounds.}
+\label{tab:benchmark-utility}
+\begin{tabular}{@{}llllrrrrl@{}}
+\toprule
+Metric & Partition & Tool A & Tool B & Rate A & Rate B & Cohen's $h$ & Disagree & Distinct? \\
+\midrule
+complete-repair & detectable-only & missing-transition & wrong-target & 50.0\% & 10.0\% & 0.927 & 60.0\% & no \\
+complete-repair & detectable-only & missing-transition & random & 50.0\% & 0.0\% & 1.571 & 50.0\% & no \\
+complete-repair & detectable-only & wrong-target & random & 10.0\% & 0.0\% & 0.644 & 10.0\% & no \\
+complete-repair & cohort-wide & missing-transition & wrong-target & 75.0\% & 55.0\% & 0.423 & 30.0\% & no \\
+complete-repair & cohort-wide & missing-transition & random & 75.0\% & 50.0\% & 0.524 & 25.0\% & no \\
+complete-repair & cohort-wide & wrong-target & random & 55.0\% & 50.0\% & 0.100 & 5.0\% & no \\
+effective-repair & detectable-only & missing-transition & wrong-target & 50.0\% & 20.0\% & 0.644 & 70.0\% & no \\
+effective-repair & detectable-only & missing-transition & random & 50.0\% & 0.0\% & 1.571 & 50.0\% & no \\
+effective-repair & detectable-only & wrong-target & random & 20.0\% & 0.0\% & 0.927 & 20.0\% & no \\
+effective-repair & cohort-wide & missing-transition & wrong-target & 25.0\% & 10.0\% & 0.404 & 35.0\% & no \\
+effective-repair & cohort-wide & missing-transition & random & 25.0\% & 0.0\% & 1.047 & 25.0\% & no \\
+effective-repair & cohort-wide & wrong-target & random & 10.0\% & 0.0\% & 0.644 & 10.0\% & no \\
+\bottomrule
+\end{tabular}
+\end{table}

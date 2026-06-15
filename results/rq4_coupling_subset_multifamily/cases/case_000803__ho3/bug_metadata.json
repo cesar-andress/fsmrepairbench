@@ -1,0 +1,43 @@
+{
+  "bug_id": "synthetic_15313_3_2__hom__timeout_corruption__wrong_target__guard_flip__41821",
+  "reference_fsm_id": "synthetic_15313_3_2",
+  "faulty_fsm_id": "synthetic_15313_3_2__faulty__hom__timeout_corruption__wrong_target__guard_flip__41821",
+  "mutation_operator": "timeout_corruption,wrong_target,guard_flip",
+  "changed_transition_id": "t15313_1",
+  "description": "Higher-order mutant applying 3 operators: timeout_corruption, wrong_target, guard_flip",
+  "seed": 41821,
+  "mutation_complexity": null,
+  "mutation_scope": null,
+  "mutation_mode": null,
+  "mutation_order": 3,
+  "component_faults": [
+    {
+      "operator": "timeout_corruption",
+      "seed": 41821,
+      "bug_id": "synthetic_15313_3_2__timeout_corruption__41821",
+      "changed_transition_id": "t15313_3",
+      "description": "Corrupted timeout on transition 't15313_3' to 6.0"
+    },
+    {
+      "operator": "wrong_target",
+      "seed": 42821,
+      "bug_id": "synthetic_15313_3_2__faulty__timeout_corruption__41821__wrong_target__42821",
+      "changed_transition_id": "t15313_3",
+      "description": "Changed target of transition 't15313_3' from 's15313_2' to 's15313_0'"
+    },
+    {
+      "operator": "guard_flip",
+      "seed": 43821,
+      "bug_id": "synthetic_15313_3_2__faulty__timeout_corruption__41821__faulty__wrong_target__42821__guard_flip__43821",
+      "changed_transition_id": "t15313_1",
+      "description": "Changed guard of transition 't15313_1' from 'x_15313_0 > 0' to 'not_x_15313_0 > 0'"
+    }
+  ],
+  "is_higher_order": true,
+  "coupled_to_simple_faults": [
+    "synthetic_15313_3_2__timeout_corruption__41821",
+    "synthetic_15313_3_2__faulty__timeout_corruption__41821__wrong_target__42821",
+    "synthetic_15313_3_2__faulty__timeout_corruption__41821__faulty__wrong_target__42821__guard_flip__43821"
+  ],
+  "is_negative_control": false
+}

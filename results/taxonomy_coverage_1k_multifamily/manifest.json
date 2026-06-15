@@ -1,0 +1,98 @@
+{
+  "campaign_label": "RQ1-taxonomy-coverage",
+  "case_count": 1000,
+  "cohort_file": "analysis_cohort_1k.txt",
+  "cohort_path": "/home/cesar/papers/fsmrepairbench/fsmrepairbench/data/fsmrepairbench_1k_multifamily/analysis_cohort_1k.txt",
+  "cohort_sha256": "2b278fba190830b1e710a1572fe2a59349422888934d94bad9c4b8c614847720",
+  "dataset_dir": "data/fsmrepairbench_1k_multifamily",
+  "experiment": "taxonomy-coverage-report",
+  "feature_source": "feature_matrix.csv",
+  "generated_at": "2026-06-09T17:07:14.760629+00:00",
+  "git_commit_hash": "4bd61aebcf248450fa6ae0311b581a9d4b2ee907",
+  "output_dir": "/home/cesar/papers/fsmrepairbench/fsmrepairbench/results/taxonomy_coverage_1k_multifamily",
+  "output_files": [
+    "coverage_by_complexity_tier.csv",
+    "coverage_by_dimension.csv",
+    "coverage_by_fsm_family.csv",
+    "coverage_by_mutation_operator.csv",
+    "coverage_by_unique_combinations.csv",
+    "dimension_summary.csv",
+    "feature_space_report.json",
+    "figures/complexity_tier_case_counts.png",
+    "figures/complexity_tier_coverage_balanced.png",
+    "figures/dimension_coverage_ratio.png",
+    "figures/feature_space_coverage_ratios.png",
+    "figures/fsm_family_case_counts.png",
+    "figures/mutation_operator_case_counts.png",
+    "figures/plan_machine_type_gaps.png",
+    "figures/plan_operator_combination_gaps.png",
+    "figures/unique_combinations_summary.png",
+    "figures/unrepresented_taxonomy_values.png",
+    "manifest.json",
+    "plan_cell_gaps.csv",
+    "summary.csv",
+    "tables/table_complexity_tier_coverage.tex",
+    "tables/table_dimension_coverage.tex",
+    "tables/table_fsm_family_coverage.tex",
+    "tables/table_mutation_operator_coverage.tex",
+    "tables/table_top_combinations.tex",
+    "tables/table_unique_combinations.tex",
+    "taxonomy_coverage_report.md",
+    "unique_combinations_summary.csv",
+    "unrepresented_dimension_values.csv"
+  ],
+  "plan_path": "plans/fsmrepairbench_v0_1k_plan.yaml",
+  "regeneration_commands": [
+    "python ../paper1/scripts/build_v0_1k_multifamily_dataset.py",
+    "python ../paper1/scripts/pin_v0_1k_multifamily_cohorts.py",
+    "python ../paper1/scripts/generate_v0_1k_multifamily_rq1_outputs.py"
+  ],
+  "release_label": "v0.3.0-1k-plan-multifamily",
+  "summary": [
+    {
+      "metric": "case_count",
+      "value": 1000
+    },
+    {
+      "metric": "mean_dimension_coverage_ratio",
+      "value": 0.612162
+    },
+    {
+      "metric": "mutation_operators_present",
+      "value": 15
+    },
+    {
+      "metric": "mutation_operators_total",
+      "value": 19
+    },
+    {
+      "metric": "mutation_operator_coverage_ratio",
+      "value": 0.789474
+    },
+    {
+      "metric": "complexity_tiers_present",
+      "value": 1
+    },
+    {
+      "metric": "complexity_tier_coverage_ratio",
+      "value": 0.25
+    },
+    {
+      "metric": "fsm_families_present",
+      "value": 5
+    },
+    {
+      "metric": "unique_taxonomy_combinations",
+      "value": 39
+    },
+    {
+      "metric": "triple_feature_coverage_ratio",
+      "value": 0.033333
+    },
+    {
+      "metric": "pairwise_mean_coverage_ratio",
+      "value": 0.239583
+    }
+  ],
+  "zenodo_doi": "10.5281/zenodo.20602528"
+}

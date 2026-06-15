@@ -1,0 +1,29 @@
+{
+  "release_label": "v0.2.0-analysis",
+  "zenodo_doi": "10.5281/zenodo.20602528",
+  "dataset_dir": "/home/cesar/papers/fsmrepairbench/fsmrepairbench/data/fsmrepairbench_1k",
+  "plan_path": "/home/cesar/papers/fsmrepairbench/fsmrepairbench/plans/fsmrepairbench_v0_1k_plan.yaml",
+  "cohort_path": "/home/cesar/papers/fsmrepairbench/fsmrepairbench/data/fsmrepairbench_1k/analysis_cohort_1k.txt",
+  "cohort_sha256": "c03c4d5981259510bccfced987c5175f28058d7bdccc164e7ce2ba22410f04f8",
+  "case_count": 1000,
+  "figures": {
+    "heatmap_dimension_plan_vs_realised": "figures/heatmap_dimension_plan_vs_realised.png",
+    "heatmap_family_operator_plan_vs_realised": "figures/heatmap_family_operator_plan_vs_realised.png",
+    "heatmap_operator_complexity_tier": "figures/heatmap_operator_complexity_tier.png",
+    "heatmap_family_complexity_tier": "figures/heatmap_family_complexity_tier.png",
+    "heatmap_dimension_coverage_summary": "figures/heatmap_dimension_coverage_summary.png"
+  },
+  "csv_exports": {
+    "dimension_value_coverage": "dimension_value_coverage.csv",
+    "family_operator_plan_vs_realised": "family_operator_plan_vs_realised.csv",
+    "operator_complexity_tier_matrix": "operator_complexity_tier_matrix.csv",
+    "family_complexity_tier_matrix": "family_complexity_tier_matrix.csv",
+    "plan_cell_gaps": "plan_cell_gaps.csv",
+    "coverage_visualization_summary": "coverage_visualization_summary.csv"
+  },
+  "captions": "figure_captions.md",
+  "regeneration_commands": [
+    "python ../paper1/scripts/generate_coverage_visualization_outputs.py"
+  ],
+  "limitations_note": "Visualises plan-vs-realised gaps on the frozen v0.2.0-analysis cohort (plain_fsm only); heatmaps are descriptive, not inferential."
+}

@@ -104,6 +104,22 @@ def get_git_commit() -> str | None:
     return commit or None
 
 
+def get_git_tag() -> str | None:
+    """Return the nearest git tag (``git describe --tags --always``) when available."""
+    try:
+        completed = subprocess.run(
+            ["git", "describe", "--tags", "--always"],
+            check=True,
+            capture_output=True,
+            text=True,
+            timeout=5,
+        )
+    except (OSError, subprocess.CalledProcessError):
+        return None
+    tag = completed.stdout.strip()
+    return tag or None
+
+
 def collect_environment_info() -> dict[str, Any]:
     """Collect runtime environment metadata."""
     return {
@@ -366,3 +382,30 @@ def freeze_release(results_dir: Path, release_dir: Path) -> FreezeResult:
         readme_path=readme_path,
         files=tuple(all_records),
     )
+
+
+class CohortPinError(ValueError):
+    """Raised when a cohort manifest fails SHA-256 pin validation."""
+
+
+def assert_pinned_cohort_txt(
+    cohort_txt: Path,
+    *,
+    expected_sha256: str | None = None,
+) -> str:
+    """Validate *cohort_txt* against an explicit or sibling JSON pin and return its digest."""
+    if not cohort_txt.is_file():
+        msg = f"Missing cohort manifest: {cohort_txt}"
+        raise CohortPinError(msg)
+
+    digest = sha256_file(cohort_txt)
+    pinned = expected_sha256
+    if pinned is None:
+        json_path = cohort_txt.with_suffix(".json")
+        if json_path.is_file():
+            payload = json.loads(json_path.read_text(encoding="utf-8"))
+            pinned = payload.get("sha256")
+    if pinned and digest != pinned:
+        msg = f"{cohort_txt}: sha256 mismatch (got {digest}, expected {pinned})"
+        raise CohortPinError(msg)
+    return digest

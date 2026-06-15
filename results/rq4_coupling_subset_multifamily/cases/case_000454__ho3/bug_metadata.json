@@ -1,0 +1,43 @@
+{
+  "bug_id": "synthetic_8673_3_2__hom__dead_state_intro__wrong_target__guard_flip__16565",
+  "reference_fsm_id": "synthetic_8673_3_2",
+  "faulty_fsm_id": "synthetic_8673_3_2__faulty__hom__dead_state_intro__wrong_target__guard_flip__16565",
+  "mutation_operator": "dead_state_intro,wrong_target,guard_flip",
+  "changed_transition_id": "t8673_1",
+  "description": "Higher-order mutant applying 3 operators: dead_state_intro, wrong_target, guard_flip",
+  "seed": 16565,
+  "mutation_complexity": null,
+  "mutation_scope": null,
+  "mutation_mode": null,
+  "mutation_order": 3,
+  "component_faults": [
+    {
+      "operator": "dead_state_intro",
+      "seed": 16565,
+      "bug_id": "synthetic_8673_3_2__dead_state_intro__16565",
+      "changed_transition_id": null,
+      "description": "Added unreachable state 'dead_16565'"
+    },
+    {
+      "operator": "wrong_target",
+      "seed": 17565,
+      "bug_id": "synthetic_8673_3_2__faulty__dead_state_intro__16565__wrong_target__17565",
+      "changed_transition_id": "t8673_2",
+      "description": "Changed target of transition 't8673_2' from 's8673_2' to 'dead_16565'"
+    },
+    {
+      "operator": "guard_flip",
+      "seed": 18565,
+      "bug_id": "synthetic_8673_3_2__faulty__dead_state_intro__16565__faulty__wrong_target__17565__guard_flip__18565",
+      "changed_transition_id": "t8673_1",
+      "description": "Added guard 'unexpected_guard' to transition 't8673_1'"
+    }
+  ],
+  "is_higher_order": true,
+  "coupled_to_simple_faults": [
+    "synthetic_8673_3_2__dead_state_intro__16565",
+    "synthetic_8673_3_2__faulty__dead_state_intro__16565__wrong_target__17565",
+    "synthetic_8673_3_2__faulty__dead_state_intro__16565__faulty__wrong_target__17565__guard_flip__18565"
+  ],
+  "is_negative_control": false
+}

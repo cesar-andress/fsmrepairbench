@@ -305,7 +305,7 @@ Configuration for a reproducible experiment pipeline run.
 | `num_events` | `int` | no | 4 |  |
 | `mutants_per_fsm` | `int` | no | 5 |  |
 | `optimizers` | `tuple[Literal['random_search', 'hill_climbing', 'simulated_annealing', 'genetic_algorithm', 'nsga2'], ...]` | no | ('random_search', 'nsga2') |  |
-| `models` | `tuple[str, ...]` | no | ('reference', 'missing-transition', 'wrong-target', 'random') |  |
+| `models` | `tuple[str, ...]` | no | ('reference', 'missing-transition', 'wrong-target', 'random', 'search-bpr', 'oracle-composite', 'llm-template') |  |
 | `optimizer_iterations` | `int` | no | 40 |  |
 | `optimizer_population_size` | `int` | no | 12 |  |
 | `optimizer_generations` | `int` | no | 8 |  |
@@ -874,7 +874,7 @@ Configuration for a reproducible smoke-test run.
 | `second_order_count` | `int` | no | 1 |  |
 | `higher_order_count` | `int` | no | 1 |  |
 | `sequence_depth` | `int` | no | 3 |  |
-| `oracle_depth` | `Literal['shallow', 'medium', 'deep', 'exhaustive_like']` | no | 'deep' |  |
+| `oracle_depth` | `Literal['shallow', 'medium', 'deep', 'exhaustive_like', 'extended_50', 'extended_60']` | no | 'deep' |  |
 | `prepare_input` | `bool` | no | False |  |
 | `use_cli` | `bool` | no | True |  |
 | `input_source` | `Literal['template', 'examples']` | no | 'template' |  |

@@ -1,0 +1,35 @@
+{
+  "bug_id": "synthetic_3103_3_2__hom__wrong_event__wrong_target__2870",
+  "reference_fsm_id": "synthetic_3103_3_2",
+  "faulty_fsm_id": "synthetic_3103_3_2__faulty__hom__wrong_event__wrong_target__2870",
+  "mutation_operator": "wrong_event,wrong_target",
+  "changed_transition_id": "t3103_1",
+  "description": "Higher-order mutant applying 2 operators: wrong_event, wrong_target",
+  "seed": 2870,
+  "mutation_complexity": null,
+  "mutation_scope": null,
+  "mutation_mode": null,
+  "mutation_order": 2,
+  "component_faults": [
+    {
+      "operator": "wrong_event",
+      "seed": 2870,
+      "bug_id": "synthetic_3103_3_2__wrong_event__2870",
+      "changed_transition_id": "t3103_1",
+      "description": "Changed event of transition 't3103_1' from 'e3103_0' to 'e3103_1'"
+    },
+    {
+      "operator": "wrong_target",
+      "seed": 3870,
+      "bug_id": "synthetic_3103_3_2__faulty__wrong_event__2870__wrong_target__3870",
+      "changed_transition_id": "t3103_1",
+      "description": "Changed target of transition 't3103_1' from 's3103_1' to 's3103_2'"
+    }
+  ],
+  "is_higher_order": true,
+  "coupled_to_simple_faults": [
+    "synthetic_3103_3_2__wrong_event__2870",
+    "synthetic_3103_3_2__faulty__wrong_event__2870__wrong_target__3870"
+  ],
+  "is_negative_control": false
+}

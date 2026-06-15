@@ -1,0 +1,43 @@
+{
+  "bug_id": "synthetic_16247_3_2__hom__delay_corruption__missing_transition__wrong_event__62380",
+  "reference_fsm_id": "synthetic_16247_3_2",
+  "faulty_fsm_id": "synthetic_16247_3_2__faulty__hom__delay_corruption__missing_transition__wrong_event__62380",
+  "mutation_operator": "delay_corruption,missing_transition,wrong_event",
+  "changed_transition_id": "t16247_6",
+  "description": "Higher-order mutant applying 3 operators: delay_corruption, missing_transition, wrong_event",
+  "seed": 62380,
+  "mutation_complexity": null,
+  "mutation_scope": null,
+  "mutation_mode": null,
+  "mutation_order": 3,
+  "component_faults": [
+    {
+      "operator": "delay_corruption",
+      "seed": 62380,
+      "bug_id": "synthetic_16247_3_2__delay_corruption__62380",
+      "changed_transition_id": "t16247_6",
+      "description": "Corrupted delay on transition 't16247_6' to 1.5"
+    },
+    {
+      "operator": "missing_transition",
+      "seed": 63380,
+      "bug_id": "synthetic_16247_3_2__faulty__delay_corruption__62380__missing_transition__63380",
+      "changed_transition_id": "t16247_3",
+      "description": "Removed transition 't16247_3'"
+    },
+    {
+      "operator": "wrong_event",
+      "seed": 64380,
+      "bug_id": "synthetic_16247_3_2__faulty__delay_corruption__62380__faulty__missing_transition__63380__wrong_event__64380",
+      "changed_transition_id": "t16247_6",
+      "description": "Changed event of transition 't16247_6' from 'e16247_0' to 'e16247_1'"
+    }
+  ],
+  "is_higher_order": true,
+  "coupled_to_simple_faults": [
+    "synthetic_16247_3_2__delay_corruption__62380",
+    "synthetic_16247_3_2__faulty__delay_corruption__62380__missing_transition__63380",
+    "synthetic_16247_3_2__faulty__delay_corruption__62380__faulty__missing_transition__63380__wrong_event__64380"
+  ],
+  "is_negative_control": false
+}

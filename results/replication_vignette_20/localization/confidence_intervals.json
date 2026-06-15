@@ -1,0 +1,111 @@
+{
+  "campaign": "RQ3-localization",
+  "method": "percentile_case_resample",
+  "unit": "case",
+  "ci": 0.95,
+  "resamples": 10000,
+  "seed": 44,
+  "generated_at_utc": "2026-06-09T16:50:15.571540+00:00",
+  "metrics": [
+    {
+      "metric": "top_1_hit_rate",
+      "group": "RQ3",
+      "partition": "localized_cases",
+      "subgroup": "",
+      "n_cases": 10,
+      "mean": 0.2,
+      "ci95_low": 0.0,
+      "ci95_high": 0.5
+    },
+    {
+      "metric": "top_3_hit_rate",
+      "group": "RQ3",
+      "partition": "localized_cases",
+      "subgroup": "",
+      "n_cases": 10,
+      "mean": 0.2,
+      "ci95_low": 0.0,
+      "ci95_high": 0.5
+    },
+    {
+      "metric": "top_5_hit_rate",
+      "group": "RQ3",
+      "partition": "localized_cases",
+      "subgroup": "",
+      "n_cases": 10,
+      "mean": 0.2,
+      "ci95_low": 0.0,
+      "ci95_high": 0.5
+    },
+    {
+      "metric": "mrr",
+      "group": "RQ3",
+      "partition": "localized_cases",
+      "subgroup": "",
+      "n_cases": 10,
+      "mean": 0.233394,
+      "ci95_low": 0.031102,
+      "ci95_high": 0.513043
+    },
+    {
+      "metric": "top_1_hit_rate",
+      "group": "RQ3",
+      "partition": "detectable_only",
+      "subgroup": "",
+      "n_cases": 10,
+      "mean": 0.2,
+      "ci95_low": 0.0,
+      "ci95_high": 0.5
+    },
+    {
+      "metric": "top_3_hit_rate",
+      "group": "RQ3",
+      "partition": "detectable_only",
+      "subgroup": "",
+      "n_cases": 10,
+      "mean": 0.2,
+      "ci95_low": 0.0,
+      "ci95_high": 0.5
+    },
+    {
+      "metric": "top_5_hit_rate",
+      "group": "RQ3",
+      "partition": "detectable_only",
+      "subgroup": "",
+      "n_cases": 10,
+      "mean": 0.2,
+      "ci95_low": 0.0,
+      "ci95_high": 0.5
+    },
+    {
+      "metric": "mrr",
+      "group": "RQ3",
+      "partition": "detectable_only",
+      "subgroup": "",
+      "n_cases": 10,
+      "mean": 0.233394,
+      "ci95_low": 0.031102,
+      "ci95_high": 0.513043
+    },
+    {
+      "metric": "detection_rate",
+      "group": "RQ3",
+      "partition": "cohort_wide",
+      "subgroup": "",
+      "n_cases": 20,
+      "mean": 0.5,
+      "ci95_low": 0.3,
+      "ci95_high": 0.7
+    },
+    {
+      "metric": "mean_bpr_delta",
+      "group": "RQ3",
+      "partition": "cohort_wide",
+      "subgroup": "",
+      "n_cases": 20,
+      "mean": 0.091835,
+      "ci95_low": 0.011063,
+      "ci95_high": 0.207587
+    }
+  ]
+}

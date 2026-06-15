@@ -1,7 +1,7 @@
 # FSMRepairBench Dataset Analysis Report
 
 **Dataset:** `/home/cesar/papers/fsmrepairbench/fsmrepairbench/results/_smoke_analyze_subset`  
-**Generated:** 2026-06-09 09:00 UTC  
+**Generated:** 2026-06-09 18:55 UTC  
 **Cases analyzed:** 5
 
 ## Abstract
@@ -74,6 +74,6 @@ Pearson correlations relate structural/oracle features to `difficulty_score` and
 Non-parametric percentile bootstrap over cases (10,000 resamples, 95% CI, seed 44).
 Exports: `confidence_intervals.csv` and `confidence_intervals.json`.
 
-- `overall_detection_rate`: 1.000000 [1.000000, 1.000000] (n=5)
-- `mean_faulty_bpr`: 0.787218 [0.390670, 0.995250] (n=5)
-- `mean_bpr_delta`: 0.212782 [0.004750, 0.609330] (n=5)
+- `overall_detection_rate (RQ2)`: 1.000000 [1.000000, 1.000000] (n=5)
+- `mean_faulty_bpr (RQ2)`: 0.787218 [0.390670, 0.995250] (n=5)
+- `mean_bpr_delta (RQ2)`: 0.212782 [0.004750, 0.609330] (n=5)

@@ -1,0 +1,50 @@
+{
+  "id": "synthetic_3579_3_2_oracles",
+  "fsm_id": "synthetic_3579_3_2",
+  "scenarios": [
+    {
+      "id": "cover_transition_t3579_1",
+      "description": "Covers transition 't3579_1' (s3579_0 --e3579_1--> s3579_1).",
+      "steps": [
+        {
+          "event": "e3579_1",
+          "expected_state": "s3579_1",
+          "guard": null,
+          "accepting_states": [],
+          "probability_threshold": null,
+          "refusal_expected": false,
+          "quiescence_expected": false,
+          "discrete_time": null
+        }
+      ]
+    },
+    {
+      "id": "cover_transition_t3579_2",
+      "description": "Covers transition 't3579_2' (s3579_1 --e3579_1--> s3579_2).",
+      "steps": [
+        {
+          "event": "e3579_1",
+          "expected_state": "s3579_1",
+          "guard": null,
+          "accepting_states": [],
+          "probability_threshold": null,
+          "refusal_expected": false,
+          "quiescence_expected": false,
+          "discrete_time": null
+        },
+        {
+          "event": "e3579_1",
+          "expected_state": "s3579_2",
+          "guard": null,
+          "accepting_states": [],
+          "probability_threshold": null,
+          "refusal_expected": false,
+          "quiescence_expected": false,
+          "discrete_time": null
+        }
+      ]
+    }
+  ],
+  "semantics_mode": null,
+  "probability_threshold": null
+}

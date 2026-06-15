@@ -1,0 +1,22 @@
+% Auto-generated from campaign_paired_comparison
+\begin{table}[t]
+\caption{Cross-campaign metrics on the paired RQ4 coupling pin (\texttt{coupling\_campaign\_250.txt}; $n=250$ matched \texttt{source\_case\_id} records). HO coupling raises max-order detectability to 100.0\% while detectable-only complete repair falls from 77.1\% to 32.2\%. RQ3 Ochiai top-1 is reported on the transition-localizable detectable subset ($n=90$).}
+\label{tab:paired-cohort-cross-campaign}
+\scriptsize
+\begin{tabular}{@{}lllrr@{}}
+\toprule
+Lane & Metric & Partition & $n$ & Value \\
+\midrule
+C1 missing-transition & detection\_rate & cohort\_wide & 250 & 47.2\% \\
+C1 missing-transition & detection\_rate & detectable\_only & 118 & 100.0\% \\
+C1 missing-transition & complete\_repair\_rate & cohort\_wide & 250 & 84.8\% \\
+C1 missing-transition & complete\_repair\_rate & detectable\_only & 118 & 67.8\% \\
+RQ4 FO & detection\_rate & cohort\_wide & 250 & 47.2\% \\
+RQ4 FO & complete\_repair\_rate & detectable\_only & 118 & 77.1\% \\
+RQ4 HO (max order) & detection\_rate & cohort\_wide & 250 & 100.0\% \\
+RQ4 HO (max order) & mean\_bpr\_delta\_pre\_repair & cohort\_wide & 250 & 0.388 \\
+RQ4 HO (max order) & complete\_repair\_rate & detectable\_only & 118 & 32.2\% \\
+RQ3 Ochiai & top\_1\_hit\_rate & transition\_localizable\_gt & 90 & 16.7\% \\
+\bottomrule
+\end{tabular}
+\end{table}

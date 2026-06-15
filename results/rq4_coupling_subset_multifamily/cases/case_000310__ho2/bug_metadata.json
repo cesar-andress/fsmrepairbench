@@ -1,0 +1,35 @@
+{
+  "bug_id": "synthetic_5922_3_2__hom__duplicate_transition__missing_transition__93807",
+  "reference_fsm_id": "synthetic_5922_3_2",
+  "faulty_fsm_id": "synthetic_5922_3_2__faulty__hom__duplicate_transition__missing_transition__93807",
+  "mutation_operator": "duplicate_transition,missing_transition",
+  "changed_transition_id": "t5922_8",
+  "description": "Higher-order mutant applying 2 operators: duplicate_transition, missing_transition",
+  "seed": 93807,
+  "mutation_complexity": null,
+  "mutation_scope": null,
+  "mutation_mode": null,
+  "mutation_order": 2,
+  "component_faults": [
+    {
+      "operator": "duplicate_transition",
+      "seed": 93807,
+      "bug_id": "synthetic_5922_3_2__duplicate_transition__93807",
+      "changed_transition_id": "t5922_12",
+      "description": "Duplicated transition 't5922_12' as 't5922_12__dup__93807'"
+    },
+    {
+      "operator": "missing_transition",
+      "seed": 94807,
+      "bug_id": "synthetic_5922_3_2__faulty__duplicate_transition__93807__missing_transition__94807",
+      "changed_transition_id": "t5922_8",
+      "description": "Removed transition 't5922_8'"
+    }
+  ],
+  "is_higher_order": true,
+  "coupled_to_simple_faults": [
+    "synthetic_5922_3_2__duplicate_transition__93807",
+    "synthetic_5922_3_2__faulty__duplicate_transition__93807__missing_transition__94807"
+  ],
+  "is_negative_control": false
+}

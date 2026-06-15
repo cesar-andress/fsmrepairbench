@@ -1,0 +1,43 @@
+{
+  "bug_id": "synthetic_10694_3_2__hom__unreachable_state_intro__wrong_target__guard_flip__52578",
+  "reference_fsm_id": "synthetic_10694_3_2",
+  "faulty_fsm_id": "synthetic_10694_3_2__faulty__hom__unreachable_state_intro__wrong_target__guard_flip__52578",
+  "mutation_operator": "unreachable_state_intro,wrong_target,guard_flip",
+  "changed_transition_id": "t10694_1",
+  "description": "Higher-order mutant applying 3 operators: unreachable_state_intro, wrong_target, guard_flip",
+  "seed": 52578,
+  "mutation_complexity": null,
+  "mutation_scope": null,
+  "mutation_mode": null,
+  "mutation_order": 3,
+  "component_faults": [
+    {
+      "operator": "unreachable_state_intro",
+      "seed": 52578,
+      "bug_id": "synthetic_10694_3_2__unreachable_state_intro__52578",
+      "changed_transition_id": null,
+      "description": "Added unreachable state 'unreachable_52578'"
+    },
+    {
+      "operator": "wrong_target",
+      "seed": 53578,
+      "bug_id": "synthetic_10694_3_2__faulty__unreachable_state_intro__52578__wrong_target__53578",
+      "changed_transition_id": "t10694_1",
+      "description": "Changed target of transition 't10694_1' from 's10694_1' to 's10694_0'"
+    },
+    {
+      "operator": "guard_flip",
+      "seed": 54578,
+      "bug_id": "synthetic_10694_3_2__faulty__unreachable_state_intro__52578__faulty__wrong_target__53578__guard_flip__54578",
+      "changed_transition_id": "t10694_1",
+      "description": "Added guard 'unexpected_guard' to transition 't10694_1'"
+    }
+  ],
+  "is_higher_order": true,
+  "coupled_to_simple_faults": [
+    "synthetic_10694_3_2__unreachable_state_intro__52578",
+    "synthetic_10694_3_2__faulty__unreachable_state_intro__52578__wrong_target__53578",
+    "synthetic_10694_3_2__faulty__unreachable_state_intro__52578__faulty__wrong_target__53578__guard_flip__54578"
+  ],
+  "is_negative_control": false
+}

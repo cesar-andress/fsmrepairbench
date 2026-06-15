@@ -1,0 +1,147 @@
+{
+  "case_id": "case_000344",
+  "tool_id": "baseline_wrong_target",
+  "tool_type": "baseline",
+  "model": "baseline_wrong_target",
+  "mutation_operator": "guard_strengthen",
+  "status": "completed",
+  "failure_class": "no_improvement",
+  "input_format": "fsmrepairbench_case_v1",
+  "output_format": "fsmrepairbench_repair_result_v1",
+  "initial_bpr": 0.75,
+  "final_bpr": 0.75,
+  "delta_bpr": 0.0,
+  "complete_repair": false,
+  "effective_repair": false,
+  "regression": false,
+  "patch_parse_failures": 0,
+  "patch_validation_failures": 0,
+  "patch_application_failures": 0,
+  "iterations_completed": 1,
+  "runtime_seconds": 0.0001,
+  "repair_result": {
+    "bug_id": "synthetic_7207_3_2__faulty__guard_strengthen__344046",
+    "passed": false,
+    "score": 0.75,
+    "details": {
+      "model": "baseline_wrong_target",
+      "backend": "baseline",
+      "baseline_engine": "wrong-target",
+      "baseline_seed": 0,
+      "temperature": 0.0,
+      "max_iterations": 1,
+      "runtime_seconds": 0.0001,
+      "iterations": [
+        {
+          "iteration": 1,
+          "bpr_before": 0.75,
+          "patch_valid": true,
+          "patch_applied": true,
+          "patch": {
+            "patch_id": "baseline_wrong_target_synthetic_7207_3_2__faulty__guard_strengthen__344046",
+            "target_fsm_id": "synthetic_7207_3_2__faulty__guard_strengthen__344046",
+            "operations": []
+          },
+          "validation_errors": [],
+          "bpr_after": 0.75
+        }
+      ],
+      "final_fsm": {
+        "id": "synthetic_7207_3_2__faulty__guard_strengthen__344046",
+        "name": "Synthetic FSM (custom) (faulty: guard_strengthen)",
+        "description": "Synthetic FSM generated with seed=7207, states=3, events=2, branching_factor=2, deterministic=True, allow_dead_states=True",
+        "states": [
+          {
+            "id": "s7207_0",
+            "state_output": null,
+            "refusal": false,
+            "quiescence": false
+          },
+          {
+            "id": "s7207_1",
+            "state_output": null,
+            "refusal": false,
+            "quiescence": false
+          },
+          {
+            "id": "s7207_2",
+            "state_output": null,
+            "refusal": false,
+            "quiescence": false
+          }
+        ],
+        "initial_state": "s7207_0",
+        "events": [
+          "e7207_0",
+          "e7207_1"
+        ],
+        "transitions": [
+          {
+            "id": "t7207_1",
+            "source": "s7207_0",
+            "event": "e7207_1",
+            "target": "s7207_1",
+            "guard": "x_7207_0 > 0 and y_7207_0 < 10",
+            "action": "act7207_1",
+            "output": null,
+            "timeout": null,
+            "delay": null,
+            "requirements": [],
+            "probability": null,
+            "is_nondeterministic": false,
+            "refusal": false,
+            "quiescence": false,
+            "discrete_time": null
+          },
+          {
+            "id": "t7207_2",
+            "source": "s7207_0",
+            "event": "e7207_1",
+            "target": "s7207_1",
+            "guard": "(x_7207_1 > 0 and y_7207_1 < 10) and strict_check",
+            "action": "act7207_2",
+            "output": null,
+            "timeout": null,
+            "delay": null,
+            "requirements": [],
+            "probability": null,
+            "is_nondeterministic": false,
+            "refusal": false,
+            "quiescence": false,
+            "discrete_time": null
+          },
+          {
+            "id": "t7207_3",
+            "source": "s7207_1",
+            "event": "e7207_0",
+            "target": "s7207_1",
+            "guard": "x_7207_2 > 0 and y_7207_2 < 10",
+            "action": "act7207_3",
+            "output": null,
+            "timeout": null,
+            "delay": null,
+            "requirements": [],
+            "probability": null,
+            "is_nondeterministic": false,
+            "refusal": false,
+            "quiescence": false,
+            "discrete_time": null
+          }
+        ],
+        "variables": {
+          "x": "int",
+          "y": "int"
+        },
+        "parent_fsm_id": "synthetic_7207_3_2",
+        "reference_fsm_id": "synthetic_7207_3_2",
+        "discrete_time_step": null,
+        "semantics_mode": null,
+        "cyclic_metadata": null
+      },
+      "passed_steps": 3,
+      "total_steps": 4,
+      "passed_scenarios": 2,
+      "total_scenarios": 3
+    }
+  }
+}

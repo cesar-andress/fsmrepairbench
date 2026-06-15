@@ -1,83 +1,67 @@
-# Oracle Depth Ablation (C3)
+# C3 Extended Oracle Depth Ablation Report
 
-Sensitivity analysis of mutation detection, BPR, and oracle coverage to behavioural oracle depth presets (`shallow`, `medium`, `deep`).
+Generated: 2026-06-09T18:31:49.853865+00:00
+Dataset: `/home/cesar/papers/fsmrepairbench/fsmrepairbench/data/fsmrepairbench_1k`
+Cohort: `/home/cesar/papers/fsmrepairbench/fsmrepairbench/data/fsmrepairbench_1k/oracle_depth_ablation_500.txt`
+Output: `/home/cesar/papers/fsmrepairbench/fsmrepairbench/results/oracle_depth_ablation`
 
-## Experimental design
+## Prior depth ceiling (documented limitation)
 
-- **Dataset:** `data/fsmrepairbench_1k`
-- **Cohort:** 200 cases (`oracle_depth_ablation_200.txt`)
-- **FSMs:** fixed reference/faulty machines from the published release
-- **Oracles:** regenerated with existing `generate_oracle_suite` presets only
-- **Depth presets:** shallow (max 5 steps), medium (12), deep (25)
+The original C3 v1 campaign used the shipped **shortest-path** generator with
+declared ceilings shallow/medium/deep (5/12/25 max steps). On the compact
+`plain_fsm` pin, executed scenario length stayed at ~4 steps for every preset,
+so detection and ΔBPR did not respond to depth manipulation (construct-validity
+failure). C3 v2 introduced **depth-forced** walks for the same three presets;
+this extended follow-up adds `exhaustive_like` (40), `extended_50`, and
+`extended_60` to probe sensitivity beyond the historical deep=25 ceiling.
 
-## Research question
+## Extended sensitivity insights
 
-**How sensitive are benchmark conclusions to oracle depth?**
+- Detection at shallow remains 47.6% and is unchanged at deep (47.6%; max 25 declared steps).
+- Mean ΔBPR rises from 0.085 (shallow) to 0.157 (deep), confirming behavioural separation grows with walk length even when detection partition is stable.
+- `missing-transition` complete repair ranges 88.0%–88.0% across presets; effective repair tracks complete repair on detectable faults.
+- Paired McNemar counts vs shallow show zero detection gains at every higher preset (see `paired_detection_changes.csv`).
 
-Benchmark detection conclusions are **largely insensitive** to oracle depth within the tested presets: overall detection moves from 48.5% (shallow) to 48.5% (medium) and 48.5% (deep). Paired on 200 cases: 0 faults newly detected at deep vs shallow, 0 faults detected only at shallow.
+## Depth summary
 
-## Summary by oracle depth
+| Depth | Max steps | Detection | Mean ΔBPR | Complete repair | Effective repair | Mean len. |
+|-------|-----------|-----------|-----------|-----------------|------------------|-----------|
+| shallow | 5 | 47.6% | 0.085 | 88.0% | 41.6% | 4.1 |
+| medium | 12 | 47.6% | 0.118 | 88.0% | 41.6% | 9.3 |
+| deep | 25 | 47.6% | 0.157 | 88.0% | 41.6% | 18.5 |
 
-| Depth | Max steps | Cases | Detection rate | Detectable ratio | Mean faulty BPR | Mean BPR delta | Max path length | Mean trans. cov. |
-|---|---:|---:|---:|---:|---:|---:|---:|---:|
-| `shallow` | 5 | 200 | 48.50% | 48.50% | 0.9182 | 0.0818 | 6 | 100.00% |
-| `medium` | 12 | 200 | 48.50% | 48.50% | 0.9182 | 0.0818 | 6 | 100.00% |
-| `deep` | 25 | 200 | 48.50% | 48.50% | 0.9182 | 0.0818 | 6 | 100.00% |
+## Paired detection vs shallow
 
-## Mutation operator detection by depth
+- **medium** (max 12): gains=0, losses=0, McNemar χ²=0.0
+- **deep** (max 25): gains=0, losses=0, McNemar χ²=0.0
 
-| Operator | Shallow | Medium | Deep |
-|---|---:|---:|---:|
-| `action_corruption` | 0.00% | 0.00% | 0.00% |
-| `action_full_mutation` | 0.00% | 0.00% | 0.00% |
-| `dead_state_intro` | 0.00% | 0.00% | 0.00% |
-| `delay_corruption` | 0.00% | 0.00% | 0.00% |
-| `duplicate_transition` | 0.00% | 0.00% | 0.00% |
-| `guard_flip` | 100.00% | 100.00% | 100.00% |
-| `guard_inter_class` | 41.67% | 41.67% | 41.67% |
-| `guard_strengthen` | 100.00% | 100.00% | 100.00% |
-| `guard_weaken` | 100.00% | 100.00% | 100.00% |
-| `missing_transition` | 100.00% | 100.00% | 100.00% |
-| `nondeterminism_intro` | 0.00% | 0.00% | 0.00% |
-| `timeout_corruption` | 0.00% | 0.00% | 0.00% |
-| `unreachable_state_intro` | 0.00% | 0.00% | 0.00% |
-| `wrong_event` | 100.00% | 100.00% | 100.00% |
-| `wrong_initial_state` | 100.00% | 100.00% | 100.00% |
-| `wrong_source` | 100.00% | 100.00% | 100.00% |
-| `wrong_target` | 100.00% | 100.00% | 100.00% |
+## Regeneration
 
-## Figures
-
-![Detection rate by depth](figures/detection_rate_by_depth.png)
-
-![Mutation detection by operator and depth](figures/mutation_detection_by_operator_depth.png)
-
-![Mean BPR delta by depth](figures/mean_bpr_delta_by_depth.png)
-
-![Oracle transition coverage by depth](figures/oracle_transition_coverage_by_depth.png)
-
-![Max path length by depth](figures/max_path_length_by_depth.png)
-
-## Artifacts
-
-- Depth summary: `results/oracle_depth_ablation/depth_summary.csv`
-- Combined summary: `results/oracle_depth_ablation/summary.csv`
-- Distributions: `results/oracle_depth_ablation/distributions.csv`
-- Per-case results: `results/oracle_depth_ablation/per_case_results.csv`
-- Confidence intervals: `results/oracle_depth_ablation/confidence_intervals.csv`
-- LaTeX tables: `results/oracle_depth_ablation/tables/`
+```bash
+fsmrepairbench run-oracle-depth-ablation-extended data/fsmrepairbench_1k \
+  --out /home/cesar/papers/fsmrepairbench/fsmrepairbench/results/oracle_depth_ablation \
+  --cohort-file /home/cesar/papers/fsmrepairbench/fsmrepairbench/data/fsmrepairbench_1k/oracle_depth_ablation_500.txt \
+  --no-write-cohort
+python ../paper1/scripts/generate_oracle_depth_ablation_extended_outputs.py
+```
 
 ## Bootstrap confidence intervals
 
 Non-parametric percentile bootstrap over cases (10,000 resamples, 95% CI, seed 44).
 Exports: `confidence_intervals.csv` and `confidence_intervals.json`.
 
-- `detection_rate (shallow)`: 0.485000 [0.415000, 0.555000] (n=200)
-- `mean_faulty_bpr (shallow)`: 0.918245 [0.882656, 0.950025] (n=200)
-- `mean_bpr_delta (shallow)`: 0.081755 [0.049975, 0.117344] (n=200)
-- `detection_rate (medium)`: 0.485000 [0.415000, 0.555000] (n=200)
-- `mean_faulty_bpr (medium)`: 0.918245 [0.882656, 0.950025] (n=200)
-- `mean_bpr_delta (medium)`: 0.081755 [0.049975, 0.117344] (n=200)
-- `detection_rate (deep)`: 0.485000 [0.415000, 0.555000] (n=200)
-- `mean_faulty_bpr (deep)`: 0.918245 [0.882656, 0.950025] (n=200)
-- `mean_bpr_delta (deep)`: 0.081755 [0.049975, 0.117344] (n=200)
+- `detection_rate (C3-extended, shallow)`: 0.476000 [0.432000, 0.520000] (n=500)
+- `mean_bpr_delta (C3-extended, shallow)`: 0.085419 [0.066553, 0.106013] (n=500)
+- `complete_repair_rate (C3-extended, shallow)`: 0.880000 [0.850000, 0.906000] (n=500)
+- `effective_repair_rate (C3-extended, shallow)`: 0.416000 [0.374000, 0.460000] (n=500)
+- `mean_repair_delta_bpr (C3-extended, shallow)`: 0.056979 [0.044656, 0.070779] (n=500)
+- `detection_rate (C3-extended, medium)`: 0.476000 [0.432000, 0.520000] (n=500)
+- `mean_bpr_delta (C3-extended, medium)`: 0.118220 [0.097992, 0.140162] (n=500)
+- `complete_repair_rate (C3-extended, medium)`: 0.880000 [0.850000, 0.906000] (n=500)
+- `effective_repair_rate (C3-extended, medium)`: 0.416000 [0.374000, 0.460000] (n=500)
+- `mean_repair_delta_bpr (C3-extended, medium)`: 0.083850 [0.069483, 0.099158] (n=500)
+- `detection_rate (C3-extended, deep)`: 0.476000 [0.432000, 0.520000] (n=500)
+- `mean_bpr_delta (C3-extended, deep)`: 0.156615 [0.133563, 0.181135] (n=500)
+- `complete_repair_rate (C3-extended, deep)`: 0.880000 [0.850000, 0.906000] (n=500)
+- `effective_repair_rate (C3-extended, deep)`: 0.416000 [0.374000, 0.460000] (n=500)
+- `mean_repair_delta_bpr (C3-extended, deep)`: 0.118017 [0.099936, 0.137155] (n=500)

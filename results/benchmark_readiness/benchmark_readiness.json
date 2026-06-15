@@ -1,0 +1,254 @@
+{
+  "assessment_goal": "Transparent maturity audit, not a promotional score. Scores characterise the v0.2.0-analysis plain_fsm/shallow-oracle slice only.",
+  "cohort_size": 1000,
+  "dimension_scores": {
+    "artifact_completeness": 4,
+    "coverage": 2,
+    "discriminative_power": 4,
+    "localization_support": 2,
+    "repair_support": 2,
+    "reproducibility": 3
+  },
+  "dimensions": {
+    "artifact_completeness": {
+      "evidence_ratio": 1.0,
+      "limitations": [
+        "No sealed held-out evaluation split or perennial leaderboard host is bundled.",
+        "Container image and independent replication vignette remain roadmap items."
+      ],
+      "literature_alignment": [
+        "ACM artifact evaluation badging: strong available/functional static package.",
+        "SV-COMP / JAPEX-style perennial tracks: not yet realised."
+      ],
+      "metrics": {
+        "artifact_count": 319,
+        "artifact_counts_by_media_type": {
+          "csv": 132,
+          "png": 109,
+          "tex": 78
+        },
+        "artifact_media_total": 319,
+        "verification_pass": true
+      },
+      "score": 4,
+      "strengths": [
+        "319 manuscript exports tracked with SHA-256 digests and campaign manifests.",
+        "ACM-style artifact package includes verification report and reproducibility instructions."
+      ]
+    },
+    "coverage": {
+      "evidence_ratio": 0.486716,
+      "limitations": [
+        "Only plain_fsm instances are realised (machine-type coverage 12.5%).",
+        "Mean dimension value coverage is 54.8%; triple-feature coverage is 10.0%.",
+        "The declared ten-dimensional stratification plan remains partially populated."
+      ],
+      "literature_alignment": [
+        "Siegmund et al. / Borg et al. diversity criterion: partial feature-space coverage.",
+        "Jimenez et al. representativeness: synthetic single-family slice, not multi-domain."
+      ],
+      "metrics": {
+        "complexity_tier_balance_score": 0.969982,
+        "fsm_families_present": 1,
+        "fsm_families_total": 8,
+        "machine_type_coverage_ratio": 0.125,
+        "mean_dimension_coverage_ratio": 0.548402,
+        "mutation_operator_coverage_ratio": 0.894737,
+        "triple_feature_coverage_ratio": 0.1
+      },
+      "score": 2,
+      "strengths": [
+        "Four balanced complexity tiers and near-uniform operator quotas on the realised cohort.",
+        "Seventeen of nineteen mutation operators appear with documented build-failure exclusions."
+      ]
+    },
+    "discriminative_power": {
+      "evidence_ratio": 0.777897,
+      "limitations": [
+        "Only three deterministic engines plus one random control are evaluated.",
+        "Operator-level rank stability is low on the detectable-only partition (Kendall tau ~ 0.11).",
+        "Cohort-wide discrimination is inflated by 505/1,000 oracle-saturated cases."
+      ],
+      "literature_alignment": [
+        "Gazzola et al.\\ APR survey utility criterion: strong baseline separation, limited method diversity.",
+        "Just et al.\\ Defects4J practice: paired per-case disagreement and effect sizes are implemented."
+      ],
+      "metrics": {
+        "cohort_wide_discrimination_index": 0.436,
+        "detectable_only_discrimination_index": 0.880808,
+        "detectable_only_rank_stability_kendall_tau": 0.348148,
+        "detectable_only_utility_index": 0.891154,
+        "tool_count": 6
+      },
+      "score": 4,
+      "strengths": [
+        "All three deterministic C1 baselines are statistically distinguishable on detectable-only repair.",
+        "Large Cohen's h effect sizes separate missing-transition from random controls."
+      ]
+    },
+    "localization_support": {
+      "evidence_ratio": 0.432312,
+      "limitations": [
+        "119 detectable faults lack transition-localizable ground truth.",
+        "Default shallow-oracle spectra yield weak top-1 guidance (19.68% on localizable GT).",
+        "Localization coverage is 376/1,000 cases (37.6%)."
+      ],
+      "literature_alignment": [
+        "Kanewala \\& Bieman testing-benchmark criterion: evaluation hook present, ground truth partial.",
+        "Code-centric FL benchmarks (e.g.\\ Defects4J line faults): richer GT coverage and stronger default spectra."
+      ],
+      "metrics": {
+        "detectable_cases": 495,
+        "localizable_gt_fraction": 0.376,
+        "not_ranked_detectable_cases": 119,
+        "top1_hit_rate_localizable_gt": 0.196809,
+        "transition_localizable_cases": 376
+      },
+      "score": 2,
+      "strengths": [
+        "Transition-level Ochiai hook, localizability audit export, and dual-partition reporting exist.",
+        "Primary headline metrics use a construct-valid 376-case localizable subset."
+      ]
+    },
+    "repair_support": {
+      "evidence_ratio": 0.857182,
+      "limitations": [
+        "Only single-pass deterministic engines are characterised; search/LLM repair tracks are absent.",
+        "505/1,000 oracle-saturated faults confound cohort-wide repair numerators.",
+        "No community tool submission workflow or held-out repair split is published."
+      ],
+      "literature_alignment": [
+        "Jimenez et al.\\ SBSE benchmark task support: baseline repair lane exists, advanced techniques unevaluated.",
+        "Defects4J repair track maturity: fewer tools, narrower fault model, but mature community adoption."
+      ],
+      "metrics": {
+        "detectable_only_complete_repair_spread": 0.860606,
+        "max_regression_rate": 0.246,
+        "oracle_saturation_rate": 0.505,
+        "repair_tool_count": 6
+      },
+      "score": 2,
+      "strengths": [
+        "Deterministic C1 baselines, detectable-only leaderboard columns, and regression tracking are shipped.",
+        "Per-case exports support paired statistical comparison following APR benchmark practice."
+      ]
+    },
+    "reproducibility": {
+      "checks": {
+        "artifact_verification_pass": true,
+        "benchmark_manifest": true,
+        "canonical_reproduction_doc": true,
+        "github_tooling_tag": true,
+        "reproducibility_doc": true,
+        "zenodo_deposit": true
+      },
+      "evidence_ratio": 1.0,
+      "limitations": [
+        "No fully pinned container image or hardware digest is reported in the manuscript.",
+        "Independent third-party replication runs are not yet published.",
+        "Tooling GitHub tag and empirical Zenodo deposit use separate release labels."
+      ],
+      "literature_alignment": [
+        "Fucci et al. / Hook & Kelly replication packaging: strong static artefacts, weak independent replay.",
+        "ACM artifact evaluation checklist: available, verified exports; execution pinning incomplete."
+      ],
+      "metrics": {
+        "artifact_count": 319,
+        "artifacts_checked": 107,
+        "artifacts_passed": 107
+      },
+      "score": 3,
+      "strengths": [
+        "Frozen Zenodo deposit, pinned cohort manifests, and checksum-backed manuscript exports.",
+        "Canonical CLI regeneration path documented in CANONICAL_REPRODUCTION.md."
+      ]
+    }
+  },
+  "generated_at": "2026-06-15T17:52:59.873711+00:00",
+  "github_tag": "v0.2.1-stvr-polish",
+  "literature_comparison": [
+    {
+      "criterion": "Feature-space diversity / representativeness",
+      "fsmrepairbench_v0_2": "Single plain_fsm family; 54.8% mean dimension coverage",
+      "readiness_score": "2",
+      "source": "Siegmund et al. (2015); Borg et al. (2017)",
+      "typical_mature_benchmark": "Multi-project or multi-family strata with audited coverage gaps"
+    },
+    {
+      "criterion": "Reproducible packaging and independent replay",
+      "fsmrepairbench_v0_2": "Zenodo deposit, verified exports, CLI docs; no container vignette",
+      "readiness_score": "3",
+      "source": "Fucci et al. (2018); Hook \\& Kelly (2003)",
+      "typical_mature_benchmark": "Frozen artefacts + scripted replay + independent replication"
+    },
+    {
+      "criterion": "Discriminative utility among repair methods",
+      "fsmrepairbench_v0_2": "Three deterministic baselines separable on detectable-only repair",
+      "readiness_score": "4",
+      "source": "Gazzola et al. (2019); Just et al. (2014)",
+      "typical_mature_benchmark": "Multiple techniques separable with stable rankings"
+    },
+    {
+      "criterion": "Fault-localization benchmark support",
+      "fsmrepairbench_v0_2": "376/1,000 localizable GT; weak default top-1 under shallow oracles",
+      "readiness_score": "2",
+      "source": "Kanewala \\& Bieman (2014)",
+      "typical_mature_benchmark": "Broad, construct-valid ground truth and informative spectra"
+    },
+    {
+      "criterion": "Repair-task infrastructure",
+      "fsmrepairbench_v0_2": "Deterministic C1 lane only; saturation confounds cohort-wide repair",
+      "readiness_score": "2",
+      "source": "Jimenez et al. (2016)",
+      "typical_mature_benchmark": "Multiple repair approaches with community submission path"
+    },
+    {
+      "criterion": "Artifact completeness and verification",
+      "fsmrepairbench_v0_2": "107 verified CSV/PNG/TeX exports; no held-out community track",
+      "readiness_score": "4",
+      "source": "ACM artifact evaluation; SV-COMP practice",
+      "typical_mature_benchmark": "Verified bundle, perennial tracks, held-out splits"
+    }
+  ],
+  "mean_readiness_score": 2.833,
+  "priority_gaps": [
+    {
+      "dimension": "coverage",
+      "gap": "Only plain_fsm instances are realised (machine-type coverage 12.5%).",
+      "priority": "high",
+      "score": "2"
+    },
+    {
+      "dimension": "localization_support",
+      "gap": "119 detectable faults lack transition-localizable ground truth.",
+      "priority": "high",
+      "score": "2"
+    },
+    {
+      "dimension": "repair_support",
+      "gap": "Only single-pass deterministic engines are characterised; search/LLM repair tracks are absent.",
+      "priority": "high",
+      "score": "2"
+    },
+    {
+      "dimension": "reproducibility",
+      "gap": "No fully pinned container image or hardware digest is reported in the manuscript.",
+      "priority": "medium",
+      "score": "3"
+    }
+  ],
+  "readiness_grade": "early release",
+  "release_label": "v0.2.0-analysis",
+  "rubric": {
+    "dimensions": [
+      "coverage",
+      "reproducibility",
+      "discriminative_power",
+      "localization_support",
+      "repair_support",
+      "artifact_completeness"
+    ],
+    "scale": "0=absent, 1=minimal, 2=limited, 3=adequate prototype, 4=strong, 5=community-ready"
+  },
+  "zenodo_doi": "10.5281/zenodo.20602528"
+}

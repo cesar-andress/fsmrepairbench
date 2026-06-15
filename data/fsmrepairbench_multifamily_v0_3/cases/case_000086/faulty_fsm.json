@@ -1,0 +1,72 @@
+{
+  "id": "synthetic_1609_3_2__faulty__nondeterminism_intro__86046",
+  "name": "Synthetic FSM (custom) (faulty: nondeterminism_intro)",
+  "description": "Synthetic FSM generated with seed=1609, states=3, events=2, branching_factor=1, deterministic=False, allow_dead_states=True",
+  "states": [
+    {
+      "id": "s1609_0",
+      "state_output": null,
+      "refusal": false,
+      "quiescence": false
+    },
+    {
+      "id": "s1609_1",
+      "state_output": null,
+      "refusal": false,
+      "quiescence": false
+    },
+    {
+      "id": "s1609_2",
+      "state_output": null,
+      "refusal": false,
+      "quiescence": false
+    }
+  ],
+  "initial_state": "s1609_0",
+  "events": [
+    "e1609_0",
+    "e1609_1"
+  ],
+  "transitions": [
+    {
+      "id": "t1609_1",
+      "source": "s1609_0",
+      "event": "e1609_0",
+      "target": "s1609_1",
+      "guard": null,
+      "action": "act1609_1",
+      "output": null,
+      "timeout": null,
+      "delay": null,
+      "requirements": [],
+      "probability": null,
+      "is_nondeterministic": false,
+      "refusal": false,
+      "quiescence": false,
+      "discrete_time": null
+    },
+    {
+      "id": "t1609_1__nd__86046",
+      "source": "s1609_0",
+      "event": "e1609_0",
+      "target": "s1609_0",
+      "guard": null,
+      "action": "act1609_1",
+      "output": null,
+      "timeout": null,
+      "delay": null,
+      "requirements": [],
+      "probability": null,
+      "is_nondeterministic": false,
+      "refusal": false,
+      "quiescence": false,
+      "discrete_time": null
+    }
+  ],
+  "variables": {},
+  "parent_fsm_id": "synthetic_1609_3_2",
+  "reference_fsm_id": "synthetic_1609_3_2",
+  "discrete_time_step": null,
+  "semantics_mode": null,
+  "cyclic_metadata": null
+}

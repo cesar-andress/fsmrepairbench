@@ -1,0 +1,43 @@
+{
+  "bug_id": "synthetic_10592_3_2__hom__unreachable_state_intro__wrong_event__wrong_source__67765",
+  "reference_fsm_id": "synthetic_10592_3_2",
+  "faulty_fsm_id": "synthetic_10592_3_2__faulty__hom__unreachable_state_intro__wrong_event__wrong_source__67765",
+  "mutation_operator": "unreachable_state_intro,wrong_event,wrong_source",
+  "changed_transition_id": "t10592_1",
+  "description": "Higher-order mutant applying 3 operators: unreachable_state_intro, wrong_event, wrong_source",
+  "seed": 67765,
+  "mutation_complexity": null,
+  "mutation_scope": null,
+  "mutation_mode": null,
+  "mutation_order": 3,
+  "component_faults": [
+    {
+      "operator": "unreachable_state_intro",
+      "seed": 67765,
+      "bug_id": "synthetic_10592_3_2__unreachable_state_intro__67765",
+      "changed_transition_id": null,
+      "description": "Added unreachable state 'unreachable_67765'"
+    },
+    {
+      "operator": "wrong_event",
+      "seed": 68765,
+      "bug_id": "synthetic_10592_3_2__faulty__unreachable_state_intro__67765__wrong_event__68765",
+      "changed_transition_id": "t10592_1",
+      "description": "Changed event of transition 't10592_1' from 'e10592_0' to 'e10592_1'"
+    },
+    {
+      "operator": "wrong_source",
+      "seed": 69765,
+      "bug_id": "synthetic_10592_3_2__faulty__unreachable_state_intro__67765__faulty__wrong_event__68765__wrong_source__69765",
+      "changed_transition_id": "t10592_1",
+      "description": "Changed source of transition 't10592_1' from 's10592_0' to 's10592_2'"
+    }
+  ],
+  "is_higher_order": true,
+  "coupled_to_simple_faults": [
+    "synthetic_10592_3_2__unreachable_state_intro__67765",
+    "synthetic_10592_3_2__faulty__unreachable_state_intro__67765__wrong_event__68765",
+    "synthetic_10592_3_2__faulty__unreachable_state_intro__67765__faulty__wrong_event__68765__wrong_source__69765"
+  ],
+  "is_negative_control": false
+}

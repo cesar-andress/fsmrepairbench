@@ -1,0 +1,43 @@
+{
+  "bug_id": "synthetic_3086_3_2__hom__wrong_event__guard_strengthen__wrong_initial_state__57720",
+  "reference_fsm_id": "synthetic_3086_3_2",
+  "faulty_fsm_id": "synthetic_3086_3_2__faulty__hom__wrong_event__guard_strengthen__wrong_initial_state__57720",
+  "mutation_operator": "wrong_event,guard_strengthen,wrong_initial_state",
+  "changed_transition_id": null,
+  "description": "Higher-order mutant applying 3 operators: wrong_event, guard_strengthen, wrong_initial_state",
+  "seed": 57720,
+  "mutation_complexity": null,
+  "mutation_scope": null,
+  "mutation_mode": null,
+  "mutation_order": 3,
+  "component_faults": [
+    {
+      "operator": "wrong_event",
+      "seed": 57720,
+      "bug_id": "synthetic_3086_3_2__wrong_event__57720",
+      "changed_transition_id": "t3086_1",
+      "description": "Changed event of transition 't3086_1' from 'e3086_1' to 'e3086_0'"
+    },
+    {
+      "operator": "guard_strengthen",
+      "seed": 58720,
+      "bug_id": "synthetic_3086_3_2__faulty__wrong_event__57720__guard_strengthen__58720",
+      "changed_transition_id": "t3086_1",
+      "description": "Strengthened guard on transition 't3086_1'"
+    },
+    {
+      "operator": "wrong_initial_state",
+      "seed": 59720,
+      "bug_id": "synthetic_3086_3_2__faulty__wrong_event__57720__faulty__guard_strengthen__58720__wrong_initial_state__59720",
+      "changed_transition_id": null,
+      "description": "Changed initial_state from 's3086_0' to 's3086_1'"
+    }
+  ],
+  "is_higher_order": true,
+  "coupled_to_simple_faults": [
+    "synthetic_3086_3_2__wrong_event__57720",
+    "synthetic_3086_3_2__faulty__wrong_event__57720__guard_strengthen__58720",
+    "synthetic_3086_3_2__faulty__wrong_event__57720__faulty__guard_strengthen__58720__wrong_initial_state__59720"
+  ],
+  "is_negative_control": false
+}

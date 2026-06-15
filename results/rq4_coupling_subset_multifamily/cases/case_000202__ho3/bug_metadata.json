@@ -1,0 +1,43 @@
+{
+  "bug_id": "synthetic_3884_3_2__hom__action_corruption__guard_weaken__guard_strengthen__44562",
+  "reference_fsm_id": "synthetic_3884_3_2",
+  "faulty_fsm_id": "synthetic_3884_3_2__faulty__hom__action_corruption__guard_weaken__guard_strengthen__44562",
+  "mutation_operator": "action_corruption,guard_weaken,guard_strengthen",
+  "changed_transition_id": "t3884_3",
+  "description": "Higher-order mutant applying 3 operators: action_corruption, guard_weaken, guard_strengthen",
+  "seed": 44562,
+  "mutation_complexity": null,
+  "mutation_scope": null,
+  "mutation_mode": null,
+  "mutation_order": 3,
+  "component_faults": [
+    {
+      "operator": "action_corruption",
+      "seed": 44562,
+      "bug_id": "synthetic_3884_3_2__action_corruption__44562",
+      "changed_transition_id": "t3884_3",
+      "description": "Changed action of transition 't3884_3' from 'act3884_3' to 'wrong_act3884_3'"
+    },
+    {
+      "operator": "guard_weaken",
+      "seed": 45562,
+      "bug_id": "synthetic_3884_3_2__faulty__action_corruption__44562__guard_weaken__45562",
+      "changed_transition_id": "t3884_1",
+      "description": "Weakened guard on transition 't3884_1' to 'true'"
+    },
+    {
+      "operator": "guard_strengthen",
+      "seed": 46562,
+      "bug_id": "synthetic_3884_3_2__faulty__action_corruption__44562__faulty__guard_weaken__45562__guard_strengthen__46562",
+      "changed_transition_id": "t3884_3",
+      "description": "Strengthened guard on transition 't3884_3'"
+    }
+  ],
+  "is_higher_order": true,
+  "coupled_to_simple_faults": [
+    "synthetic_3884_3_2__action_corruption__44562",
+    "synthetic_3884_3_2__faulty__action_corruption__44562__guard_weaken__45562",
+    "synthetic_3884_3_2__faulty__action_corruption__44562__faulty__guard_weaken__45562__guard_strengthen__46562"
+  ],
+  "is_negative_control": false
+}

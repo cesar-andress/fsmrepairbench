@@ -1,0 +1,35 @@
+{
+  "bug_id": "synthetic_6907_3_2__hom__wrong_target__wrong_event__32931",
+  "reference_fsm_id": "synthetic_6907_3_2",
+  "faulty_fsm_id": "synthetic_6907_3_2__faulty__hom__wrong_target__wrong_event__32931",
+  "mutation_operator": "wrong_target,wrong_event",
+  "changed_transition_id": "t6907_1",
+  "description": "Higher-order mutant applying 2 operators: wrong_target, wrong_event",
+  "seed": 32931,
+  "mutation_complexity": null,
+  "mutation_scope": null,
+  "mutation_mode": null,
+  "mutation_order": 2,
+  "component_faults": [
+    {
+      "operator": "wrong_target",
+      "seed": 32931,
+      "bug_id": "synthetic_6907_3_2__wrong_target__32931",
+      "changed_transition_id": "t6907_2",
+      "description": "Changed target of transition 't6907_2' from 's6907_2' to 's6907_1'"
+    },
+    {
+      "operator": "wrong_event",
+      "seed": 33931,
+      "bug_id": "synthetic_6907_3_2__faulty__wrong_target__32931__wrong_event__33931",
+      "changed_transition_id": "t6907_1",
+      "description": "Changed event of transition 't6907_1' from 'e6907_1' to 'e6907_0'"
+    }
+  ],
+  "is_higher_order": true,
+  "coupled_to_simple_faults": [
+    "synthetic_6907_3_2__wrong_target__32931",
+    "synthetic_6907_3_2__faulty__wrong_target__32931__wrong_event__33931"
+  ],
+  "is_negative_control": false
+}

@@ -1,0 +1,43 @@
+{
+  "bug_id": "synthetic_6873_3_2__hom__wrong_target__guard_strengthen__wrong_initial_state__4027",
+  "reference_fsm_id": "synthetic_6873_3_2",
+  "faulty_fsm_id": "synthetic_6873_3_2__faulty__hom__wrong_target__guard_strengthen__wrong_initial_state__4027",
+  "mutation_operator": "wrong_target,guard_strengthen,wrong_initial_state",
+  "changed_transition_id": null,
+  "description": "Higher-order mutant applying 3 operators: wrong_target, guard_strengthen, wrong_initial_state",
+  "seed": 4027,
+  "mutation_complexity": null,
+  "mutation_scope": null,
+  "mutation_mode": null,
+  "mutation_order": 3,
+  "component_faults": [
+    {
+      "operator": "wrong_target",
+      "seed": 4027,
+      "bug_id": "synthetic_6873_3_2__wrong_target__4027",
+      "changed_transition_id": "t6873_1",
+      "description": "Changed target of transition 't6873_1' from 's6873_1' to 's6873_0'"
+    },
+    {
+      "operator": "guard_strengthen",
+      "seed": 5027,
+      "bug_id": "synthetic_6873_3_2__faulty__wrong_target__4027__guard_strengthen__5027",
+      "changed_transition_id": "t6873_3",
+      "description": "Strengthened guard on transition 't6873_3'"
+    },
+    {
+      "operator": "wrong_initial_state",
+      "seed": 6027,
+      "bug_id": "synthetic_6873_3_2__faulty__wrong_target__4027__faulty__guard_strengthen__5027__wrong_initial_state__6027",
+      "changed_transition_id": null,
+      "description": "Changed initial_state from 's6873_0' to 's6873_1'"
+    }
+  ],
+  "is_higher_order": true,
+  "coupled_to_simple_faults": [
+    "synthetic_6873_3_2__wrong_target__4027",
+    "synthetic_6873_3_2__faulty__wrong_target__4027__guard_strengthen__5027",
+    "synthetic_6873_3_2__faulty__wrong_target__4027__faulty__guard_strengthen__5027__wrong_initial_state__6027"
+  ],
+  "is_negative_control": false
+}

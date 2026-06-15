@@ -1,0 +1,35 @@
+{
+  "bug_id": "synthetic_1031_3_2__hom__nondeterminism_intro__guard_flip__64061",
+  "reference_fsm_id": "synthetic_1031_3_2",
+  "faulty_fsm_id": "synthetic_1031_3_2__faulty__hom__nondeterminism_intro__guard_flip__64061",
+  "mutation_operator": "nondeterminism_intro,guard_flip",
+  "changed_transition_id": "t1031_2",
+  "description": "Higher-order mutant applying 2 operators: nondeterminism_intro, guard_flip",
+  "seed": 64061,
+  "mutation_complexity": null,
+  "mutation_scope": null,
+  "mutation_mode": null,
+  "mutation_order": 2,
+  "component_faults": [
+    {
+      "operator": "nondeterminism_intro",
+      "seed": 64061,
+      "bug_id": "synthetic_1031_3_2__nondeterminism_intro__64061",
+      "changed_transition_id": "t1031_2",
+      "description": "Added nondeterministic duplicate for event 'e1031_1' from 's1031_1'"
+    },
+    {
+      "operator": "guard_flip",
+      "seed": 65061,
+      "bug_id": "synthetic_1031_3_2__faulty__nondeterminism_intro__64061__guard_flip__65061",
+      "changed_transition_id": "t1031_2",
+      "description": "Added guard 'unexpected_guard' to transition 't1031_2'"
+    }
+  ],
+  "is_higher_order": true,
+  "coupled_to_simple_faults": [
+    "synthetic_1031_3_2__nondeterminism_intro__64061",
+    "synthetic_1031_3_2__faulty__nondeterminism_intro__64061__guard_flip__65061"
+  ],
+  "is_negative_control": false
+}

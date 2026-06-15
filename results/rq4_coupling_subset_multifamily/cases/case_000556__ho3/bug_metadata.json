@@ -1,0 +1,43 @@
+{
+  "bug_id": "synthetic_10609_3_2__hom__unreachable_state_intro__guard_weaken__guard_strengthen__60150",
+  "reference_fsm_id": "synthetic_10609_3_2",
+  "faulty_fsm_id": "synthetic_10609_3_2__faulty__hom__unreachable_state_intro__guard_weaken__guard_strengthen__60150",
+  "mutation_operator": "unreachable_state_intro,guard_weaken,guard_strengthen",
+  "changed_transition_id": "t10609_2",
+  "description": "Higher-order mutant applying 3 operators: unreachable_state_intro, guard_weaken, guard_strengthen",
+  "seed": 60150,
+  "mutation_complexity": null,
+  "mutation_scope": null,
+  "mutation_mode": null,
+  "mutation_order": 3,
+  "component_faults": [
+    {
+      "operator": "unreachable_state_intro",
+      "seed": 60150,
+      "bug_id": "synthetic_10609_3_2__unreachable_state_intro__60150",
+      "changed_transition_id": null,
+      "description": "Added unreachable state 'unreachable_60150'"
+    },
+    {
+      "operator": "guard_weaken",
+      "seed": 61150,
+      "bug_id": "synthetic_10609_3_2__faulty__unreachable_state_intro__60150__guard_weaken__61150",
+      "changed_transition_id": "t10609_2",
+      "description": "Weakened guard on transition 't10609_2' to 'true'"
+    },
+    {
+      "operator": "guard_strengthen",
+      "seed": 62150,
+      "bug_id": "synthetic_10609_3_2__faulty__unreachable_state_intro__60150__faulty__guard_weaken__61150__guard_strengthen__62150",
+      "changed_transition_id": "t10609_2",
+      "description": "Strengthened guard on transition 't10609_2'"
+    }
+  ],
+  "is_higher_order": true,
+  "coupled_to_simple_faults": [
+    "synthetic_10609_3_2__unreachable_state_intro__60150",
+    "synthetic_10609_3_2__faulty__unreachable_state_intro__60150__guard_weaken__61150",
+    "synthetic_10609_3_2__faulty__unreachable_state_intro__60150__faulty__guard_weaken__61150__guard_strengthen__62150"
+  ],
+  "is_negative_control": false
+}

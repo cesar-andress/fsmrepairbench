@@ -1,0 +1,35 @@
+{
+  "bug_id": "synthetic_2118_3_2__hom__wrong_source__wrong_initial_state__14442",
+  "reference_fsm_id": "synthetic_2118_3_2",
+  "faulty_fsm_id": "synthetic_2118_3_2__faulty__hom__wrong_source__wrong_initial_state__14442",
+  "mutation_operator": "wrong_source,wrong_initial_state",
+  "changed_transition_id": null,
+  "description": "Higher-order mutant applying 2 operators: wrong_source, wrong_initial_state",
+  "seed": 14442,
+  "mutation_complexity": null,
+  "mutation_scope": null,
+  "mutation_mode": null,
+  "mutation_order": 2,
+  "component_faults": [
+    {
+      "operator": "wrong_source",
+      "seed": 14442,
+      "bug_id": "synthetic_2118_3_2__wrong_source__14442",
+      "changed_transition_id": "t2118_hub_1",
+      "description": "Changed source of transition 't2118_hub_1' from 's2118_0' to 's2118_1'"
+    },
+    {
+      "operator": "wrong_initial_state",
+      "seed": 15442,
+      "bug_id": "synthetic_2118_3_2__faulty__wrong_source__14442__wrong_initial_state__15442",
+      "changed_transition_id": null,
+      "description": "Changed initial_state from 's2118_0' to 's2118_1'"
+    }
+  ],
+  "is_higher_order": true,
+  "coupled_to_simple_faults": [
+    "synthetic_2118_3_2__wrong_source__14442",
+    "synthetic_2118_3_2__faulty__wrong_source__14442__wrong_initial_state__15442"
+  ],
+  "is_negative_control": false
+}

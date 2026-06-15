@@ -1,0 +1,35 @@
+{
+  "bug_id": "synthetic_7790_3_2__hom__wrong_initial_state__missing_transition__39224",
+  "reference_fsm_id": "synthetic_7790_3_2",
+  "faulty_fsm_id": "synthetic_7790_3_2__faulty__hom__wrong_initial_state__missing_transition__39224",
+  "mutation_operator": "wrong_initial_state,missing_transition",
+  "changed_transition_id": "t7790_1",
+  "description": "Higher-order mutant applying 2 operators: wrong_initial_state, missing_transition",
+  "seed": 39224,
+  "mutation_complexity": null,
+  "mutation_scope": null,
+  "mutation_mode": null,
+  "mutation_order": 2,
+  "component_faults": [
+    {
+      "operator": "wrong_initial_state",
+      "seed": 39224,
+      "bug_id": "synthetic_7790_3_2__wrong_initial_state__39224",
+      "changed_transition_id": null,
+      "description": "Changed initial_state from 's7790_0' to 's7790_2'"
+    },
+    {
+      "operator": "missing_transition",
+      "seed": 40224,
+      "bug_id": "synthetic_7790_3_2__faulty__wrong_initial_state__39224__missing_transition__40224",
+      "changed_transition_id": "t7790_1",
+      "description": "Removed transition 't7790_1'"
+    }
+  ],
+  "is_higher_order": true,
+  "coupled_to_simple_faults": [
+    "synthetic_7790_3_2__wrong_initial_state__39224",
+    "synthetic_7790_3_2__faulty__wrong_initial_state__39224__missing_transition__40224"
+  ],
+  "is_negative_control": false
+}

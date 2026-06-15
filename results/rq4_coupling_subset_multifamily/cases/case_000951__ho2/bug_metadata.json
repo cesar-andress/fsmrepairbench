@@ -1,0 +1,35 @@
+{
+  "bug_id": "synthetic_18132_3_2__hom__missing_transition__guard_strengthen__33828",
+  "reference_fsm_id": "synthetic_18132_3_2",
+  "faulty_fsm_id": "synthetic_18132_3_2__faulty__hom__missing_transition__guard_strengthen__33828",
+  "mutation_operator": "missing_transition,guard_strengthen",
+  "changed_transition_id": "t18132_6",
+  "description": "Higher-order mutant applying 2 operators: missing_transition, guard_strengthen",
+  "seed": 33828,
+  "mutation_complexity": null,
+  "mutation_scope": null,
+  "mutation_mode": null,
+  "mutation_order": 2,
+  "component_faults": [
+    {
+      "operator": "missing_transition",
+      "seed": 33828,
+      "bug_id": "synthetic_18132_3_2__missing_transition__33828",
+      "changed_transition_id": "t18132_5",
+      "description": "Removed transition 't18132_5'"
+    },
+    {
+      "operator": "guard_strengthen",
+      "seed": 34828,
+      "bug_id": "synthetic_18132_3_2__faulty__missing_transition__33828__guard_strengthen__34828",
+      "changed_transition_id": "t18132_6",
+      "description": "Strengthened guard on transition 't18132_6'"
+    }
+  ],
+  "is_higher_order": true,
+  "coupled_to_simple_faults": [
+    "synthetic_18132_3_2__missing_transition__33828",
+    "synthetic_18132_3_2__faulty__missing_transition__33828__guard_strengthen__34828"
+  ],
+  "is_negative_control": false
+}

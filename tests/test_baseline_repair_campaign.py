@@ -315,14 +315,14 @@ def test_multiseed_analysis_is_reproducible_across_runs(tmp_path: Path) -> None:
     case_ids = {"case_000001", "case_000002"}
     seeds = (0, 1, 2)
 
-    per_seed_a, aggregate_a = run_multi_seed_random_analysis(
+    per_seed_a, aggregate_a, _subgroups_a = run_multi_seed_random_analysis(
         dataset_dir,
         TOOLS_DIR,
         case_ids,
         seeds,
         workers=1,
     )
-    per_seed_b, aggregate_b = run_multi_seed_random_analysis(
+    per_seed_b, aggregate_b, _subgroups_b = run_multi_seed_random_analysis(
         dataset_dir,
         TOOLS_DIR,
         case_ids,
@@ -407,6 +407,7 @@ def test_cli_export_c1_baseline_repair(tmp_path: Path) -> None:
     assert result.exit_code == 0, result.stdout
     assert (out_dir / "manifest.json").is_file()
     assert (out_dir / "random_multiseed_summary.csv").is_file()
+    assert (out_dir / "multiseed_by_operator.csv").is_file()
     assert (out_dir / "tables" / "table_random_multiseed.tex").is_file()
     assert (out_dir / "tables" / "table_baseline_leaderboard.tex").is_file()
     assert (out_dir / "figures" / "repair_success_histogram.png").is_file()

@@ -1,0 +1,59 @@
+dimension,value,planned_cases,realised_cases,cohort_fraction,realisation_ratio,planned_in_yaml,realised_in_cohort,status,coverage_note
+machine_type,efsm,200,0,0.0,0.0,True,False,unrepresented,Declared in plan but zero matching cohort cases
+machine_type,mealy,200,0,0.0,0.0,True,False,unrepresented,Declared in plan but zero matching cohort cases
+machine_type,moore,200,0,0.0,0.0,True,False,unrepresented,Declared in plan but zero matching cohort cases
+machine_type,nondeterministic_fsm,0,0,0.0,0.0,False,False,absent,Neither planned nor realised
+machine_type,plain_fsm,200,1000,1.0,5.0,True,True,met_or_exceeded,Plan quota met or exceeded on matching keys
+machine_type,probabilistic_fsm,0,0,0.0,0.0,False,False,absent,Neither planned nor realised
+machine_type,timed_efsm,0,0,0.0,0.0,False,False,absent,Neither planned nor realised
+machine_type,timed_fsm,200,0,0.0,0.0,True,False,unrepresented,Declared in plan but zero matching cohort cases
+determinism,deterministic,800,1000,1.0,1.25,True,True,met_or_exceeded,Plan quota met or exceeded on matching keys
+determinism,nondeterministic,200,0,0.0,0.0,True,False,unrepresented,Declared in plan but zero matching cohort cases
+completeness,complete,500,0,0.0,0.0,True,False,unrepresented,Declared in plan but zero matching cohort cases
+completeness,partial,500,1000,1.0,2.0,True,True,met_or_exceeded,Plan quota met or exceeded on matching keys
+arity_class,high,250,449,0.449,1.796,True,True,met_or_exceeded,Plan quota met or exceeded on matching keys
+arity_class,low,550,0,0.0,0.0,True,False,unrepresented,Declared in plan but zero matching cohort cases
+arity_class,medium,200,413,0.413,2.065,True,True,met_or_exceeded,Plan quota met or exceeded on matching keys
+arity_class,very_high,0,138,0.138,1.0,False,True,realised_not_planned,Observed in cohort but not declared in YAML plan cells
+size_class,large,0,251,0.251,1.0,False,True,realised_not_planned,Observed in cohort but not declared in YAML plan cells
+size_class,medium,0,251,0.251,1.0,False,True,realised_not_planned,Observed in cohort but not declared in YAML plan cells
+size_class,small,0,246,0.246,1.0,False,True,realised_not_planned,Observed in cohort but not declared in YAML plan cells
+size_class,tiny,1000,0,0.0,0.0,True,False,unrepresented,Plan specifies tiny; cohort uses balanced small/medium/large/very_large tiers
+size_class,very_large,0,252,0.252,1.0,False,True,realised_not_planned,Observed in cohort but not declared in YAML plan cells
+guard_complexity,compound,200,0,0.0,0.0,True,False,unrepresented,Declared in plan but zero matching cohort cases
+guard_complexity,nested,0,0,0.0,0.0,False,False,absent,Neither planned nor realised
+guard_complexity,none,400,20,0.02,0.05,True,True,underfilled,Partial plan-cell realisation
+guard_complexity,simple,400,980,0.98,2.45,True,True,met_or_exceeded,Plan quota met or exceeded on matching keys
+time_features,none,800,1000,1.0,1.25,True,True,met_or_exceeded,Plan quota met or exceeded on matching keys
+time_features,output_delay,0,0,0.0,0.0,False,False,absent,Neither planned nor realised
+time_features,timed_guard,0,0,0.0,0.0,False,False,absent,Neither planned nor realised
+time_features,timed_guard_and_timeout,0,0,0.0,0.0,False,False,absent,Neither planned nor realised
+time_features,timeout,200,0,0.0,0.0,True,False,unrepresented,Declared in plan but zero matching cohort cases
+graph_structure,acyclic,650,0,0.0,0.0,True,False,unrepresented,Declared in plan but zero matching cohort cases
+graph_structure,cyclic,0,1000,1.0,1.0,False,True,realised_not_planned,Observed in cohort but not declared in YAML plan cells
+graph_structure,dense,0,503,0.503,1.0,False,True,realised_not_planned,Observed in cohort but not declared in YAML plan cells
+graph_structure,hub_and_spoke,350,6,0.006,0.017143,True,True,underfilled,Partial plan-cell realisation
+graph_structure,layered,0,54,0.054,1.0,False,True,realised_not_planned,Observed in cohort but not declared in YAML plan cells
+graph_structure,sparse,0,0,0.0,0.0,False,False,absent,Neither planned nor realised
+graph_structure,strongly_connected,0,869,0.869,1.0,False,True,realised_not_planned,Observed in cohort but not declared in YAML plan cells
+oracle_depth,deep,0,754,0.754,1.0,False,True,realised_not_planned,Observed in cohort but not declared in YAML plan cells
+oracle_depth,exhaustive_like,0,0,0.0,0.0,False,False,absent,Neither planned nor realised
+oracle_depth,medium,0,246,0.246,1.0,False,True,realised_not_planned,Observed in cohort but not declared in YAML plan cells
+oracle_depth,shallow,1000,0,0.0,0.0,True,False,unrepresented,Declared in plan but zero matching cohort cases
+bug_type,action_corruption,50,59,0.059,1.18,True,True,met_or_exceeded,Plan quota met or exceeded on matching keys
+bug_type,action_full_mutation,0,59,0.059,1.0,False,True,realised_not_planned,Observed in cohort but not declared in YAML plan cells
+bug_type,dead_state_intro,50,59,0.059,1.18,True,True,met_or_exceeded,Plan quota met or exceeded on matching keys
+bug_type,delay_corruption,50,59,0.059,1.18,True,True,met_or_exceeded,Plan quota met or exceeded on matching keys
+bug_type,duplicate_transition,50,59,0.059,1.18,True,True,met_or_exceeded,Plan quota met or exceeded on matching keys
+bug_type,guard_flip,100,59,0.059,0.59,True,True,underfilled,Partial plan-cell realisation
+bug_type,guard_inter_class,0,53,0.053,1.0,False,True,realised_not_planned,Observed in cohort but not declared in YAML plan cells
+bug_type,guard_strengthen,50,59,0.059,1.18,True,True,met_or_exceeded,Plan quota met or exceeded on matching keys
+bug_type,guard_weaken,50,59,0.059,1.18,True,True,met_or_exceeded,Plan quota met or exceeded on matching keys
+bug_type,missing_transition,150,60,0.06,0.4,True,True,underfilled,Partial plan-cell realisation
+bug_type,nondeterminism_intro,50,59,0.059,1.18,True,True,met_or_exceeded,Plan quota met or exceeded on matching keys
+bug_type,timeout_corruption,50,59,0.059,1.18,True,True,met_or_exceeded,Plan quota met or exceeded on matching keys
+bug_type,unreachable_state_intro,50,59,0.059,1.18,True,True,met_or_exceeded,Plan quota met or exceeded on matching keys
+bug_type,wrong_event,50,59,0.059,1.18,True,True,met_or_exceeded,Plan quota met or exceeded on matching keys
+bug_type,wrong_initial_state,50,59,0.059,1.18,True,True,met_or_exceeded,Plan quota met or exceeded on matching keys
+bug_type,wrong_source,50,60,0.06,1.2,True,True,met_or_exceeded,Plan quota met or exceeded on matching keys
+bug_type,wrong_target,150,60,0.06,0.4,True,True,underfilled,Partial plan-cell realisation

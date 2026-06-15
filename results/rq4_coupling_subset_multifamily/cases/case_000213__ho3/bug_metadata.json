@@ -1,0 +1,43 @@
+{
+  "bug_id": "synthetic_4071_3_2__hom__action_corruption__wrong_source__guard_weaken__6279",
+  "reference_fsm_id": "synthetic_4071_3_2",
+  "faulty_fsm_id": "synthetic_4071_3_2__faulty__hom__action_corruption__wrong_source__guard_weaken__6279",
+  "mutation_operator": "action_corruption,wrong_source,guard_weaken",
+  "changed_transition_id": "t4071_2",
+  "description": "Higher-order mutant applying 3 operators: action_corruption, wrong_source, guard_weaken",
+  "seed": 6279,
+  "mutation_complexity": null,
+  "mutation_scope": null,
+  "mutation_mode": null,
+  "mutation_order": 3,
+  "component_faults": [
+    {
+      "operator": "action_corruption",
+      "seed": 6279,
+      "bug_id": "synthetic_4071_3_2__action_corruption__6279",
+      "changed_transition_id": "t4071_4",
+      "description": "Changed action of transition 't4071_4' from 'act4071_4' to 'wrong_act4071_4'"
+    },
+    {
+      "operator": "wrong_source",
+      "seed": 7279,
+      "bug_id": "synthetic_4071_3_2__faulty__action_corruption__6279__wrong_source__7279",
+      "changed_transition_id": "t4071_2",
+      "description": "Changed source of transition 't4071_2' from 's4071_0' to 's4071_1'"
+    },
+    {
+      "operator": "guard_weaken",
+      "seed": 8279,
+      "bug_id": "synthetic_4071_3_2__faulty__action_corruption__6279__faulty__wrong_source__7279__guard_weaken__8279",
+      "changed_transition_id": "t4071_2",
+      "description": "Weakened guard on transition 't4071_2' to 'true'"
+    }
+  ],
+  "is_higher_order": true,
+  "coupled_to_simple_faults": [
+    "synthetic_4071_3_2__action_corruption__6279",
+    "synthetic_4071_3_2__faulty__action_corruption__6279__wrong_source__7279",
+    "synthetic_4071_3_2__faulty__action_corruption__6279__faulty__wrong_source__7279__guard_weaken__8279"
+  ],
+  "is_negative_control": false
+}

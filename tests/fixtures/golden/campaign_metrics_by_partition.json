@@ -1,0 +1,65 @@
+{
+  "artifacts": [
+    {
+      "media_type": "csv",
+      "relative_path": "metrics_by_partition.csv",
+      "sha256": "702599f16b6660c9b679c5e99190910130e642feddf3643a0ade4d9a7dc27078"
+    },
+    {
+      "media_type": "csv",
+      "relative_path": "c1_metrics_by_partition.csv",
+      "sha256": "c3d5e2fc9a3df9ede2b55f691ed915375a7a777bb3c847b42313f0576cf197e9"
+    },
+    {
+      "media_type": "csv",
+      "relative_path": "rq3_metrics_by_partition.csv",
+      "sha256": "54d1688a9f4104567714f08ac6804f355bd9d58381e552b3cbde294b44ba3e34"
+    },
+    {
+      "media_type": "csv",
+      "relative_path": "rq4_metrics_by_partition.csv",
+      "sha256": "b7e4cfc1e3294b0af6a03ba7223458152adef8249490f195193e26474087459d"
+    },
+    {
+      "media_type": "tex",
+      "relative_path": "tables/table_construct_metric_partitions.tex",
+      "sha256": "53e108109b3033485018430b0060873bfac7a457d26d94dc9fdfa4d870083b39"
+    }
+  ],
+  "campaign_id": "partitions",
+  "campaign_label": "Campaign metrics by partition",
+  "metrics": [
+    {
+      "column": "value",
+      "description": "C1 detectable-only complete repair (missing-transition)",
+      "expected": 0.684848,
+      "file": "metrics_by_partition.csv",
+      "lookup": {
+        "campaign": "C1-baseline-repair",
+        "construct": "repair",
+        "metric": "complete_repair_rate",
+        "partition": "detectable_only",
+        "subgroup": "baseline_missing_transition"
+      }
+    },
+    {
+      "column": "value",
+      "description": "RQ3 transition-localizable top-1 (ochiai)",
+      "expected": 0.196809,
+      "file": "metrics_by_partition.csv",
+      "lookup": {
+        "campaign": "RQ3-localization-ochiai-1k",
+        "construct": "localization",
+        "metric": "top_1_hit_rate",
+        "partition": "transition_localizable_gt",
+        "subgroup": "ochiai"
+      }
+    }
+  ],
+  "regeneration_commands": [
+    "python ../paper1/scripts/generate_campaign_metrics_by_partition_outputs.py"
+  ],
+  "release_label": "v0.2.0-analysis",
+  "results_subdir": "campaign_metrics_by_partition",
+  "zenodo_doi": "10.5281/zenodo.20602528"
+}

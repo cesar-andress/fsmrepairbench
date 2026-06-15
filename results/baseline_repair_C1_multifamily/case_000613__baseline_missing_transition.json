@@ -1,0 +1,192 @@
+{
+  "case_id": "case_000613",
+  "tool_id": "baseline_missing_transition",
+  "tool_type": "baseline",
+  "model": "baseline_missing_transition",
+  "mutation_operator": "guard_weaken",
+  "status": "completed",
+  "failure_class": "complete_repair",
+  "input_format": "fsmrepairbench_case_v1",
+  "output_format": "fsmrepairbench_repair_result_v1",
+  "initial_bpr": 0.8333333333333334,
+  "final_bpr": 1.0,
+  "delta_bpr": 0.16666666666666663,
+  "complete_repair": true,
+  "effective_repair": true,
+  "regression": false,
+  "patch_parse_failures": 0,
+  "patch_validation_failures": 0,
+  "patch_application_failures": 0,
+  "iterations_completed": 1,
+  "runtime_seconds": 0.0002,
+  "repair_result": {
+    "bug_id": "synthetic_11679_3_2__faulty__guard_weaken__613046",
+    "passed": true,
+    "score": 1.0,
+    "details": {
+      "model": "baseline_missing_transition",
+      "backend": "baseline",
+      "baseline_engine": "missing-transition",
+      "baseline_seed": 0,
+      "temperature": 0.0,
+      "max_iterations": 1,
+      "runtime_seconds": 0.0002,
+      "iterations": [
+        {
+          "iteration": 1,
+          "bpr_before": 0.8333333333333334,
+          "patch_valid": true,
+          "patch_applied": true,
+          "patch": {
+            "patch_id": "baseline_missing_transition_synthetic_11679_3_2__faulty__guard_weaken__613046",
+            "target_fsm_id": "synthetic_11679_3_2__faulty__guard_weaken__613046",
+            "operations": [
+              {
+                "op": "add_transition",
+                "id": "baseline_add_cover_transition_t11679_3_1",
+                "source": "s11679_1",
+                "event": "e11679_0",
+                "target": "s11679_2",
+                "guard": "x_11679_2 > 0 and y_11679_2 < 10",
+                "action": null,
+                "requirements": []
+              }
+            ]
+          },
+          "validation_errors": [],
+          "bpr_after": 1.0
+        }
+      ],
+      "final_fsm": {
+        "id": "synthetic_11679_3_2__faulty__guard_weaken__613046",
+        "name": "Synthetic FSM (custom) (faulty: guard_weaken)",
+        "description": "Synthetic FSM generated with seed=11679, states=3, events=2, branching_factor=1, deterministic=True, allow_dead_states=False",
+        "states": [
+          {
+            "id": "s11679_0",
+            "state_output": null,
+            "refusal": false,
+            "quiescence": false
+          },
+          {
+            "id": "s11679_1",
+            "state_output": null,
+            "refusal": false,
+            "quiescence": false
+          },
+          {
+            "id": "s11679_2",
+            "state_output": null,
+            "refusal": false,
+            "quiescence": false
+          }
+        ],
+        "initial_state": "s11679_0",
+        "events": [
+          "e11679_0",
+          "e11679_1"
+        ],
+        "transitions": [
+          {
+            "id": "t11679_1",
+            "source": "s11679_0",
+            "event": "e11679_1",
+            "target": "s11679_1",
+            "guard": "x_11679_0 > 0 and y_11679_0 < 10",
+            "action": "act11679_1",
+            "output": null,
+            "timeout": null,
+            "delay": null,
+            "requirements": [],
+            "probability": null,
+            "is_nondeterministic": false,
+            "refusal": false,
+            "quiescence": false,
+            "discrete_time": null
+          },
+          {
+            "id": "t11679_2",
+            "source": "s11679_0",
+            "event": "e11679_0",
+            "target": "s11679_2",
+            "guard": "x_11679_1 > 0 and y_11679_1 < 10",
+            "action": "act11679_2",
+            "output": null,
+            "timeout": null,
+            "delay": null,
+            "requirements": [],
+            "probability": null,
+            "is_nondeterministic": false,
+            "refusal": false,
+            "quiescence": false,
+            "discrete_time": null
+          },
+          {
+            "id": "t11679_3",
+            "source": "s11679_1",
+            "event": "e11679_0",
+            "target": "s11679_2",
+            "guard": "true",
+            "action": "act11679_3",
+            "output": null,
+            "timeout": null,
+            "delay": null,
+            "requirements": [],
+            "probability": null,
+            "is_nondeterministic": false,
+            "refusal": false,
+            "quiescence": false,
+            "discrete_time": null
+          },
+          {
+            "id": "t11679_4",
+            "source": "s11679_2",
+            "event": "e11679_1",
+            "target": "s11679_2",
+            "guard": "x_11679_3 > 0 and y_11679_3 < 10",
+            "action": "act11679_4",
+            "output": null,
+            "timeout": null,
+            "delay": null,
+            "requirements": [],
+            "probability": null,
+            "is_nondeterministic": false,
+            "refusal": false,
+            "quiescence": false,
+            "discrete_time": null
+          },
+          {
+            "id": "baseline_add_cover_transition_t11679_3_1",
+            "source": "s11679_1",
+            "event": "e11679_0",
+            "target": "s11679_2",
+            "guard": "x_11679_2 > 0 and y_11679_2 < 10",
+            "action": null,
+            "output": null,
+            "timeout": null,
+            "delay": null,
+            "requirements": [],
+            "probability": null,
+            "is_nondeterministic": false,
+            "refusal": false,
+            "quiescence": false,
+            "discrete_time": null
+          }
+        ],
+        "variables": {
+          "x": "int",
+          "y": "int"
+        },
+        "parent_fsm_id": "synthetic_11679_3_2",
+        "reference_fsm_id": "synthetic_11679_3_2",
+        "discrete_time_step": null,
+        "semantics_mode": null,
+        "cyclic_metadata": null
+      },
+      "passed_steps": 6,
+      "total_steps": 6,
+      "passed_scenarios": 4,
+      "total_scenarios": 4
+    }
+  }
+}

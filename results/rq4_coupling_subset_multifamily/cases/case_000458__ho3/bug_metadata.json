@@ -1,0 +1,43 @@
+{
+  "bug_id": "synthetic_8741_3_2__hom__dead_state_intro__wrong_event__wrong_source__85938",
+  "reference_fsm_id": "synthetic_8741_3_2",
+  "faulty_fsm_id": "synthetic_8741_3_2__faulty__hom__dead_state_intro__wrong_event__wrong_source__85938",
+  "mutation_operator": "dead_state_intro,wrong_event,wrong_source",
+  "changed_transition_id": "t8741_1",
+  "description": "Higher-order mutant applying 3 operators: dead_state_intro, wrong_event, wrong_source",
+  "seed": 85938,
+  "mutation_complexity": null,
+  "mutation_scope": null,
+  "mutation_mode": null,
+  "mutation_order": 3,
+  "component_faults": [
+    {
+      "operator": "dead_state_intro",
+      "seed": 85938,
+      "bug_id": "synthetic_8741_3_2__dead_state_intro__85938",
+      "changed_transition_id": null,
+      "description": "Added unreachable state 'dead_85938'"
+    },
+    {
+      "operator": "wrong_event",
+      "seed": 86938,
+      "bug_id": "synthetic_8741_3_2__faulty__dead_state_intro__85938__wrong_event__86938",
+      "changed_transition_id": "t8741_1",
+      "description": "Changed event of transition 't8741_1' from 'e8741_0' to 'e8741_1'"
+    },
+    {
+      "operator": "wrong_source",
+      "seed": 87938,
+      "bug_id": "synthetic_8741_3_2__faulty__dead_state_intro__85938__faulty__wrong_event__86938__wrong_source__87938",
+      "changed_transition_id": "t8741_1",
+      "description": "Changed source of transition 't8741_1' from 's8741_0' to 'dead_85938'"
+    }
+  ],
+  "is_higher_order": true,
+  "coupled_to_simple_faults": [
+    "synthetic_8741_3_2__dead_state_intro__85938",
+    "synthetic_8741_3_2__faulty__dead_state_intro__85938__wrong_event__86938",
+    "synthetic_8741_3_2__faulty__dead_state_intro__85938__faulty__wrong_event__86938__wrong_source__87938"
+  ],
+  "is_negative_control": false
+}

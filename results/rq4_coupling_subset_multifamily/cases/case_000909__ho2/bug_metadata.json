@@ -1,0 +1,35 @@
+{
+  "bug_id": "synthetic_17317_3_2__hom__wrong_target__wrong_source__7406",
+  "reference_fsm_id": "synthetic_17317_3_2",
+  "faulty_fsm_id": "synthetic_17317_3_2__faulty__hom__wrong_target__wrong_source__7406",
+  "mutation_operator": "wrong_target,wrong_source",
+  "changed_transition_id": "t17317_8",
+  "description": "Higher-order mutant applying 2 operators: wrong_target, wrong_source",
+  "seed": 7406,
+  "mutation_complexity": null,
+  "mutation_scope": null,
+  "mutation_mode": null,
+  "mutation_order": 2,
+  "component_faults": [
+    {
+      "operator": "wrong_target",
+      "seed": 7406,
+      "bug_id": "synthetic_17317_3_2__wrong_target__7406",
+      "changed_transition_id": "t17317_12",
+      "description": "Changed target of transition 't17317_12' from 's17317_2' to 's17317_1'"
+    },
+    {
+      "operator": "wrong_source",
+      "seed": 8406,
+      "bug_id": "synthetic_17317_3_2__faulty__wrong_target__7406__wrong_source__8406",
+      "changed_transition_id": "t17317_8",
+      "description": "Changed source of transition 't17317_8' from 's17317_1' to 's17317_0'"
+    }
+  ],
+  "is_higher_order": true,
+  "coupled_to_simple_faults": [
+    "synthetic_17317_3_2__wrong_target__7406",
+    "synthetic_17317_3_2__faulty__wrong_target__7406__wrong_source__8406"
+  ],
+  "is_negative_control": false
+}

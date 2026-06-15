@@ -1,0 +1,43 @@
+{
+  "bug_id": "synthetic_11679_3_2__hom__guard_weaken__wrong_event__wrong_source__66509",
+  "reference_fsm_id": "synthetic_11679_3_2",
+  "faulty_fsm_id": "synthetic_11679_3_2__faulty__hom__guard_weaken__wrong_event__wrong_source__66509",
+  "mutation_operator": "guard_weaken,wrong_event,wrong_source",
+  "changed_transition_id": "t11679_4",
+  "description": "Higher-order mutant applying 3 operators: guard_weaken, wrong_event, wrong_source",
+  "seed": 66509,
+  "mutation_complexity": null,
+  "mutation_scope": null,
+  "mutation_mode": null,
+  "mutation_order": 3,
+  "component_faults": [
+    {
+      "operator": "guard_weaken",
+      "seed": 66509,
+      "bug_id": "synthetic_11679_3_2__guard_weaken__66509",
+      "changed_transition_id": "t11679_2",
+      "description": "Weakened guard on transition 't11679_2' to 'true'"
+    },
+    {
+      "operator": "wrong_event",
+      "seed": 67509,
+      "bug_id": "synthetic_11679_3_2__faulty__guard_weaken__66509__wrong_event__67509",
+      "changed_transition_id": "t11679_4",
+      "description": "Changed event of transition 't11679_4' from 'e11679_1' to 'e11679_0'"
+    },
+    {
+      "operator": "wrong_source",
+      "seed": 68509,
+      "bug_id": "synthetic_11679_3_2__faulty__guard_weaken__66509__faulty__wrong_event__67509__wrong_source__68509",
+      "changed_transition_id": "t11679_4",
+      "description": "Changed source of transition 't11679_4' from 's11679_2' to 's11679_0'"
+    }
+  ],
+  "is_higher_order": true,
+  "coupled_to_simple_faults": [
+    "synthetic_11679_3_2__guard_weaken__66509",
+    "synthetic_11679_3_2__faulty__guard_weaken__66509__wrong_event__67509",
+    "synthetic_11679_3_2__faulty__guard_weaken__66509__faulty__wrong_event__67509__wrong_source__68509"
+  ],
+  "is_negative_control": false
+}

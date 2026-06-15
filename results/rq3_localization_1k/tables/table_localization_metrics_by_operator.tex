@@ -1,0 +1,29 @@
+% Auto-generated from fsmrepairbench.localization_operator_exports
+\begin{table}[t]
+\caption{Transition-level Ochiai localization by mutation operator (\textbf{all detectable} partition; $n=495$; \textbf{505/1{,}000} oracle-saturated excluded). Primary GT uses \texttt{changed\_transition\_id}; Alt.~GT uses deleted-transition proxies and initial-state outgoing transitions. Includes operators with non-rankable primary ground truth.}
+\label{tab:localization-by-operator-metrics}
+\small
+\begin{tabular}{@{}lrrrrrrrr@{}}
+\toprule
+Operator & Cohort & Detect. & Not ranked & Top-1 & Top-3 & Top-5 & MRR & Alt Top-5 \\
+\midrule
+action\_corruption & 59 & 0 & --- & --- & --- & --- & --- & --- \\
+action\_full\_mutation & 59 & 0 & --- & --- & --- & --- & --- & --- \\
+dead\_state\_intro & 59 & 0 & --- & --- & --- & --- & --- & --- \\
+delay\_corruption & 59 & 0 & --- & --- & --- & --- & --- & --- \\
+duplicate\_transition & 59 & 0 & --- & --- & --- & --- & --- & --- \\
+guard\_flip & 59 & 59 & 0 & 3.4\% & 8.5\% & 15.3\% & 0.110 & 15.3\% \\
+guard\_inter\_class & 53 & 20 & 0 & 5.0\% & 5.0\% & 15.0\% & 0.126 & 15.0\% \\
+guard\_strengthen & 59 & 59 & 0 & 3.4\% & 10.2\% & 13.6\% & 0.119 & 13.6\% \\
+guard\_weaken & 59 & 59 & 0 & 1.7\% & 6.8\% & 13.6\% & 0.093 & 13.6\% \\
+missing\_transition & 60 & 60 & 60 & 0.0\% & 0.0\% & 0.0\% & 0.000 & 96.7\% \\
+nondeterminism\_intro & 59 & 0 & --- & --- & --- & --- & --- & --- \\
+timeout\_corruption & 59 & 0 & --- & --- & --- & --- & --- & --- \\
+unreachable\_state\_intro & 59 & 0 & --- & --- & --- & --- & --- & --- \\
+wrong\_event & 59 & 59 & 0 & 1.7\% & 11.9\% & 22.0\% & 0.116 & 22.0\% \\
+wrong\_initial\_state & 59 & 59 & 59 & 0.0\% & 0.0\% & 0.0\% & 0.000 & 89.8\% \\
+wrong\_source & 60 & 60 & 2 & 11.7\% & 16.7\% & 20.0\% & 0.185 & 20.0\% \\
+wrong\_target & 60 & 60 & 0 & 100.0\% & 100.0\% & 100.0\% & 1.000 & 100.0\% \\
+\bottomrule
+\end{tabular}
+\end{table}

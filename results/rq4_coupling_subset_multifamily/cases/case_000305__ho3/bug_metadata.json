@@ -1,0 +1,43 @@
+{
+  "bug_id": "synthetic_5837_3_2__hom__duplicate_transition__wrong_event__wrong_source__89165",
+  "reference_fsm_id": "synthetic_5837_3_2",
+  "faulty_fsm_id": "synthetic_5837_3_2__faulty__hom__duplicate_transition__wrong_event__wrong_source__89165",
+  "mutation_operator": "duplicate_transition,wrong_event,wrong_source",
+  "changed_transition_id": "t5837_3",
+  "description": "Higher-order mutant applying 3 operators: duplicate_transition, wrong_event, wrong_source",
+  "seed": 89165,
+  "mutation_complexity": null,
+  "mutation_scope": null,
+  "mutation_mode": null,
+  "mutation_order": 3,
+  "component_faults": [
+    {
+      "operator": "duplicate_transition",
+      "seed": 89165,
+      "bug_id": "synthetic_5837_3_2__duplicate_transition__89165",
+      "changed_transition_id": "t5837_2",
+      "description": "Duplicated transition 't5837_2' as 't5837_2__dup__89165'"
+    },
+    {
+      "operator": "wrong_event",
+      "seed": 90165,
+      "bug_id": "synthetic_5837_3_2__faulty__duplicate_transition__89165__wrong_event__90165",
+      "changed_transition_id": "t5837_10",
+      "description": "Changed event of transition 't5837_10' from 'e5837_0' to 'e5837_1'"
+    },
+    {
+      "operator": "wrong_source",
+      "seed": 91165,
+      "bug_id": "synthetic_5837_3_2__faulty__duplicate_transition__89165__faulty__wrong_event__90165__wrong_source__91165",
+      "changed_transition_id": "t5837_3",
+      "description": "Changed source of transition 't5837_3' from 's5837_0' to 's5837_2'"
+    }
+  ],
+  "is_higher_order": true,
+  "coupled_to_simple_faults": [
+    "synthetic_5837_3_2__duplicate_transition__89165",
+    "synthetic_5837_3_2__faulty__duplicate_transition__89165__wrong_event__90165",
+    "synthetic_5837_3_2__faulty__duplicate_transition__89165__faulty__wrong_event__90165__wrong_source__91165"
+  ],
+  "is_negative_control": false
+}

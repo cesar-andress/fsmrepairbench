@@ -1,0 +1,35 @@
+{
+  "bug_id": "synthetic_16298_3_2__hom__delay_corruption__wrong_source__59880",
+  "reference_fsm_id": "synthetic_16298_3_2",
+  "faulty_fsm_id": "synthetic_16298_3_2__faulty__hom__delay_corruption__wrong_source__59880",
+  "mutation_operator": "delay_corruption,wrong_source",
+  "changed_transition_id": "t16298_2",
+  "description": "Higher-order mutant applying 2 operators: delay_corruption, wrong_source",
+  "seed": 59880,
+  "mutation_complexity": null,
+  "mutation_scope": null,
+  "mutation_mode": null,
+  "mutation_order": 2,
+  "component_faults": [
+    {
+      "operator": "delay_corruption",
+      "seed": 59880,
+      "bug_id": "synthetic_16298_3_2__delay_corruption__59880",
+      "changed_transition_id": "t16298_2",
+      "description": "Corrupted delay on transition 't16298_2' to 1.5"
+    },
+    {
+      "operator": "wrong_source",
+      "seed": 60880,
+      "bug_id": "synthetic_16298_3_2__faulty__delay_corruption__59880__wrong_source__60880",
+      "changed_transition_id": "t16298_2",
+      "description": "Changed source of transition 't16298_2' from 's16298_0' to 's16298_2'"
+    }
+  ],
+  "is_higher_order": true,
+  "coupled_to_simple_faults": [
+    "synthetic_16298_3_2__delay_corruption__59880",
+    "synthetic_16298_3_2__faulty__delay_corruption__59880__wrong_source__60880"
+  ],
+  "is_negative_control": false
+}

@@ -1,0 +1,61 @@
+{
+  "campaign": "C1-baseline-repair",
+  "method": "percentile_case_resample",
+  "unit": "case",
+  "ci": 0.95,
+  "resamples": 10000,
+  "seed": 44,
+  "generated_at_utc": "2026-06-09T15:45:56.365227+00:00",
+  "metrics": [
+    {
+      "metric": "complete_repair_rate",
+      "group": "",
+      "partition": "",
+      "subgroup": "baseline_missing_transition",
+      "n_cases": 1000,
+      "mean": 0.822,
+      "ci95_low": 0.798,
+      "ci95_high": 0.846
+    },
+    {
+      "metric": "effective_repair_rate",
+      "group": "",
+      "partition": "",
+      "subgroup": "baseline_missing_transition",
+      "n_cases": 1000,
+      "mean": 0.495,
+      "ci95_low": 0.464,
+      "ci95_high": 0.526
+    },
+    {
+      "metric": "mean_delta_bpr",
+      "group": "",
+      "partition": "",
+      "subgroup": "baseline_missing_transition",
+      "n_cases": 1000,
+      "mean": 0.222244,
+      "ci95_low": 0.20096,
+      "ci95_high": 0.24423
+    },
+    {
+      "metric": "complete_repair_rate_detectable_only",
+      "group": "",
+      "partition": "",
+      "subgroup": "baseline_missing_transition",
+      "n_cases": 648,
+      "mean": 0.768519,
+      "ci95_low": 0.734568,
+      "ci95_high": 0.799383
+    },
+    {
+      "metric": "effective_repair_rate_detectable_only",
+      "group": "",
+      "partition": "",
+      "subgroup": "baseline_missing_transition",
+      "n_cases": 648,
+      "mean": 0.540123,
+      "ci95_low": 0.501543,
+      "ci95_high": 0.578704
+    }
+  ]
+}

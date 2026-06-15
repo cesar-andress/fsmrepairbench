@@ -1,0 +1,35 @@
+{
+  "bug_id": "synthetic_3001_3_2__hom__wrong_event__guard_weaken__95265",
+  "reference_fsm_id": "synthetic_3001_3_2",
+  "faulty_fsm_id": "synthetic_3001_3_2__faulty__hom__wrong_event__guard_weaken__95265",
+  "mutation_operator": "wrong_event,guard_weaken",
+  "changed_transition_id": "t3001_1",
+  "description": "Higher-order mutant applying 2 operators: wrong_event, guard_weaken",
+  "seed": 95265,
+  "mutation_complexity": null,
+  "mutation_scope": null,
+  "mutation_mode": null,
+  "mutation_order": 2,
+  "component_faults": [
+    {
+      "operator": "wrong_event",
+      "seed": 95265,
+      "bug_id": "synthetic_3001_3_2__wrong_event__95265",
+      "changed_transition_id": "t3001_1",
+      "description": "Changed event of transition 't3001_1' from 'e3001_0' to 'e3001_1'"
+    },
+    {
+      "operator": "guard_weaken",
+      "seed": 96265,
+      "bug_id": "synthetic_3001_3_2__faulty__wrong_event__95265__guard_weaken__96265",
+      "changed_transition_id": "t3001_1",
+      "description": "Weakened guard on transition 't3001_1' to 'true'"
+    }
+  ],
+  "is_higher_order": true,
+  "coupled_to_simple_faults": [
+    "synthetic_3001_3_2__wrong_event__95265",
+    "synthetic_3001_3_2__faulty__wrong_event__95265__guard_weaken__96265"
+  ],
+  "is_negative_control": false
+}

@@ -1,0 +1,43 @@
+{
+  "bug_id": "synthetic_5939_3_2__hom__duplicate_transition__guard_flip__missing_transition__27620",
+  "reference_fsm_id": "synthetic_5939_3_2",
+  "faulty_fsm_id": "synthetic_5939_3_2__faulty__hom__duplicate_transition__guard_flip__missing_transition__27620",
+  "mutation_operator": "duplicate_transition,guard_flip,missing_transition",
+  "changed_transition_id": "t5939_7",
+  "description": "Higher-order mutant applying 3 operators: duplicate_transition, guard_flip, missing_transition",
+  "seed": 27620,
+  "mutation_complexity": null,
+  "mutation_scope": null,
+  "mutation_mode": null,
+  "mutation_order": 3,
+  "component_faults": [
+    {
+      "operator": "duplicate_transition",
+      "seed": 27620,
+      "bug_id": "synthetic_5939_3_2__duplicate_transition__27620",
+      "changed_transition_id": "t5939_1",
+      "description": "Duplicated transition 't5939_1' as 't5939_1__dup__27620'"
+    },
+    {
+      "operator": "guard_flip",
+      "seed": 28620,
+      "bug_id": "synthetic_5939_3_2__faulty__duplicate_transition__27620__guard_flip__28620",
+      "changed_transition_id": "t5939_9",
+      "description": "Changed guard of transition 't5939_9' from 'x_5939_8 > 0' to 'not_x_5939_8 > 0'"
+    },
+    {
+      "operator": "missing_transition",
+      "seed": 29620,
+      "bug_id": "synthetic_5939_3_2__faulty__duplicate_transition__27620__faulty__guard_flip__28620__missing_transition__29620",
+      "changed_transition_id": "t5939_7",
+      "description": "Removed transition 't5939_7'"
+    }
+  ],
+  "is_higher_order": true,
+  "coupled_to_simple_faults": [
+    "synthetic_5939_3_2__duplicate_transition__27620",
+    "synthetic_5939_3_2__faulty__duplicate_transition__27620__guard_flip__28620",
+    "synthetic_5939_3_2__faulty__duplicate_transition__27620__faulty__guard_flip__28620__missing_transition__29620"
+  ],
+  "is_negative_control": false
+}

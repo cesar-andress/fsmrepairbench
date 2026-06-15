@@ -1,0 +1,43 @@
+{
+  "bug_id": "synthetic_8622_3_2__hom__dead_state_intro__wrong_event__wrong_source__473",
+  "reference_fsm_id": "synthetic_8622_3_2",
+  "faulty_fsm_id": "synthetic_8622_3_2__faulty__hom__dead_state_intro__wrong_event__wrong_source__473",
+  "mutation_operator": "dead_state_intro,wrong_event,wrong_source",
+  "changed_transition_id": "t8622_1",
+  "description": "Higher-order mutant applying 3 operators: dead_state_intro, wrong_event, wrong_source",
+  "seed": 473,
+  "mutation_complexity": null,
+  "mutation_scope": null,
+  "mutation_mode": null,
+  "mutation_order": 3,
+  "component_faults": [
+    {
+      "operator": "dead_state_intro",
+      "seed": 473,
+      "bug_id": "synthetic_8622_3_2__dead_state_intro__473",
+      "changed_transition_id": null,
+      "description": "Added unreachable state 'dead_473'"
+    },
+    {
+      "operator": "wrong_event",
+      "seed": 1473,
+      "bug_id": "synthetic_8622_3_2__faulty__dead_state_intro__473__wrong_event__1473",
+      "changed_transition_id": "t8622_1",
+      "description": "Changed event of transition 't8622_1' from 'e8622_0' to 'e8622_1'"
+    },
+    {
+      "operator": "wrong_source",
+      "seed": 2473,
+      "bug_id": "synthetic_8622_3_2__faulty__dead_state_intro__473__faulty__wrong_event__1473__wrong_source__2473",
+      "changed_transition_id": "t8622_1",
+      "description": "Changed source of transition 't8622_1' from 's8622_0' to 's8622_1'"
+    }
+  ],
+  "is_higher_order": true,
+  "coupled_to_simple_faults": [
+    "synthetic_8622_3_2__dead_state_intro__473",
+    "synthetic_8622_3_2__faulty__dead_state_intro__473__wrong_event__1473",
+    "synthetic_8622_3_2__faulty__dead_state_intro__473__faulty__wrong_event__1473__wrong_source__2473"
+  ],
+  "is_negative_control": false
+}

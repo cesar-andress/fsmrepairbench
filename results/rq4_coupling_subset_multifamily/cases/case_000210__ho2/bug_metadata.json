@@ -1,0 +1,35 @@
+{
+  "bug_id": "synthetic_4020_3_2__hom__action_corruption__wrong_source__64969",
+  "reference_fsm_id": "synthetic_4020_3_2",
+  "faulty_fsm_id": "synthetic_4020_3_2__faulty__hom__action_corruption__wrong_source__64969",
+  "mutation_operator": "action_corruption,wrong_source",
+  "changed_transition_id": "t4020_2",
+  "description": "Higher-order mutant applying 2 operators: action_corruption, wrong_source",
+  "seed": 64969,
+  "mutation_complexity": null,
+  "mutation_scope": null,
+  "mutation_mode": null,
+  "mutation_order": 2,
+  "component_faults": [
+    {
+      "operator": "action_corruption",
+      "seed": 64969,
+      "bug_id": "synthetic_4020_3_2__action_corruption__64969",
+      "changed_transition_id": "t4020_2",
+      "description": "Changed action of transition 't4020_2' from 'act4020_2' to 'wrong_act4020_2'"
+    },
+    {
+      "operator": "wrong_source",
+      "seed": 65969,
+      "bug_id": "synthetic_4020_3_2__faulty__action_corruption__64969__wrong_source__65969",
+      "changed_transition_id": "t4020_2",
+      "description": "Changed source of transition 't4020_2' from 's4020_1' to 's4020_0'"
+    }
+  ],
+  "is_higher_order": true,
+  "coupled_to_simple_faults": [
+    "synthetic_4020_3_2__action_corruption__64969",
+    "synthetic_4020_3_2__faulty__action_corruption__64969__wrong_source__65969"
+  ],
+  "is_negative_control": false
+}

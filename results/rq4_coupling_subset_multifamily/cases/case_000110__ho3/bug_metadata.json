@@ -1,0 +1,43 @@
+{
+  "bug_id": "synthetic_2118_3_2__hom__wrong_source__guard_strengthen__wrong_initial_state__4487",
+  "reference_fsm_id": "synthetic_2118_3_2",
+  "faulty_fsm_id": "synthetic_2118_3_2__faulty__hom__wrong_source__guard_strengthen__wrong_initial_state__4487",
+  "mutation_operator": "wrong_source,guard_strengthen,wrong_initial_state",
+  "changed_transition_id": null,
+  "description": "Higher-order mutant applying 3 operators: wrong_source, guard_strengthen, wrong_initial_state",
+  "seed": 4487,
+  "mutation_complexity": null,
+  "mutation_scope": null,
+  "mutation_mode": null,
+  "mutation_order": 3,
+  "component_faults": [
+    {
+      "operator": "wrong_source",
+      "seed": 4487,
+      "bug_id": "synthetic_2118_3_2__wrong_source__4487",
+      "changed_transition_id": "t2118_hub_1",
+      "description": "Changed source of transition 't2118_hub_1' from 's2118_0' to 's2118_1'"
+    },
+    {
+      "operator": "guard_strengthen",
+      "seed": 5487,
+      "bug_id": "synthetic_2118_3_2__faulty__wrong_source__4487__guard_strengthen__5487",
+      "changed_transition_id": "t2118_hub_1",
+      "description": "Strengthened guard on transition 't2118_hub_1'"
+    },
+    {
+      "operator": "wrong_initial_state",
+      "seed": 6487,
+      "bug_id": "synthetic_2118_3_2__faulty__wrong_source__4487__faulty__guard_strengthen__5487__wrong_initial_state__6487",
+      "changed_transition_id": null,
+      "description": "Changed initial_state from 's2118_0' to 's2118_1'"
+    }
+  ],
+  "is_higher_order": true,
+  "coupled_to_simple_faults": [
+    "synthetic_2118_3_2__wrong_source__4487",
+    "synthetic_2118_3_2__faulty__wrong_source__4487__guard_strengthen__5487",
+    "synthetic_2118_3_2__faulty__wrong_source__4487__faulty__guard_strengthen__5487__wrong_initial_state__6487"
+  ],
+  "is_negative_control": false
+}

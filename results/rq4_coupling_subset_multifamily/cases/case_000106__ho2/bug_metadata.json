@@ -1,0 +1,35 @@
+{
+  "bug_id": "synthetic_2050_3_2__hom__wrong_source__guard_strengthen__79014",
+  "reference_fsm_id": "synthetic_2050_3_2",
+  "faulty_fsm_id": "synthetic_2050_3_2__faulty__hom__wrong_source__guard_strengthen__79014",
+  "mutation_operator": "wrong_source,guard_strengthen",
+  "changed_transition_id": "t2050_hub_1",
+  "description": "Higher-order mutant applying 2 operators: wrong_source, guard_strengthen",
+  "seed": 79014,
+  "mutation_complexity": null,
+  "mutation_scope": null,
+  "mutation_mode": null,
+  "mutation_order": 2,
+  "component_faults": [
+    {
+      "operator": "wrong_source",
+      "seed": 79014,
+      "bug_id": "synthetic_2050_3_2__wrong_source__79014",
+      "changed_transition_id": "t2050_hub_1",
+      "description": "Changed source of transition 't2050_hub_1' from 's2050_0' to 's2050_1'"
+    },
+    {
+      "operator": "guard_strengthen",
+      "seed": 80014,
+      "bug_id": "synthetic_2050_3_2__faulty__wrong_source__79014__guard_strengthen__80014",
+      "changed_transition_id": "t2050_hub_1",
+      "description": "Strengthened guard on transition 't2050_hub_1'"
+    }
+  ],
+  "is_higher_order": true,
+  "coupled_to_simple_faults": [
+    "synthetic_2050_3_2__wrong_source__79014",
+    "synthetic_2050_3_2__faulty__wrong_source__79014__guard_strengthen__80014"
+  ],
+  "is_negative_control": false
+}

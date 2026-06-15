@@ -1,0 +1,43 @@
+{
+  "bug_id": "synthetic_15330_3_2__hom__timeout_corruption__wrong_target__guard_flip__16724",
+  "reference_fsm_id": "synthetic_15330_3_2",
+  "faulty_fsm_id": "synthetic_15330_3_2__faulty__hom__timeout_corruption__wrong_target__guard_flip__16724",
+  "mutation_operator": "timeout_corruption,wrong_target,guard_flip",
+  "changed_transition_id": "t15330_1",
+  "description": "Higher-order mutant applying 3 operators: timeout_corruption, wrong_target, guard_flip",
+  "seed": 16724,
+  "mutation_complexity": null,
+  "mutation_scope": null,
+  "mutation_mode": null,
+  "mutation_order": 3,
+  "component_faults": [
+    {
+      "operator": "timeout_corruption",
+      "seed": 16724,
+      "bug_id": "synthetic_15330_3_2__timeout_corruption__16724",
+      "changed_transition_id": "t15330_1",
+      "description": "Corrupted timeout on transition 't15330_1' to 2.0"
+    },
+    {
+      "operator": "wrong_target",
+      "seed": 17724,
+      "bug_id": "synthetic_15330_3_2__faulty__timeout_corruption__16724__wrong_target__17724",
+      "changed_transition_id": "t15330_3",
+      "description": "Changed target of transition 't15330_3' from 's15330_2' to 's15330_0'"
+    },
+    {
+      "operator": "guard_flip",
+      "seed": 18724,
+      "bug_id": "synthetic_15330_3_2__faulty__timeout_corruption__16724__faulty__wrong_target__17724__guard_flip__18724",
+      "changed_transition_id": "t15330_1",
+      "description": "Changed guard of transition 't15330_1' from 'x_15330_0 > 0' to 'not_x_15330_0 > 0'"
+    }
+  ],
+  "is_higher_order": true,
+  "coupled_to_simple_faults": [
+    "synthetic_15330_3_2__timeout_corruption__16724",
+    "synthetic_15330_3_2__faulty__timeout_corruption__16724__wrong_target__17724",
+    "synthetic_15330_3_2__faulty__timeout_corruption__16724__faulty__wrong_target__17724__guard_flip__18724"
+  ],
+  "is_negative_control": false
+}

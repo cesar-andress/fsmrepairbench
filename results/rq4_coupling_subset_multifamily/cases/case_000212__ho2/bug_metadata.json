@@ -1,0 +1,35 @@
+{
+  "bug_id": "synthetic_4054_3_2__hom__action_corruption__wrong_initial_state__93612",
+  "reference_fsm_id": "synthetic_4054_3_2",
+  "faulty_fsm_id": "synthetic_4054_3_2__faulty__hom__action_corruption__wrong_initial_state__93612",
+  "mutation_operator": "action_corruption,wrong_initial_state",
+  "changed_transition_id": null,
+  "description": "Higher-order mutant applying 2 operators: action_corruption, wrong_initial_state",
+  "seed": 93612,
+  "mutation_complexity": null,
+  "mutation_scope": null,
+  "mutation_mode": null,
+  "mutation_order": 2,
+  "component_faults": [
+    {
+      "operator": "action_corruption",
+      "seed": 93612,
+      "bug_id": "synthetic_4054_3_2__action_corruption__93612",
+      "changed_transition_id": "t4054_2",
+      "description": "Changed action of transition 't4054_2' from 'act4054_2' to 'wrong_act4054_2'"
+    },
+    {
+      "operator": "wrong_initial_state",
+      "seed": 94612,
+      "bug_id": "synthetic_4054_3_2__faulty__action_corruption__93612__wrong_initial_state__94612",
+      "changed_transition_id": null,
+      "description": "Changed initial_state from 's4054_0' to 's4054_1'"
+    }
+  ],
+  "is_higher_order": true,
+  "coupled_to_simple_faults": [
+    "synthetic_4054_3_2__action_corruption__93612",
+    "synthetic_4054_3_2__faulty__action_corruption__93612__wrong_initial_state__94612"
+  ],
+  "is_negative_control": false
+}

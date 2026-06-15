@@ -1,0 +1,43 @@
+{
+  "bug_id": "synthetic_1999_3_2__hom__wrong_source__wrong_initial_state__wrong_target__11623",
+  "reference_fsm_id": "synthetic_1999_3_2",
+  "faulty_fsm_id": "synthetic_1999_3_2__faulty__hom__wrong_source__wrong_initial_state__wrong_target__11623",
+  "mutation_operator": "wrong_source,wrong_initial_state,wrong_target",
+  "changed_transition_id": "t1999_hub_2",
+  "description": "Higher-order mutant applying 3 operators: wrong_source, wrong_initial_state, wrong_target",
+  "seed": 11623,
+  "mutation_complexity": null,
+  "mutation_scope": null,
+  "mutation_mode": null,
+  "mutation_order": 3,
+  "component_faults": [
+    {
+      "operator": "wrong_source",
+      "seed": 11623,
+      "bug_id": "synthetic_1999_3_2__wrong_source__11623",
+      "changed_transition_id": "t1999_hub_2",
+      "description": "Changed source of transition 't1999_hub_2' from 's1999_0' to 's1999_2'"
+    },
+    {
+      "operator": "wrong_initial_state",
+      "seed": 12623,
+      "bug_id": "synthetic_1999_3_2__faulty__wrong_source__11623__wrong_initial_state__12623",
+      "changed_transition_id": null,
+      "description": "Changed initial_state from 's1999_0' to 's1999_2'"
+    },
+    {
+      "operator": "wrong_target",
+      "seed": 13623,
+      "bug_id": "synthetic_1999_3_2__faulty__wrong_source__11623__faulty__wrong_initial_state__12623__wrong_target__13623",
+      "changed_transition_id": "t1999_hub_2",
+      "description": "Changed target of transition 't1999_hub_2' from 's1999_2' to 's1999_1'"
+    }
+  ],
+  "is_higher_order": true,
+  "coupled_to_simple_faults": [
+    "synthetic_1999_3_2__wrong_source__11623",
+    "synthetic_1999_3_2__faulty__wrong_source__11623__wrong_initial_state__12623",
+    "synthetic_1999_3_2__faulty__wrong_source__11623__faulty__wrong_initial_state__12623__wrong_target__13623"
+  ],
+  "is_negative_control": false
+}

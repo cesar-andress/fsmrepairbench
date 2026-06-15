@@ -1,0 +1,35 @@
+{
+  "bug_id": "synthetic_5005_3_2__hom__guard_flip__missing_transition__49877",
+  "reference_fsm_id": "synthetic_5005_3_2",
+  "faulty_fsm_id": "synthetic_5005_3_2__faulty__hom__guard_flip__missing_transition__49877",
+  "mutation_operator": "guard_flip,missing_transition",
+  "changed_transition_id": "t5005_2",
+  "description": "Higher-order mutant applying 2 operators: guard_flip, missing_transition",
+  "seed": 49877,
+  "mutation_complexity": null,
+  "mutation_scope": null,
+  "mutation_mode": null,
+  "mutation_order": 2,
+  "component_faults": [
+    {
+      "operator": "guard_flip",
+      "seed": 49877,
+      "bug_id": "synthetic_5005_3_2__guard_flip__49877",
+      "changed_transition_id": "t5005_2",
+      "description": "Changed guard of transition 't5005_2' from 'x_5005_1 > 0' to 'not_x_5005_1 > 0'"
+    },
+    {
+      "operator": "missing_transition",
+      "seed": 50877,
+      "bug_id": "synthetic_5005_3_2__faulty__guard_flip__49877__missing_transition__50877",
+      "changed_transition_id": "t5005_2",
+      "description": "Removed transition 't5005_2'"
+    }
+  ],
+  "is_higher_order": true,
+  "coupled_to_simple_faults": [
+    "synthetic_5005_3_2__guard_flip__49877",
+    "synthetic_5005_3_2__faulty__guard_flip__49877__missing_transition__50877"
+  ],
+  "is_negative_control": false
+}

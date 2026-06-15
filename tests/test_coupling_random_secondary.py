@@ -71,7 +71,11 @@ def test_run_random_secondary_coupling_campaign_exports_schema(tmp_path: Path) -
     assert result.report_path.is_file()
     assert result.manifest_path.is_file()
     assert (result.tables_dir / "table_random_secondary_summary.tex").is_file()
-    assert (paper_dir / "tables" / "table_random_secondary_summary.tex").is_file()
+    assert (result.tables_dir / "table_random_secondary_detectable_by_order.tex").is_file()
+    assert (result.figures_dir / "detection_rate_by_seed.png").is_file()
+    assert (paper_dir / "tables" / "table_random_secondary_detectable_by_order.tex").is_file()
+    assert (paper_dir / "figures" / "detectable_complete_repair_by_order.png").is_file()
+    assert (paper_dir / "manifest.json").is_file()
 
     per_seed_rows = list(csv.DictReader(result.per_seed_summary_path.open(encoding="utf-8")))
     assert len(per_seed_rows) == 2
@@ -94,7 +98,7 @@ def test_run_random_secondary_coupling_campaign_exports_schema(tmp_path: Path) -
 
     manifest = json.loads(result.manifest_path.read_text(encoding="utf-8"))
     assert manifest["experiment"] == RANDOM_SECONDARY_EXPERIMENT
-    assert manifest["secondary_operator_policy"] == "random"
+    assert manifest["design"]["secondary_operator_policy"] == "random"
     assert len(manifest["seed_runs"]) == 2
 
 
@@ -148,4 +152,4 @@ def test_run_coupling_campaign_cli_random_secondary_policy(tmp_path: Path) -> No
     assert (out / "random_secondary_summary.json").is_file()
     assert (out / "per_seed_summary.csv").is_file()
     manifest = json.loads((out / "manifest.json").read_text(encoding="utf-8"))
-    assert manifest["random_secondary_seeds"] == [0, 1]
+    assert manifest["design"]["random_secondary_seeds"] == [0, 1]

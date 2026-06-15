@@ -1,0 +1,201 @@
+{
+  "case_id": "case_000177",
+  "tool_id": "baseline_wrong_target",
+  "tool_type": "baseline",
+  "model": "baseline_wrong_target",
+  "mutation_operator": "wrong_target",
+  "status": "completed",
+  "failure_class": "complete_repair",
+  "input_format": "fsmrepairbench_case_v1",
+  "output_format": "fsmrepairbench_repair_result_v1",
+  "initial_bpr": 0.5,
+  "final_bpr": 1.0,
+  "delta_bpr": 0.5,
+  "complete_repair": true,
+  "effective_repair": true,
+  "regression": false,
+  "patch_parse_failures": 0,
+  "patch_validation_failures": 0,
+  "patch_application_failures": 0,
+  "iterations_completed": 1,
+  "runtime_seconds": 0.0002,
+  "repair_result": {
+    "bug_id": "synthetic_3762_3_2__faulty__wrong_target__177046",
+    "passed": true,
+    "score": 1.0,
+    "details": {
+      "model": "baseline_wrong_target",
+      "backend": "baseline",
+      "baseline_engine": "wrong-target",
+      "baseline_seed": 0,
+      "temperature": 0.0,
+      "max_iterations": 1,
+      "runtime_seconds": 0.0002,
+      "iterations": [
+        {
+          "iteration": 1,
+          "bpr_before": 0.5,
+          "patch_valid": true,
+          "patch_applied": true,
+          "patch": {
+            "patch_id": "baseline_wrong_target_synthetic_3762_3_2__faulty__wrong_target__177046",
+            "target_fsm_id": "synthetic_3762_3_2__faulty__wrong_target__177046",
+            "operations": [
+              {
+                "op": "replace_transition_target",
+                "transition_id": "t3762_2",
+                "target": "s3762_2"
+              }
+            ]
+          },
+          "validation_errors": [],
+          "bpr_after": 1.0
+        }
+      ],
+      "final_fsm": {
+        "id": "synthetic_3762_3_2__faulty__wrong_target__177046",
+        "name": "Synthetic FSM (custom) (faulty: wrong_target)",
+        "description": "Synthetic FSM generated with seed=3762, states=3, events=2, branching_factor=4, deterministic=True, allow_dead_states=False",
+        "states": [
+          {
+            "id": "s3762_0",
+            "state_output": null,
+            "refusal": false,
+            "quiescence": false
+          },
+          {
+            "id": "s3762_1",
+            "state_output": null,
+            "refusal": false,
+            "quiescence": false
+          },
+          {
+            "id": "s3762_2",
+            "state_output": null,
+            "refusal": false,
+            "quiescence": false
+          }
+        ],
+        "initial_state": "s3762_0",
+        "events": [
+          "e3762_0",
+          "e3762_1"
+        ],
+        "transitions": [
+          {
+            "id": "t3762_1",
+            "source": "s3762_0",
+            "event": "e3762_0",
+            "target": "s3762_1",
+            "guard": "x_3762_0 > 0",
+            "action": "act3762_1",
+            "output": "out_3762_0",
+            "timeout": null,
+            "delay": null,
+            "requirements": [],
+            "probability": null,
+            "is_nondeterministic": false,
+            "refusal": false,
+            "quiescence": false,
+            "discrete_time": null
+          },
+          {
+            "id": "t3762_2",
+            "source": "s3762_0",
+            "event": "e3762_1",
+            "target": "s3762_2",
+            "guard": "x_3762_1 > 0",
+            "action": "act3762_2",
+            "output": "out_3762_1",
+            "timeout": null,
+            "delay": null,
+            "requirements": [],
+            "probability": null,
+            "is_nondeterministic": false,
+            "refusal": false,
+            "quiescence": false,
+            "discrete_time": null
+          },
+          {
+            "id": "t3762_3",
+            "source": "s3762_1",
+            "event": "e3762_1",
+            "target": "s3762_1",
+            "guard": "x_3762_2 > 0",
+            "action": "act3762_3",
+            "output": "out_3762_2",
+            "timeout": null,
+            "delay": null,
+            "requirements": [],
+            "probability": null,
+            "is_nondeterministic": false,
+            "refusal": false,
+            "quiescence": false,
+            "discrete_time": null
+          },
+          {
+            "id": "t3762_4",
+            "source": "s3762_1",
+            "event": "e3762_0",
+            "target": "s3762_2",
+            "guard": "x_3762_3 > 0",
+            "action": "act3762_4",
+            "output": "out_3762_3",
+            "timeout": null,
+            "delay": null,
+            "requirements": [],
+            "probability": null,
+            "is_nondeterministic": false,
+            "refusal": false,
+            "quiescence": false,
+            "discrete_time": null
+          },
+          {
+            "id": "t3762_5",
+            "source": "s3762_2",
+            "event": "e3762_0",
+            "target": "s3762_2",
+            "guard": "x_3762_4 > 0",
+            "action": "act3762_5",
+            "output": "out_3762_4",
+            "timeout": null,
+            "delay": null,
+            "requirements": [],
+            "probability": null,
+            "is_nondeterministic": false,
+            "refusal": false,
+            "quiescence": false,
+            "discrete_time": null
+          },
+          {
+            "id": "t3762_6",
+            "source": "s3762_2",
+            "event": "e3762_0",
+            "target": "s3762_2",
+            "guard": "x_3762_5 > 0",
+            "action": "act3762_6",
+            "output": "out_3762_5",
+            "timeout": null,
+            "delay": null,
+            "requirements": [],
+            "probability": null,
+            "is_nondeterministic": false,
+            "refusal": false,
+            "quiescence": false,
+            "discrete_time": null
+          }
+        ],
+        "variables": {},
+        "parent_fsm_id": "synthetic_3762_3_2",
+        "reference_fsm_id": "synthetic_3762_3_2",
+        "discrete_time_step": null,
+        "semantics_mode": null,
+        "cyclic_metadata": null
+      },
+      "passed_steps": 10,
+      "total_steps": 10,
+      "passed_scenarios": 6,
+      "total_scenarios": 6
+    }
+  }
+}

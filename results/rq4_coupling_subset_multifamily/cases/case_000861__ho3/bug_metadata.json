@@ -1,0 +1,43 @@
+{
+  "bug_id": "synthetic_16400_3_2__hom__delay_corruption__guard_flip__missing_transition__63826",
+  "reference_fsm_id": "synthetic_16400_3_2",
+  "faulty_fsm_id": "synthetic_16400_3_2__faulty__hom__delay_corruption__guard_flip__missing_transition__63826",
+  "mutation_operator": "delay_corruption,guard_flip,missing_transition",
+  "changed_transition_id": "t16400_1",
+  "description": "Higher-order mutant applying 3 operators: delay_corruption, guard_flip, missing_transition",
+  "seed": 63826,
+  "mutation_complexity": null,
+  "mutation_scope": null,
+  "mutation_mode": null,
+  "mutation_order": 3,
+  "component_faults": [
+    {
+      "operator": "delay_corruption",
+      "seed": 63826,
+      "bug_id": "synthetic_16400_3_2__delay_corruption__63826",
+      "changed_transition_id": "t16400_1",
+      "description": "Corrupted delay on transition 't16400_1' to 1.5"
+    },
+    {
+      "operator": "guard_flip",
+      "seed": 64826,
+      "bug_id": "synthetic_16400_3_2__faulty__delay_corruption__63826__guard_flip__64826",
+      "changed_transition_id": "t16400_2",
+      "description": "Changed guard of transition 't16400_2' from 'x_16400_1 > 0' to 'not_x_16400_1 > 0'"
+    },
+    {
+      "operator": "missing_transition",
+      "seed": 65826,
+      "bug_id": "synthetic_16400_3_2__faulty__delay_corruption__63826__faulty__guard_flip__64826__missing_transition__65826",
+      "changed_transition_id": "t16400_1",
+      "description": "Removed transition 't16400_1'"
+    }
+  ],
+  "is_higher_order": true,
+  "coupled_to_simple_faults": [
+    "synthetic_16400_3_2__delay_corruption__63826",
+    "synthetic_16400_3_2__faulty__delay_corruption__63826__guard_flip__64826",
+    "synthetic_16400_3_2__faulty__delay_corruption__63826__faulty__guard_flip__64826__missing_transition__65826"
+  ],
+  "is_negative_control": false
+}

@@ -1,0 +1,43 @@
+{
+  "bug_id": "synthetic_13394_3_2__hom__guard_flip__guard_strengthen__wrong_initial_state__99918",
+  "reference_fsm_id": "synthetic_13394_3_2",
+  "faulty_fsm_id": "synthetic_13394_3_2__faulty__hom__guard_flip__guard_strengthen__wrong_initial_state__99918",
+  "mutation_operator": "guard_flip,guard_strengthen,wrong_initial_state",
+  "changed_transition_id": null,
+  "description": "Higher-order mutant applying 3 operators: guard_flip, guard_strengthen, wrong_initial_state",
+  "seed": 99918,
+  "mutation_complexity": null,
+  "mutation_scope": null,
+  "mutation_mode": null,
+  "mutation_order": 3,
+  "component_faults": [
+    {
+      "operator": "guard_flip",
+      "seed": 99918,
+      "bug_id": "synthetic_13394_3_2__guard_flip__99918",
+      "changed_transition_id": "t13394_4",
+      "description": "Changed guard of transition 't13394_4' from 'x_13394_3 > 0 and y_13394_3 < 10' to 'not_x_13394_3 > 0 and y_13394_3 < 10'"
+    },
+    {
+      "operator": "guard_strengthen",
+      "seed": 100918,
+      "bug_id": "synthetic_13394_3_2__faulty__guard_flip__99918__guard_strengthen__100918",
+      "changed_transition_id": "t13394_12",
+      "description": "Strengthened guard on transition 't13394_12'"
+    },
+    {
+      "operator": "wrong_initial_state",
+      "seed": 101918,
+      "bug_id": "synthetic_13394_3_2__faulty__guard_flip__99918__faulty__guard_strengthen__100918__wrong_initial_state__101918",
+      "changed_transition_id": null,
+      "description": "Changed initial_state from 's13394_0' to 's13394_1'"
+    }
+  ],
+  "is_higher_order": true,
+  "coupled_to_simple_faults": [
+    "synthetic_13394_3_2__guard_flip__99918",
+    "synthetic_13394_3_2__faulty__guard_flip__99918__guard_strengthen__100918",
+    "synthetic_13394_3_2__faulty__guard_flip__99918__faulty__guard_strengthen__100918__wrong_initial_state__101918"
+  ],
+  "is_negative_control": false
+}

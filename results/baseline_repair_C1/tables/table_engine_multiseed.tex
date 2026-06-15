@@ -1,0 +1,17 @@
+% Auto-generated from fsmrepairbench.baseline_repair_campaign
+\begin{table}[t]
+\caption{C1 baseline repair engines: detectable-only complete and effective repair and mean $\Delta$BPR (mean $\pm$ std across seeds for stochastic engines; single-run values for deterministic engines). \textbf{Primary partition: detectable-only} ($n=495$); cohort-wide$^\dagger$ totals appear in \texttt{leaderboard.csv}.}
+\label{tab:table_engine_multiseed}
+\begin{tabular}{@{}lrrr@{}}
+\toprule
+Engine & Complete (detect.) & Effective (detect.) & Mean $\Delta$BPR (detect.) \\
+\midrule
+missing\-transition & 0.6848 & 0.7798 & 0.1053 \\
+wrong\-target & 0.1212 & 0.2202 & 0.0487 \\
+random & 0.0028 $\pm$ 0.0036 & 0.0119 $\pm$ 0.0062 & -0.0495 $\pm$ 0.0243 \\
+search\-bpr & 0.8626 $\pm$ 0.0000 & 0.9798 $\pm$ 0.0000 & 0.1231 $\pm$ 0.0000 \\
+oracle\-composite & 0.6747 & 0.8263 & 0.1535 \\
+llm\-template & 0.6747 & 0.8263 & 0.1535 \\
+\bottomrule
+\end{tabular}
+\end{table}

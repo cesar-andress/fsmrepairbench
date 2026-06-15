@@ -1,0 +1,35 @@
+{
+  "bug_id": "synthetic_14413_3_2__hom__missing_transition__wrong_initial_state__63326",
+  "reference_fsm_id": "synthetic_14413_3_2",
+  "faulty_fsm_id": "synthetic_14413_3_2__faulty__hom__missing_transition__wrong_initial_state__63326",
+  "mutation_operator": "missing_transition,wrong_initial_state",
+  "changed_transition_id": null,
+  "description": "Higher-order mutant applying 2 operators: missing_transition, wrong_initial_state",
+  "seed": 63326,
+  "mutation_complexity": null,
+  "mutation_scope": null,
+  "mutation_mode": null,
+  "mutation_order": 2,
+  "component_faults": [
+    {
+      "operator": "missing_transition",
+      "seed": 63326,
+      "bug_id": "synthetic_14413_3_2__missing_transition__63326",
+      "changed_transition_id": "t14413_4",
+      "description": "Removed transition 't14413_4'"
+    },
+    {
+      "operator": "wrong_initial_state",
+      "seed": 64326,
+      "bug_id": "synthetic_14413_3_2__faulty__missing_transition__63326__wrong_initial_state__64326",
+      "changed_transition_id": null,
+      "description": "Changed initial_state from 's14413_0' to 's14413_1'"
+    }
+  ],
+  "is_higher_order": true,
+  "coupled_to_simple_faults": [
+    "synthetic_14413_3_2__missing_transition__63326",
+    "synthetic_14413_3_2__faulty__missing_transition__63326__wrong_initial_state__64326"
+  ],
+  "is_negative_control": false
+}

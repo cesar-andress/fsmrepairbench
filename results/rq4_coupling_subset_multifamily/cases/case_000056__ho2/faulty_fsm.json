@@ -1,0 +1,72 @@
+{
+  "id": "synthetic_1099_3_2__faulty__hom__nondeterminism_intro__wrong_initial_state__90711",
+  "name": "Synthetic FSM (custom) (higher-order: nondeterminism_intro, wrong_initial_state)",
+  "description": "Synthetic FSM generated with seed=1099, states=3, events=2, branching_factor=1, deterministic=False, allow_dead_states=True",
+  "states": [
+    {
+      "id": "s1099_0",
+      "state_output": null,
+      "refusal": false,
+      "quiescence": false
+    },
+    {
+      "id": "s1099_1",
+      "state_output": null,
+      "refusal": false,
+      "quiescence": false
+    },
+    {
+      "id": "s1099_2",
+      "state_output": null,
+      "refusal": false,
+      "quiescence": false
+    }
+  ],
+  "initial_state": "s1099_1",
+  "events": [
+    "e1099_0",
+    "e1099_1"
+  ],
+  "transitions": [
+    {
+      "id": "t1099_1",
+      "source": "s1099_0",
+      "event": "e1099_0",
+      "target": "s1099_1",
+      "guard": null,
+      "action": "act1099_1",
+      "output": null,
+      "timeout": null,
+      "delay": null,
+      "requirements": [],
+      "probability": null,
+      "is_nondeterministic": false,
+      "refusal": false,
+      "quiescence": false,
+      "discrete_time": null
+    },
+    {
+      "id": "t1099_1__nd__90711",
+      "source": "s1099_0",
+      "event": "e1099_0",
+      "target": "s1099_0",
+      "guard": null,
+      "action": "act1099_1",
+      "output": null,
+      "timeout": null,
+      "delay": null,
+      "requirements": [],
+      "probability": null,
+      "is_nondeterministic": false,
+      "refusal": false,
+      "quiescence": false,
+      "discrete_time": null
+    }
+  ],
+  "variables": {},
+  "parent_fsm_id": "synthetic_1099_3_2",
+  "reference_fsm_id": "synthetic_1099_3_2",
+  "discrete_time_step": null,
+  "semantics_mode": null,
+  "cyclic_metadata": null
+}

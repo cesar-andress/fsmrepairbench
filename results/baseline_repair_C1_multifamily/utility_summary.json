@@ -1,0 +1,439 @@
+{
+  "alpha": 0.05,
+  "benchmark_discrimination_index": {
+    "complete_repair": {
+      "cohort_wide": 0.671,
+      "detectable_only": 0.771605
+    },
+    "effective_repair": {
+      "cohort_wide": 0.672,
+      "detectable_only": 0.771605
+    }
+  },
+  "benchmark_utility_index": {
+    "definition": "mean pairwise case disagreement on detectable-only complete repair multiplied by mean |Cohen's h| across tool pairs",
+    "detectable_only_complete_repair": 0.587025
+  },
+  "bootstrap_rate_gaps": {
+    "complete_repair_cohort_wide": [
+      {
+        "bootstrap_ci95_high": 0.366,
+        "bootstrap_ci95_low": 0.272,
+        "bootstrap_distinguishable": true,
+        "mean_rate_gap": 0.319,
+        "tool_a": "baseline_missing_transition",
+        "tool_b": "baseline_wrong_target"
+      },
+      {
+        "bootstrap_ci95_high": 0.524,
+        "bootstrap_ci95_low": 0.462,
+        "bootstrap_distinguishable": true,
+        "mean_rate_gap": 0.493,
+        "tool_a": "baseline_missing_transition",
+        "tool_b": "baseline_random"
+      },
+      {
+        "bootstrap_ci95_high": 0.198,
+        "bootstrap_ci95_low": 0.15,
+        "bootstrap_distinguishable": true,
+        "mean_rate_gap": 0.174,
+        "tool_a": "baseline_wrong_target",
+        "tool_b": "baseline_random"
+      }
+    ],
+    "complete_repair_detectable_only": [
+      {
+        "bootstrap_ci95_high": 0.37037,
+        "bootstrap_ci95_low": 0.24537,
+        "bootstrap_distinguishable": true,
+        "mean_rate_gap": 0.308642,
+        "tool_a": "baseline_missing_transition",
+        "tool_b": "baseline_wrong_target"
+      },
+      {
+        "bootstrap_ci95_high": 0.578704,
+        "bootstrap_ci95_low": 0.501543,
+        "bootstrap_distinguishable": true,
+        "mean_rate_gap": 0.540123,
+        "tool_a": "baseline_missing_transition",
+        "tool_b": "baseline_random"
+      },
+      {
+        "bootstrap_ci95_high": 0.265432,
+        "bootstrap_ci95_low": 0.200617,
+        "bootstrap_distinguishable": true,
+        "mean_rate_gap": 0.231481,
+        "tool_a": "baseline_wrong_target",
+        "tool_b": "baseline_random"
+      }
+    ],
+    "effective_repair_cohort_wide": [
+      {
+        "bootstrap_ci95_high": 0.365,
+        "bootstrap_ci95_low": 0.271,
+        "bootstrap_distinguishable": true,
+        "mean_rate_gap": 0.318,
+        "tool_a": "baseline_missing_transition",
+        "tool_b": "baseline_wrong_target"
+      },
+      {
+        "bootstrap_ci95_high": 0.524,
+        "bootstrap_ci95_low": 0.462,
+        "bootstrap_distinguishable": true,
+        "mean_rate_gap": 0.493,
+        "tool_a": "baseline_missing_transition",
+        "tool_b": "baseline_random"
+      },
+      {
+        "bootstrap_ci95_high": 0.199,
+        "bootstrap_ci95_low": 0.151,
+        "bootstrap_distinguishable": true,
+        "mean_rate_gap": 0.175,
+        "tool_a": "baseline_wrong_target",
+        "tool_b": "baseline_random"
+      }
+    ],
+    "effective_repair_detectable_only": [
+      {
+        "bootstrap_ci95_high": 0.37037,
+        "bootstrap_ci95_low": 0.24537,
+        "bootstrap_distinguishable": true,
+        "mean_rate_gap": 0.308642,
+        "tool_a": "baseline_missing_transition",
+        "tool_b": "baseline_wrong_target"
+      },
+      {
+        "bootstrap_ci95_high": 0.578704,
+        "bootstrap_ci95_low": 0.501543,
+        "bootstrap_distinguishable": true,
+        "mean_rate_gap": 0.540123,
+        "tool_a": "baseline_missing_transition",
+        "tool_b": "baseline_random"
+      },
+      {
+        "bootstrap_ci95_high": 0.265432,
+        "bootstrap_ci95_low": 0.200617,
+        "bootstrap_distinguishable": true,
+        "mean_rate_gap": 0.231481,
+        "tool_a": "baseline_wrong_target",
+        "tool_b": "baseline_random"
+      }
+    ]
+  },
+  "bootstrap_seed": 44,
+  "generated_at": "2026-06-09T15:45:48.289060+00:00",
+  "pairwise_effect_sizes": [
+    {
+      "abs_cohens_h": 0.647254,
+      "case_disagreement_rate": 0.771605,
+      "cohens_h": 0.647254,
+      "mcnemar_p_value": 0.0,
+      "mcnemar_statistic": 500,
+      "metric": "complete_repair",
+      "n_cases": 648,
+      "n_success_a": 498,
+      "n_success_b": 298,
+      "partition": "detectable_only",
+      "rate_a": 0.768519,
+      "rate_b": 0.459877,
+      "statistically_distinguishable": true,
+      "tool_a": "baseline_missing_transition",
+      "tool_b": "baseline_wrong_target"
+    },
+    {
+      "abs_cohens_h": 1.141176,
+      "case_disagreement_rate": 0.540123,
+      "cohens_h": 1.141176,
+      "mcnemar_p_value": 0.0,
+      "mcnemar_statistic": 350,
+      "metric": "complete_repair",
+      "n_cases": 648,
+      "n_success_a": 498,
+      "n_success_b": 148,
+      "partition": "detectable_only",
+      "rate_a": 0.768519,
+      "rate_b": 0.228395,
+      "statistically_distinguishable": true,
+      "tool_a": "baseline_missing_transition",
+      "tool_b": "baseline_random"
+    },
+    {
+      "abs_cohens_h": 0.493922,
+      "case_disagreement_rate": 0.231481,
+      "cohens_h": 0.493922,
+      "mcnemar_p_value": 0.0,
+      "mcnemar_statistic": 150,
+      "metric": "complete_repair",
+      "n_cases": 648,
+      "n_success_a": 298,
+      "n_success_b": 148,
+      "partition": "detectable_only",
+      "rate_a": 0.459877,
+      "rate_b": 0.228395,
+      "statistically_distinguishable": true,
+      "tool_a": "baseline_wrong_target",
+      "tool_b": "baseline_random"
+    },
+    {
+      "abs_cohens_h": 0.693715,
+      "case_disagreement_rate": 0.671,
+      "cohens_h": 0.693715,
+      "mcnemar_p_value": 0.0,
+      "mcnemar_statistic": 671,
+      "metric": "complete_repair",
+      "n_cases": 1000,
+      "n_success_a": 822,
+      "n_success_b": 503,
+      "partition": "cohort_wide",
+      "rate_a": 0.822,
+      "rate_b": 0.503,
+      "statistically_distinguishable": true,
+      "tool_a": "baseline_missing_transition",
+      "tool_b": "baseline_wrong_target"
+    },
+    {
+      "abs_cohens_h": 1.04876,
+      "case_disagreement_rate": 0.493,
+      "cohens_h": 1.04876,
+      "mcnemar_p_value": 0.0,
+      "mcnemar_statistic": 493,
+      "metric": "complete_repair",
+      "n_cases": 1000,
+      "n_success_a": 822,
+      "n_success_b": 329,
+      "partition": "cohort_wide",
+      "rate_a": 0.822,
+      "rate_b": 0.329,
+      "statistically_distinguishable": true,
+      "tool_a": "baseline_missing_transition",
+      "tool_b": "baseline_random"
+    },
+    {
+      "abs_cohens_h": 0.355044,
+      "case_disagreement_rate": 0.178,
+      "cohens_h": 0.355044,
+      "mcnemar_p_value": 0.0,
+      "mcnemar_statistic": 178,
+      "metric": "complete_repair",
+      "n_cases": 1000,
+      "n_success_a": 503,
+      "n_success_b": 329,
+      "partition": "cohort_wide",
+      "rate_a": 0.503,
+      "rate_b": 0.329,
+      "statistically_distinguishable": true,
+      "tool_a": "baseline_wrong_target",
+      "tool_b": "baseline_random"
+    },
+    {
+      "abs_cohens_h": 0.647254,
+      "case_disagreement_rate": 0.771605,
+      "cohens_h": 0.647254,
+      "mcnemar_p_value": 0.0,
+      "mcnemar_statistic": 500,
+      "metric": "effective_repair",
+      "n_cases": 648,
+      "n_success_a": 350,
+      "n_success_b": 150,
+      "partition": "detectable_only",
+      "rate_a": 0.540123,
+      "rate_b": 0.231481,
+      "statistically_distinguishable": true,
+      "tool_a": "baseline_missing_transition",
+      "tool_b": "baseline_wrong_target"
+    },
+    {
+      "abs_cohens_h": 1.65113,
+      "case_disagreement_rate": 0.540123,
+      "cohens_h": 1.65113,
+      "mcnemar_p_value": 0.0,
+      "mcnemar_statistic": 350,
+      "metric": "effective_repair",
+      "n_cases": 648,
+      "n_success_a": 350,
+      "n_success_b": 0,
+      "partition": "detectable_only",
+      "rate_a": 0.540123,
+      "rate_b": 0.0,
+      "statistically_distinguishable": true,
+      "tool_a": "baseline_missing_transition",
+      "tool_b": "baseline_random"
+    },
+    {
+      "abs_cohens_h": 1.003876,
+      "case_disagreement_rate": 0.231481,
+      "cohens_h": 1.003876,
+      "mcnemar_p_value": 0.0,
+      "mcnemar_statistic": 150,
+      "metric": "effective_repair",
+      "n_cases": 648,
+      "n_success_a": 150,
+      "n_success_b": 0,
+      "partition": "detectable_only",
+      "rate_a": 0.231481,
+      "rate_b": 0.0,
+      "statistically_distinguishable": true,
+      "tool_a": "baseline_wrong_target",
+      "tool_b": "baseline_random"
+    },
+    {
+      "abs_cohens_h": 0.692332,
+      "case_disagreement_rate": 0.672,
+      "cohens_h": 0.692332,
+      "mcnemar_p_value": 0.0,
+      "mcnemar_statistic": 672,
+      "metric": "effective_repair",
+      "n_cases": 1000,
+      "n_success_a": 495,
+      "n_success_b": 177,
+      "partition": "cohort_wide",
+      "rate_a": 0.495,
+      "rate_b": 0.177,
+      "statistically_distinguishable": true,
+      "tool_a": "baseline_missing_transition",
+      "tool_b": "baseline_wrong_target"
+    },
+    {
+      "abs_cohens_h": 1.471324,
+      "case_disagreement_rate": 0.493,
+      "cohens_h": 1.471324,
+      "mcnemar_p_value": 0.0,
+      "mcnemar_statistic": 493,
+      "metric": "effective_repair",
+      "n_cases": 1000,
+      "n_success_a": 495,
+      "n_success_b": 2,
+      "partition": "cohort_wide",
+      "rate_a": 0.495,
+      "rate_b": 0.002,
+      "statistically_distinguishable": true,
+      "tool_a": "baseline_missing_transition",
+      "tool_b": "baseline_random"
+    },
+    {
+      "abs_cohens_h": 0.778991,
+      "case_disagreement_rate": 0.179,
+      "cohens_h": 0.778991,
+      "mcnemar_p_value": 0.0,
+      "mcnemar_statistic": 179,
+      "metric": "effective_repair",
+      "n_cases": 1000,
+      "n_success_a": 177,
+      "n_success_b": 2,
+      "partition": "cohort_wide",
+      "rate_a": 0.177,
+      "rate_b": 0.002,
+      "statistically_distinguishable": true,
+      "tool_a": "baseline_wrong_target",
+      "tool_b": "baseline_random"
+    }
+  ],
+  "random_pair_distinguishability_probability": {
+    "complete_repair": {
+      "cohort_wide": 1.0,
+      "detectable_only": 1.0
+    },
+    "effective_repair": {
+      "cohort_wide": 1.0,
+      "detectable_only": 1.0
+    }
+  },
+  "rank_stability": {
+    "complete_repair_cohort_wide": {
+      "kendall_tau_mean": 0.4031746031746032,
+      "pairwise_kendall_tau": {
+        "missing-transition vs random": 0.390476,
+        "missing-transition vs wrong-target": 0.104762,
+        "wrong-target vs random": 0.714286
+      },
+      "shared_operators": [
+        "action_corruption",
+        "dead_state_intro",
+        "delay_corruption",
+        "duplicate_transition",
+        "guard_flip",
+        "guard_strengthen",
+        "guard_weaken",
+        "missing_transition",
+        "nondeterminism_intro",
+        "timeout_corruption",
+        "unreachable_state_intro",
+        "wrong_event",
+        "wrong_initial_state",
+        "wrong_source",
+        "wrong_target"
+      ]
+    },
+    "complete_repair_detectable_only": {
+      "kendall_tau_mean": 0.3333333333333333,
+      "pairwise_kendall_tau": {
+        "missing-transition vs random": 0.285714,
+        "missing-transition vs wrong-target": 0.0,
+        "wrong-target vs random": 0.714286
+      },
+      "shared_operators": [
+        "guard_flip",
+        "guard_strengthen",
+        "guard_weaken",
+        "missing_transition",
+        "wrong_event",
+        "wrong_initial_state",
+        "wrong_source",
+        "wrong_target"
+      ]
+    },
+    "effective_repair_cohort_wide": {
+      "kendall_tau_mean": 0.04761904761904762,
+      "pairwise_kendall_tau": {
+        "missing-transition vs random": 0.066667,
+        "missing-transition vs wrong-target": -0.219048,
+        "wrong-target vs random": 0.295238
+      },
+      "shared_operators": [
+        "action_corruption",
+        "dead_state_intro",
+        "delay_corruption",
+        "duplicate_transition",
+        "guard_flip",
+        "guard_strengthen",
+        "guard_weaken",
+        "missing_transition",
+        "nondeterminism_intro",
+        "timeout_corruption",
+        "unreachable_state_intro",
+        "wrong_event",
+        "wrong_initial_state",
+        "wrong_source",
+        "wrong_target"
+      ]
+    },
+    "effective_repair_detectable_only": {
+      "kendall_tau_mean": -0.14285714285714288,
+      "pairwise_kendall_tau": {
+        "missing-transition vs random": -0.285714,
+        "missing-transition vs wrong-target": -0.642857,
+        "wrong-target vs random": 0.5
+      },
+      "shared_operators": [
+        "guard_flip",
+        "guard_strengthen",
+        "guard_weaken",
+        "missing_transition",
+        "wrong_event",
+        "wrong_initial_state",
+        "wrong_source",
+        "wrong_target"
+      ]
+    }
+  },
+  "tool_labels": {
+    "baseline_missing_transition": "missing-transition",
+    "baseline_random": "random",
+    "baseline_wrong_target": "wrong-target"
+  },
+  "tools": [
+    "baseline_missing_transition",
+    "baseline_wrong_target",
+    "baseline_random"
+  ]
+}

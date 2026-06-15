@@ -1,0 +1,43 @@
+{
+  "bug_id": "synthetic_4954_3_2__hom__guard_flip__missing_transition__wrong_event__41355",
+  "reference_fsm_id": "synthetic_4954_3_2",
+  "faulty_fsm_id": "synthetic_4954_3_2__faulty__hom__guard_flip__missing_transition__wrong_event__41355",
+  "mutation_operator": "guard_flip,missing_transition,wrong_event",
+  "changed_transition_id": "t4954_2",
+  "description": "Higher-order mutant applying 3 operators: guard_flip, missing_transition, wrong_event",
+  "seed": 41355,
+  "mutation_complexity": null,
+  "mutation_scope": null,
+  "mutation_mode": null,
+  "mutation_order": 3,
+  "component_faults": [
+    {
+      "operator": "guard_flip",
+      "seed": 41355,
+      "bug_id": "synthetic_4954_3_2__guard_flip__41355",
+      "changed_transition_id": "t4954_1",
+      "description": "Changed guard of transition 't4954_1' from 'x_4954_0 > 0' to 'not_x_4954_0 > 0'"
+    },
+    {
+      "operator": "missing_transition",
+      "seed": 42355,
+      "bug_id": "synthetic_4954_3_2__faulty__guard_flip__41355__missing_transition__42355",
+      "changed_transition_id": "t4954_3",
+      "description": "Removed transition 't4954_3'"
+    },
+    {
+      "operator": "wrong_event",
+      "seed": 43355,
+      "bug_id": "synthetic_4954_3_2__faulty__guard_flip__41355__faulty__missing_transition__42355__wrong_event__43355",
+      "changed_transition_id": "t4954_2",
+      "description": "Changed event of transition 't4954_2' from 'e4954_0' to 'e4954_1'"
+    }
+  ],
+  "is_higher_order": true,
+  "coupled_to_simple_faults": [
+    "synthetic_4954_3_2__guard_flip__41355",
+    "synthetic_4954_3_2__faulty__guard_flip__41355__missing_transition__42355",
+    "synthetic_4954_3_2__faulty__guard_flip__41355__faulty__missing_transition__42355__wrong_event__43355"
+  ],
+  "is_negative_control": false
+}

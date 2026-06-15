@@ -1,0 +1,35 @@
+{
+  "bug_id": "synthetic_3969_3_2__hom__action_corruption__wrong_target__34067",
+  "reference_fsm_id": "synthetic_3969_3_2",
+  "faulty_fsm_id": "synthetic_3969_3_2__faulty__hom__action_corruption__wrong_target__34067",
+  "mutation_operator": "action_corruption,wrong_target",
+  "changed_transition_id": "t3969_2",
+  "description": "Higher-order mutant applying 2 operators: action_corruption, wrong_target",
+  "seed": 34067,
+  "mutation_complexity": null,
+  "mutation_scope": null,
+  "mutation_mode": null,
+  "mutation_order": 2,
+  "component_faults": [
+    {
+      "operator": "action_corruption",
+      "seed": 34067,
+      "bug_id": "synthetic_3969_3_2__action_corruption__34067",
+      "changed_transition_id": "t3969_2",
+      "description": "Changed action of transition 't3969_2' from 'act3969_2' to 'wrong_act3969_2'"
+    },
+    {
+      "operator": "wrong_target",
+      "seed": 35067,
+      "bug_id": "synthetic_3969_3_2__faulty__action_corruption__34067__wrong_target__35067",
+      "changed_transition_id": "t3969_2",
+      "description": "Changed target of transition 't3969_2' from 's3969_2' to 's3969_0'"
+    }
+  ],
+  "is_higher_order": true,
+  "coupled_to_simple_faults": [
+    "synthetic_3969_3_2__action_corruption__34067",
+    "synthetic_3969_3_2__faulty__action_corruption__34067__wrong_target__35067"
+  ],
+  "is_negative_control": false
+}

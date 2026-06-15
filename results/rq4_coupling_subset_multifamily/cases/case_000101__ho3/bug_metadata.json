@@ -1,0 +1,43 @@
+{
+  "bug_id": "synthetic_1965_3_2__hom__wrong_source__guard_flip__missing_transition__82994",
+  "reference_fsm_id": "synthetic_1965_3_2",
+  "faulty_fsm_id": "synthetic_1965_3_2__faulty__hom__wrong_source__guard_flip__missing_transition__82994",
+  "mutation_operator": "wrong_source,guard_flip,missing_transition",
+  "changed_transition_id": "t1965_hub_1",
+  "description": "Higher-order mutant applying 3 operators: wrong_source, guard_flip, missing_transition",
+  "seed": 82994,
+  "mutation_complexity": null,
+  "mutation_scope": null,
+  "mutation_mode": null,
+  "mutation_order": 3,
+  "component_faults": [
+    {
+      "operator": "wrong_source",
+      "seed": 82994,
+      "bug_id": "synthetic_1965_3_2__wrong_source__82994",
+      "changed_transition_id": "t1965_hub_1",
+      "description": "Changed source of transition 't1965_hub_1' from 's1965_0' to 's1965_1'"
+    },
+    {
+      "operator": "guard_flip",
+      "seed": 83994,
+      "bug_id": "synthetic_1965_3_2__faulty__wrong_source__82994__guard_flip__83994",
+      "changed_transition_id": "t1965_hub_1",
+      "description": "Added guard 'unexpected_guard' to transition 't1965_hub_1'"
+    },
+    {
+      "operator": "missing_transition",
+      "seed": 84994,
+      "bug_id": "synthetic_1965_3_2__faulty__wrong_source__82994__faulty__guard_flip__83994__missing_transition__84994",
+      "changed_transition_id": "t1965_hub_1",
+      "description": "Removed transition 't1965_hub_1'"
+    }
+  ],
+  "is_higher_order": true,
+  "coupled_to_simple_faults": [
+    "synthetic_1965_3_2__wrong_source__82994",
+    "synthetic_1965_3_2__faulty__wrong_source__82994__guard_flip__83994",
+    "synthetic_1965_3_2__faulty__wrong_source__82994__faulty__guard_flip__83994__missing_transition__84994"
+  ],
+  "is_negative_control": false
+}

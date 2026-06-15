@@ -1,0 +1,35 @@
+{
+  "bug_id": "synthetic_13394_3_2__hom__guard_flip__wrong_source__23923",
+  "reference_fsm_id": "synthetic_13394_3_2",
+  "faulty_fsm_id": "synthetic_13394_3_2__faulty__hom__guard_flip__wrong_source__23923",
+  "mutation_operator": "guard_flip,wrong_source",
+  "changed_transition_id": "t13394_6",
+  "description": "Higher-order mutant applying 2 operators: guard_flip, wrong_source",
+  "seed": 23923,
+  "mutation_complexity": null,
+  "mutation_scope": null,
+  "mutation_mode": null,
+  "mutation_order": 2,
+  "component_faults": [
+    {
+      "operator": "guard_flip",
+      "seed": 23923,
+      "bug_id": "synthetic_13394_3_2__guard_flip__23923",
+      "changed_transition_id": "t13394_11",
+      "description": "Changed guard of transition 't13394_11' from 'x_13394_10 > 0 and y_13394_10 < 10' to 'not_x_13394_10 > 0 and y_13394_10 < 10'"
+    },
+    {
+      "operator": "wrong_source",
+      "seed": 24923,
+      "bug_id": "synthetic_13394_3_2__faulty__guard_flip__23923__wrong_source__24923",
+      "changed_transition_id": "t13394_6",
+      "description": "Changed source of transition 't13394_6' from 's13394_1' to 's13394_2'"
+    }
+  ],
+  "is_higher_order": true,
+  "coupled_to_simple_faults": [
+    "synthetic_13394_3_2__guard_flip__23923",
+    "synthetic_13394_3_2__faulty__guard_flip__23923__wrong_source__24923"
+  ],
+  "is_negative_control": false
+}

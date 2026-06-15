@@ -1,0 +1,43 @@
+{
+  "bug_id": "synthetic_16298_3_2__hom__delay_corruption__missing_transition__wrong_event__90309",
+  "reference_fsm_id": "synthetic_16298_3_2",
+  "faulty_fsm_id": "synthetic_16298_3_2__faulty__hom__delay_corruption__missing_transition__wrong_event__90309",
+  "mutation_operator": "delay_corruption,missing_transition,wrong_event",
+  "changed_transition_id": "t16298_3",
+  "description": "Higher-order mutant applying 3 operators: delay_corruption, missing_transition, wrong_event",
+  "seed": 90309,
+  "mutation_complexity": null,
+  "mutation_scope": null,
+  "mutation_mode": null,
+  "mutation_order": 3,
+  "component_faults": [
+    {
+      "operator": "delay_corruption",
+      "seed": 90309,
+      "bug_id": "synthetic_16298_3_2__delay_corruption__90309",
+      "changed_transition_id": "t16298_3",
+      "description": "Corrupted delay on transition 't16298_3' to 1.5"
+    },
+    {
+      "operator": "missing_transition",
+      "seed": 91309,
+      "bug_id": "synthetic_16298_3_2__faulty__delay_corruption__90309__missing_transition__91309",
+      "changed_transition_id": "t16298_2",
+      "description": "Removed transition 't16298_2'"
+    },
+    {
+      "operator": "wrong_event",
+      "seed": 92309,
+      "bug_id": "synthetic_16298_3_2__faulty__delay_corruption__90309__faulty__missing_transition__91309__wrong_event__92309",
+      "changed_transition_id": "t16298_3",
+      "description": "Changed event of transition 't16298_3' from 'e16298_1' to 'e16298_0'"
+    }
+  ],
+  "is_higher_order": true,
+  "coupled_to_simple_faults": [
+    "synthetic_16298_3_2__delay_corruption__90309",
+    "synthetic_16298_3_2__faulty__delay_corruption__90309__missing_transition__91309",
+    "synthetic_16298_3_2__faulty__delay_corruption__90309__faulty__missing_transition__91309__wrong_event__92309"
+  ],
+  "is_negative_control": false
+}

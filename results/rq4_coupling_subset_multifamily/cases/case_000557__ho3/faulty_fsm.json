@@ -1,0 +1,78 @@
+{
+  "id": "synthetic_10626_3_2__faulty__hom__unreachable_state_intro__wrong_target__guard_flip__72224",
+  "name": "Synthetic FSM (custom) (higher-order: unreachable_state_intro, wrong_target, guard_flip)",
+  "description": "Synthetic FSM generated with seed=10626, states=3, events=2, branching_factor=1, deterministic=True, allow_dead_states=True",
+  "states": [
+    {
+      "id": "s10626_0",
+      "state_output": "out_10626_0",
+      "refusal": false,
+      "quiescence": false
+    },
+    {
+      "id": "s10626_1",
+      "state_output": "out_10626_1",
+      "refusal": false,
+      "quiescence": false
+    },
+    {
+      "id": "s10626_2",
+      "state_output": "out_10626_2",
+      "refusal": false,
+      "quiescence": false
+    },
+    {
+      "id": "unreachable_72224",
+      "state_output": null,
+      "refusal": false,
+      "quiescence": false
+    }
+  ],
+  "initial_state": "s10626_0",
+  "events": [
+    "e10626_0",
+    "e10626_1"
+  ],
+  "transitions": [
+    {
+      "id": "t10626_1",
+      "source": "s10626_0",
+      "event": "e10626_1",
+      "target": "s10626_2",
+      "guard": null,
+      "action": "act10626_1",
+      "output": null,
+      "timeout": null,
+      "delay": null,
+      "requirements": [],
+      "probability": null,
+      "is_nondeterministic": false,
+      "refusal": false,
+      "quiescence": false,
+      "discrete_time": null
+    },
+    {
+      "id": "t10626_2",
+      "source": "s10626_1",
+      "event": "e10626_1",
+      "target": "s10626_2",
+      "guard": "unexpected_guard",
+      "action": "act10626_2",
+      "output": null,
+      "timeout": null,
+      "delay": null,
+      "requirements": [],
+      "probability": null,
+      "is_nondeterministic": false,
+      "refusal": false,
+      "quiescence": false,
+      "discrete_time": null
+    }
+  ],
+  "variables": {},
+  "parent_fsm_id": "synthetic_10626_3_2",
+  "reference_fsm_id": "synthetic_10626_3_2",
+  "discrete_time_step": null,
+  "semantics_mode": null,
+  "cyclic_metadata": null
+}

@@ -1,0 +1,43 @@
+{
+  "bug_id": "synthetic_2933_3_2__hom__wrong_event__wrong_initial_state__wrong_target__58614",
+  "reference_fsm_id": "synthetic_2933_3_2",
+  "faulty_fsm_id": "synthetic_2933_3_2__faulty__hom__wrong_event__wrong_initial_state__wrong_target__58614",
+  "mutation_operator": "wrong_event,wrong_initial_state,wrong_target",
+  "changed_transition_id": "t2933_1",
+  "description": "Higher-order mutant applying 3 operators: wrong_event, wrong_initial_state, wrong_target",
+  "seed": 58614,
+  "mutation_complexity": null,
+  "mutation_scope": null,
+  "mutation_mode": null,
+  "mutation_order": 3,
+  "component_faults": [
+    {
+      "operator": "wrong_event",
+      "seed": 58614,
+      "bug_id": "synthetic_2933_3_2__wrong_event__58614",
+      "changed_transition_id": "t2933_1",
+      "description": "Changed event of transition 't2933_1' from 'e2933_0' to 'e2933_1'"
+    },
+    {
+      "operator": "wrong_initial_state",
+      "seed": 59614,
+      "bug_id": "synthetic_2933_3_2__faulty__wrong_event__58614__wrong_initial_state__59614",
+      "changed_transition_id": null,
+      "description": "Changed initial_state from 's2933_0' to 's2933_1'"
+    },
+    {
+      "operator": "wrong_target",
+      "seed": 60614,
+      "bug_id": "synthetic_2933_3_2__faulty__wrong_event__58614__faulty__wrong_initial_state__59614__wrong_target__60614",
+      "changed_transition_id": "t2933_1",
+      "description": "Changed target of transition 't2933_1' from 's2933_1' to 's2933_2'"
+    }
+  ],
+  "is_higher_order": true,
+  "coupled_to_simple_faults": [
+    "synthetic_2933_3_2__wrong_event__58614",
+    "synthetic_2933_3_2__faulty__wrong_event__58614__wrong_initial_state__59614",
+    "synthetic_2933_3_2__faulty__wrong_event__58614__faulty__wrong_initial_state__59614__wrong_target__60614"
+  ],
+  "is_negative_control": false
+}

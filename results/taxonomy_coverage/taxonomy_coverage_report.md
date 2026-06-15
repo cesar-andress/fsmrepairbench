@@ -4,9 +4,9 @@ Empirical coverage audit of the FSMRepairBench taxonomy on an existing published
 
 ## Dataset
 
-- **Dataset directory:** `data/fsmrepairbench_1k`
+- **Dataset directory:** `/home/cesar/papers/fsmrepairbench/fsmrepairbench/data/fsmrepairbench_1k`
 - **Cases analysed:** 1000
-- **Cohort manifest:** `data/fsmrepairbench_1k/analysis_cohort_1k.txt`
+- **Cohort manifest:** `/home/cesar/papers/fsmrepairbench/fsmrepairbench/data/fsmrepairbench_1k/analysis_cohort_1k.txt`
 
 ## Executive summary
 
@@ -85,11 +85,11 @@ Taxonomy claims are **partially supported**: core dimensions are populated, but 
 
 ## Artefacts
 
-- Summary metrics: `results/taxonomy_coverage/summary.csv`
-- Unique combinations: `results/taxonomy_coverage/unique_combinations_summary.csv`
-- Top combinations: `results/taxonomy_coverage/coverage_by_unique_combinations.csv`
-- Dimension detail: `results/taxonomy_coverage/coverage_by_dimension.csv`
-- Feature-space report: `results/taxonomy_coverage/feature_space_report.json`
-- Frozen manifest: `results/taxonomy_coverage/manifest.json`
-- LaTeX tables: `results/taxonomy_coverage/tables`
+- Summary metrics: `/home/cesar/papers/fsmrepairbench/fsmrepairbench/results/taxonomy_coverage/summary.csv`
+- Unique combinations: `/home/cesar/papers/fsmrepairbench/fsmrepairbench/results/taxonomy_coverage/unique_combinations_summary.csv`
+- Top combinations: `/home/cesar/papers/fsmrepairbench/fsmrepairbench/results/taxonomy_coverage/coverage_by_unique_combinations.csv`
+- Dimension detail: `/home/cesar/papers/fsmrepairbench/fsmrepairbench/results/taxonomy_coverage/coverage_by_dimension.csv`
+- Feature-space report: `/home/cesar/papers/fsmrepairbench/fsmrepairbench/results/taxonomy_coverage/feature_space_report.json`
+- Frozen manifest: `/home/cesar/papers/fsmrepairbench/fsmrepairbench/results/taxonomy_coverage/manifest.json`
+- LaTeX tables: `/home/cesar/papers/fsmrepairbench/fsmrepairbench/results/taxonomy_coverage/tables`
 

@@ -1,0 +1,43 @@
+{
+  "bug_id": "synthetic_233_3_2__hom__missing_transition__wrong_source__guard_weaken__94183",
+  "reference_fsm_id": "synthetic_233_3_2",
+  "faulty_fsm_id": "synthetic_233_3_2__faulty__hom__missing_transition__wrong_source__guard_weaken__94183",
+  "mutation_operator": "missing_transition,wrong_source,guard_weaken",
+  "changed_transition_id": "t233_1",
+  "description": "Higher-order mutant applying 3 operators: missing_transition, wrong_source, guard_weaken",
+  "seed": 94183,
+  "mutation_complexity": null,
+  "mutation_scope": null,
+  "mutation_mode": null,
+  "mutation_order": 3,
+  "component_faults": [
+    {
+      "operator": "missing_transition",
+      "seed": 94183,
+      "bug_id": "synthetic_233_3_2__missing_transition__94183",
+      "changed_transition_id": "t233_2",
+      "description": "Removed transition 't233_2'"
+    },
+    {
+      "operator": "wrong_source",
+      "seed": 95183,
+      "bug_id": "synthetic_233_3_2__faulty__missing_transition__94183__wrong_source__95183",
+      "changed_transition_id": "t233_1",
+      "description": "Changed source of transition 't233_1' from 's233_0' to 's233_2'"
+    },
+    {
+      "operator": "guard_weaken",
+      "seed": 96183,
+      "bug_id": "synthetic_233_3_2__faulty__missing_transition__94183__faulty__wrong_source__95183__guard_weaken__96183",
+      "changed_transition_id": "t233_1",
+      "description": "Weakened guard on transition 't233_1' to 'true'"
+    }
+  ],
+  "is_higher_order": true,
+  "coupled_to_simple_faults": [
+    "synthetic_233_3_2__missing_transition__94183",
+    "synthetic_233_3_2__faulty__missing_transition__94183__wrong_source__95183",
+    "synthetic_233_3_2__faulty__missing_transition__94183__faulty__wrong_source__95183__guard_weaken__96183"
+  ],
+  "is_negative_control": false
+}

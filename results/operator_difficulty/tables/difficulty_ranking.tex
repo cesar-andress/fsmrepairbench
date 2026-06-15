@@ -1,0 +1,28 @@
+\begin{table}[t]
+\caption{Operator-level benchmark difficulty calibration on the 1{,}000-case \texttt{plain\_fsm}/shallow-oracle cohort. Detection and repair use cohort-wide operator counts; localization metrics use Ochiai on transition-localizable ground truth only. Difficulty index $=1-\mathrm{mean}($detection, top-5, detectable-only complete repair$)$; tiers by rank tertiles (easy (5), medium (6), hard (6)). Takeaway: difficulty spans oracle-invisible families (index $\approx 1.0$) to aligned transition faults with high repair success (index $<0.35$).}
+\label{tab:operator-difficulty-ranking}
+\small
+\begin{tabular}{@{}rlrrrrrrrr@{}}
+\toprule
+Rank & Operator & Detect & Top-1 & Top-5 & MRR & Complete & Effective & Index & Tier \\
+\midrule
+1 & \texttt{action\_corruption} & 0.0\% & 0.0\% & 0.0\% & 0.000 & 0.0\% & 0.0\% & 1.000 & hard \\
+2 & \texttt{action\_full\_mutation} & 0.0\% & 0.0\% & 0.0\% & 0.000 & 0.0\% & 0.0\% & 1.000 & hard \\
+3 & \texttt{dead\_state\_intro} & 0.0\% & 0.0\% & 0.0\% & 0.000 & 0.0\% & 0.0\% & 1.000 & hard \\
+4 & \texttt{delay\_corruption} & 0.0\% & 0.0\% & 0.0\% & 0.000 & 0.0\% & 0.0\% & 1.000 & hard \\
+5 & \texttt{duplicate\_transition} & 0.0\% & 0.0\% & 0.0\% & 0.000 & 0.0\% & 0.0\% & 1.000 & hard \\
+6 & \texttt{nondeterminism\_intro} & 0.0\% & 0.0\% & 0.0\% & 0.000 & 0.0\% & 0.0\% & 1.000 & hard \\
+7 & \texttt{timeout\_corruption} & 0.0\% & 0.0\% & 0.0\% & 0.000 & 0.0\% & 0.0\% & 1.000 & medium \\
+8 & \texttt{unreachable\_state\_intro} & 0.0\% & 0.0\% & 0.0\% & 0.000 & 0.0\% & 0.0\% & 1.000 & medium \\
+9 & \texttt{guard\_inter\_class} & 37.7\% & 5.0\% & 15.0\% & 0.126 & 50.0\% & 50.0\% & 0.658 & medium \\
+10 & \texttt{wrong\_initial\_state} & 100.0\% & 0.0\% & 0.0\% & 0.000 & 16.9\% & 96.6\% & 0.610 & medium \\
+11 & \texttt{wrong\_source} & 100.0\% & 11.7\% & 20.0\% & 0.185 & 58.3\% & 58.3\% & 0.406 & medium \\
+12 & \texttt{missing\_transition} & 100.0\% & 0.0\% & 0.0\% & 0.000 & 100.0\% & 100.0\% & 0.333 & medium \\
+13 & \texttt{wrong\_target} & 100.0\% & 100.0\% & 100.0\% & 1.000 & 0.0\% & 0.0\% & 0.333 & easy \\
+14 & \texttt{wrong\_event} & 100.0\% & 1.7\% & 22.0\% & 0.116 & 79.7\% & 79.7\% & 0.328 & easy \\
+15 & \texttt{guard\_strengthen} & 100.0\% & 3.4\% & 13.6\% & 0.119 & 100.0\% & 100.0\% & 0.288 & easy \\
+16 & \texttt{guard\_weaken} & 100.0\% & 1.7\% & 13.6\% & 0.093 & 100.0\% & 100.0\% & 0.288 & easy \\
+17 & \texttt{guard\_flip} & 100.0\% & 3.4\% & 15.3\% & 0.110 & 100.0\% & 100.0\% & 0.282 & easy \\
+\bottomrule
+\end{tabular}
+\end{table}

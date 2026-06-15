@@ -1,0 +1,35 @@
+{
+  "bug_id": "synthetic_12545_3_2__hom__guard_strengthen__wrong_initial_state__34090",
+  "reference_fsm_id": "synthetic_12545_3_2",
+  "faulty_fsm_id": "synthetic_12545_3_2__faulty__hom__guard_strengthen__wrong_initial_state__34090",
+  "mutation_operator": "guard_strengthen,wrong_initial_state",
+  "changed_transition_id": null,
+  "description": "Higher-order mutant applying 2 operators: guard_strengthen, wrong_initial_state",
+  "seed": 34090,
+  "mutation_complexity": null,
+  "mutation_scope": null,
+  "mutation_mode": null,
+  "mutation_order": 2,
+  "component_faults": [
+    {
+      "operator": "guard_strengthen",
+      "seed": 34090,
+      "bug_id": "synthetic_12545_3_2__guard_strengthen__34090",
+      "changed_transition_id": "t12545_5",
+      "description": "Strengthened guard on transition 't12545_5'"
+    },
+    {
+      "operator": "wrong_initial_state",
+      "seed": 35090,
+      "bug_id": "synthetic_12545_3_2__faulty__guard_strengthen__34090__wrong_initial_state__35090",
+      "changed_transition_id": null,
+      "description": "Changed initial_state from 's12545_0' to 's12545_1'"
+    }
+  ],
+  "is_higher_order": true,
+  "coupled_to_simple_faults": [
+    "synthetic_12545_3_2__guard_strengthen__34090",
+    "synthetic_12545_3_2__faulty__guard_strengthen__34090__wrong_initial_state__35090"
+  ],
+  "is_negative_control": false
+}

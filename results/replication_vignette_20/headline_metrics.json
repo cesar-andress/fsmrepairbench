@@ -1,0 +1,39 @@
+{
+  "cohort_size": 20,
+  "detectable_cases": 10,
+  "detection": {
+    "mean_bpr_delta": 0.091835,
+    "overall_detection_rate": 0.5
+  },
+  "localization": {
+    "detectable_pool_top1_hit_rate": 0.2,
+    "mrr": 0.291743,
+    "n_cases": 8,
+    "partition": "transition_localizable_gt",
+    "top1_hit_rate": 0.25,
+    "top5_hit_rate": 0.25
+  },
+  "oracle_saturated_cases": 10,
+  "release_label": "replication-vignette-20",
+  "repair": {
+    "baseline_missing_transition": {
+      "complete_repair_rate_cohort_wide": 0.75,
+      "complete_repair_rate_detectable_only": 0.5,
+      "effective_repair_rate_cohort_wide": 0.25,
+      "effective_repair_rate_detectable_only": 0.5
+    },
+    "baseline_random": {
+      "complete_repair_rate_cohort_wide": 0.5,
+      "complete_repair_rate_detectable_only": 0.0,
+      "effective_repair_rate_cohort_wide": 0.0,
+      "effective_repair_rate_detectable_only": 0.0
+    },
+    "baseline_wrong_target": {
+      "complete_repair_rate_cohort_wide": 0.55,
+      "complete_repair_rate_detectable_only": 0.1,
+      "effective_repair_rate_cohort_wide": 0.1,
+      "effective_repair_rate_detectable_only": 0.2
+    }
+  },
+  "zenodo_doi": "10.5281/zenodo.20602528"
+}

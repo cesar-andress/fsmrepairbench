@@ -11,6 +11,7 @@ from datetime import UTC, datetime
 from pathlib import Path
 from typing import Any
 
+from fsmrepairbench.baseline_repair_campaign import load_cohort_manifest
 from fsmrepairbench.dataset_builder import DatasetBuilderError, DatasetCaseRow, load_dataset_cases
 from fsmrepairbench.difficulty import category_for_score
 from fsmrepairbench.mutators import MUTATION_OPERATORS
@@ -765,12 +766,21 @@ def generate_analysis_report(
     *,
     output_dir: Path | None = None,
     max_cases: int | None = None,
+    cohort_path: Path | None = None,
+    release_label: str = "v0.2.0-analysis",
 ) -> AnalysisReportResult:
     """Generate publication-oriented analysis artifacts for *dataset_dir*."""
     try:
         cases = load_dataset_cases(dataset_dir)
     except DatasetBuilderError as exc:
         raise AnalyticsError(str(exc)) from exc
+
+    if cohort_path is not None:
+        allowed = set(load_cohort_manifest(cohort_path))
+        cases = [case for case in cases if case.case_id in allowed]
+        if not cases:
+            msg = f"No cases from {dataset_dir} appear in cohort {cohort_path}"
+            raise AnalyticsError(msg)
 
     if max_cases is not None:
         if max_cases < 1:
@@ -815,7 +825,7 @@ def generate_analysis_report(
     ci_rows = compute_rq2_confidence_intervals(cases)
     write_confidence_interval_exports(
         resolved_output,
-        campaign="v0.2.0-analysis",
+        campaign=release_label,
         rows=ci_rows,
     )
     append_ci_section_to_report(markdown_path, ci_rows)

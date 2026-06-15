@@ -1,0 +1,43 @@
+{
+  "bug_id": "synthetic_5922_3_2__hom__duplicate_transition__wrong_source__guard_weaken__26610",
+  "reference_fsm_id": "synthetic_5922_3_2",
+  "faulty_fsm_id": "synthetic_5922_3_2__faulty__hom__duplicate_transition__wrong_source__guard_weaken__26610",
+  "mutation_operator": "duplicate_transition,wrong_source,guard_weaken",
+  "changed_transition_id": "t5922_5",
+  "description": "Higher-order mutant applying 3 operators: duplicate_transition, wrong_source, guard_weaken",
+  "seed": 26610,
+  "mutation_complexity": null,
+  "mutation_scope": null,
+  "mutation_mode": null,
+  "mutation_order": 3,
+  "component_faults": [
+    {
+      "operator": "duplicate_transition",
+      "seed": 26610,
+      "bug_id": "synthetic_5922_3_2__duplicate_transition__26610",
+      "changed_transition_id": "t5922_4",
+      "description": "Duplicated transition 't5922_4' as 't5922_4__dup__26610'"
+    },
+    {
+      "operator": "wrong_source",
+      "seed": 27610,
+      "bug_id": "synthetic_5922_3_2__faulty__duplicate_transition__26610__wrong_source__27610",
+      "changed_transition_id": "t5922_1",
+      "description": "Changed source of transition 't5922_1' from 's5922_0' to 's5922_1'"
+    },
+    {
+      "operator": "guard_weaken",
+      "seed": 28610,
+      "bug_id": "synthetic_5922_3_2__faulty__duplicate_transition__26610__faulty__wrong_source__27610__guard_weaken__28610",
+      "changed_transition_id": "t5922_5",
+      "description": "Weakened guard on transition 't5922_5' to 'true'"
+    }
+  ],
+  "is_higher_order": true,
+  "coupled_to_simple_faults": [
+    "synthetic_5922_3_2__duplicate_transition__26610",
+    "synthetic_5922_3_2__faulty__duplicate_transition__26610__wrong_source__27610",
+    "synthetic_5922_3_2__faulty__duplicate_transition__26610__faulty__wrong_source__27610__guard_weaken__28610"
+  ],
+  "is_negative_control": false
+}

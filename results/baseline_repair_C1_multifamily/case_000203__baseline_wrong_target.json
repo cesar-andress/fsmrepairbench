@@ -1,0 +1,110 @@
+{
+  "case_id": "case_000203",
+  "tool_id": "baseline_wrong_target",
+  "tool_type": "baseline",
+  "model": "baseline_wrong_target",
+  "mutation_operator": "wrong_initial_state",
+  "status": "completed",
+  "failure_class": "no_improvement",
+  "input_format": "fsmrepairbench_case_v1",
+  "output_format": "fsmrepairbench_repair_result_v1",
+  "initial_bpr": 0.0,
+  "final_bpr": 0.0,
+  "delta_bpr": 0.0,
+  "complete_repair": false,
+  "effective_repair": false,
+  "regression": false,
+  "patch_parse_failures": 0,
+  "patch_validation_failures": 0,
+  "patch_application_failures": 0,
+  "iterations_completed": 1,
+  "runtime_seconds": 0.0001,
+  "repair_result": {
+    "bug_id": "synthetic_4305_3_2__faulty__wrong_initial_state__203046",
+    "passed": false,
+    "score": 0.0,
+    "details": {
+      "model": "baseline_wrong_target",
+      "backend": "baseline",
+      "baseline_engine": "wrong-target",
+      "baseline_seed": 0,
+      "temperature": 0.0,
+      "max_iterations": 1,
+      "runtime_seconds": 0.0001,
+      "iterations": [
+        {
+          "iteration": 1,
+          "bpr_before": 0.0,
+          "patch_valid": true,
+          "patch_applied": true,
+          "patch": {
+            "patch_id": "baseline_wrong_target_synthetic_4305_3_2__faulty__wrong_initial_state__203046",
+            "target_fsm_id": "synthetic_4305_3_2__faulty__wrong_initial_state__203046",
+            "operations": []
+          },
+          "validation_errors": [],
+          "bpr_after": 0.0
+        }
+      ],
+      "final_fsm": {
+        "id": "synthetic_4305_3_2__faulty__wrong_initial_state__203046",
+        "name": "Synthetic FSM (custom) (faulty: wrong_initial_state)",
+        "description": "Synthetic FSM generated with seed=4305, states=3, events=2, branching_factor=1, deterministic=True, allow_dead_states=True",
+        "states": [
+          {
+            "id": "s4305_0",
+            "state_output": "out_4305_0",
+            "refusal": false,
+            "quiescence": false
+          },
+          {
+            "id": "s4305_1",
+            "state_output": "out_4305_1",
+            "refusal": false,
+            "quiescence": false
+          },
+          {
+            "id": "s4305_2",
+            "state_output": "out_4305_2",
+            "refusal": false,
+            "quiescence": false
+          }
+        ],
+        "initial_state": "s4305_1",
+        "events": [
+          "e4305_0",
+          "e4305_1"
+        ],
+        "transitions": [
+          {
+            "id": "t4305_1",
+            "source": "s4305_0",
+            "event": "e4305_1",
+            "target": "s4305_1",
+            "guard": null,
+            "action": "act4305_1",
+            "output": null,
+            "timeout": null,
+            "delay": null,
+            "requirements": [],
+            "probability": null,
+            "is_nondeterministic": false,
+            "refusal": false,
+            "quiescence": false,
+            "discrete_time": null
+          }
+        ],
+        "variables": {},
+        "parent_fsm_id": "synthetic_4305_3_2",
+        "reference_fsm_id": "synthetic_4305_3_2",
+        "discrete_time_step": null,
+        "semantics_mode": null,
+        "cyclic_metadata": null
+      },
+      "passed_steps": 0,
+      "total_steps": 1,
+      "passed_scenarios": 0,
+      "total_scenarios": 1
+    }
+  }
+}

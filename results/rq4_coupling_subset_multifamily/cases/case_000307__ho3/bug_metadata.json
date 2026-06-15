@@ -1,0 +1,43 @@
+{
+  "bug_id": "synthetic_5871_3_2__hom__duplicate_transition__wrong_target__guard_flip__53544",
+  "reference_fsm_id": "synthetic_5871_3_2",
+  "faulty_fsm_id": "synthetic_5871_3_2__faulty__hom__duplicate_transition__wrong_target__guard_flip__53544",
+  "mutation_operator": "duplicate_transition,wrong_target,guard_flip",
+  "changed_transition_id": "t5871_3",
+  "description": "Higher-order mutant applying 3 operators: duplicate_transition, wrong_target, guard_flip",
+  "seed": 53544,
+  "mutation_complexity": null,
+  "mutation_scope": null,
+  "mutation_mode": null,
+  "mutation_order": 3,
+  "component_faults": [
+    {
+      "operator": "duplicate_transition",
+      "seed": 53544,
+      "bug_id": "synthetic_5871_3_2__duplicate_transition__53544",
+      "changed_transition_id": "t5871_5",
+      "description": "Duplicated transition 't5871_5' as 't5871_5__dup__53544'"
+    },
+    {
+      "operator": "wrong_target",
+      "seed": 54544,
+      "bug_id": "synthetic_5871_3_2__faulty__duplicate_transition__53544__wrong_target__54544",
+      "changed_transition_id": "t5871_3",
+      "description": "Changed target of transition 't5871_3' from 's5871_1' to 's5871_2'"
+    },
+    {
+      "operator": "guard_flip",
+      "seed": 55544,
+      "bug_id": "synthetic_5871_3_2__faulty__duplicate_transition__53544__faulty__wrong_target__54544__guard_flip__55544",
+      "changed_transition_id": "t5871_3",
+      "description": "Changed guard of transition 't5871_3' from 'x_5871_2 > 0' to 'not_x_5871_2 > 0'"
+    }
+  ],
+  "is_higher_order": true,
+  "coupled_to_simple_faults": [
+    "synthetic_5871_3_2__duplicate_transition__53544",
+    "synthetic_5871_3_2__faulty__duplicate_transition__53544__wrong_target__54544",
+    "synthetic_5871_3_2__faulty__duplicate_transition__53544__faulty__wrong_target__54544__guard_flip__55544"
+  ],
+  "is_negative_control": false
+}

@@ -1,0 +1,61 @@
+{
+  "id": "synthetic_11357_3_2__faulty__unreachable_state_intro__600046",
+  "name": "Synthetic FSM (custom) (faulty: unreachable_state_intro)",
+  "description": "Synthetic FSM generated with seed=11357, states=3, events=2, branching_factor=1, deterministic=True, allow_dead_states=True",
+  "states": [
+    {
+      "id": "s11357_0",
+      "state_output": "out_11357_0",
+      "refusal": false,
+      "quiescence": false
+    },
+    {
+      "id": "s11357_1",
+      "state_output": "out_11357_1",
+      "refusal": false,
+      "quiescence": false
+    },
+    {
+      "id": "s11357_2",
+      "state_output": "out_11357_2",
+      "refusal": false,
+      "quiescence": false
+    },
+    {
+      "id": "unreachable_600046",
+      "state_output": null,
+      "refusal": false,
+      "quiescence": false
+    }
+  ],
+  "initial_state": "s11357_0",
+  "events": [
+    "e11357_0",
+    "e11357_1"
+  ],
+  "transitions": [
+    {
+      "id": "t11357_1",
+      "source": "s11357_0",
+      "event": "e11357_1",
+      "target": "s11357_0",
+      "guard": null,
+      "action": "act11357_1",
+      "output": null,
+      "timeout": null,
+      "delay": null,
+      "requirements": [],
+      "probability": null,
+      "is_nondeterministic": false,
+      "refusal": false,
+      "quiescence": false,
+      "discrete_time": null
+    }
+  ],
+  "variables": {},
+  "parent_fsm_id": "synthetic_11357_3_2",
+  "reference_fsm_id": "synthetic_11357_3_2",
+  "discrete_time_step": null,
+  "semantics_mode": null,
+  "cyclic_metadata": null
+}

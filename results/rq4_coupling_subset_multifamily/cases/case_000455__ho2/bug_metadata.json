@@ -1,0 +1,35 @@
+{
+  "bug_id": "synthetic_8690_3_2__hom__dead_state_intro__wrong_event__6334",
+  "reference_fsm_id": "synthetic_8690_3_2",
+  "faulty_fsm_id": "synthetic_8690_3_2__faulty__hom__dead_state_intro__wrong_event__6334",
+  "mutation_operator": "dead_state_intro,wrong_event",
+  "changed_transition_id": "t8690_1",
+  "description": "Higher-order mutant applying 2 operators: dead_state_intro, wrong_event",
+  "seed": 6334,
+  "mutation_complexity": null,
+  "mutation_scope": null,
+  "mutation_mode": null,
+  "mutation_order": 2,
+  "component_faults": [
+    {
+      "operator": "dead_state_intro",
+      "seed": 6334,
+      "bug_id": "synthetic_8690_3_2__dead_state_intro__6334",
+      "changed_transition_id": null,
+      "description": "Added unreachable state 'dead_6334'"
+    },
+    {
+      "operator": "wrong_event",
+      "seed": 7334,
+      "bug_id": "synthetic_8690_3_2__faulty__dead_state_intro__6334__wrong_event__7334",
+      "changed_transition_id": "t8690_1",
+      "description": "Changed event of transition 't8690_1' from 'e8690_1' to 'e8690_0'"
+    }
+  ],
+  "is_higher_order": true,
+  "coupled_to_simple_faults": [
+    "synthetic_8690_3_2__dead_state_intro__6334",
+    "synthetic_8690_3_2__faulty__dead_state_intro__6334__wrong_event__7334"
+  ],
+  "is_negative_control": false
+}

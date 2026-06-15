@@ -1,0 +1,35 @@
+{
+  "bug_id": "synthetic_3935_3_2__hom__action_corruption__wrong_event__30086",
+  "reference_fsm_id": "synthetic_3935_3_2",
+  "faulty_fsm_id": "synthetic_3935_3_2__faulty__hom__action_corruption__wrong_event__30086",
+  "mutation_operator": "action_corruption,wrong_event",
+  "changed_transition_id": "t3935_1",
+  "description": "Higher-order mutant applying 2 operators: action_corruption, wrong_event",
+  "seed": 30086,
+  "mutation_complexity": null,
+  "mutation_scope": null,
+  "mutation_mode": null,
+  "mutation_order": 2,
+  "component_faults": [
+    {
+      "operator": "action_corruption",
+      "seed": 30086,
+      "bug_id": "synthetic_3935_3_2__action_corruption__30086",
+      "changed_transition_id": "t3935_2",
+      "description": "Changed action of transition 't3935_2' from 'act3935_2' to 'wrong_act3935_2'"
+    },
+    {
+      "operator": "wrong_event",
+      "seed": 31086,
+      "bug_id": "synthetic_3935_3_2__faulty__action_corruption__30086__wrong_event__31086",
+      "changed_transition_id": "t3935_1",
+      "description": "Changed event of transition 't3935_1' from 'e3935_1' to 'e3935_0'"
+    }
+  ],
+  "is_higher_order": true,
+  "coupled_to_simple_faults": [
+    "synthetic_3935_3_2__action_corruption__30086",
+    "synthetic_3935_3_2__faulty__action_corruption__30086__wrong_event__31086"
+  ],
+  "is_negative_control": false
+}

@@ -1,0 +1,147 @@
+{
+  "case_id": "case_000311",
+  "tool_id": "baseline_wrong_target",
+  "tool_type": "baseline",
+  "model": "baseline_wrong_target",
+  "mutation_operator": "guard_weaken",
+  "status": "completed",
+  "failure_class": "no_improvement",
+  "input_format": "fsmrepairbench_case_v1",
+  "output_format": "fsmrepairbench_repair_result_v1",
+  "initial_bpr": 0.8333333333333334,
+  "final_bpr": 0.8333333333333334,
+  "delta_bpr": 0.0,
+  "complete_repair": false,
+  "effective_repair": false,
+  "regression": false,
+  "patch_parse_failures": 0,
+  "patch_validation_failures": 0,
+  "patch_application_failures": 0,
+  "iterations_completed": 1,
+  "runtime_seconds": 0.0001,
+  "repair_result": {
+    "bug_id": "synthetic_6545_3_2__faulty__guard_weaken__311046",
+    "passed": false,
+    "score": 0.8333333333333334,
+    "details": {
+      "model": "baseline_wrong_target",
+      "backend": "baseline",
+      "baseline_engine": "wrong-target",
+      "baseline_seed": 0,
+      "temperature": 0.0,
+      "max_iterations": 1,
+      "runtime_seconds": 0.0001,
+      "iterations": [
+        {
+          "iteration": 1,
+          "bpr_before": 0.8333333333333334,
+          "patch_valid": true,
+          "patch_applied": true,
+          "patch": {
+            "patch_id": "baseline_wrong_target_synthetic_6545_3_2__faulty__guard_weaken__311046",
+            "target_fsm_id": "synthetic_6545_3_2__faulty__guard_weaken__311046",
+            "operations": []
+          },
+          "validation_errors": [],
+          "bpr_after": 0.8333333333333334
+        }
+      ],
+      "final_fsm": {
+        "id": "synthetic_6545_3_2__faulty__guard_weaken__311046",
+        "name": "Synthetic FSM (custom) (faulty: guard_weaken)",
+        "description": "Synthetic FSM generated with seed=6545, states=3, events=2, branching_factor=1, deterministic=True, allow_dead_states=False",
+        "states": [
+          {
+            "id": "s6545_0",
+            "state_output": null,
+            "refusal": false,
+            "quiescence": false
+          },
+          {
+            "id": "s6545_1",
+            "state_output": null,
+            "refusal": false,
+            "quiescence": false
+          },
+          {
+            "id": "s6545_2",
+            "state_output": null,
+            "refusal": false,
+            "quiescence": false
+          }
+        ],
+        "initial_state": "s6545_0",
+        "events": [
+          "e6545_0",
+          "e6545_1"
+        ],
+        "transitions": [
+          {
+            "id": "t6545_1",
+            "source": "s6545_0",
+            "event": "e6545_1",
+            "target": "s6545_1",
+            "guard": "x_6545_0 > 0 and y_6545_0 < 10",
+            "action": "act6545_1",
+            "output": null,
+            "timeout": null,
+            "delay": null,
+            "requirements": [],
+            "probability": null,
+            "is_nondeterministic": false,
+            "refusal": false,
+            "quiescence": false,
+            "discrete_time": null
+          },
+          {
+            "id": "t6545_2",
+            "source": "s6545_1",
+            "event": "e6545_1",
+            "target": "s6545_2",
+            "guard": "x_6545_1 > 0 and y_6545_1 < 10",
+            "action": "act6545_2",
+            "output": null,
+            "timeout": null,
+            "delay": null,
+            "requirements": [],
+            "probability": null,
+            "is_nondeterministic": false,
+            "refusal": false,
+            "quiescence": false,
+            "discrete_time": null
+          },
+          {
+            "id": "t6545_3",
+            "source": "s6545_2",
+            "event": "e6545_1",
+            "target": "s6545_2",
+            "guard": "true",
+            "action": "act6545_3",
+            "output": null,
+            "timeout": null,
+            "delay": null,
+            "requirements": [],
+            "probability": null,
+            "is_nondeterministic": false,
+            "refusal": false,
+            "quiescence": false,
+            "discrete_time": null
+          }
+        ],
+        "variables": {
+          "x": "int",
+          "y": "int"
+        },
+        "parent_fsm_id": "synthetic_6545_3_2",
+        "reference_fsm_id": "synthetic_6545_3_2",
+        "discrete_time_step": null,
+        "semantics_mode": null,
+        "cyclic_metadata": null
+      },
+      "passed_steps": 5,
+      "total_steps": 6,
+      "passed_scenarios": 2,
+      "total_scenarios": 3
+    }
+  }
+}

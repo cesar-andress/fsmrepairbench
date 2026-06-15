@@ -1,0 +1,43 @@
+{
+  "bug_id": "synthetic_18149_3_2__hom__missing_transition__wrong_initial_state__wrong_target__49098",
+  "reference_fsm_id": "synthetic_18149_3_2",
+  "faulty_fsm_id": "synthetic_18149_3_2__faulty__hom__missing_transition__wrong_initial_state__wrong_target__49098",
+  "mutation_operator": "missing_transition,wrong_initial_state,wrong_target",
+  "changed_transition_id": "t18149_5",
+  "description": "Higher-order mutant applying 3 operators: missing_transition, wrong_initial_state, wrong_target",
+  "seed": 49098,
+  "mutation_complexity": null,
+  "mutation_scope": null,
+  "mutation_mode": null,
+  "mutation_order": 3,
+  "component_faults": [
+    {
+      "operator": "missing_transition",
+      "seed": 49098,
+      "bug_id": "synthetic_18149_3_2__missing_transition__49098",
+      "changed_transition_id": "t18149_7",
+      "description": "Removed transition 't18149_7'"
+    },
+    {
+      "operator": "wrong_initial_state",
+      "seed": 50098,
+      "bug_id": "synthetic_18149_3_2__faulty__missing_transition__49098__wrong_initial_state__50098",
+      "changed_transition_id": null,
+      "description": "Changed initial_state from 's18149_0' to 's18149_1'"
+    },
+    {
+      "operator": "wrong_target",
+      "seed": 51098,
+      "bug_id": "synthetic_18149_3_2__faulty__missing_transition__49098__faulty__wrong_initial_state__50098__wrong_target__51098",
+      "changed_transition_id": "t18149_5",
+      "description": "Changed target of transition 't18149_5' from 's18149_2' to 's18149_0'"
+    }
+  ],
+  "is_higher_order": true,
+  "coupled_to_simple_faults": [
+    "synthetic_18149_3_2__missing_transition__49098",
+    "synthetic_18149_3_2__faulty__missing_transition__49098__wrong_initial_state__50098",
+    "synthetic_18149_3_2__faulty__missing_transition__49098__faulty__wrong_initial_state__50098__wrong_target__51098"
+  ],
+  "is_negative_control": false
+}

@@ -1,0 +1,43 @@
+{
+  "bug_id": "synthetic_9590_3_2__hom__wrong_target__guard_strengthen__wrong_initial_state__779",
+  "reference_fsm_id": "synthetic_9590_3_2",
+  "faulty_fsm_id": "synthetic_9590_3_2__faulty__hom__wrong_target__guard_strengthen__wrong_initial_state__779",
+  "mutation_operator": "wrong_target,guard_strengthen,wrong_initial_state",
+  "changed_transition_id": null,
+  "description": "Higher-order mutant applying 3 operators: wrong_target, guard_strengthen, wrong_initial_state",
+  "seed": 779,
+  "mutation_complexity": null,
+  "mutation_scope": null,
+  "mutation_mode": null,
+  "mutation_order": 3,
+  "component_faults": [
+    {
+      "operator": "wrong_target",
+      "seed": 779,
+      "bug_id": "synthetic_9590_3_2__wrong_target__779",
+      "changed_transition_id": "t9590_hub_2",
+      "description": "Changed target of transition 't9590_hub_2' from 's9590_2' to 's9590_1'"
+    },
+    {
+      "operator": "guard_strengthen",
+      "seed": 1779,
+      "bug_id": "synthetic_9590_3_2__faulty__wrong_target__779__guard_strengthen__1779",
+      "changed_transition_id": "t9590_hub_2",
+      "description": "Strengthened guard on transition 't9590_hub_2'"
+    },
+    {
+      "operator": "wrong_initial_state",
+      "seed": 2779,
+      "bug_id": "synthetic_9590_3_2__faulty__wrong_target__779__faulty__guard_strengthen__1779__wrong_initial_state__2779",
+      "changed_transition_id": null,
+      "description": "Changed initial_state from 's9590_0' to 's9590_1'"
+    }
+  ],
+  "is_higher_order": true,
+  "coupled_to_simple_faults": [
+    "synthetic_9590_3_2__wrong_target__779",
+    "synthetic_9590_3_2__faulty__wrong_target__779__guard_strengthen__1779",
+    "synthetic_9590_3_2__faulty__wrong_target__779__faulty__guard_strengthen__1779__wrong_initial_state__2779"
+  ],
+  "is_negative_control": false
+}

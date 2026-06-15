@@ -1,0 +1,101 @@
+{
+  "campaign": "C3-oracle-depth-ablation",
+  "method": "percentile_case_resample",
+  "unit": "case",
+  "ci": 0.95,
+  "resamples": 10000,
+  "seed": 44,
+  "generated_at_utc": "2026-06-09T16:22:10.901192+00:00",
+  "metrics": [
+    {
+      "metric": "detection_rate",
+      "group": "C3",
+      "partition": "cohort_wide",
+      "subgroup": "shallow",
+      "n_cases": 200,
+      "mean": 0.485,
+      "ci95_low": 0.415,
+      "ci95_high": 0.555
+    },
+    {
+      "metric": "mean_faulty_bpr",
+      "group": "C3",
+      "partition": "cohort_wide",
+      "subgroup": "shallow",
+      "n_cases": 200,
+      "mean": 0.907236,
+      "ci95_low": 0.871062,
+      "ci95_high": 0.939146
+    },
+    {
+      "metric": "mean_bpr_delta",
+      "group": "C3",
+      "partition": "cohort_wide",
+      "subgroup": "shallow",
+      "n_cases": 200,
+      "mean": 0.092764,
+      "ci95_low": 0.060854,
+      "ci95_high": 0.128938
+    },
+    {
+      "metric": "detection_rate",
+      "group": "C3",
+      "partition": "cohort_wide",
+      "subgroup": "medium",
+      "n_cases": 200,
+      "mean": 0.485,
+      "ci95_low": 0.415,
+      "ci95_high": 0.555
+    },
+    {
+      "metric": "mean_faulty_bpr",
+      "group": "C3",
+      "partition": "cohort_wide",
+      "subgroup": "medium",
+      "n_cases": 200,
+      "mean": 0.874019,
+      "ci95_low": 0.837049,
+      "ci95_high": 0.908059
+    },
+    {
+      "metric": "mean_bpr_delta",
+      "group": "C3",
+      "partition": "cohort_wide",
+      "subgroup": "medium",
+      "n_cases": 200,
+      "mean": 0.125981,
+      "ci95_low": 0.091941,
+      "ci95_high": 0.162951
+    },
+    {
+      "metric": "detection_rate",
+      "group": "C3",
+      "partition": "cohort_wide",
+      "subgroup": "deep",
+      "n_cases": 200,
+      "mean": 0.485,
+      "ci95_low": 0.415,
+      "ci95_high": 0.555
+    },
+    {
+      "metric": "mean_faulty_bpr",
+      "group": "C3",
+      "partition": "cohort_wide",
+      "subgroup": "deep",
+      "n_cases": 200,
+      "mean": 0.834855,
+      "ci95_low": 0.7937,
+      "ci95_high": 0.873025
+    },
+    {
+      "metric": "mean_bpr_delta",
+      "group": "C3",
+      "partition": "cohort_wide",
+      "subgroup": "deep",
+      "n_cases": 200,
+      "mean": 0.165145,
+      "ci95_low": 0.126975,
+      "ci95_high": 0.2063
+    }
+  ]
+}

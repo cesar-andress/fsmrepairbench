@@ -1,0 +1,35 @@
+{
+  "bug_id": "synthetic_9709_3_2__hom__wrong_target__guard_flip__68696",
+  "reference_fsm_id": "synthetic_9709_3_2",
+  "faulty_fsm_id": "synthetic_9709_3_2__faulty__hom__wrong_target__guard_flip__68696",
+  "mutation_operator": "wrong_target,guard_flip",
+  "changed_transition_id": "t9709_hub_1",
+  "description": "Higher-order mutant applying 2 operators: wrong_target, guard_flip",
+  "seed": 68696,
+  "mutation_complexity": null,
+  "mutation_scope": null,
+  "mutation_mode": null,
+  "mutation_order": 2,
+  "component_faults": [
+    {
+      "operator": "wrong_target",
+      "seed": 68696,
+      "bug_id": "synthetic_9709_3_2__wrong_target__68696",
+      "changed_transition_id": "t9709_hub_1",
+      "description": "Changed target of transition 't9709_hub_1' from 's9709_1' to 's9709_2'"
+    },
+    {
+      "operator": "guard_flip",
+      "seed": 69696,
+      "bug_id": "synthetic_9709_3_2__faulty__wrong_target__68696__guard_flip__69696",
+      "changed_transition_id": "t9709_hub_1",
+      "description": "Added guard 'unexpected_guard' to transition 't9709_hub_1'"
+    }
+  ],
+  "is_higher_order": true,
+  "coupled_to_simple_faults": [
+    "synthetic_9709_3_2__wrong_target__68696",
+    "synthetic_9709_3_2__faulty__wrong_target__68696__guard_flip__69696"
+  ],
+  "is_negative_control": false
+}

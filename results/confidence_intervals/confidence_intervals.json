@@ -5,7 +5,7 @@
   "ci": 0.95,
   "resamples": 10000,
   "seed": 44,
-  "generated_at_utc": "2026-06-09T11:58:08.002976+00:00",
+  "generated_at_utc": "2026-06-09T14:36:15.891199+00:00",
   "metrics": [
     {
       "metric": "overall_detection_rate",
@@ -136,7 +136,7 @@
     {
       "metric": "complete_repair_rate",
       "group": "RQ4",
-      "subgroup": "order_1",
+      "subgroup": "order_1_cohort_wide",
       "n_cases": 250,
       "mean": 0.892,
       "ci95_low": 0.852,
@@ -145,7 +145,7 @@
     {
       "metric": "effective_repair_rate",
       "group": "RQ4",
-      "subgroup": "order_1",
+      "subgroup": "order_1_cohort_wide",
       "n_cases": 250,
       "mean": 0.42,
       "ci95_low": 0.36,
@@ -161,6 +161,24 @@
       "ci95_high": 0.096662
     },
     {
+      "metric": "complete_repair_rate",
+      "group": "RQ4",
+      "subgroup": "order_1_detectable",
+      "n_cases": 118,
+      "mean": 0.771186,
+      "ci95_low": 0.694915,
+      "ci95_high": 0.847458
+    },
+    {
+      "metric": "effective_repair_rate",
+      "group": "RQ4",
+      "subgroup": "order_1_detectable",
+      "n_cases": 118,
+      "mean": 0.889831,
+      "ci95_low": 0.830508,
+      "ci95_high": 0.940678
+    },
+    {
       "metric": "detection_rate",
       "group": "RQ4",
       "subgroup": "order_2",
@@ -172,7 +190,7 @@
     {
       "metric": "complete_repair_rate",
       "group": "RQ4",
-      "subgroup": "order_2",
+      "subgroup": "order_2_cohort_wide",
       "n_cases": 250,
       "mean": 0.6,
       "ci95_low": 0.54,
@@ -181,7 +199,7 @@
     {
       "metric": "effective_repair_rate",
       "group": "RQ4",
-      "subgroup": "order_2",
+      "subgroup": "order_2_cohort_wide",
       "n_cases": 250,
       "mean": 0.92,
       "ci95_low": 0.884,
@@ -197,6 +215,24 @@
       "ci95_high": 0.315454
     },
     {
+      "metric": "complete_repair_rate",
+      "group": "RQ4",
+      "subgroup": "order_2_detectable",
+      "n_cases": 248,
+      "mean": 0.596774,
+      "ci95_low": 0.53629,
+      "ci95_high": 0.657258
+    },
+    {
+      "metric": "effective_repair_rate",
+      "group": "RQ4",
+      "subgroup": "order_2_detectable",
+      "n_cases": 248,
+      "mean": 0.927419,
+      "ci95_low": 0.895161,
+      "ci95_high": 0.959677
+    },
+    {
       "metric": "detection_rate",
       "group": "RQ4",
       "subgroup": "order_3",
@@ -208,7 +244,7 @@
     {
       "metric": "complete_repair_rate",
       "group": "RQ4",
-      "subgroup": "order_3",
+      "subgroup": "order_3_cohort_wide",
       "n_cases": 250,
       "mean": 0.404,
       "ci95_low": 0.344,
@@ -217,7 +253,7 @@
     {
       "metric": "effective_repair_rate",
       "group": "RQ4",
-      "subgroup": "order_3",
+      "subgroup": "order_3_cohort_wide",
       "n_cases": 250,
       "mean": 0.98,
       "ci95_low": 0.96,
@@ -231,6 +267,42 @@
       "mean": 0.388064,
       "ci95_low": 0.335051,
       "ci95_high": 0.441553
+    },
+    {
+      "metric": "complete_repair_rate",
+      "group": "RQ4",
+      "subgroup": "order_3_detectable",
+      "n_cases": 250,
+      "mean": 0.404,
+      "ci95_low": 0.344,
+      "ci95_high": 0.464
+    },
+    {
+      "metric": "effective_repair_rate",
+      "group": "RQ4",
+      "subgroup": "order_3_detectable",
+      "n_cases": 250,
+      "mean": 0.98,
+      "ci95_low": 0.96,
+      "ci95_high": 0.996
+    },
+    {
+      "metric": "detection_rate",
+      "group": "RQ4",
+      "subgroup": "fo_subset",
+      "n_cases": 250,
+      "mean": 0.472,
+      "ci95_low": 0.412,
+      "ci95_high": 0.536
+    },
+    {
+      "metric": "detection_rate",
+      "group": "RQ4",
+      "subgroup": "ho_orders_2_3",
+      "n_cases": 500,
+      "mean": 0.996,
+      "ci95_low": 0.99,
+      "ci95_high": 1.0
     },
     {
       "metric": "detection_rate",

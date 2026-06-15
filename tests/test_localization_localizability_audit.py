@@ -149,3 +149,77 @@ def test_audit_synthetic_missing_transition_case(tmp_path: Path) -> None:
     dataset_dir = tmp_path
     rows = audit_localization_results(dataset_dir, [case])
     assert rows[0].localizability_class == "missing_or_deleted_transition_gt"
+
+
+def test_operator_export_includes_all_operators_and_not_ranked(tmp_path: Path) -> None:
+    from fsmrepairbench.localization_campaign import CaseLocalizationResult
+    from fsmrepairbench.localization_localizability_audit import LocalizabilityAuditRow
+
+    audit_rows = [
+        LocalizabilityAuditRow(
+            case=CaseLocalizationResult(
+                case_id="case_a",
+                mutation_operator="wrong_target",
+                changed_transition_id="t1",
+                localized=True,
+                transition_count=2,
+                rank_of_target=1,
+                reciprocal_rank=1.0,
+                top1_hit=True,
+                top3_hit=True,
+                top5_hit=True,
+                top_ranked_transition="t1",
+            ),
+            ground_truth_localizable=True,
+            non_localizable_reason="",
+            localizability_class="localizable_transition_gt",
+        ),
+        LocalizabilityAuditRow(
+            case=CaseLocalizationResult(
+                case_id="case_b",
+                mutation_operator="duplicate_transition",
+                changed_transition_id="t2",
+                localized=False,
+                transition_count=0,
+                rank_of_target=None,
+                reciprocal_rank=0.0,
+                top1_hit=False,
+                top3_hit=False,
+                top5_hit=False,
+                top_ranked_transition="",
+            ),
+            ground_truth_localizable=False,
+            non_localizable_reason="oracle-saturated",
+            localizability_class="missing_ground_truth",
+        ),
+    ]
+    from fsmrepairbench.localization_operator_exports import (
+        build_operator_metrics_rows,
+        build_rank_distribution_operator_rows,
+    )
+
+    operator_rows = build_operator_metrics_rows(audit_rows, {})
+    operators = {str(row["mutation_operator"]) for row in operator_rows}
+    assert "wrong_target" in operators
+    assert "duplicate_transition" in operators
+
+    wrong_target_primary = next(
+        row
+        for row in operator_rows
+        if row["mutation_operator"] == "wrong_target"
+        and row["partition"] == "all_detectable"
+        and row["gt_mode"] == "primary"
+    )
+    assert int(wrong_target_primary["not_ranked_count"]) == 0
+    assert float(wrong_target_primary["top1_hit_rate"]) == 1.0
+
+    dup_row = next(
+        row
+        for row in operator_rows
+        if row["mutation_operator"] == "duplicate_transition"
+        and row["partition"] == "all_detectable"
+    )
+    assert int(dup_row["detectable_cases"]) == 0
+
+    rank_rows = build_rank_distribution_operator_rows(audit_rows, {})
+    assert any(row["mutation_operator"] == "wrong_target" for row in rank_rows)

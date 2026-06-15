@@ -1,0 +1,35 @@
+{
+  "bug_id": "synthetic_10711_3_2__hom__unreachable_state_intro__wrong_target__15196",
+  "reference_fsm_id": "synthetic_10711_3_2",
+  "faulty_fsm_id": "synthetic_10711_3_2__faulty__hom__unreachable_state_intro__wrong_target__15196",
+  "mutation_operator": "unreachable_state_intro,wrong_target",
+  "changed_transition_id": "t10711_1",
+  "description": "Higher-order mutant applying 2 operators: unreachable_state_intro, wrong_target",
+  "seed": 15196,
+  "mutation_complexity": null,
+  "mutation_scope": null,
+  "mutation_mode": null,
+  "mutation_order": 2,
+  "component_faults": [
+    {
+      "operator": "unreachable_state_intro",
+      "seed": 15196,
+      "bug_id": "synthetic_10711_3_2__unreachable_state_intro__15196",
+      "changed_transition_id": null,
+      "description": "Added unreachable state 'unreachable_15196'"
+    },
+    {
+      "operator": "wrong_target",
+      "seed": 16196,
+      "bug_id": "synthetic_10711_3_2__faulty__unreachable_state_intro__15196__wrong_target__16196",
+      "changed_transition_id": "t10711_1",
+      "description": "Changed target of transition 't10711_1' from 's10711_0' to 's10711_1'"
+    }
+  ],
+  "is_higher_order": true,
+  "coupled_to_simple_faults": [
+    "synthetic_10711_3_2__unreachable_state_intro__15196",
+    "synthetic_10711_3_2__faulty__unreachable_state_intro__15196__wrong_target__16196"
+  ],
+  "is_negative_control": false
+}

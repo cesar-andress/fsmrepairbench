@@ -1,0 +1,35 @@
+{
+  "bug_id": "synthetic_16417_3_2__hom__delay_corruption__guard_flip__44876",
+  "reference_fsm_id": "synthetic_16417_3_2",
+  "faulty_fsm_id": "synthetic_16417_3_2__faulty__hom__delay_corruption__guard_flip__44876",
+  "mutation_operator": "delay_corruption,guard_flip",
+  "changed_transition_id": "t16417_5",
+  "description": "Higher-order mutant applying 2 operators: delay_corruption, guard_flip",
+  "seed": 44876,
+  "mutation_complexity": null,
+  "mutation_scope": null,
+  "mutation_mode": null,
+  "mutation_order": 2,
+  "component_faults": [
+    {
+      "operator": "delay_corruption",
+      "seed": 44876,
+      "bug_id": "synthetic_16417_3_2__delay_corruption__44876",
+      "changed_transition_id": "t16417_2",
+      "description": "Corrupted delay on transition 't16417_2' to 1.5"
+    },
+    {
+      "operator": "guard_flip",
+      "seed": 45876,
+      "bug_id": "synthetic_16417_3_2__faulty__delay_corruption__44876__guard_flip__45876",
+      "changed_transition_id": "t16417_5",
+      "description": "Changed guard of transition 't16417_5' from 'x_16417_4 > 0' to 'not_x_16417_4 > 0'"
+    }
+  ],
+  "is_higher_order": true,
+  "coupled_to_simple_faults": [
+    "synthetic_16417_3_2__delay_corruption__44876",
+    "synthetic_16417_3_2__faulty__delay_corruption__44876__guard_flip__45876"
+  ],
+  "is_negative_control": false
+}

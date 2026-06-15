@@ -1,0 +1,35 @@
+{
+  "bug_id": "synthetic_1184_3_2__hom__nondeterminism_intro__missing_transition__63619",
+  "reference_fsm_id": "synthetic_1184_3_2",
+  "faulty_fsm_id": "synthetic_1184_3_2__faulty__hom__nondeterminism_intro__missing_transition__63619",
+  "mutation_operator": "nondeterminism_intro,missing_transition",
+  "changed_transition_id": "t1184_4__nd__63619",
+  "description": "Higher-order mutant applying 2 operators: nondeterminism_intro, missing_transition",
+  "seed": 63619,
+  "mutation_complexity": null,
+  "mutation_scope": null,
+  "mutation_mode": null,
+  "mutation_order": 2,
+  "component_faults": [
+    {
+      "operator": "nondeterminism_intro",
+      "seed": 63619,
+      "bug_id": "synthetic_1184_3_2__nondeterminism_intro__63619",
+      "changed_transition_id": "t1184_4",
+      "description": "Added nondeterministic duplicate for event 'e1184_0' from 's1184_2'"
+    },
+    {
+      "operator": "missing_transition",
+      "seed": 64619,
+      "bug_id": "synthetic_1184_3_2__faulty__nondeterminism_intro__63619__missing_transition__64619",
+      "changed_transition_id": "t1184_4__nd__63619",
+      "description": "Removed transition 't1184_4__nd__63619'"
+    }
+  ],
+  "is_higher_order": true,
+  "coupled_to_simple_faults": [
+    "synthetic_1184_3_2__nondeterminism_intro__63619",
+    "synthetic_1184_3_2__faulty__nondeterminism_intro__63619__missing_transition__64619"
+  ],
+  "is_negative_control": false
+}

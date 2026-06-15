@@ -1,0 +1,36 @@
+{
+  "zenodo_doi": "10.5281/zenodo.20602528",
+  "generated_at_utc": "2026-06-15T17:55:41.284329+00:00",
+  "columns": [
+    "campaign",
+    "release_label",
+    "construct",
+    "metric",
+    "partition",
+    "subgroup",
+    "n_cases",
+    "value",
+    "ci95_low",
+    "ci95_high"
+  ],
+  "row_count": 81,
+  "constructs": [
+    "detection",
+    "localization",
+    "repair"
+  ],
+  "partitions": [
+    "cohort_wide",
+    "detectable_only",
+    "transition_localizable_gt"
+  ],
+  "output_files": [
+    "metrics_by_partition.csv",
+    "c1_metrics_by_partition.csv",
+    "rq3_metrics_by_partition.csv",
+    "rq4_metrics_by_partition.csv"
+  ],
+  "regeneration_commands": [
+    "python ../paper1/scripts/generate_campaign_metrics_by_partition_outputs.py"
+  ]
+}

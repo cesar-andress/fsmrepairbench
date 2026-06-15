@@ -1,0 +1,35 @@
+{
+  "bug_id": "synthetic_10575_3_2__hom__unreachable_state_intro__wrong_target__48350",
+  "reference_fsm_id": "synthetic_10575_3_2",
+  "faulty_fsm_id": "synthetic_10575_3_2__faulty__hom__unreachable_state_intro__wrong_target__48350",
+  "mutation_operator": "unreachable_state_intro,wrong_target",
+  "changed_transition_id": "t10575_1",
+  "description": "Higher-order mutant applying 2 operators: unreachable_state_intro, wrong_target",
+  "seed": 48350,
+  "mutation_complexity": null,
+  "mutation_scope": null,
+  "mutation_mode": null,
+  "mutation_order": 2,
+  "component_faults": [
+    {
+      "operator": "unreachable_state_intro",
+      "seed": 48350,
+      "bug_id": "synthetic_10575_3_2__unreachable_state_intro__48350",
+      "changed_transition_id": null,
+      "description": "Added unreachable state 'unreachable_48350'"
+    },
+    {
+      "operator": "wrong_target",
+      "seed": 49350,
+      "bug_id": "synthetic_10575_3_2__faulty__unreachable_state_intro__48350__wrong_target__49350",
+      "changed_transition_id": "t10575_1",
+      "description": "Changed target of transition 't10575_1' from 's10575_1' to 's10575_0'"
+    }
+  ],
+  "is_higher_order": true,
+  "coupled_to_simple_faults": [
+    "synthetic_10575_3_2__unreachable_state_intro__48350",
+    "synthetic_10575_3_2__faulty__unreachable_state_intro__48350__wrong_target__49350"
+  ],
+  "is_negative_control": false
+}

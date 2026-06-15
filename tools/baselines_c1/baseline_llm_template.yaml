@@ -1,0 +1,10 @@
+tool_id: baseline_llm_template
+tool_type: baseline
+command: llm-template
+timeout_seconds: 60
+environment:
+  baseline_seed: "0"
+input_format: fsmrepairbench_case_v1
+output_format: fsmrepairbench_repair_result_v1
+iterations: 1
+temperature: 0.0

@@ -1,0 +1,144 @@
+{
+  "cohort_size": 1000,
+  "composite_grade": "fair",
+  "composite_health_score": 0.589367,
+  "generated_at": "2026-06-15T17:52:59.492874+00:00",
+  "pillar_scores": {
+    "complexity_tier_balance": 0.969982,
+    "coupling_coverage": 0.25,
+    "localization_coverage": 0.376,
+    "operator_balance": 0.896815,
+    "oracle_health": 0.495,
+    "taxonomy_coverage": 0.548402
+  },
+  "pillars": {
+    "complexity_tier_balance": {
+      "count_balance": {
+        "case_counts": [
+          251,
+          251,
+          246,
+          252
+        ],
+        "coefficient_of_variation": 0.009381,
+        "max_cases": 252,
+        "mean_cases": 250,
+        "min_cases": 246,
+        "score": 0.962477
+      },
+      "score": 0.969982,
+      "tiers_present": 4,
+      "tiers_total": 4
+    },
+    "coupling_coverage": {
+      "campaign_label": "RQ4-higher-order-coupling-250",
+      "first_order_detection_rate_subset": 0.472,
+      "full_cohort_cases": 1000,
+      "pinned_subset_cases": 250,
+      "score": 0.25
+    },
+    "localization_coverage": {
+      "detectable_cases": 495,
+      "detectable_fraction": 0.495,
+      "primary_partition": "transition_localizable_gt",
+      "score": 0.376,
+      "skipped_cases": 624,
+      "transition_localizable_cases": 376
+    },
+    "operator_balance": {
+      "count_balance": {
+        "case_counts": [
+          59,
+          59,
+          59,
+          59,
+          59,
+          59,
+          53,
+          59,
+          59,
+          60,
+          59,
+          59,
+          59,
+          59,
+          59,
+          60,
+          60
+        ],
+        "coefficient_of_variation": 0.025573,
+        "max_cases": 60,
+        "mean_cases": 58.824,
+        "min_cases": 53,
+        "score": 0.897706
+      },
+      "missing_operators": [
+        "timed_selective_mutation",
+        "variable_intra_class"
+      ],
+      "operators_present": 17,
+      "operators_total": 19,
+      "presence_ratio": 0.894737,
+      "score": 0.896815
+    },
+    "oracle_health": {
+      "detectable_cases": 495,
+      "interpretation": "Lower saturation is healthier for detectability/localization/repair measurement; 505/1,000 oracle-saturated cases confound cohort-wide repair metrics.",
+      "oracle_saturated_cases": 505,
+      "overall_detection_rate": 0.495,
+      "saturation_rate": 0.505,
+      "score": 0.495
+    },
+    "taxonomy_coverage": {
+      "fsm_family_coverage_ratio": 0.125,
+      "mean_dimension_coverage_ratio": 0.548402,
+      "mutation_operator_coverage_ratio": 0.894737,
+      "pairwise_mean_coverage_ratio": 0.295011,
+      "score": 0.548402,
+      "unique_taxonomy_combinations": 200
+    }
+  },
+  "recommendations_v0_3_plus": [
+    {
+      "area": "operator_balance",
+      "priority": "high",
+      "recommendation": "Close operator build gaps for timed_selective_mutation, variable_intra_class and rebalance quotas so every declared operator reaches the stratification plan minimum."
+    },
+    {
+      "area": "oracle_health",
+      "priority": "high",
+      "recommendation": "Ship oracle variants that observe actions, timing, guards, and reachability fields; target saturation below 30% on the main cohort so detectability and repair partitions are not dominated by oracle-invisible faults."
+    },
+    {
+      "area": "localization_coverage",
+      "priority": "high",
+      "recommendation": "Expand transition-localizable ground truth and shallow-oracle spectra beyond 376/1000 cases; publish operator-specific localization eligibility and richer scenario fields in v0.3."
+    },
+    {
+      "area": "coupling_coverage",
+      "priority": "medium",
+      "recommendation": "Scale HO coupling campaigns from the pinned 250-case subset to a stratified 500-1000-case pin and document alternative chaining policies so coupling claims generalise beyond seed 44."
+    },
+    {
+      "area": "taxonomy_coverage",
+      "priority": "high",
+      "recommendation": "Realise under-filled taxonomy cells (mean dimension coverage 54.8%) and add Mealy, Moore, EFSM, and timed machine strata beyond plain_fsm."
+    },
+    {
+      "area": "machine_type_coverage",
+      "priority": "high",
+      "recommendation": "Introduce at least one non-plain_fsm family in v0.3 pilot stratum (for example Mealy or timed) before claiming cross-family behavioural evaluation."
+    },
+    {
+      "area": "release_process",
+      "priority": "medium",
+      "recommendation": "Gate v0.3+ releases on regenerated benchmark health scorecard thresholds: composite >= 0.60, oracle saturation <= 0.40, localization coverage >= 0.45."
+    },
+    {
+      "area": "reporting",
+      "priority": "medium",
+      "recommendation": "Continue publishing detectable-only, localizable-only, and pinned-subset partitions alongside cohort-wide totals in all campaign exports."
+    }
+  ],
+  "release_label": "v0.2.0-analysis"
+}

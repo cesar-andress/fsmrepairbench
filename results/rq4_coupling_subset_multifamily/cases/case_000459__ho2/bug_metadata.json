@@ -1,0 +1,35 @@
+{
+  "bug_id": "synthetic_8758_3_2__hom__dead_state_intro__wrong_target__7721",
+  "reference_fsm_id": "synthetic_8758_3_2",
+  "faulty_fsm_id": "synthetic_8758_3_2__faulty__hom__dead_state_intro__wrong_target__7721",
+  "mutation_operator": "dead_state_intro,wrong_target",
+  "changed_transition_id": "t8758_1",
+  "description": "Higher-order mutant applying 2 operators: dead_state_intro, wrong_target",
+  "seed": 7721,
+  "mutation_complexity": null,
+  "mutation_scope": null,
+  "mutation_mode": null,
+  "mutation_order": 2,
+  "component_faults": [
+    {
+      "operator": "dead_state_intro",
+      "seed": 7721,
+      "bug_id": "synthetic_8758_3_2__dead_state_intro__7721",
+      "changed_transition_id": null,
+      "description": "Added unreachable state 'dead_7721'"
+    },
+    {
+      "operator": "wrong_target",
+      "seed": 8721,
+      "bug_id": "synthetic_8758_3_2__faulty__dead_state_intro__7721__wrong_target__8721",
+      "changed_transition_id": "t8758_1",
+      "description": "Changed target of transition 't8758_1' from 's8758_1' to 'dead_7721'"
+    }
+  ],
+  "is_higher_order": true,
+  "coupled_to_simple_faults": [
+    "synthetic_8758_3_2__dead_state_intro__7721",
+    "synthetic_8758_3_2__faulty__dead_state_intro__7721__wrong_target__8721"
+  ],
+  "is_negative_control": false
+}

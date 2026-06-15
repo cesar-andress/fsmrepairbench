@@ -1,0 +1,89 @@
+{
+  "id": "synthetic_3901_3_2__faulty__hom__action_corruption__wrong_target__guard_flip__74116",
+  "name": "Synthetic FSM (custom) (higher-order: action_corruption, wrong_target, guard_flip)",
+  "description": "Synthetic FSM generated with seed=3901, states=3, events=2, branching_factor=1, deterministic=True, allow_dead_states=False",
+  "states": [
+    {
+      "id": "s3901_0",
+      "state_output": null,
+      "refusal": false,
+      "quiescence": false
+    },
+    {
+      "id": "s3901_1",
+      "state_output": null,
+      "refusal": false,
+      "quiescence": false
+    },
+    {
+      "id": "s3901_2",
+      "state_output": null,
+      "refusal": false,
+      "quiescence": false
+    }
+  ],
+  "initial_state": "s3901_0",
+  "events": [
+    "e3901_0",
+    "e3901_1"
+  ],
+  "transitions": [
+    {
+      "id": "t3901_1",
+      "source": "s3901_0",
+      "event": "e3901_1",
+      "target": "s3901_2",
+      "guard": "not_x_3901_0 > 0",
+      "action": "wrong_act3901_1",
+      "output": "out_3901_0",
+      "timeout": null,
+      "delay": null,
+      "requirements": [],
+      "probability": null,
+      "is_nondeterministic": false,
+      "refusal": false,
+      "quiescence": false,
+      "discrete_time": null
+    },
+    {
+      "id": "t3901_2",
+      "source": "s3901_1",
+      "event": "e3901_0",
+      "target": "s3901_2",
+      "guard": "x_3901_1 > 0",
+      "action": "act3901_2",
+      "output": "out_3901_1",
+      "timeout": null,
+      "delay": null,
+      "requirements": [],
+      "probability": null,
+      "is_nondeterministic": false,
+      "refusal": false,
+      "quiescence": false,
+      "discrete_time": null
+    },
+    {
+      "id": "t3901_3",
+      "source": "s3901_2",
+      "event": "e3901_1",
+      "target": "s3901_2",
+      "guard": "x_3901_2 > 0",
+      "action": "act3901_3",
+      "output": "out_3901_2",
+      "timeout": null,
+      "delay": null,
+      "requirements": [],
+      "probability": null,
+      "is_nondeterministic": false,
+      "refusal": false,
+      "quiescence": false,
+      "discrete_time": null
+    }
+  ],
+  "variables": {},
+  "parent_fsm_id": "synthetic_3901_3_2",
+  "reference_fsm_id": "synthetic_3901_3_2",
+  "discrete_time_step": null,
+  "semantics_mode": null,
+  "cyclic_metadata": null
+}

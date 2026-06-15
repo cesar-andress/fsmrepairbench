@@ -1,0 +1,61 @@
+{
+  "id": "synthetic_8758_3_2__faulty__hom__dead_state_intro__wrong_target__7721",
+  "name": "Synthetic FSM (custom) (higher-order: dead_state_intro, wrong_target)",
+  "description": "Synthetic FSM generated with seed=8758, states=3, events=2, branching_factor=1, deterministic=True, allow_dead_states=True",
+  "states": [
+    {
+      "id": "s8758_0",
+      "state_output": "out_8758_0",
+      "refusal": false,
+      "quiescence": false
+    },
+    {
+      "id": "s8758_1",
+      "state_output": "out_8758_1",
+      "refusal": false,
+      "quiescence": false
+    },
+    {
+      "id": "s8758_2",
+      "state_output": "out_8758_2",
+      "refusal": false,
+      "quiescence": false
+    },
+    {
+      "id": "dead_7721",
+      "state_output": null,
+      "refusal": false,
+      "quiescence": false
+    }
+  ],
+  "initial_state": "s8758_0",
+  "events": [
+    "e8758_0",
+    "e8758_1"
+  ],
+  "transitions": [
+    {
+      "id": "t8758_1",
+      "source": "s8758_0",
+      "event": "e8758_0",
+      "target": "dead_7721",
+      "guard": null,
+      "action": "act8758_1",
+      "output": null,
+      "timeout": null,
+      "delay": null,
+      "requirements": [],
+      "probability": null,
+      "is_nondeterministic": false,
+      "refusal": false,
+      "quiescence": false,
+      "discrete_time": null
+    }
+  ],
+  "variables": {},
+  "parent_fsm_id": "synthetic_8758_3_2",
+  "reference_fsm_id": "synthetic_8758_3_2",
+  "discrete_time_step": null,
+  "semantics_mode": null,
+  "cyclic_metadata": null
+}

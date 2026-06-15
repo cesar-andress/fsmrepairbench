@@ -1,0 +1,35 @@
+{
+  "bug_id": "synthetic_3884_3_2__hom__action_corruption__wrong_event__71087",
+  "reference_fsm_id": "synthetic_3884_3_2",
+  "faulty_fsm_id": "synthetic_3884_3_2__faulty__hom__action_corruption__wrong_event__71087",
+  "mutation_operator": "action_corruption,wrong_event",
+  "changed_transition_id": "t3884_2",
+  "description": "Higher-order mutant applying 2 operators: action_corruption, wrong_event",
+  "seed": 71087,
+  "mutation_complexity": null,
+  "mutation_scope": null,
+  "mutation_mode": null,
+  "mutation_order": 2,
+  "component_faults": [
+    {
+      "operator": "action_corruption",
+      "seed": 71087,
+      "bug_id": "synthetic_3884_3_2__action_corruption__71087",
+      "changed_transition_id": "t3884_3",
+      "description": "Changed action of transition 't3884_3' from 'act3884_3' to 'wrong_act3884_3'"
+    },
+    {
+      "operator": "wrong_event",
+      "seed": 72087,
+      "bug_id": "synthetic_3884_3_2__faulty__action_corruption__71087__wrong_event__72087",
+      "changed_transition_id": "t3884_2",
+      "description": "Changed event of transition 't3884_2' from 'e3884_1' to 'e3884_0'"
+    }
+  ],
+  "is_higher_order": true,
+  "coupled_to_simple_faults": [
+    "synthetic_3884_3_2__action_corruption__71087",
+    "synthetic_3884_3_2__faulty__action_corruption__71087__wrong_event__72087"
+  ],
+  "is_negative_control": false
+}

@@ -22,6 +22,7 @@ from fsmrepairbench.models import BugMetadata
 from fsmrepairbench.statistics import (
     append_ci_section_to_report,
     compute_rq3_confidence_intervals,
+    compute_rq3_cohort_confidence_intervals,
     write_confidence_interval_exports,
 )
 from fsmrepairbench.validators import load_fsm_json, load_oracle_suite
@@ -145,6 +146,45 @@ def load_cohort_manifest(path: Path) -> list[str]:
     return [line.strip() for line in path.read_text(encoding="utf-8").splitlines() if line.strip()]
 
 
+@dataclass(frozen=True)
+class _OracleProgressCase:
+    bpr_delta: float
+
+
+def _detectable_case_ids(dataset_dir: Path, cohort_ids: set[str]) -> set[str]:
+    progress_path = dataset_dir / "progress.csv"
+    if not progress_path.is_file():
+        return set()
+    detectable: set[str] = set()
+    with progress_path.open(encoding="utf-8", newline="") as handle:
+        for row in csv.DictReader(handle):
+            case_id = str(row["case_id"])
+            if case_id not in cohort_ids:
+                continue
+            if float(row["bpr_delta"]) > 0.0:
+                detectable.add(case_id)
+    return detectable
+
+
+def _load_progress_oracle_cases(
+    dataset_dir: Path,
+    cohort_ids: set[str],
+) -> list[_OracleProgressCase]:
+    progress_path = dataset_dir / "progress.csv"
+    if not progress_path.is_file():
+        return []
+    cases: list[_OracleProgressCase] = []
+    with progress_path.open(encoding="utf-8", newline="") as handle:
+        for row in csv.DictReader(handle):
+            case_id = str(row["case_id"])
+            if case_id not in cohort_ids:
+                continue
+            if row.get("status", "completed") != "completed":
+                continue
+            cases.append(_OracleProgressCase(bpr_delta=float(row["bpr_delta"])))
+    return cases
+
+
 def ranked_transition_ids(report: FaultLocalizationReport) -> list[str]:
     """Return transition element IDs in Ochiai rank order."""
     return [
@@ -185,6 +225,32 @@ def transition_localization_metrics(
     )
 
 
+def ochiai_ranked_transition_ids(
+    case_dir: Path,
+    *,
+    method: SuspiciousnessMethod = LOCALIZATION_METHOD,
+) -> list[str] | None:
+    """Return ranked transition IDs for one case, or None when localization is skipped."""
+    faulty_path = resolve_coupling_case_file(case_dir, "faulty_fsm.json")
+    oracle_path = resolve_coupling_case_file(case_dir, "oracle_suite.json")
+    metadata_path = case_dir / "bug_metadata.json"
+    if faulty_path is None or oracle_path is None or not metadata_path.is_file():
+        return None
+    metadata = BugMetadata.model_validate(
+        json.loads(metadata_path.read_text(encoding="utf-8"))
+    )
+    if metadata.is_negative_control or metadata.mutation_operator == "no_fault":
+        return None
+
+    faulty = load_fsm_json(faulty_path)
+    oracle = load_oracle_suite(oracle_path)
+    try:
+        report = localize_fault(faulty, oracle, method=method)
+    except ValueError:
+        return None
+    return ranked_transition_ids(report)
+
+
 def localize_case_transitions(
     case_dir: Path,
     *,
@@ -192,15 +258,11 @@ def localize_case_transitions(
 ) -> CaseLocalizationResult:
     """Run transition-level localization for one stratified case directory."""
     case_id = case_dir.name
-    faulty_path = resolve_coupling_case_file(case_dir, "faulty_fsm.json")
-    oracle_path = resolve_coupling_case_file(case_dir, "oracle_suite.json")
     metadata_path = case_dir / "bug_metadata.json"
-    if faulty_path is None or oracle_path is None or not metadata_path.is_file():
+    if not metadata_path.is_file():
         msg = f"Incomplete case directory: {case_dir}"
         raise LocalizationCampaignError(msg)
 
-    faulty = load_fsm_json(faulty_path)
-    oracle = load_oracle_suite(oracle_path)
     metadata = BugMetadata.model_validate(
         json.loads(metadata_path.read_text(encoding="utf-8"))
     )
@@ -221,9 +283,8 @@ def localize_case_transitions(
             top_ranked_transition="",
         )
 
-    try:
-        report = localize_fault(faulty, oracle, method=method)
-    except ValueError:
+    ranked_ids = ochiai_ranked_transition_ids(case_dir, method=method)
+    if ranked_ids is None:
         return CaseLocalizationResult(
             case_id=case_id,
             mutation_operator=operator,
@@ -237,8 +298,6 @@ def localize_case_transitions(
             top5_hit=False,
             top_ranked_transition="",
         )
-
-    ranked_ids = ranked_transition_ids(report)
     rank, reciprocal, top1, top3, top5 = transition_localization_metrics(target, ranked_ids)
     return CaseLocalizationResult(
         case_id=case_id,
@@ -787,7 +846,13 @@ def run_localization_campaign(
         rows=rows,
     )
 
-    ci_rows = compute_rq3_confidence_intervals(rows)
+    cohort_id_set = set(case_ids)
+    detectable_ids = _detectable_case_ids(dataset_dir, cohort_id_set)
+    ci_rows = compute_rq3_confidence_intervals(
+        rows,
+        detectable_case_ids=detectable_ids,
+    )
+    ci_rows.extend(compute_rq3_cohort_confidence_intervals(_load_progress_oracle_cases(dataset_dir, cohort_id_set)))
     write_confidence_interval_exports(
         out,
         campaign="RQ3-localization",

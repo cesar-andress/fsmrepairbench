@@ -4,7 +4,7 @@
   "zenodo_doi": "10.5281/zenodo.20602528",
   "experiment": "RQ4-higher-order-coupling-250",
   "dataset_dir": "data/fsmrepairbench_1k",
-  "output_dir": "results/rq4_coupling_250",
+  "output_dir": "/home/cesar/papers/fsmrepairbench/fsmrepairbench/results/rq4_coupling_250",
   "cohort_path": "data/fsmrepairbench_1k/coupling_campaign_250.txt",
   "cohort_sha256": "86222a059d56a7c913ecf9f847bbc8650ad1ce0f3cea0decbe124d7147bd7979",
   "subset_dir": "results/rq4_coupling_subset",
@@ -30,23 +30,33 @@
     "coupling_metrics.csv",
     "coupling_report.json",
     "figures/complete_repair_rate_by_order.png",
+    "figures/complete_repair_rate_by_order_partition.png",
     "figures/coupling_effect_by_operator_order2.png",
     "figures/coupling_effect_overall.png",
     "figures/detection_rate_by_order.png",
     "figures/effective_repair_rate_by_order.png",
+    "figures/effective_repair_rate_by_order_partition.png",
     "figures/mean_bpr_delta_by_order.png",
     "manifest.json",
+    "paired_confidence_intervals.csv",
+    "paired_confidence_intervals.json",
     "per_case_results.csv",
     "report.md",
     "summary.csv",
+    "summary_metrics_with_ci.csv",
     "tables/table_coupling_summary.tex",
     "tables/table_detection_by_operator_order.tex",
-    "tables/table_repair_by_order.tex"
+    "tables/table_repair_by_order.tex",
+    "tables/table_repair_detectable_by_operator_order.tex",
+    "tables/table_repair_detectable_by_order.tex"
   ],
   "regeneration_commands": [
-    "fsmrepairbench run-coupling-campaign data/fsmrepairbench_1k --out results/rq4_coupling_250 --subset-dir results/rq4_coupling_subset --seed 44",
-    "fsmrepairbench run-coupling-campaign data/fsmrepairbench_1k --out results/rq4_coupling_250 --subset-dir results/rq4_coupling_subset --cohort-file data/fsmrepairbench_1k/coupling_campaign_250.txt --seed 44"
+    "fsmrepairbench run-coupling-campaign data/fsmrepairbench_1k --out /home/cesar/papers/fsmrepairbench/fsmrepairbench/results/rq4_coupling_250 --subset-dir results/rq4_coupling_subset --seed 44",
+    "fsmrepairbench run-coupling-campaign data/fsmrepairbench_1k --out /home/cesar/papers/fsmrepairbench/fsmrepairbench/results/rq4_coupling_250 --subset-dir results/rq4_coupling_subset --cohort-file data/fsmrepairbench_1k/coupling_campaign_250.txt --seed 44",
+    "python ../paper1/scripts/run_rq4_random_secondary_campaign.py",
+    "python ../paper1/scripts/generate_rq4_coupling_outputs.py --run-random-secondary",
+    "python ../paper1/scripts/verify_cohort_manifests.py"
   ],
-  "git_commit_hash": "461520cb2ace87962f469fafb36048716d23123d",
-  "generated_at": "2026-06-09T07:52:29.254715+00:00"
+  "git_commit_hash": "238b4126bfd4a8dd7c7af509dd2a6ee2e00ee39d",
+  "generated_at": "2026-06-09T19:47:53.906845+00:00"
 }

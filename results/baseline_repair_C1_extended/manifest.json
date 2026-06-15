@@ -1,0 +1,84 @@
+{
+  "release_label": "C1-extended-baseline-repair",
+  "campaign_label": "C1-extended-baseline-repair",
+  "zenodo_doi": "10.5281/zenodo.20602528",
+  "dataset_path": "data/fsmrepairbench_1k",
+  "cohort_file": "data/fsmrepairbench_1k/analysis_cohort_1k.txt",
+  "cohort_sha256": "c03c4d5981259510bccfced987c5175f28058d7bdccc164e7ce2ba22410f04f8",
+  "number_of_cases": 1000,
+  "tool_names": [
+    "baseline_llm_template",
+    "baseline_oracle_composite",
+    "baseline_search_bpr"
+  ],
+  "tool_config_paths": [
+    "tools/baselines_c1_extended/baseline_llm_template.yaml",
+    "tools/baselines_c1_extended/baseline_oracle_composite.yaml",
+    "tools/baselines_c1_extended/baseline_search_bpr.yaml"
+  ],
+  "engine_config": [
+    {
+      "tool_id": "baseline_llm_template",
+      "command": "llm-template",
+      "timeout_seconds": 60,
+      "environment": {
+        "baseline_seed": "0"
+      },
+      "iterations": 1,
+      "temperature": 0.0
+    },
+    {
+      "tool_id": "baseline_oracle_composite",
+      "command": "oracle-composite",
+      "timeout_seconds": 60,
+      "environment": {},
+      "iterations": 1,
+      "temperature": 0.0
+    },
+    {
+      "tool_id": "baseline_search_bpr",
+      "command": "search-bpr",
+      "timeout_seconds": 120,
+      "environment": {
+        "baseline_seed": "0"
+      },
+      "iterations": 1,
+      "temperature": 0.0
+    }
+  ],
+  "seeds": [
+    0,
+    1,
+    2,
+    3,
+    4,
+    5,
+    6,
+    7,
+    8,
+    9
+  ],
+  "workers": 4,
+  "timestamp_utc": "2026-06-15T17:55:06.734192+00:00",
+  "git_commit_hash": "1efae10cfe9dded2dbd4b52258bc98f18a624fa1",
+  "output_files": [
+    "confidence_intervals.csv",
+    "confidence_intervals.json",
+    "leaderboard.csv",
+    "manifest.json",
+    "per_case_results.csv",
+    "repair_localization_coupling.csv",
+    "report.md",
+    "summary.csv"
+  ],
+  "regeneration_commands": [
+    "fsmrepairbench run-c1-extended-baseline-repair /home/cesar/papers/fsmrepairbench/fsmrepairbench/data/fsmrepairbench_1k --out /home/cesar/papers/fsmrepairbench/fsmrepairbench/results/baseline_repair_C1_extended --workers 4",
+    "fsmrepairbench run-tools /home/cesar/papers/fsmrepairbench/fsmrepairbench/data/fsmrepairbench_1k tools/baselines_c1_extended/ --out /home/cesar/papers/fsmrepairbench/fsmrepairbench/results/baseline_repair_C1_extended --cohort-file /home/cesar/papers/fsmrepairbench/fsmrepairbench/data/fsmrepairbench_1k/analysis_cohort_1k.txt --workers 4",
+    "python ../paper1/scripts/generate_baseline_repair_C1_extended_outputs.py"
+  ],
+  "extended_engines": [
+    "search-bpr",
+    "oracle-composite",
+    "llm-template"
+  ]
+}

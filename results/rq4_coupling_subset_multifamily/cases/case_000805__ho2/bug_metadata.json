@@ -1,0 +1,35 @@
+{
+  "bug_id": "synthetic_15347_3_2__hom__timeout_corruption__wrong_event__79839",
+  "reference_fsm_id": "synthetic_15347_3_2",
+  "faulty_fsm_id": "synthetic_15347_3_2__faulty__hom__timeout_corruption__wrong_event__79839",
+  "mutation_operator": "timeout_corruption,wrong_event",
+  "changed_transition_id": "t15347_3",
+  "description": "Higher-order mutant applying 2 operators: timeout_corruption, wrong_event",
+  "seed": 79839,
+  "mutation_complexity": null,
+  "mutation_scope": null,
+  "mutation_mode": null,
+  "mutation_order": 2,
+  "component_faults": [
+    {
+      "operator": "timeout_corruption",
+      "seed": 79839,
+      "bug_id": "synthetic_15347_3_2__timeout_corruption__79839",
+      "changed_transition_id": "t15347_1",
+      "description": "Corrupted timeout on transition 't15347_1' to 2.0"
+    },
+    {
+      "operator": "wrong_event",
+      "seed": 80839,
+      "bug_id": "synthetic_15347_3_2__faulty__timeout_corruption__79839__wrong_event__80839",
+      "changed_transition_id": "t15347_3",
+      "description": "Changed event of transition 't15347_3' from 'e15347_0' to 'e15347_1'"
+    }
+  ],
+  "is_higher_order": true,
+  "coupled_to_simple_faults": [
+    "synthetic_15347_3_2__timeout_corruption__79839",
+    "synthetic_15347_3_2__faulty__timeout_corruption__79839__wrong_event__80839"
+  ],
+  "is_negative_control": false
+}

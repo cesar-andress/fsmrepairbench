@@ -1,0 +1,77 @@
+{
+  "artifacts": [
+    {
+      "media_type": "csv",
+      "relative_path": "depth_summary.csv",
+      "sha256": "e596abc1cf1f07acbab2e2b13ada0d886c757b3e780fe99e0436ca2fbb3dc5d6"
+    },
+    {
+      "media_type": "csv",
+      "relative_path": "summary.csv",
+      "sha256": "41e164b97f65a9538feffdbfa311939a8769b2747f2400ca9f44ce6df2ead4f7"
+    },
+    {
+      "media_type": "csv",
+      "relative_path": "per_case_results.csv",
+      "sha256": "9e45106c10f8115baffbd2248272d9e1d2be0d9bbde1c0f923635e5a4ce6d721"
+    },
+    {
+      "media_type": "csv",
+      "relative_path": "distributions.csv",
+      "sha256": "f3d389f9a79acf2e700292871d0b22e46f73f2d864cfa9c5fb29b15b3ac33b7b"
+    },
+    {
+      "media_type": "tex",
+      "relative_path": "tables/table_depth_summary.tex",
+      "sha256": "e7b48d347326e55aa56c3493c05626417c9a316d4c8402f0f744d5cdde407438"
+    },
+    {
+      "media_type": "tex",
+      "relative_path": "tables/table_detection_by_operator_depth.tex",
+      "sha256": "9a01d3da23f0c44b821555c1e086835af3d211e43294303a12bddb89946d8c6c"
+    },
+    {
+      "media_type": "png",
+      "relative_path": "figures/detection_rate_by_depth.png",
+      "sha256": "2e917f897fce8d870d561b1411de2100b52543e04ca9546d2015f98763253632"
+    },
+    {
+      "media_type": "png",
+      "relative_path": "figures/mean_bpr_delta_by_depth.png",
+      "sha256": "7562dfab5e9bb66af2ca638975879afc40fa62f4cb19bf16312f4976b48eaa6d"
+    },
+    {
+      "media_type": "png",
+      "relative_path": "figures/bpr_delta_distribution_shallow.png",
+      "sha256": "3eb6508d0df1d2bc858600963e2066fe55f55762293ffd7c455ea27f0d59e77c"
+    }
+  ],
+  "campaign_id": "c3",
+  "campaign_label": "C3 oracle depth ablation",
+  "metrics": [
+    {
+      "column": "overall_detection_rate",
+      "description": "shallow overall detection rate",
+      "expected": 0.485,
+      "file": "depth_summary.csv",
+      "lookup": {
+        "oracle_depth": "shallow"
+      }
+    },
+    {
+      "column": "overall_detection_rate",
+      "description": "deep overall detection rate",
+      "expected": 0.485,
+      "file": "depth_summary.csv",
+      "lookup": {
+        "oracle_depth": "deep"
+      }
+    }
+  ],
+  "regeneration_commands": [
+    "python ../paper1/scripts/generate_oracle_depth_ablation_outputs.py"
+  ],
+  "release_label": "v0.2.0-analysis",
+  "results_subdir": "oracle_depth_ablation",
+  "zenodo_doi": "10.5281/zenodo.20602528"
+}

@@ -30,6 +30,8 @@ seeded mutation, dataset builders, LLM/baseline repair experiments, and governan
 >
 > **v0.3.x pilots** (multi-family smoke, negative controls, oracle-depth v2, random-secondary
 > coupling) are future experimental work and **not** part of the primary paper deposit.
+> Multi-family cohort documentation:
+> [`../docs/multifamily_cohorts.md`](../docs/multifamily_cohorts.md).
 
 ### Release labels
 
@@ -190,6 +192,30 @@ fsmrepairbench summarize-campaign-partitions \
 Campaign guides: [docs/README.md](docs/README.md) · Dataset README:
 [data/fsmrepairbench_1k/README.md](data/fsmrepairbench_1k/README.md)
 
+### Multi-family extension cohorts (v0.3.x)
+
+Ten-dimensional stratified cohorts covering **five machine families** (`plain_fsm`, `mealy`,
+`moore`, `efsm`, `timed_fsm`). These complement—not replace—the frozen Zenodo deposit.
+
+| Track | Release label | Dataset |
+|-------|---------------|---------|
+| 1k-plan (seed 44) | `v0.3.0-1k-plan-multifamily` | `data/fsmrepairbench_1k_multifamily/` |
+| v0.3 external-validity (seed 46) | `v0.3.0-multifamily-cohort` | `data/fsmrepairbench_multifamily_v0_3/` |
+
+```bash
+# Build, pin, validate (1k-plan track)
+python ../paper1/scripts/build_multifamily_cohorts.py --track 1k-plan
+fsmrepairbench validate-multifamily-cohort data/fsmrepairbench_1k_multifamily
+
+# RQ2 analysis on pinned cohort
+fsmrepairbench analyze-benchmark data/fsmrepairbench_1k_multifamily \
+  --cohort-file data/fsmrepairbench_1k_multifamily/analysis_cohort_1k.txt \
+  --out results/analysis_1k_multifamily
+```
+
+Full guide: [`../docs/multifamily_cohorts.md`](../docs/multifamily_cohorts.md) · GitHub
+[`v0.2.1-stvr-polish`](https://github.com/cesar-andress/fsmrepairbench/releases/tag/v0.2.1-stvr-polish)
+
 ---
 
 ## Tooling release (v0.2.1-stvr-polish)
@@ -317,7 +343,7 @@ Entry point: `fsmrepairbench`. Full reference: [docs/cli.md](docs/cli.md) (auto-
 | **Scoring & repair** | `score`, `mutate`, `apply-patch`, `baseline-repair`, `llm-repair` |
 | **FSM / oracle tools** | `generate-fsm`, `generate-oracles`, `generate-requirements`, `inject-ambiguity` |
 | **Dataset build** | `build-dataset`, `build-stratified-dataset`, `generate-benchmark` |
-| **Analysis** | `analyze-benchmark`, `generate-taxonomy-coverage`, `run-localization-campaign`, `run-coupling-campaign`, `run-oracle-depth-ablation`, `summarize-campaign-partitions`, `estimate-difficulty`, `calibrate-difficulty`, `benchmark-report`, `coverage-optimizer`, `detect-gaps`, `analyze-novelty`, `mine-failure-patterns` |
+| **Analysis** | `analyze-benchmark`, `analyze-multifamily-cohort`, `validate-multifamily-cohort`, `generate-taxonomy-coverage`, `run-localization-campaign`, `run-coupling-campaign`, `run-oracle-depth-ablation`, `summarize-campaign-partitions`, `estimate-difficulty`, `calibrate-difficulty`, `benchmark-report`, `coverage-optimizer`, `detect-gaps`, `analyze-novelty`, `mine-failure-patterns` |
 | **Paper repair baselines** | `run-tools`, `export-c1-baseline-repair`, `run-c1-baseline-repair`, `write-c1-manifest` |
 | **Filtering** | `filter-cases`, `subset-overlap` |
 | **Experiments & release** | `run-experiment`, `leaderboard`, `freeze-release`, `export-hf`, `reproduce` |
@@ -526,6 +552,8 @@ Full roadmap: [docs/roadmap.md](docs/roadmap.md) · Vision:
 | [docs/metrics.md](docs/metrics.md) | Evaluation metrics |
 | [docs/reproducibility.md](docs/reproducibility.md) | Seeds, versioning, freeze |
 | [docs/taxonomy_coverage.md](docs/taxonomy_coverage.md) | RQ1 taxonomy coverage campaign |
+| [docs/multifamily_cohorts.md](docs/multifamily_cohorts.md) | Multi-family 10D cohorts (package index) |
+| [../docs/multifamily_cohorts.md](../docs/multifamily_cohorts.md) | Multi-family cohorts (full guide) |
 | [docs/localization_campaign.md](docs/localization_campaign.md) | RQ3 Ochiai localization |
 | [docs/coupling_campaign.md](docs/coupling_campaign.md) | RQ4 higher-order coupling |
 | [docs/c1_baseline_repair.md](docs/c1_baseline_repair.md) | C1 baseline repair exports |

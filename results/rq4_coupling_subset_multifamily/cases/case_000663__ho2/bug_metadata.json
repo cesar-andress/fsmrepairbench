@@ -1,0 +1,35 @@
+{
+  "bug_id": "synthetic_12630_3_2__hom__guard_strengthen__wrong_event__17945",
+  "reference_fsm_id": "synthetic_12630_3_2",
+  "faulty_fsm_id": "synthetic_12630_3_2__faulty__hom__guard_strengthen__wrong_event__17945",
+  "mutation_operator": "guard_strengthen,wrong_event",
+  "changed_transition_id": "t12630_5",
+  "description": "Higher-order mutant applying 2 operators: guard_strengthen, wrong_event",
+  "seed": 17945,
+  "mutation_complexity": null,
+  "mutation_scope": null,
+  "mutation_mode": null,
+  "mutation_order": 2,
+  "component_faults": [
+    {
+      "operator": "guard_strengthen",
+      "seed": 17945,
+      "bug_id": "synthetic_12630_3_2__guard_strengthen__17945",
+      "changed_transition_id": "t12630_2",
+      "description": "Strengthened guard on transition 't12630_2'"
+    },
+    {
+      "operator": "wrong_event",
+      "seed": 18945,
+      "bug_id": "synthetic_12630_3_2__faulty__guard_strengthen__17945__wrong_event__18945",
+      "changed_transition_id": "t12630_5",
+      "description": "Changed event of transition 't12630_5' from 'e12630_1' to 'e12630_0'"
+    }
+  ],
+  "is_higher_order": true,
+  "coupled_to_simple_faults": [
+    "synthetic_12630_3_2__guard_strengthen__17945",
+    "synthetic_12630_3_2__faulty__guard_strengthen__17945__wrong_event__18945"
+  ],
+  "is_negative_control": false
+}

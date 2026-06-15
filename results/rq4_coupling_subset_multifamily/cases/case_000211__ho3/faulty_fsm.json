@@ -1,0 +1,106 @@
+{
+  "id": "synthetic_4037_3_2__faulty__hom__action_corruption__wrong_initial_state__wrong_target__89298",
+  "name": "Synthetic FSM (custom) (higher-order: action_corruption, wrong_initial_state, wrong_target)",
+  "description": "Synthetic FSM generated with seed=4037, states=3, events=2, branching_factor=1, deterministic=True, allow_dead_states=False",
+  "states": [
+    {
+      "id": "s4037_0",
+      "state_output": null,
+      "refusal": false,
+      "quiescence": false
+    },
+    {
+      "id": "s4037_1",
+      "state_output": null,
+      "refusal": false,
+      "quiescence": false
+    },
+    {
+      "id": "s4037_2",
+      "state_output": null,
+      "refusal": false,
+      "quiescence": false
+    }
+  ],
+  "initial_state": "s4037_2",
+  "events": [
+    "e4037_0",
+    "e4037_1"
+  ],
+  "transitions": [
+    {
+      "id": "t4037_1",
+      "source": "s4037_0",
+      "event": "e4037_1",
+      "target": "s4037_1",
+      "guard": "x_4037_0 > 0",
+      "action": "wrong_act4037_1",
+      "output": "out_4037_0",
+      "timeout": null,
+      "delay": null,
+      "requirements": [],
+      "probability": null,
+      "is_nondeterministic": false,
+      "refusal": false,
+      "quiescence": false,
+      "discrete_time": null
+    },
+    {
+      "id": "t4037_2",
+      "source": "s4037_0",
+      "event": "e4037_1",
+      "target": "s4037_2",
+      "guard": "x_4037_1 > 0",
+      "action": "act4037_2",
+      "output": "out_4037_1",
+      "timeout": null,
+      "delay": null,
+      "requirements": [],
+      "probability": null,
+      "is_nondeterministic": false,
+      "refusal": false,
+      "quiescence": false,
+      "discrete_time": null
+    },
+    {
+      "id": "t4037_3",
+      "source": "s4037_1",
+      "event": "e4037_0",
+      "target": "s4037_1",
+      "guard": "x_4037_2 > 0",
+      "action": "act4037_3",
+      "output": "out_4037_2",
+      "timeout": null,
+      "delay": null,
+      "requirements": [],
+      "probability": null,
+      "is_nondeterministic": false,
+      "refusal": false,
+      "quiescence": false,
+      "discrete_time": null
+    },
+    {
+      "id": "t4037_4",
+      "source": "s4037_2",
+      "event": "e4037_1",
+      "target": "s4037_2",
+      "guard": "x_4037_3 > 0",
+      "action": "act4037_4",
+      "output": "out_4037_3",
+      "timeout": null,
+      "delay": null,
+      "requirements": [],
+      "probability": null,
+      "is_nondeterministic": false,
+      "refusal": false,
+      "quiescence": false,
+      "discrete_time": null
+    }
+  ],
+  "variables": {},
+  "parent_fsm_id": "synthetic_4037_3_2",
+  "reference_fsm_id": "synthetic_4037_3_2",
+  "discrete_time_step": null,
+  "semantics_mode": null,
+  "cyclic_metadata": null
+}

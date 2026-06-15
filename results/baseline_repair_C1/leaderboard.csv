@@ -1,4 +1,7 @@
-tool_id,cases,detectable_cases,oracle_saturated_cases,complete_repair_rate_detectable_only,effective_repair_rate_detectable_only,complete_repair_rate,effective_repair_rate,regression_rate,mean_delta_bpr,mean_initial_bpr,mean_final_bpr
-baseline_missing_transition,1000,495,505,0.684848,0.779798,0.844,0.386,0.0,0.052122,0.916578,0.968701
-baseline_wrong_target,1000,495,505,0.121212,0.220202,0.565,0.109,0.0,0.024094,0.916578,0.940673
-baseline_random,1000,495,505,0.00202,0.006061,0.506,0.003,0.246,-0.008077,0.916578,0.908501
+tool_id,tool_label,cases,detectable_cases,oracle_saturated_cases,complete_repair_rate_detectable_only,effective_repair_rate_detectable_only,complete_repair_rate_cohort_wide,effective_repair_rate_cohort_wide,regression_rate_cohort_wide,mean_delta_bpr_cohort_wide,mean_initial_bpr,mean_final_bpr
+baseline_missing_transition,missing-transition,1000,495,505,0.684848,0.779798,0.844,0.386,0.0,0.052122,0.916578,0.968701
+baseline_wrong_target,wrong-target,1000,495,505,0.121212,0.220202,0.565,0.109,0.0,0.024094,0.916578,0.940673
+baseline_random,random,1000,495,505,0.00202,0.006061,0.506,0.003,0.246,-0.008077,0.916578,0.908501
+baseline_search_bpr,search-bpr,1000,495,505,0.862626,0.979798,0.932,0.485,0.0,0.060952,0.916578,0.977531
+baseline_oracle_composite,oracle-composite,1000,495,505,0.674747,0.826263,0.839,0.409,0.015,0.075999,0.916578,0.992577
+baseline_llm_template,llm-template,1000,495,505,0.674747,0.826263,0.839,0.409,0.015,0.075999,0.916578,0.992577

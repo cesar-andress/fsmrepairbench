@@ -1,0 +1,12 @@
+{
+  "case_count": 1000,
+  "cohort_file": "analysis_cohort_1k.txt",
+  "cohort_sha256": "2b278fba190830b1e710a1572fe2a59349422888934d94bad9c4b8c614847720",
+  "dataset_dir": "data/fsmrepairbench_1k_multifamily",
+  "regeneration_commands": [
+    "fsmrepairbench analyze-benchmark data/fsmrepairbench_1k_multifamily --cohort-file data/fsmrepairbench_1k_multifamily/analysis_cohort_1k.txt --out results/analysis_1k_multifamily",
+    "python ../paper1/scripts/generate_v0_1k_multifamily_rq2_outputs.py"
+  ],
+  "release_label": "v0.3.0-1k-plan-multifamily",
+  "zenodo_doi": "10.5281/zenodo.20602528"
+}

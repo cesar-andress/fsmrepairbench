@@ -1,0 +1,35 @@
+{
+  "bug_id": "synthetic_16366_3_2__hom__delay_corruption__wrong_initial_state__2911",
+  "reference_fsm_id": "synthetic_16366_3_2",
+  "faulty_fsm_id": "synthetic_16366_3_2__faulty__hom__delay_corruption__wrong_initial_state__2911",
+  "mutation_operator": "delay_corruption,wrong_initial_state",
+  "changed_transition_id": null,
+  "description": "Higher-order mutant applying 2 operators: delay_corruption, wrong_initial_state",
+  "seed": 2911,
+  "mutation_complexity": null,
+  "mutation_scope": null,
+  "mutation_mode": null,
+  "mutation_order": 2,
+  "component_faults": [
+    {
+      "operator": "delay_corruption",
+      "seed": 2911,
+      "bug_id": "synthetic_16366_3_2__delay_corruption__2911",
+      "changed_transition_id": "t16366_4",
+      "description": "Corrupted delay on transition 't16366_4' to 1.5"
+    },
+    {
+      "operator": "wrong_initial_state",
+      "seed": 3911,
+      "bug_id": "synthetic_16366_3_2__faulty__delay_corruption__2911__wrong_initial_state__3911",
+      "changed_transition_id": null,
+      "description": "Changed initial_state from 's16366_0' to 's16366_1'"
+    }
+  ],
+  "is_higher_order": true,
+  "coupled_to_simple_faults": [
+    "synthetic_16366_3_2__delay_corruption__2911",
+    "synthetic_16366_3_2__faulty__delay_corruption__2911__wrong_initial_state__3911"
+  ],
+  "is_negative_control": false
+}

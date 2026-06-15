@@ -1,0 +1,36 @@
+{
+  "release_label": "v0.2.0-analysis",
+  "campaign_label": "C1-baseline-repair",
+  "zenodo_doi": "10.5281/zenodo.20602528",
+  "dataset_path": "data/fsmrepairbench_multifamily_v0_3",
+  "cohort_file": "data/fsmrepairbench_multifamily_v0_3/analysis_cohort_multifamily.txt",
+  "cohort_sha256": "2b278fba190830b1e710a1572fe2a59349422888934d94bad9c4b8c614847720",
+  "number_of_cases": 1000,
+  "tool_names": [
+    "baseline_missing_transition",
+    "baseline_random",
+    "baseline_wrong_target"
+  ],
+  "tool_config_paths": [
+    "tools/baselines_c1/baseline_missing_transition.yaml",
+    "tools/baselines_c1/baseline_random.yaml",
+    "tools/baselines_c1/baseline_wrong_target.yaml"
+  ],
+  "workers": 4,
+  "timestamp_utc": "2026-06-09T15:45:56.367572+00:00",
+  "git_commit_hash": "4bd61aebcf248450fa6ae0311b581a9d4b2ee907",
+  "output_files": [
+    "case_*__*.json",
+    "confidence_intervals.csv",
+    "confidence_intervals.json",
+    "leaderboard.csv",
+    "manifest.json",
+    "report.md",
+    "summary.csv",
+    "tool_run_manifest.json"
+  ],
+  "regeneration_commands": [
+    "fsmrepairbench run-tools /home/cesar/papers/fsmrepairbench/fsmrepairbench/data/fsmrepairbench_multifamily_v0_3 tools/baselines_c1/ --out /home/cesar/papers/fsmrepairbench/fsmrepairbench/results/baseline_repair_C1_multifamily --cohort-file /home/cesar/papers/fsmrepairbench/fsmrepairbench/data/fsmrepairbench_multifamily_v0_3/analysis_cohort_1k.txt --workers 4",
+    "fsmrepairbench export-c1-baseline-repair /home/cesar/papers/fsmrepairbench/fsmrepairbench/data/fsmrepairbench_multifamily_v0_3 --out /home/cesar/papers/fsmrepairbench/fsmrepairbench/results/baseline_repair_C1_multifamily --workers 4"
+  ]
+}

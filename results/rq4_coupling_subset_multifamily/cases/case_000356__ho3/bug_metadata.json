@@ -1,0 +1,43 @@
+{
+  "bug_id": "synthetic_6805_3_2__hom__wrong_target__missing_transition__wrong_event__14873",
+  "reference_fsm_id": "synthetic_6805_3_2",
+  "faulty_fsm_id": "synthetic_6805_3_2__faulty__hom__wrong_target__missing_transition__wrong_event__14873",
+  "mutation_operator": "wrong_target,missing_transition,wrong_event",
+  "changed_transition_id": "t6805_3",
+  "description": "Higher-order mutant applying 3 operators: wrong_target, missing_transition, wrong_event",
+  "seed": 14873,
+  "mutation_complexity": null,
+  "mutation_scope": null,
+  "mutation_mode": null,
+  "mutation_order": 3,
+  "component_faults": [
+    {
+      "operator": "wrong_target",
+      "seed": 14873,
+      "bug_id": "synthetic_6805_3_2__wrong_target__14873",
+      "changed_transition_id": "t6805_5",
+      "description": "Changed target of transition 't6805_5' from 's6805_2' to 's6805_0'"
+    },
+    {
+      "operator": "missing_transition",
+      "seed": 15873,
+      "bug_id": "synthetic_6805_3_2__faulty__wrong_target__14873__missing_transition__15873",
+      "changed_transition_id": "t6805_7",
+      "description": "Removed transition 't6805_7'"
+    },
+    {
+      "operator": "wrong_event",
+      "seed": 16873,
+      "bug_id": "synthetic_6805_3_2__faulty__wrong_target__14873__faulty__missing_transition__15873__wrong_event__16873",
+      "changed_transition_id": "t6805_3",
+      "description": "Changed event of transition 't6805_3' from 'e6805_1' to 'e6805_0'"
+    }
+  ],
+  "is_higher_order": true,
+  "coupled_to_simple_faults": [
+    "synthetic_6805_3_2__wrong_target__14873",
+    "synthetic_6805_3_2__faulty__wrong_target__14873__missing_transition__15873",
+    "synthetic_6805_3_2__faulty__wrong_target__14873__faulty__missing_transition__15873__wrong_event__16873"
+  ],
+  "is_negative_control": false
+}

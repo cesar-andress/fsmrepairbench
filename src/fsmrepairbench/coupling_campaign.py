@@ -12,9 +12,9 @@ from dataclasses import dataclass
 from datetime import UTC, datetime
 from pathlib import Path
 
-from fsmrepairbench.analytics import _save_bar_plot
+from fsmrepairbench.analytics import _pyplot, _save_bar_plot
 from fsmrepairbench.dataset_builder import resolve_coupling_case_file
-from fsmrepairbench.freeze import get_git_commit, sha256_file
+from fsmrepairbench.freeze import CohortPinError, assert_pinned_cohort_txt, get_git_commit, sha256_file
 from fsmrepairbench.higher_order_mutation import (
     HigherOrderMutationError,
     analyze_case_coupling,
@@ -30,7 +30,9 @@ from fsmrepairbench.scorer import score_oracle_suite
 from fsmrepairbench.statistics import (
     append_ci_section_to_report,
     compute_rq4_confidence_intervals,
+    compute_rq4_paired_confidence_intervals,
     write_confidence_interval_exports,
+    write_paired_confidence_interval_exports,
 )
 from fsmrepairbench.validators import load_fsm_json, load_oracle_suite
 
@@ -168,11 +170,55 @@ class CouplingCampaignResult:
     case_count: int
 
 
-def load_cohort_manifest(path: Path) -> list[str]:
+def load_cohort_manifest(path: Path, *, verify_pin: bool = True) -> list[str]:
     if not path.is_file():
         msg = f"Cohort manifest not found: {path}"
         raise CouplingCampaignError(msg)
+    if verify_pin:
+        try:
+            assert_pinned_cohort_txt(path)
+        except CohortPinError as exc:
+            raise CouplingCampaignError(str(exc)) from exc
     return [line.strip() for line in path.read_text(encoding="utf-8").splitlines() if line.strip()]
+
+
+def _csv_bool(value: str | bool) -> bool:
+    if isinstance(value, bool):
+        return value
+    return str(value).strip().lower() in {"1", "true", "yes"}
+
+
+def load_per_case_results_csv(path: Path) -> list[CaseCouplingCampaignResult]:
+    """Load per-case coupling results written by the RQ4 campaign."""
+    rows: list[CaseCouplingCampaignResult] = []
+    for raw in csv.DictReader(path.open(encoding="utf-8")):
+        ho_seed_raw = raw.get("ho_seed", "")
+        rows.append(
+            CaseCouplingCampaignResult(
+                case_id=str(raw["case_id"]),
+                source_case_id=str(raw["source_case_id"]),
+                mutation_order=int(raw["mutation_order"]),
+                is_higher_order=_csv_bool(raw["is_higher_order"]),
+                primary_operator=str(raw["primary_operator"]),
+                mutation_operator=str(raw["mutation_operator"]),
+                ho_seed=int(ho_seed_raw) if str(ho_seed_raw).strip() else None,
+                reference_bpr=float(raw["reference_bpr"]),
+                faulty_bpr=float(raw["faulty_bpr"]),
+                bpr_delta=float(raw["bpr_delta"]),
+                fault_detected=_csv_bool(raw["fault_detected"]),
+                first_order_components_detected=int(raw["first_order_components_detected"]),
+                first_order_components_total=int(raw["first_order_components_total"]),
+                all_first_order_detected=_csv_bool(raw["all_first_order_detected"]),
+                coupling_eligible=_csv_bool(raw["coupling_eligible"]),
+                coupling_detected=_csv_bool(raw["coupling_detected"]),
+                complete_repair=_csv_bool(raw["complete_repair"]),
+                effective_repair=_csv_bool(raw["effective_repair"]),
+                repair_final_bpr=float(raw["repair_final_bpr"]),
+                repair_delta_bpr=float(raw["repair_delta_bpr"]),
+                generation_status=str(raw["generation_status"]),
+            )
+        )
+    return rows
 
 
 def case_ho_seed(source_case_id: str, order: int, campaign_seed: int) -> int:
@@ -587,6 +633,24 @@ def _aggregate_metrics(rows: list[CaseCouplingCampaignResult]) -> list[dict[str,
         _append("effective_repair_rate", round(effective / len(group), 6), order=order_label)
         _append("mean_faulty_bpr", round(sum(row.faulty_bpr for row in group) / len(group), 6), order=order_label)
         _append("mean_bpr_delta", round(sum(row.bpr_delta for row in group) / len(group), 6), order=order_label)
+        detectable = [row for row in group if row.fault_detected]
+        if detectable:
+            _append(
+                "complete_repair_rate_detectable",
+                round(sum(1 for row in detectable if row.complete_repair) / len(detectable), 6),
+                order=order_label,
+            )
+            _append(
+                "effective_repair_rate_detectable",
+                round(sum(1 for row in detectable if row.effective_repair) / len(detectable), 6),
+                order=order_label,
+            )
+            _append(
+                "mean_bpr_delta_detectable",
+                round(sum(row.bpr_delta for row in detectable) / len(detectable), 6),
+                order=order_label,
+            )
+            _append("detectable_count", len(detectable), order=order_label)
 
     eligible = [row for row in ho_rows if row.coupling_eligible]
     coupled = sum(1 for row in eligible if row.coupling_detected)
@@ -614,6 +678,38 @@ def _aggregate_metrics(rows: list[CaseCouplingCampaignResult]) -> list[dict[str,
                 _append(
                     "coupling_effect",
                     round(coupled_group / len(eligible_group), 6),
+                    order=str(order),
+                    operator=operator,
+                )
+            detectable_group = [row for row in group if row.fault_detected]
+            if detectable_group:
+                _append(
+                    "complete_repair_rate_detectable",
+                    round(
+                        sum(1 for row in detectable_group if row.complete_repair) / len(detectable_group),
+                        6,
+                    ),
+                    order=str(order),
+                    operator=operator,
+                )
+                _append(
+                    "effective_repair_rate_detectable",
+                    round(
+                        sum(1 for row in detectable_group if row.effective_repair) / len(detectable_group),
+                        6,
+                    ),
+                    order=str(order),
+                    operator=operator,
+                )
+                _append(
+                    "mean_bpr_delta_detectable",
+                    round(sum(row.bpr_delta for row in detectable_group) / len(detectable_group), 6),
+                    order=str(order),
+                    operator=operator,
+                )
+                _append(
+                    "detectable_count",
+                    len(detectable_group),
                     order=str(order),
                     operator=operator,
                 )
@@ -688,17 +784,32 @@ def _write_campaign_figures(
     complete_rates: list[float] = []
     effective_rates: list[float] = []
     mean_bpr_deltas: list[float] = []
+    complete_rates_detectable: list[float] = []
+    effective_rates_detectable: list[float] = []
     for order in (1, 2, 3):
         group = [row for row in rows if row.mutation_order == order]
+        detectable = [row for row in group if row.fault_detected]
         if not group:
             detection_rates.append(0.0)
             complete_rates.append(0.0)
             effective_rates.append(0.0)
+            complete_rates_detectable.append(0.0)
+            effective_rates_detectable.append(0.0)
             mean_bpr_deltas.append(0.0)
             continue
         detection_rates.append(100.0 * sum(1 for row in group if row.fault_detected) / len(group))
         complete_rates.append(100.0 * sum(1 for row in group if row.complete_repair) / len(group))
         effective_rates.append(100.0 * sum(1 for row in group if row.effective_repair) / len(group))
+        complete_rates_detectable.append(
+            100.0 * sum(1 for row in detectable if row.complete_repair) / len(detectable)
+            if detectable
+            else 0.0
+        )
+        effective_rates_detectable.append(
+            100.0 * sum(1 for row in detectable if row.effective_repair) / len(detectable)
+            if detectable
+            else 0.0
+        )
         mean_bpr_deltas.append(100.0 * sum(row.bpr_delta for row in group) / len(group))
 
     _save_bar_plot(
@@ -711,20 +822,71 @@ def _write_campaign_figures(
     )
     _save_bar_plot(
         figures_dir / "complete_repair_rate_by_order.png",
-        title="Complete Repair Rate by Mutation Order",
+        title="Complete Repair Rate by Mutation Order (cohort-wide)",
         xlabel="Mutation Order",
         ylabel="Complete Repair Rate (%)",
         labels=order_labels,
         values=[round(value, 1) for value in complete_rates],
     )
+    plt = _pyplot()
+    figure, axis = plt.subplots(figsize=(8, 4))
+    width = 0.35
+    x_positions = list(range(len(order_labels)))
+    axis.bar(
+        [pos - width / 2 for pos in x_positions],
+        complete_rates_detectable,
+        width=width,
+        label="Detectable-only",
+        color="#2c7bb6",
+    )
+    axis.bar(
+        [pos + width / 2 for pos in x_positions],
+        complete_rates,
+        width=width,
+        label="Cohort-wide",
+        color="#fdae61",
+    )
+    axis.set_xticks(x_positions)
+    axis.set_xticklabels(order_labels)
+    axis.set_ylim(0, 105)
+    axis.set_ylabel("Complete repair rate (%)")
+    axis.set_title("Complete repair by mutation order (detectable-only vs cohort-wide)")
+    axis.legend()
+    figure.tight_layout()
+    figure.savefig(figures_dir / "complete_repair_rate_by_order_partition.png", dpi=120)
+    plt.close(figure)
     _save_bar_plot(
         figures_dir / "effective_repair_rate_by_order.png",
-        title="Effective Repair Rate by Mutation Order",
+        title="Effective Repair Rate by Mutation Order (cohort-wide)",
         xlabel="Mutation Order",
         ylabel="Effective Repair Rate (%)",
         labels=order_labels,
         values=[round(value, 1) for value in effective_rates],
     )
+    figure, axis = plt.subplots(figsize=(8, 4))
+    axis.bar(
+        [pos - width / 2 for pos in x_positions],
+        effective_rates_detectable,
+        width=width,
+        label="Detectable-only",
+        color="#2c7bb6",
+    )
+    axis.bar(
+        [pos + width / 2 for pos in x_positions],
+        effective_rates,
+        width=width,
+        label="Cohort-wide",
+        color="#fdae61",
+    )
+    axis.set_xticks(x_positions)
+    axis.set_xticklabels(order_labels)
+    axis.set_ylim(0, 105)
+    axis.set_ylabel("Effective repair rate (%)")
+    axis.set_title("Effective repair by mutation order (detectable-only vs cohort-wide)")
+    axis.legend()
+    figure.tight_layout()
+    figure.savefig(figures_dir / "effective_repair_rate_by_order_partition.png", dpi=120)
+    plt.close(figure)
     _save_bar_plot(
         figures_dir / "mean_bpr_delta_by_order.png",
         title="Mean Faulty $\\Delta$BPR by Mutation Order",
@@ -783,28 +945,55 @@ def _write_publication_tables(
 ) -> None:
     tables_dir.mkdir(parents=True, exist_ok=True)
     ci_rows = compute_rq4_confidence_intervals(rows)
-    ci_by_key = {(row.metric, row.subgroup): row for row in ci_rows}
+    ci_by_key = {(row.metric, row.subgroup, row.partition): row for row in ci_rows}
 
     summary_lines = [
         "% Auto-generated by run-coupling-campaign",
-        "\\begin{tabular}{@{}lrrr@{}}",
+        "\\begin{tabular}{@{}lrrrrrr@{}}",
         "\\toprule",
-        "Order & Cases & Detection & Mean $\\Delta$BPR \\\\",
+        "Order & $n$ & Detection (cohort) & Complete (detect.) & Complete (cohort$^\\dagger$) & Effective (detect.) & Mean $\\Delta$BPR \\\\",
         "\\midrule",
     ]
     for order in (1, 2, 3):
         group = [row for row in rows if row.mutation_order == order]
+        detectable = [row for row in group if row.fault_detected]
         if not group:
             continue
-        detection_ci = ci_by_key.get(("detection_rate", f"order_{order}"))
+        detection_ci = ci_by_key.get(("detection_rate", f"order_{order}", "cohort_wide"))
+        complete_ci = ci_by_key.get(
+            ("complete_repair_rate", f"order_{order}", "detectable_only")
+        )
+        effective_ci = ci_by_key.get(
+            ("effective_repair_rate", f"order_{order}", "detectable_only")
+        )
         mean_delta = sum(row.bpr_delta for row in group) / len(group)
         detection_cell = (
             _pct_with_ci(detection_ci)
             if detection_ci is not None
             else f"{100 * sum(1 for row in group if row.fault_detected) / len(group):.1f}\\%"
         )
+        complete_detect = (
+            _pct_with_ci(complete_ci)
+            if complete_ci is not None and detectable
+            else (
+                f"{100 * sum(1 for row in detectable if row.complete_repair) / len(detectable):.1f}\\%"
+                if detectable
+                else "--"
+            )
+        )
+        effective_detect = (
+            _pct_with_ci(effective_ci)
+            if effective_ci is not None and detectable
+            else (
+                f"{100 * sum(1 for row in detectable if row.effective_repair) / len(detectable):.1f}\\%"
+                if detectable
+                else "--"
+            )
+        )
+        complete_cohort = 100 * sum(1 for row in group if row.complete_repair) / len(group)
         summary_lines.append(
-            f"{order} & {len(group)} & {detection_cell} & {mean_delta:.3f} \\\\"
+            f"{order} & {len(group)} & {detection_cell} & {complete_detect} & "
+            f"{complete_cohort:.1f}\\% & {effective_detect} & {mean_delta:.3f} \\\\"
         )
     coupling = next(
         (float(row["value"]) for row in metrics if row["metric"] == "coupling_effect_estimate" and not row["mutation_order"]),
@@ -813,7 +1002,7 @@ def _write_publication_tables(
     summary_lines.extend(
         [
             "\\midrule",
-            f"\\multicolumn{{4}}{{l}}{{Coupling effect estimate (HO, all components detected): {100 * coupling:.1f}\\%}} \\\\",
+            f"\\multicolumn{{7}}{{l}}{{Coupling effect estimate (HO, all components detected): {100 * coupling:.1f}\\%}} \\\\",
             "\\bottomrule",
             "\\end{tabular}",
             "",
@@ -857,10 +1046,10 @@ def _write_publication_tables(
         if not detectable:
             continue
         complete_ci = ci_by_key.get(
-            ("complete_repair_rate", f"order_{order}_detectable")
+            ("complete_repair_rate", f"order_{order}", "detectable_only")
         )
         effective_ci = ci_by_key.get(
-            ("effective_repair_rate", f"order_{order}_detectable")
+            ("effective_repair_rate", f"order_{order}", "detectable_only")
         )
         complete_cell = (
             _pct_with_ci(complete_ci)
@@ -878,6 +1067,36 @@ def _write_publication_tables(
     detectable_repair_lines.extend(["\\bottomrule", "\\end{tabular}", ""])
     (tables_dir / "table_repair_detectable_by_order.tex").write_text(
         "\n".join(detectable_repair_lines), encoding="utf-8"
+    )
+
+    operator_repair_lines = [
+        "% Auto-generated by run-coupling-campaign",
+        "\\begin{tabular}{@{}lrrrrr@{}}",
+        "\\toprule",
+        "Primary operator & Order & Detectable ($n$) & Complete & Effective & Mean $\\Delta$BPR \\\\",
+        "\\midrule",
+    ]
+    for operator in sorted({row.primary_operator for row in rows}):
+        for order in (1, 2, 3):
+            detectable = [
+                row
+                for row in rows
+                if row.primary_operator == operator
+                and row.mutation_order == order
+                and row.fault_detected
+            ]
+            if not detectable:
+                continue
+            complete = 100 * sum(1 for row in detectable if row.complete_repair) / len(detectable)
+            effective = 100 * sum(1 for row in detectable if row.effective_repair) / len(detectable)
+            mean_delta = sum(row.bpr_delta for row in detectable) / len(detectable)
+            operator_repair_lines.append(
+                f"{operator.replace('_', '\\_')} & {order} & {len(detectable)} & "
+                f"{complete:.1f}\\% & {effective:.1f}\\% & {mean_delta:.3f} \\\\"
+            )
+    operator_repair_lines.extend(["\\bottomrule", "\\end{tabular}", ""])
+    (tables_dir / "table_repair_detectable_by_operator_order.tex").write_text(
+        "\n".join(operator_repair_lines), encoding="utf-8"
     )
 
     repair_lines = [
@@ -1056,6 +1275,9 @@ def _build_frozen_manifest(
                 f"--out {out} --subset-dir {subset_dir} "
                 f"--cohort-file {cohort_path} --seed {campaign_seed}"
             ),
+            "python ../paper1/scripts/run_rq4_random_secondary_campaign.py",
+            "python ../paper1/scripts/generate_rq4_coupling_outputs.py --run-random-secondary",
+            "python ../paper1/scripts/verify_cohort_manifests.py",
         ],
         "git_commit_hash": get_git_commit(),
         "generated_at": datetime.now(UTC).isoformat(),
@@ -1134,6 +1356,13 @@ def run_coupling_campaign(
         campaign="RQ4-coupling",
         rows=ci_rows,
     )
+    paired_rows = compute_rq4_paired_confidence_intervals(rows)
+    if paired_rows:
+        write_paired_confidence_interval_exports(
+            out,
+            campaign="RQ4-coupling",
+            rows=paired_rows,
+        )
     append_ci_section_to_report(report_path, ci_rows)
 
     manifest = _build_frozen_manifest(
@@ -1162,4 +1391,94 @@ def run_coupling_campaign(
         manifest_path=manifest_path,
         cohort_size=len(case_ids),
         case_count=dataset_report.case_count,
+    )
+
+
+def regenerate_coupling_derived_exports(
+    output_dir: Path,
+    *,
+    cohort_path: Path | None = None,
+    campaign_seed: int = DEFAULT_CAMPAIGN_SEED,
+    dataset_dir: Path | None = None,
+    subset_dir: Path | None = None,
+) -> CouplingCampaignResult:
+    """Rebuild metrics, figures, tables, and manifest from existing per_case_results.csv."""
+    out = output_dir
+    per_case_path = out / "per_case_results.csv"
+    if not per_case_path.is_file():
+        msg = f"Missing per-case export: {per_case_path}"
+        raise CouplingCampaignError(msg)
+
+    manifest_path = out / "manifest.json"
+    manifest_payload: dict[str, object] = {}
+    if manifest_path.is_file():
+        manifest_payload = json.loads(manifest_path.read_text(encoding="utf-8"))
+
+    cohort = cohort_path or Path(str(manifest_payload.get("cohort_path", "")))
+    if not cohort.is_file():
+        msg = f"Could not resolve cohort path for regeneration: {cohort}"
+        raise CouplingCampaignError(msg)
+
+    dataset = dataset_dir or Path(str(manifest_payload.get("dataset_dir", "")))
+    workspace = subset_dir or Path(str(manifest_payload.get("subset_dir", DEFAULT_SUBSET_DIR)))
+    seed = int(manifest_payload.get("campaign_seed", campaign_seed))
+
+    rows = load_per_case_results_csv(per_case_path)
+    metrics = _aggregate_metrics(rows)
+    if not workspace.is_dir():
+        msg = f"Missing subset workspace for regeneration: {workspace}"
+        raise CouplingCampaignError(msg)
+    dataset_report = analyze_dataset_coupling(workspace)
+
+    summary_path = out / "summary.csv"
+    coupling_metrics_path = out / "coupling_metrics.csv"
+    report_path = out / "report.md"
+    figures_dir = out / "figures"
+    tables_dir = out / "tables"
+
+    _write_summary_csv(
+        summary_path,
+        metrics,
+        cohort_path=cohort,
+        campaign_seed=seed,
+        dataset_report=dataset_report,
+    )
+    _write_coupling_metrics_csv(coupling_metrics_path, metrics)
+    _write_campaign_figures(figures_dir, rows, metrics)
+    _write_publication_tables(tables_dir, rows, metrics)
+
+    ci_rows = compute_rq4_confidence_intervals(rows)
+    write_confidence_interval_exports(out, campaign="RQ4-coupling", rows=ci_rows)
+    paired_rows = compute_rq4_paired_confidence_intervals(rows)
+    if paired_rows:
+        write_paired_confidence_interval_exports(out, campaign="RQ4-coupling", rows=paired_rows)
+    if report_path.is_file():
+        append_ci_section_to_report(report_path, ci_rows)
+
+    manifest = _build_frozen_manifest(
+        dataset_dir=dataset if dataset.is_dir() else Path("data/fsmrepairbench_1k"),
+        out=out,
+        cohort_path=cohort,
+        subset_dir=workspace,
+        campaign_seed=seed,
+        repair_engine=str(manifest_payload.get("repair_engine", DEFAULT_REPAIR_ENGINE)),
+        dataset_report=dataset_report,
+        skipped_ho=list(manifest_payload.get("skipped_ho_generations", [])),
+    )
+    manifest_path.write_text(json.dumps(manifest, indent=2) + "\n", encoding="utf-8")
+
+    return CouplingCampaignResult(
+        dataset_dir=dataset if dataset.is_dir() else Path("data/fsmrepairbench_1k"),
+        cohort_path=cohort,
+        subset_dir=workspace,
+        output_dir=out,
+        per_case_path=per_case_path,
+        summary_path=summary_path,
+        coupling_metrics_path=coupling_metrics_path,
+        report_path=report_path,
+        figures_dir=figures_dir,
+        tables_dir=tables_dir,
+        manifest_path=manifest_path,
+        cohort_size=len({row.source_case_id for row in rows if row.generation_status == "source"}),
+        case_count=len(rows),
     )

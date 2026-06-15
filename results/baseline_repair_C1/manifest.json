@@ -7,24 +7,102 @@
   "cohort_sha256": "c03c4d5981259510bccfced987c5175f28058d7bdccc164e7ce2ba22410f04f8",
   "number_of_cases": 1000,
   "tool_names": [
+    "baseline_llm_template",
     "baseline_missing_transition",
+    "baseline_oracle_composite",
     "baseline_random",
+    "baseline_search_bpr",
     "baseline_wrong_target"
   ],
   "tool_config_paths": [
+    "tools/baselines_c1/baseline_llm_template.yaml",
     "tools/baselines_c1/baseline_missing_transition.yaml",
+    "tools/baselines_c1/baseline_oracle_composite.yaml",
     "tools/baselines_c1/baseline_random.yaml",
+    "tools/baselines_c1/baseline_search_bpr.yaml",
     "tools/baselines_c1/baseline_wrong_target.yaml"
   ],
+  "engine_config": [
+    {
+      "tool_id": "baseline_llm_template",
+      "command": "llm-template",
+      "timeout_seconds": 60,
+      "environment": {
+        "baseline_seed": "0"
+      },
+      "iterations": 1,
+      "temperature": 0.0
+    },
+    {
+      "tool_id": "baseline_missing_transition",
+      "command": "missing-transition",
+      "timeout_seconds": 60,
+      "environment": {},
+      "iterations": 1,
+      "temperature": 0.0
+    },
+    {
+      "tool_id": "baseline_oracle_composite",
+      "command": "oracle-composite",
+      "timeout_seconds": 60,
+      "environment": {},
+      "iterations": 1,
+      "temperature": 0.0
+    },
+    {
+      "tool_id": "baseline_random",
+      "command": "random",
+      "timeout_seconds": 60,
+      "environment": {},
+      "iterations": 1,
+      "temperature": 0.0
+    },
+    {
+      "tool_id": "baseline_search_bpr",
+      "command": "search-bpr",
+      "timeout_seconds": 120,
+      "environment": {
+        "baseline_seed": "0"
+      },
+      "iterations": 1,
+      "temperature": 0.0
+    },
+    {
+      "tool_id": "baseline_wrong_target",
+      "command": "wrong-target",
+      "timeout_seconds": 60,
+      "environment": {},
+      "iterations": 1,
+      "temperature": 0.0
+    }
+  ],
+  "seeds": [
+    0,
+    1,
+    2,
+    3,
+    4,
+    5,
+    6,
+    7,
+    8,
+    9
+  ],
   "workers": 4,
-  "timestamp_utc": "2026-06-09T14:15:56.749842+00:00",
-  "git_commit_hash": "4bd61aebcf248450fa6ae0311b581a9d4b2ee907",
+  "timestamp_utc": "2026-06-15T17:51:41.379589+00:00",
+  "git_commit_hash": "1efae10cfe9dded2dbd4b52258bc98f18a624fa1",
   "output_files": [
     "confidence_intervals.csv",
     "confidence_intervals.json",
+    "engine_multiseed_per_seed.csv",
     "leaderboard.csv",
     "manifest.json",
     "multi_seed/",
+    "multiseed_by_operator.csv",
+    "multiseed_by_operator.json",
+    "multiseed_by_tier.csv",
+    "multiseed_by_tier.json",
+    "multiseed_engine_summary.csv",
     "random_multiseed_per_seed.csv",
     "random_multiseed_summary.csv",
     "random_multiseed_summary.json",

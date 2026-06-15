@@ -1,0 +1,43 @@
+{
+  "bug_id": "synthetic_4037_3_2__hom__action_corruption__wrong_initial_state__wrong_target__89298",
+  "reference_fsm_id": "synthetic_4037_3_2",
+  "faulty_fsm_id": "synthetic_4037_3_2__faulty__hom__action_corruption__wrong_initial_state__wrong_target__89298",
+  "mutation_operator": "action_corruption,wrong_initial_state,wrong_target",
+  "changed_transition_id": "t4037_3",
+  "description": "Higher-order mutant applying 3 operators: action_corruption, wrong_initial_state, wrong_target",
+  "seed": 89298,
+  "mutation_complexity": null,
+  "mutation_scope": null,
+  "mutation_mode": null,
+  "mutation_order": 3,
+  "component_faults": [
+    {
+      "operator": "action_corruption",
+      "seed": 89298,
+      "bug_id": "synthetic_4037_3_2__action_corruption__89298",
+      "changed_transition_id": "t4037_1",
+      "description": "Changed action of transition 't4037_1' from 'act4037_1' to 'wrong_act4037_1'"
+    },
+    {
+      "operator": "wrong_initial_state",
+      "seed": 90298,
+      "bug_id": "synthetic_4037_3_2__faulty__action_corruption__89298__wrong_initial_state__90298",
+      "changed_transition_id": null,
+      "description": "Changed initial_state from 's4037_0' to 's4037_2'"
+    },
+    {
+      "operator": "wrong_target",
+      "seed": 91298,
+      "bug_id": "synthetic_4037_3_2__faulty__action_corruption__89298__faulty__wrong_initial_state__90298__wrong_target__91298",
+      "changed_transition_id": "t4037_3",
+      "description": "Changed target of transition 't4037_3' from 's4037_2' to 's4037_1'"
+    }
+  ],
+  "is_higher_order": true,
+  "coupled_to_simple_faults": [
+    "synthetic_4037_3_2__action_corruption__89298",
+    "synthetic_4037_3_2__faulty__action_corruption__89298__wrong_initial_state__90298",
+    "synthetic_4037_3_2__faulty__action_corruption__89298__faulty__wrong_initial_state__90298__wrong_target__91298"
+  ],
+  "is_negative_control": false
+}

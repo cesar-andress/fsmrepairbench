@@ -1,0 +1,61 @@
+{
+  "artifacts": [
+    {
+      "media_type": "csv",
+      "relative_path": "paired_cohort_case_metrics.csv",
+      "sha256": "ed904b8771ec4d35b5b8d4b9121025076fd7c6e29de3afcc52fdcc8384867328"
+    },
+    {
+      "media_type": "csv",
+      "relative_path": "paired_cohort_summary.csv",
+      "sha256": "48d2a930141cd2fbe9bd057472fdf8dd30f6b80d18a331c14413ab9f6143aba0"
+    },
+    {
+      "media_type": "csv",
+      "relative_path": "paired_fo_ho_transitions.csv",
+      "sha256": "194ae9ce33fdbf500274dad87d9d916d905a9b925b0bcb13f2ab16765dc27568"
+    },
+    {
+      "media_type": "tex",
+      "relative_path": "tables/table_paired_cohort_cross_campaign.tex",
+      "sha256": "1bf6797d75b3c11f5d58f5136b733fc74dc2b4fee72ef73594b6535bc070e859"
+    },
+    {
+      "media_type": "png",
+      "relative_path": "figures/paired_cohort_cross_campaign.png",
+      "sha256": "fb23d8e658737ca88bd43e2162d0eca7c363a3263b252e24ee4803fd3bbc1c7a"
+    }
+  ],
+  "campaign_id": "paired",
+  "campaign_label": "Paired cross-campaign comparison",
+  "metrics": [
+    {
+      "column": "value",
+      "description": "RQ4 FO detectable-only complete repair on pin",
+      "expected": 0.771186,
+      "file": "paired_cohort_summary.csv",
+      "lookup": {
+        "campaign_lane": "rq4_first_order",
+        "metric": "complete_repair_rate",
+        "partition": "detectable_only"
+      }
+    },
+    {
+      "column": "value",
+      "description": "RQ4 HO detectable-only complete repair on pin",
+      "expected": 0.322034,
+      "file": "paired_cohort_summary.csv",
+      "lookup": {
+        "campaign_lane": "rq4_higher_order",
+        "metric": "complete_repair_rate",
+        "partition": "detectable_only"
+      }
+    }
+  ],
+  "regeneration_commands": [
+    "python ../paper1/scripts/generate_campaign_paired_comparison_outputs.py"
+  ],
+  "release_label": "v0.2.0-analysis",
+  "results_subdir": "campaign_paired_comparison",
+  "zenodo_doi": "10.5281/zenodo.20602528"
+}

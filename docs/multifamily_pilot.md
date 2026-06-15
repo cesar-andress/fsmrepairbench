@@ -2,9 +2,42 @@
 
 Pilot mini-cohort to reduce the **plain_fsm-only** external-validity weakness in the
 frozen `v0.2.0-analysis` release. This dataset informs future benchmark releases; it
-does **not** replace the Zenodo `v0.2.0-analysis` deposit.
+does **not** replace the Zenodo `v0.2.0-analysis` deposit or modify
+`data/fsmrepairbench_1k/analysis_cohort_1k.txt`.
 
-## Motivation
+## Small pilot (20 cases)
+
+| Field | Value |
+|-------|-------|
+| Plan file | `plans/fsmrepairbench_multifamily_pilot_plan.yaml` |
+| Dataset | `data/fsmrepairbench_multifamily_pilot/` |
+| Cases | 20 (4 stratification cells × 5 families) |
+| Seed | 46 |
+| Release label | `v0.3.0-multifamily-pilot` |
+
+Each non-`plain_fsm` family (Mealy, Moore, EFSM, timed FSM) has at least four cases;
+`plain_fsm` cells provide a local reference without replacing the frozen 1k cohort.
+
+### Regeneration (from `fsmrepairbench/`)
+
+```bash
+python ../paper1/scripts/build_multifamily_pilot_dataset.py
+python ../paper1/scripts/pin_multifamily_pilot_cohorts.py
+python ../paper1/scripts/generate_multifamily_pilot_outputs.py
+```
+
+### Exports
+
+| Location | Contents |
+|----------|----------|
+| `results/multifamily_pilot/` | Repo-local analysis outputs |
+| `../paper1/results/multifamily_pilot/` | Paper-ready copy |
+
+Coverage ratios (dimension, mutation operator, complexity tier, machine type) live under
+`coverage/` and are indexed in `manifest.json` with per-file SHA-256 digests.
+
+## Smoke pilot (500 cases)
+
 
 STVR reviewers may challenge taxonomy and title claims when empirical campaigns use a
 1,000-case cohort containing only `plain_fsm` machines. The v0.3.0 pilot generates a

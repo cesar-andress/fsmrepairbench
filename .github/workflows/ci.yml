@@ -1,0 +1,125 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+  workflow_dispatch:
+
+jobs:
+  unit-tests:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: fsmrepairbench
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Install package
+        run: pip install -e ".[dev,analytics]"
+
+      - name: Verify cohort manifests
+        run: python ../paper1/scripts/verify_cohort_manifests.py
+
+      - name: Run unit tests (exclude golden and integration)
+        run: |
+          pytest tests/ \
+            -m "not golden and not integration" \
+            --tb=short -q
+
+      - name: Run manifest integrity tests
+        run: pytest tests/test_manifest_integrity.py -v --tb=short
+
+      - name: Run campaign CLI smoke tests
+        run: pytest tests/test_cli_campaign_commands.py -v --tb=short
+
+      - name: Run seed reproducibility tests
+        run: pytest tests/test_reproducibility_seeds.py -v --tb=short
+
+  golden-exports:
+    runs-on: ubuntu-latest
+    needs: unit-tests
+    defaults:
+      run:
+        working-directory: fsmrepairbench
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Install package
+        run: pip install -e ".[dev,analytics]"
+
+      - name: Verify frozen paper exports (pytest golden)
+        env:
+          FSMREPAIRBENCH_GOLDEN_RESULTS_DIR: ${{ github.workspace }}/paper1/results
+        run: |
+          pytest tests/test_golden_campaign_exports.py \
+            tests/test_golden_paper_artifacts.py \
+            tests/test_golden_exports.py \
+            -m golden -v --tb=short
+
+      - name: Verify frozen paper exports (standalone CLI)
+        run: python ../paper1/scripts/verify_paper_golden_exports.py --verify-cohort-manifests
+
+  integration-exports:
+    runs-on: ubuntu-latest
+    needs: unit-tests
+    defaults:
+      run:
+        working-directory: fsmrepairbench
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Install package
+        run: pip install -e ".[dev,analytics]"
+
+      - name: Export regeneration integration tests
+        env:
+          FSMREPAIRBENCH_GOLDEN_RESULTS_DIR: ${{ github.workspace }}/paper1/results
+        run: pytest tests/integration/ -m integration -v --tb=short
+
+      - name: Paper export smoke script
+        run: bash ../paper1/scripts/smoke_exports.sh
+
+  docs:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: fsmrepairbench
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Install package
+        run: pip install -e ".[dev,analytics]"
+
+      - name: Verify generated docs are up to date
+        run: |
+          python scripts/update_docs.py
+          git diff --exit-code docs/api.md docs/cli.md docs/schemas.md

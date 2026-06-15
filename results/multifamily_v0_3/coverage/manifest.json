@@ -1,0 +1,95 @@
+{
+  "release_label": "v0.2.0-analysis",
+  "campaign_label": "RQ1-taxonomy-coverage",
+  "zenodo_doi": "10.5281/zenodo.20602528",
+  "experiment": "taxonomy-coverage-report",
+  "dataset_dir": "data/fsmrepairbench_multifamily_v0_3",
+  "output_dir": "/home/cesar/papers/fsmrepairbench/fsmrepairbench/results/multifamily_v0_3/coverage",
+  "case_count": 1000,
+  "cohort_path": "data/fsmrepairbench_multifamily_v0_3/analysis_cohort_multifamily.txt",
+  "cohort_sha256": "2b278fba190830b1e710a1572fe2a59349422888934d94bad9c4b8c614847720",
+  "feature_source": "feature_matrix.csv",
+  "summary": [
+    {
+      "metric": "case_count",
+      "value": 1000
+    },
+    {
+      "metric": "mean_dimension_coverage_ratio",
+      "value": 0.612162
+    },
+    {
+      "metric": "mutation_operators_present",
+      "value": 15
+    },
+    {
+      "metric": "mutation_operators_total",
+      "value": 19
+    },
+    {
+      "metric": "mutation_operator_coverage_ratio",
+      "value": 0.789474
+    },
+    {
+      "metric": "complexity_tiers_present",
+      "value": 1
+    },
+    {
+      "metric": "complexity_tier_coverage_ratio",
+      "value": 0.25
+    },
+    {
+      "metric": "fsm_families_present",
+      "value": 5
+    },
+    {
+      "metric": "unique_taxonomy_combinations",
+      "value": 52
+    },
+    {
+      "metric": "triple_feature_coverage_ratio",
+      "value": 0.033333
+    },
+    {
+      "metric": "pairwise_mean_coverage_ratio",
+      "value": 0.239583
+    }
+  ],
+  "output_files": [
+    "coverage_by_complexity_tier.csv",
+    "coverage_by_dimension.csv",
+    "coverage_by_fsm_family.csv",
+    "coverage_by_mutation_operator.csv",
+    "coverage_by_unique_combinations.csv",
+    "dimension_summary.csv",
+    "feature_space_report.json",
+    "figures/complexity_tier_case_counts.png",
+    "figures/complexity_tier_coverage_balanced.png",
+    "figures/dimension_coverage_ratio.png",
+    "figures/feature_space_coverage_ratios.png",
+    "figures/fsm_family_case_counts.png",
+    "figures/mutation_operator_case_counts.png",
+    "figures/plan_machine_type_gaps.png",
+    "figures/plan_operator_combination_gaps.png",
+    "figures/unique_combinations_summary.png",
+    "figures/unrepresented_taxonomy_values.png",
+    "manifest.json",
+    "plan_cell_gaps.csv",
+    "summary.csv",
+    "tables/table_complexity_tier_coverage.tex",
+    "tables/table_dimension_coverage.tex",
+    "tables/table_fsm_family_coverage.tex",
+    "tables/table_mutation_operator_coverage.tex",
+    "tables/table_top_combinations.tex",
+    "tables/table_unique_combinations.tex",
+    "taxonomy_coverage_report.md",
+    "unique_combinations_summary.csv",
+    "unrepresented_dimension_values.csv"
+  ],
+  "regeneration_commands": [
+    "fsmrepairbench generate-taxonomy-coverage data/fsmrepairbench_1k --out /home/cesar/papers/fsmrepairbench/fsmrepairbench/results/multifamily_v0_3/coverage",
+    "fsmrepairbench generate-taxonomy-coverage data/fsmrepairbench_1k --out /home/cesar/papers/fsmrepairbench/fsmrepairbench/results/multifamily_v0_3/coverage --cohort-file data/fsmrepairbench_multifamily_v0_3/analysis_cohort_multifamily.txt"
+  ],
+  "git_commit_hash": "238b4126bfd4a8dd7c7af509dd2a6ee2e00ee39d",
+  "generated_at": "2026-06-09T18:20:50.313381+00:00"
+}

@@ -1,0 +1,43 @@
+{
+  "bug_id": "synthetic_13496_3_2__hom__guard_flip__wrong_initial_state__wrong_target__45110",
+  "reference_fsm_id": "synthetic_13496_3_2",
+  "faulty_fsm_id": "synthetic_13496_3_2__faulty__hom__guard_flip__wrong_initial_state__wrong_target__45110",
+  "mutation_operator": "guard_flip,wrong_initial_state,wrong_target",
+  "changed_transition_id": "t13496_1",
+  "description": "Higher-order mutant applying 3 operators: guard_flip, wrong_initial_state, wrong_target",
+  "seed": 45110,
+  "mutation_complexity": null,
+  "mutation_scope": null,
+  "mutation_mode": null,
+  "mutation_order": 3,
+  "component_faults": [
+    {
+      "operator": "guard_flip",
+      "seed": 45110,
+      "bug_id": "synthetic_13496_3_2__guard_flip__45110",
+      "changed_transition_id": "t13496_6",
+      "description": "Changed guard of transition 't13496_6' from 'x_13496_5 > 0 and y_13496_5 < 10' to 'not_x_13496_5 > 0 and y_13496_5 < 10'"
+    },
+    {
+      "operator": "wrong_initial_state",
+      "seed": 46110,
+      "bug_id": "synthetic_13496_3_2__faulty__guard_flip__45110__wrong_initial_state__46110",
+      "changed_transition_id": null,
+      "description": "Changed initial_state from 's13496_0' to 's13496_2'"
+    },
+    {
+      "operator": "wrong_target",
+      "seed": 47110,
+      "bug_id": "synthetic_13496_3_2__faulty__guard_flip__45110__faulty__wrong_initial_state__46110__wrong_target__47110",
+      "changed_transition_id": "t13496_1",
+      "description": "Changed target of transition 't13496_1' from 's13496_1' to 's13496_2'"
+    }
+  ],
+  "is_higher_order": true,
+  "coupled_to_simple_faults": [
+    "synthetic_13496_3_2__guard_flip__45110",
+    "synthetic_13496_3_2__faulty__guard_flip__45110__wrong_initial_state__46110",
+    "synthetic_13496_3_2__faulty__guard_flip__45110__faulty__wrong_initial_state__46110__wrong_target__47110"
+  ],
+  "is_negative_control": false
+}

@@ -1,0 +1,43 @@
+{
+  "bug_id": "synthetic_7824_3_2__hom__wrong_initial_state__wrong_target__guard_flip__99659",
+  "reference_fsm_id": "synthetic_7824_3_2",
+  "faulty_fsm_id": "synthetic_7824_3_2__faulty__hom__wrong_initial_state__wrong_target__guard_flip__99659",
+  "mutation_operator": "wrong_initial_state,wrong_target,guard_flip",
+  "changed_transition_id": "t7824_1",
+  "description": "Higher-order mutant applying 3 operators: wrong_initial_state, wrong_target, guard_flip",
+  "seed": 99659,
+  "mutation_complexity": null,
+  "mutation_scope": null,
+  "mutation_mode": null,
+  "mutation_order": 3,
+  "component_faults": [
+    {
+      "operator": "wrong_initial_state",
+      "seed": 99659,
+      "bug_id": "synthetic_7824_3_2__wrong_initial_state__99659",
+      "changed_transition_id": null,
+      "description": "Changed initial_state from 's7824_0' to 's7824_2'"
+    },
+    {
+      "operator": "wrong_target",
+      "seed": 100659,
+      "bug_id": "synthetic_7824_3_2__faulty__wrong_initial_state__99659__wrong_target__100659",
+      "changed_transition_id": "t7824_1",
+      "description": "Changed target of transition 't7824_1' from 's7824_0' to 's7824_1'"
+    },
+    {
+      "operator": "guard_flip",
+      "seed": 101659,
+      "bug_id": "synthetic_7824_3_2__faulty__wrong_initial_state__99659__faulty__wrong_target__100659__guard_flip__101659",
+      "changed_transition_id": "t7824_1",
+      "description": "Added guard 'unexpected_guard' to transition 't7824_1'"
+    }
+  ],
+  "is_higher_order": true,
+  "coupled_to_simple_faults": [
+    "synthetic_7824_3_2__wrong_initial_state__99659",
+    "synthetic_7824_3_2__faulty__wrong_initial_state__99659__wrong_target__100659",
+    "synthetic_7824_3_2__faulty__wrong_initial_state__99659__faulty__wrong_target__100659__guard_flip__101659"
+  ],
+  "is_negative_control": false
+}

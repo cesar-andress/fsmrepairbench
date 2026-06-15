@@ -1,0 +1,43 @@
+{
+  "bug_id": "synthetic_5973_3_2__hom__duplicate_transition__missing_transition__wrong_event__20945",
+  "reference_fsm_id": "synthetic_5973_3_2",
+  "faulty_fsm_id": "synthetic_5973_3_2__faulty__hom__duplicate_transition__missing_transition__wrong_event__20945",
+  "mutation_operator": "duplicate_transition,missing_transition,wrong_event",
+  "changed_transition_id": "t5973_7",
+  "description": "Higher-order mutant applying 3 operators: duplicate_transition, missing_transition, wrong_event",
+  "seed": 20945,
+  "mutation_complexity": null,
+  "mutation_scope": null,
+  "mutation_mode": null,
+  "mutation_order": 3,
+  "component_faults": [
+    {
+      "operator": "duplicate_transition",
+      "seed": 20945,
+      "bug_id": "synthetic_5973_3_2__duplicate_transition__20945",
+      "changed_transition_id": "t5973_6",
+      "description": "Duplicated transition 't5973_6' as 't5973_6__dup__20945'"
+    },
+    {
+      "operator": "missing_transition",
+      "seed": 21945,
+      "bug_id": "synthetic_5973_3_2__faulty__duplicate_transition__20945__missing_transition__21945",
+      "changed_transition_id": "t5973_10",
+      "description": "Removed transition 't5973_10'"
+    },
+    {
+      "operator": "wrong_event",
+      "seed": 22945,
+      "bug_id": "synthetic_5973_3_2__faulty__duplicate_transition__20945__faulty__missing_transition__21945__wrong_event__22945",
+      "changed_transition_id": "t5973_7",
+      "description": "Changed event of transition 't5973_7' from 'e5973_1' to 'e5973_0'"
+    }
+  ],
+  "is_higher_order": true,
+  "coupled_to_simple_faults": [
+    "synthetic_5973_3_2__duplicate_transition__20945",
+    "synthetic_5973_3_2__faulty__duplicate_transition__20945__missing_transition__21945",
+    "synthetic_5973_3_2__faulty__duplicate_transition__20945__faulty__missing_transition__21945__wrong_event__22945"
+  ],
+  "is_negative_control": false
+}

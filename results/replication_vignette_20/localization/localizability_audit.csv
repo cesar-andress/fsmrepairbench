@@ -1,0 +1,21 @@
+case_id,mutation_operator,changed_transition_id,localized,transition_count,rank_of_target,reciprocal_rank,top1_hit,top3_hit,top5_hit,top_ranked_transition,ground_truth_localizable,non_localizable_reason,localizability_class
+case_000008,guard_flip,t51_195,True,255,108,0.009259,False,False,False,t51_50,True,,localizable_transition_gt
+case_000074,guard_inter_class,t117_24,True,30,19,0.052632,False,False,False,t117_7,True,,localizable_transition_gt
+case_000010,guard_strengthen,t53_3,True,30,23,0.043478,False,False,False,t53_1,True,,localizable_transition_gt
+case_000009,guard_weaken,t52_5,True,11,7,0.142857,False,False,False,t52_1,True,,localizable_transition_gt
+case_000001,missing_transition,t44_10,True,9,,0.0,False,False,False,t44_4,False,ground-truth transition 't44_10' was removed from the faulty FSM,missing_or_deleted_transition_gt
+case_000004,wrong_event,t47_109,True,250,14,0.071429,False,False,False,t47_150,True,,localizable_transition_gt
+case_000005,wrong_initial_state,,True,4,,0.0,False,False,False,t48_4,False,wrong_initial_state fault is not anchored to a single transition identifier,non_transition_fault_gt
+case_000003,wrong_source,t46_72,True,80,70,0.014286,False,False,False,t46_32,True,,localizable_transition_gt
+case_000002,wrong_target,t45_16,True,31,1,1.0,True,True,True,t45_16,True,,localizable_transition_gt
+case_000027,guard_flip,t70_1,True,80,1,1.0,True,True,True,t70_1,True,,localizable_transition_gt
+case_000011,action_corruption,t54_12,False,0,,0.0,False,False,False,,True,,localizable_transition_gt
+case_000018,action_full_mutation,,False,0,,0.0,False,False,False,,False,action_full_mutation fault is not anchored to a single transition identifier,non_transition_fault_gt
+case_000007,dead_state_intro,,False,0,,0.0,False,False,False,,False,dead_state_intro fault is not anchored to a single transition identifier,non_transition_fault_gt
+case_000013,delay_corruption,t56_4,False,0,,0.0,False,False,False,,True,,localizable_transition_gt
+case_000006,duplicate_transition,t49_1,False,0,,0.0,False,False,False,,True,,localizable_transition_gt
+case_000017,guard_inter_class,t60_7,False,0,,0.0,False,False,False,,True,,localizable_transition_gt
+case_000014,nondeterminism_intro,t57_11,False,0,,0.0,False,False,False,,True,,localizable_transition_gt
+case_000012,timeout_corruption,t55_183,False,0,,0.0,False,False,False,,True,,localizable_transition_gt
+case_000015,unreachable_state_intro,,False,0,,0.0,False,False,False,,False,unreachable_state_intro fault is not anchored to a single transition identifier,non_transition_fault_gt
+case_000030,action_corruption,t73_3,False,0,,0.0,False,False,False,,True,,localizable_transition_gt

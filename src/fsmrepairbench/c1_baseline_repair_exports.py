@@ -25,16 +25,13 @@ from fsmrepairbench.baseline_repair_campaign import (
     run_c1_random_multiseed_analysis,
     write_c1_confidence_interval_exports,
 )
+from fsmrepairbench.benchmark_utility import C1_TOOL_IDS, TOOL_LABELS, write_benchmark_utility_exports
 from fsmrepairbench.dataset_builder import DatasetBuilderError, DatasetCaseRow, load_dataset_cases
 from fsmrepairbench.freeze import sha256_file
 
-C1_TOOL_IDS: tuple[str, ...] = (
-    "baseline_missing_transition",
-    "baseline_wrong_target",
-    "baseline_random",
-)
 DEFAULT_V02_SUMMARY = Path("../paper1/results/v0_2_analysis/summary.csv")
 FALLBACK_V02_SUMMARY = Path("results/analysis/summary.csv")
+DEFAULT_EXTENDED_RAW_RUNS_DIR = "results/baseline_repair_C1_extended"
 
 
 class C1BaselineRepairExportError(ValueError):
@@ -79,6 +76,14 @@ def _sync_paper_export(out_dir: Path, paper_export_dir: Path) -> None:
         "random_multiseed_summary.csv",
         "random_multiseed_summary.json",
         "random_multiseed_per_seed.csv",
+        "multiseed_by_operator.csv",
+        "multiseed_by_operator.json",
+        "multiseed_by_tier.csv",
+        "multiseed_by_tier.json",
+        "multiseed_engine_summary.csv",
+        "engine_multiseed_per_seed.csv",
+        "benchmark_utility.csv",
+        "utility_summary.json",
     ):
         src = out_dir / name
         if src.is_file():
@@ -208,6 +213,40 @@ def _repair_table_note(
     return r"\par\footnotesize " + " ".join(parts)
 
 
+def _is_tool_run_summary(path: Path) -> bool:
+    if not path.is_file():
+        return False
+    with path.open(encoding="utf-8", newline="") as handle:
+        reader = csv.DictReader(handle)
+        return reader.fieldnames is not None and "case_id" in reader.fieldnames
+
+
+def _merge_extended_tool_runs(
+    runs: list[dict[str, str | float | bool]],
+    *,
+    dataset_dir: Path,
+    cohort_ids: set[str],
+    repo_root: Path,
+) -> list[dict[str, str | float | bool]]:
+    """Append extended-engine rows from a sibling raw-runs directory when missing."""
+    present_tools = {str(row["tool_id"]) for row in runs}
+    missing_tools = [tool_id for tool_id in C1_TOOL_IDS if tool_id not in present_tools]
+    if not missing_tools:
+        return runs
+
+    extended_dir = repo_root / DEFAULT_EXTENDED_RAW_RUNS_DIR
+    summary_path = extended_dir / "summary.csv"
+    if not summary_path.is_file():
+        return runs
+
+    extended_runs = _load_tool_runs(summary_path, cohort_ids)
+    merged = list(runs)
+    for row in extended_runs:
+        if str(row["tool_id"]) in missing_tools:
+            merged.append(row)
+    return merged
+
+
 def _load_tool_runs(summary_path: Path, cohort_ids: set[str]) -> list[dict[str, str | float | bool]]:
     if not summary_path.is_file():
         msg = f"Missing run-tools summary: {summary_path}"
@@ -268,6 +307,33 @@ def _enriched_rows(
             }
         )
     return enriched
+
+
+def _append_extended_enriched(
+    enriched: list[dict[str, str | float | bool | int]],
+    *,
+    dataset_dir: Path,
+    cohort_ids: set[str],
+    repo_root: Path,
+) -> list[dict[str, str | float | bool | int]]:
+    """Append extended-engine enriched rows when the primary export lacks them."""
+    present_tools = {str(row["tool_id"]) for row in enriched}
+    missing_tools = [tool_id for tool_id in C1_TOOL_IDS if tool_id not in present_tools]
+    if not missing_tools:
+        return enriched
+
+    extended_dir = repo_root / DEFAULT_EXTENDED_RAW_RUNS_DIR
+    summary_path = extended_dir / "summary.csv"
+    if not _is_tool_run_summary(summary_path):
+        return enriched
+
+    runs = _load_tool_runs(summary_path, cohort_ids)
+    runs = [row for row in runs if str(row["tool_id"]) in missing_tools]
+    if not runs:
+        return enriched
+
+    dataset_rows = _dataset_rows_by_id(dataset_dir, cohort_ids)
+    return enriched + _enriched_rows(runs, dataset_rows)
 
 
 def _summary_metrics(enriched: list[dict], tool_id: str) -> dict[str, float | int | str]:
@@ -527,10 +593,14 @@ def generate_c1_baseline_repair_exports(
 
     per_case_path = out_dir / "per_case_results.csv"
     summary_path = out_dir / "summary.csv"
-    if per_case_path.is_file():
-        enriched = _load_enriched_from_per_case(per_case_path, cohort_ids)
-    elif summary_path.is_file():
+    if _is_tool_run_summary(summary_path):
         runs = _load_tool_runs(summary_path, cohort_ids)
+        runs = _merge_extended_tool_runs(
+            runs,
+            dataset_dir=dataset_dir,
+            cohort_ids=cohort_ids,
+            repo_root=repo_root,
+        )
         if not runs:
             msg = (
                 f"No run-tools rows matched cohort ({case_count} cases) in {summary_path}"
@@ -538,9 +608,17 @@ def generate_c1_baseline_repair_exports(
             raise C1BaselineRepairExportError(msg)
         dataset_rows = _dataset_rows_by_id(dataset_dir, cohort_ids)
         enriched = _enriched_rows(runs, dataset_rows)
+    elif per_case_path.is_file():
+        enriched = _load_enriched_from_per_case(per_case_path, cohort_ids)
     else:
         msg = f"Missing C1 run output in {out_dir} (expected per_case_results.csv or summary.csv)"
         raise C1BaselineRepairExportError(msg)
+    enriched = _append_extended_enriched(
+        enriched,
+        dataset_dir=dataset_dir,
+        cohort_ids=cohort_ids,
+        repo_root=repo_root,
+    )
     detectable_case_ids = {
         str(row["case_id"]) for row in enriched if row["oracle_detected"]
     }
@@ -552,31 +630,53 @@ def generate_c1_baseline_repair_exports(
     tables_dir = out_dir / "tables"
     tables_dir.mkdir(parents=True, exist_ok=True)
 
-    per_case_fields = list(enriched[0].keys()) if enriched else []
+    per_case_fields = sorted({key for row in enriched for key in row})
     per_case_path = out_dir / "per_case_results.csv"
     _write_csv(per_case_path, per_case_fields, enriched)
 
     summaries = [_summary_metrics(enriched, tool_id) for tool_id in C1_TOOL_IDS]
+    for summary in summaries:
+        summary["tool_label"] = TOOL_LABELS.get(str(summary["tool_id"]), str(summary["tool_id"]))
     summary_rows = [{"metric": key, "value": value} for summary in summaries for key, value in summary.items()]
     cohort_summary_path = out_dir / "cohort_summary.csv"
     _write_csv(cohort_summary_path, ["metric", "value"], summary_rows)
 
     leaderboard_fields = [
         "tool_id",
+        "tool_label",
         "cases",
         "detectable_cases",
         "oracle_saturated_cases",
         "complete_repair_rate_detectable_only",
         "effective_repair_rate_detectable_only",
-        "complete_repair_rate",
-        "effective_repair_rate",
-        "regression_rate",
-        "mean_delta_bpr",
+        "complete_repair_rate_cohort_wide",
+        "effective_repair_rate_cohort_wide",
+        "regression_rate_cohort_wide",
+        "mean_delta_bpr_cohort_wide",
         "mean_initial_bpr",
         "mean_final_bpr",
     ]
+    leaderboard_rows = []
+    for summary in summaries:
+        leaderboard_rows.append(
+            {
+                "tool_id": summary["tool_id"],
+                "tool_label": summary["tool_label"],
+                "cases": summary["cases"],
+                "detectable_cases": summary["detectable_cases"],
+                "oracle_saturated_cases": summary["oracle_saturated_cases"],
+                "complete_repair_rate_detectable_only": summary["complete_repair_rate_detectable_only"],
+                "effective_repair_rate_detectable_only": summary["effective_repair_rate_detectable_only"],
+                "complete_repair_rate_cohort_wide": summary["complete_repair_rate"],
+                "effective_repair_rate_cohort_wide": summary["effective_repair_rate"],
+                "regression_rate_cohort_wide": summary["regression_rate"],
+                "mean_delta_bpr_cohort_wide": summary["mean_delta_bpr"],
+                "mean_initial_bpr": summary["mean_initial_bpr"],
+                "mean_final_bpr": summary["mean_final_bpr"],
+            }
+        )
     leaderboard_path = out_dir / "leaderboard.csv"
-    _write_csv(leaderboard_path, leaderboard_fields, summaries)
+    _write_csv(leaderboard_path, leaderboard_fields, leaderboard_rows)
 
     op_primary = _operator_table(enriched, "baseline_missing_transition", detection)
     op_wrong = _operator_table(enriched, "baseline_wrong_target", detection)
@@ -660,10 +760,18 @@ def generate_c1_baseline_repair_exports(
     _write_tex_table(
         tables_dir / "table_mutation_detection.tex",
         f"Oracle mutation detection rate and mean faulty behavioural pass rate (BPR) by operator "
-        f"($n={case_count:,}$).",
+        f"($n={case_count:,}$ cohort-wide). Operators with 0\\% detection are oracle-saturated "
+        f"(\\textbf{{505/1{{,}}000}} cohort-wide); detectable-only partitions use $n={detectable_count}$. "
+        f"Takeaway: eight operator families register 0\\% detection under shallow suites.",
         "tab:baseline-mutation-detection",
         ["Operator", "Cases", "Detection rate", "Mean faulty BPR"],
         det_rows,
+        note=_repair_table_note(
+            csv_name="repair_by_operator.csv",
+            manifest_path=out_dir / "manifest.json",
+            cohort_path=cohort_path,
+            include_delta_zero_note=True,
+        ),
     )
 
     repair_rows = [
@@ -679,23 +787,24 @@ def generate_c1_baseline_repair_exports(
         ]
         for row in op_primary
     ]
-    _write_tex_table(
-        tables_dir / "table_repair_by_operator.tex",
-        "Repair outcomes by mutation operator under the \\texttt{missing-transition} baseline "
-        f"($n={case_count:,}$ cohort). \\textbf{{Detectable-only primary}}; "
-        f"cohort-wide$^\\dagger$ includes {saturated_count}/1{{,}}000 oracle-saturated cases.",
-        "tab:baseline-repair-by-operator",
-        [
-            "Operator",
-            "Detectable",
-            "Detection",
-            "Complete (detectable-only)",
-            "Complete (cohort-wide$^\\dagger$)",
-            "Mean $\\Delta$BPR",
-        ],
-        repair_rows,
-        note=repair_note_with_delta,
-    )
+    if skip_multi_seed:
+        _write_tex_table(
+            tables_dir / "table_repair_by_operator.tex",
+            "Repair outcomes by mutation operator under the \\texttt{missing-transition} baseline "
+            f"($n={case_count:,}$ cohort). \\textbf{{Detectable-only primary}}; "
+            f"cohort-wide$^\\dagger$ includes {saturated_count}/1{{,}}000 oracle-saturated cases.",
+            "tab:baseline-repair-by-operator",
+            [
+                "Operator",
+                "Detectable",
+                "Detection",
+                "Complete (detectable-only)",
+                "Complete (cohort-wide$^\\dagger$)",
+                "Mean $\\Delta$BPR",
+            ],
+            repair_rows,
+            note=repair_note_with_delta,
+        )
 
     tier_rows = [
         [
@@ -708,27 +817,28 @@ def generate_c1_baseline_repair_exports(
         ]
         for row in tier_primary
     ]
-    _write_tex_table(
-        tables_dir / "table_repair_by_tier.tex",
-        "Complete repair by structural complexity tier under the \\texttt{missing-transition} "
-        f"baseline ($n={case_count:,}$). \\textbf{{Detectable-only primary}}; "
-        f"cohort-wide$^\\dagger$ includes {saturated_count}/1{{,}}000 oracle-saturated cases.",
-        "tab:baseline-repair-by-tier",
-        [
-            "Tier",
-            "Detectable",
-            "Complete (detectable-only)",
-            "Complete (cohort-wide$^\\dagger$)",
-            "Mean difficulty",
-            "Mean $\\Delta$BPR",
-        ],
-        tier_rows,
-        note=repair_note_with_delta,
-    )
+    if skip_multi_seed:
+        _write_tex_table(
+            tables_dir / "table_repair_by_tier.tex",
+            "Complete repair by structural complexity tier under the \\texttt{missing-transition} "
+            f"baseline ($n={case_count:,}$). \\textbf{{Detectable-only primary}}; "
+            f"cohort-wide$^\\dagger$ includes {saturated_count}/1{{,}}000 oracle-saturated cases.",
+            "tab:baseline-repair-by-tier",
+            [
+                "Tier",
+                "Detectable",
+                "Complete (detectable-only)",
+                "Complete (cohort-wide$^\\dagger$)",
+                "Mean difficulty",
+                "Mean $\\Delta$BPR",
+            ],
+            tier_rows,
+            note=repair_note_with_delta,
+        )
 
     lb_rows = [
         [
-            _tex_escape(str(summary["tool_id"])),
+            _tex_escape(str(summary["tool_label"])),
             str(summary["cases"]),
             _tex_pct(summary["complete_repair_rate_detectable_only"]),
             _tex_pct(summary["complete_repair_rate"]),
@@ -737,13 +847,17 @@ def generate_c1_baseline_repair_exports(
             f"{summary['mean_delta_bpr']:.4f}",
         ]
         for summary in summaries
+        if summary["cases"]
     ]
     _write_tex_table(
         tables_dir / "table_baseline_leaderboard.tex",
         "C1 baseline repair leaderboard ($n=1{,}000$). "
         f"\\textbf{{Detectable-only primary}} ($n={detectable_count}$); "
         f"cohort-wide$^\\dagger$ columns include {saturated_count}/1{{,}}000 oracle-saturated cases "
-        "(faulty BPR $= 1.0$).",
+        "(faulty BPR $= 1.0$). Six engines: three deterministic oracle-guided baselines, "
+        "search-based (\\texttt{search-bpr}), constraint-guided composite "
+        "(\\texttt{oracle-composite}), and optional LLM-template baseline "
+        "(\\texttt{llm-template}; deterministic template, no live model API).",
         "tab:baseline-leaderboard",
         [
             "Tool",
@@ -759,6 +873,12 @@ def generate_c1_baseline_repair_exports(
     )
 
     _make_figures(enriched, figures_dir=figures_dir, case_count=case_count)
+
+    utility_result = write_benchmark_utility_exports(
+        per_case_path,
+        out_dir,
+        paper_export_dir=paper_export_dir or out_dir,
+    )
 
     report_lines = [
         "# C1 Baseline Repair Experiment Report",
@@ -795,6 +915,9 @@ def generate_c1_baseline_repair_exports(
             "- `manifest.json`",
             "- `figures/` (PNG)",
             "- `tables/` (LaTeX)",
+            "- `benchmark_utility.csv`",
+            "- `utility_summary.json`",
+            f"- `{utility_result.figure_path.name}` (benchmark utility figure)",
         ]
     )
     report_path = out_dir / "report.md"
@@ -852,6 +975,9 @@ fsmrepairbench run-c1-baseline-repair {dataset_dir} --out {out_dir} --workers {w
             random_seeds=random_seeds,
             workers=workers,
             write_per_seed_json=write_per_seed_json,
+            enriched_rows=enriched,
+            case_count=case_count,
+            detectable_count=detectable_count,
         )
         report_path.write_text(
             report_path.read_text(encoding="utf-8").rstrip()
@@ -876,10 +1002,20 @@ fsmrepairbench run-c1-baseline-repair {dataset_dir} --out {out_dir} --workers {w
             workers=workers,
         ),
         repo_root=repo_root,
+        seeds=random_seeds,
     )
 
     paper_dir = paper_export_dir or out_dir
     _sync_paper_export(out_dir, paper_dir)
+
+    if per_case_path.is_file():
+        from fsmrepairbench.c1_baseline_delta import write_c1_baseline_delta_exports
+
+        write_c1_baseline_delta_exports(
+            per_case_path,
+            out_dir,
+            paper_export_dir=paper_dir,
+        )
 
     return C1BaselineRepairExportResult(
         output_dir=out_dir,

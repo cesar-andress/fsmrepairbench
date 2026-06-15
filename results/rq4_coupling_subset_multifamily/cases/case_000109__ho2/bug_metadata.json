@@ -1,0 +1,35 @@
+{
+  "bug_id": "synthetic_2101_3_2__hom__wrong_source__guard_strengthen__14050",
+  "reference_fsm_id": "synthetic_2101_3_2",
+  "faulty_fsm_id": "synthetic_2101_3_2__faulty__hom__wrong_source__guard_strengthen__14050",
+  "mutation_operator": "wrong_source,guard_strengthen",
+  "changed_transition_id": "t2101_hub_1",
+  "description": "Higher-order mutant applying 2 operators: wrong_source, guard_strengthen",
+  "seed": 14050,
+  "mutation_complexity": null,
+  "mutation_scope": null,
+  "mutation_mode": null,
+  "mutation_order": 2,
+  "component_faults": [
+    {
+      "operator": "wrong_source",
+      "seed": 14050,
+      "bug_id": "synthetic_2101_3_2__wrong_source__14050",
+      "changed_transition_id": "t2101_hub_1",
+      "description": "Changed source of transition 't2101_hub_1' from 's2101_0' to 's2101_2'"
+    },
+    {
+      "operator": "guard_strengthen",
+      "seed": 15050,
+      "bug_id": "synthetic_2101_3_2__faulty__wrong_source__14050__guard_strengthen__15050",
+      "changed_transition_id": "t2101_hub_1",
+      "description": "Strengthened guard on transition 't2101_hub_1'"
+    }
+  ],
+  "is_higher_order": true,
+  "coupled_to_simple_faults": [
+    "synthetic_2101_3_2__wrong_source__14050",
+    "synthetic_2101_3_2__faulty__wrong_source__14050__guard_strengthen__15050"
+  ],
+  "is_negative_control": false
+}

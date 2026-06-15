@@ -1,0 +1,140 @@
+{
+  "id": "synthetic_889_3_2__faulty__wrong_target__8046",
+  "name": "Synthetic FSM (custom) (faulty: wrong_target)",
+  "description": "Synthetic FSM generated with seed=889, states=3, events=2, branching_factor=4, deterministic=True, allow_dead_states=False",
+  "states": [
+    {
+      "id": "s889_0",
+      "state_output": null,
+      "refusal": false,
+      "quiescence": false
+    },
+    {
+      "id": "s889_1",
+      "state_output": null,
+      "refusal": false,
+      "quiescence": false
+    },
+    {
+      "id": "s889_2",
+      "state_output": null,
+      "refusal": false,
+      "quiescence": false
+    }
+  ],
+  "initial_state": "s889_0",
+  "events": [
+    "e889_0",
+    "e889_1"
+  ],
+  "transitions": [
+    {
+      "id": "t889_1",
+      "source": "s889_0",
+      "event": "e889_0",
+      "target": "s889_2",
+      "guard": "x_889_0 > 0",
+      "action": "act889_1",
+      "output": "out_889_0",
+      "timeout": null,
+      "delay": null,
+      "requirements": [],
+      "probability": null,
+      "is_nondeterministic": false,
+      "refusal": false,
+      "quiescence": false,
+      "discrete_time": null
+    },
+    {
+      "id": "t889_2",
+      "source": "s889_0",
+      "event": "e889_0",
+      "target": "s889_2",
+      "guard": "x_889_1 > 0",
+      "action": "act889_2",
+      "output": "out_889_1",
+      "timeout": null,
+      "delay": null,
+      "requirements": [],
+      "probability": null,
+      "is_nondeterministic": false,
+      "refusal": false,
+      "quiescence": false,
+      "discrete_time": null
+    },
+    {
+      "id": "t889_3",
+      "source": "s889_1",
+      "event": "e889_0",
+      "target": "s889_2",
+      "guard": "x_889_2 > 0",
+      "action": "act889_3",
+      "output": "out_889_2",
+      "timeout": null,
+      "delay": null,
+      "requirements": [],
+      "probability": null,
+      "is_nondeterministic": false,
+      "refusal": false,
+      "quiescence": false,
+      "discrete_time": null
+    },
+    {
+      "id": "t889_4",
+      "source": "s889_1",
+      "event": "e889_1",
+      "target": "s889_1",
+      "guard": "x_889_3 > 0",
+      "action": "act889_4",
+      "output": "out_889_3",
+      "timeout": null,
+      "delay": null,
+      "requirements": [],
+      "probability": null,
+      "is_nondeterministic": false,
+      "refusal": false,
+      "quiescence": false,
+      "discrete_time": null
+    },
+    {
+      "id": "t889_5",
+      "source": "s889_2",
+      "event": "e889_0",
+      "target": "s889_2",
+      "guard": "x_889_4 > 0",
+      "action": "act889_5",
+      "output": "out_889_4",
+      "timeout": null,
+      "delay": null,
+      "requirements": [],
+      "probability": null,
+      "is_nondeterministic": false,
+      "refusal": false,
+      "quiescence": false,
+      "discrete_time": null
+    },
+    {
+      "id": "t889_6",
+      "source": "s889_2",
+      "event": "e889_1",
+      "target": "s889_2",
+      "guard": "x_889_5 > 0",
+      "action": "act889_6",
+      "output": "out_889_5",
+      "timeout": null,
+      "delay": null,
+      "requirements": [],
+      "probability": null,
+      "is_nondeterministic": false,
+      "refusal": false,
+      "quiescence": false,
+      "discrete_time": null
+    }
+  ],
+  "variables": {},
+  "parent_fsm_id": "synthetic_889_3_2",
+  "reference_fsm_id": "synthetic_889_3_2",
+  "discrete_time_step": null,
+  "semantics_mode": null,
+  "cyclic_metadata": null
+}

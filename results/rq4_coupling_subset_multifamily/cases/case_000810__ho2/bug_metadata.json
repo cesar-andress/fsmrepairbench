@@ -1,0 +1,35 @@
+{
+  "bug_id": "synthetic_15432_3_2__hom__timeout_corruption__wrong_source__86304",
+  "reference_fsm_id": "synthetic_15432_3_2",
+  "faulty_fsm_id": "synthetic_15432_3_2__faulty__hom__timeout_corruption__wrong_source__86304",
+  "mutation_operator": "timeout_corruption,wrong_source",
+  "changed_transition_id": "t15432_2",
+  "description": "Higher-order mutant applying 2 operators: timeout_corruption, wrong_source",
+  "seed": 86304,
+  "mutation_complexity": null,
+  "mutation_scope": null,
+  "mutation_mode": null,
+  "mutation_order": 2,
+  "component_faults": [
+    {
+      "operator": "timeout_corruption",
+      "seed": 86304,
+      "bug_id": "synthetic_15432_3_2__timeout_corruption__86304",
+      "changed_transition_id": "t15432_1",
+      "description": "Corrupted timeout on transition 't15432_1' to 2.0"
+    },
+    {
+      "operator": "wrong_source",
+      "seed": 87304,
+      "bug_id": "synthetic_15432_3_2__faulty__timeout_corruption__86304__wrong_source__87304",
+      "changed_transition_id": "t15432_2",
+      "description": "Changed source of transition 't15432_2' from 's15432_0' to 's15432_2'"
+    }
+  ],
+  "is_higher_order": true,
+  "coupled_to_simple_faults": [
+    "synthetic_15432_3_2__timeout_corruption__86304",
+    "synthetic_15432_3_2__faulty__timeout_corruption__86304__wrong_source__87304"
+  ],
+  "is_negative_control": false
+}

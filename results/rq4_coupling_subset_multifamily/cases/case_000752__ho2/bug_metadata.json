@@ -1,0 +1,35 @@
+{
+  "bug_id": "synthetic_14345_3_2__hom__missing_transition__guard_weaken__12404",
+  "reference_fsm_id": "synthetic_14345_3_2",
+  "faulty_fsm_id": "synthetic_14345_3_2__faulty__hom__missing_transition__guard_weaken__12404",
+  "mutation_operator": "missing_transition,guard_weaken",
+  "changed_transition_id": "t14345_3",
+  "description": "Higher-order mutant applying 2 operators: missing_transition, guard_weaken",
+  "seed": 12404,
+  "mutation_complexity": null,
+  "mutation_scope": null,
+  "mutation_mode": null,
+  "mutation_order": 2,
+  "component_faults": [
+    {
+      "operator": "missing_transition",
+      "seed": 12404,
+      "bug_id": "synthetic_14345_3_2__missing_transition__12404",
+      "changed_transition_id": "t14345_2",
+      "description": "Removed transition 't14345_2'"
+    },
+    {
+      "operator": "guard_weaken",
+      "seed": 13404,
+      "bug_id": "synthetic_14345_3_2__faulty__missing_transition__12404__guard_weaken__13404",
+      "changed_transition_id": "t14345_3",
+      "description": "Weakened guard on transition 't14345_3' to 'true'"
+    }
+  ],
+  "is_higher_order": true,
+  "coupled_to_simple_faults": [
+    "synthetic_14345_3_2__missing_transition__12404",
+    "synthetic_14345_3_2__faulty__missing_transition__12404__guard_weaken__13404"
+  ],
+  "is_negative_control": false
+}

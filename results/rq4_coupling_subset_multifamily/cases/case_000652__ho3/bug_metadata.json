@@ -1,0 +1,43 @@
+{
+  "bug_id": "synthetic_12443_3_2__hom__guard_strengthen__missing_transition__wrong_event__15327",
+  "reference_fsm_id": "synthetic_12443_3_2",
+  "faulty_fsm_id": "synthetic_12443_3_2__faulty__hom__guard_strengthen__missing_transition__wrong_event__15327",
+  "mutation_operator": "guard_strengthen,missing_transition,wrong_event",
+  "changed_transition_id": "t12443_1",
+  "description": "Higher-order mutant applying 3 operators: guard_strengthen, missing_transition, wrong_event",
+  "seed": 15327,
+  "mutation_complexity": null,
+  "mutation_scope": null,
+  "mutation_mode": null,
+  "mutation_order": 3,
+  "component_faults": [
+    {
+      "operator": "guard_strengthen",
+      "seed": 15327,
+      "bug_id": "synthetic_12443_3_2__guard_strengthen__15327",
+      "changed_transition_id": "t12443_3",
+      "description": "Strengthened guard on transition 't12443_3'"
+    },
+    {
+      "operator": "missing_transition",
+      "seed": 16327,
+      "bug_id": "synthetic_12443_3_2__faulty__guard_strengthen__15327__missing_transition__16327",
+      "changed_transition_id": "t12443_2",
+      "description": "Removed transition 't12443_2'"
+    },
+    {
+      "operator": "wrong_event",
+      "seed": 17327,
+      "bug_id": "synthetic_12443_3_2__faulty__guard_strengthen__15327__faulty__missing_transition__16327__wrong_event__17327",
+      "changed_transition_id": "t12443_1",
+      "description": "Changed event of transition 't12443_1' from 'e12443_0' to 'e12443_1'"
+    }
+  ],
+  "is_higher_order": true,
+  "coupled_to_simple_faults": [
+    "synthetic_12443_3_2__guard_strengthen__15327",
+    "synthetic_12443_3_2__faulty__guard_strengthen__15327__missing_transition__16327",
+    "synthetic_12443_3_2__faulty__guard_strengthen__15327__faulty__missing_transition__16327__wrong_event__17327"
+  ],
+  "is_negative_control": false
+}

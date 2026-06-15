@@ -1,0 +1,43 @@
+{
+  "bug_id": "synthetic_8656_3_2__hom__dead_state_intro__wrong_target__guard_flip__96028",
+  "reference_fsm_id": "synthetic_8656_3_2",
+  "faulty_fsm_id": "synthetic_8656_3_2__faulty__hom__dead_state_intro__wrong_target__guard_flip__96028",
+  "mutation_operator": "dead_state_intro,wrong_target,guard_flip",
+  "changed_transition_id": "t8656_1",
+  "description": "Higher-order mutant applying 3 operators: dead_state_intro, wrong_target, guard_flip",
+  "seed": 96028,
+  "mutation_complexity": null,
+  "mutation_scope": null,
+  "mutation_mode": null,
+  "mutation_order": 3,
+  "component_faults": [
+    {
+      "operator": "dead_state_intro",
+      "seed": 96028,
+      "bug_id": "synthetic_8656_3_2__dead_state_intro__96028",
+      "changed_transition_id": null,
+      "description": "Added unreachable state 'dead_96028'"
+    },
+    {
+      "operator": "wrong_target",
+      "seed": 97028,
+      "bug_id": "synthetic_8656_3_2__faulty__dead_state_intro__96028__wrong_target__97028",
+      "changed_transition_id": "t8656_1",
+      "description": "Changed target of transition 't8656_1' from 's8656_0' to 'dead_96028'"
+    },
+    {
+      "operator": "guard_flip",
+      "seed": 98028,
+      "bug_id": "synthetic_8656_3_2__faulty__dead_state_intro__96028__faulty__wrong_target__97028__guard_flip__98028",
+      "changed_transition_id": "t8656_1",
+      "description": "Added guard 'unexpected_guard' to transition 't8656_1'"
+    }
+  ],
+  "is_higher_order": true,
+  "coupled_to_simple_faults": [
+    "synthetic_8656_3_2__dead_state_intro__96028",
+    "synthetic_8656_3_2__faulty__dead_state_intro__96028__wrong_target__97028",
+    "synthetic_8656_3_2__faulty__dead_state_intro__96028__faulty__wrong_target__97028__guard_flip__98028"
+  ],
+  "is_negative_control": false
+}

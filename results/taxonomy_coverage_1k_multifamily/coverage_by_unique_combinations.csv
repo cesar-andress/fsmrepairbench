@@ -1,0 +1,11 @@
+rank,case_count,cohort_fraction,machine_type,determinism,completeness,arity_class,size_class,guard_complexity,time_features,graph_structure,oracle_depth,bug_type
+1,50,0.05,plain_fsm,deterministic,partial,low,tiny,none,none,acyclic|sparse|layered,shallow,missing_transition
+2,50,0.05,plain_fsm,deterministic,partial,low,tiny,none,none,acyclic|sparse|layered,shallow,wrong_source
+3,50,0.05,plain_fsm,deterministic,partial,low,tiny,none,none,acyclic|sparse|layered,shallow,wrong_event
+4,50,0.05,moore,deterministic,partial,low,tiny,none,none,acyclic|sparse|layered,shallow,wrong_initial_state
+5,50,0.05,moore,deterministic,partial,low,tiny,none,none,acyclic|sparse|layered,shallow,dead_state_intro
+6,50,0.05,moore,deterministic,partial,low,tiny,none,none,acyclic|sparse|layered,shallow,wrong_target
+7,50,0.05,moore,deterministic,partial,low,tiny,none,none,acyclic|sparse|layered,shallow,unreachable_state_intro
+8,39,0.039,efsm,deterministic,partial,medium,tiny,compound,none,cyclic|hub_and_spoke|layered,shallow,missing_transition
+9,36,0.036,plain_fsm,deterministic,partial,low,tiny,none,none,cyclic|sparse|layered,shallow,nondeterminism_intro
+10,36,0.036,mealy,deterministic,partial,medium,tiny,simple,none,cyclic|hub_and_spoke|layered,shallow,wrong_target

@@ -1,0 +1,43 @@
+{
+  "bug_id": "synthetic_8775_3_2__hom__dead_state_intro__wrong_event__wrong_source__11202",
+  "reference_fsm_id": "synthetic_8775_3_2",
+  "faulty_fsm_id": "synthetic_8775_3_2__faulty__hom__dead_state_intro__wrong_event__wrong_source__11202",
+  "mutation_operator": "dead_state_intro,wrong_event,wrong_source",
+  "changed_transition_id": "t8775_1",
+  "description": "Higher-order mutant applying 3 operators: dead_state_intro, wrong_event, wrong_source",
+  "seed": 11202,
+  "mutation_complexity": null,
+  "mutation_scope": null,
+  "mutation_mode": null,
+  "mutation_order": 3,
+  "component_faults": [
+    {
+      "operator": "dead_state_intro",
+      "seed": 11202,
+      "bug_id": "synthetic_8775_3_2__dead_state_intro__11202",
+      "changed_transition_id": null,
+      "description": "Added unreachable state 'dead_11202'"
+    },
+    {
+      "operator": "wrong_event",
+      "seed": 12202,
+      "bug_id": "synthetic_8775_3_2__faulty__dead_state_intro__11202__wrong_event__12202",
+      "changed_transition_id": "t8775_1",
+      "description": "Changed event of transition 't8775_1' from 'e8775_1' to 'e8775_0'"
+    },
+    {
+      "operator": "wrong_source",
+      "seed": 13202,
+      "bug_id": "synthetic_8775_3_2__faulty__dead_state_intro__11202__faulty__wrong_event__12202__wrong_source__13202",
+      "changed_transition_id": "t8775_1",
+      "description": "Changed source of transition 't8775_1' from 's8775_0' to 's8775_1'"
+    }
+  ],
+  "is_higher_order": true,
+  "coupled_to_simple_faults": [
+    "synthetic_8775_3_2__dead_state_intro__11202",
+    "synthetic_8775_3_2__faulty__dead_state_intro__11202__wrong_event__12202",
+    "synthetic_8775_3_2__faulty__dead_state_intro__11202__faulty__wrong_event__12202__wrong_source__13202"
+  ],
+  "is_negative_control": false
+}

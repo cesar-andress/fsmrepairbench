@@ -1,0 +1,43 @@
+{
+  "bug_id": "synthetic_4054_3_2__hom__action_corruption__guard_flip__missing_transition__39729",
+  "reference_fsm_id": "synthetic_4054_3_2",
+  "faulty_fsm_id": "synthetic_4054_3_2__faulty__hom__action_corruption__guard_flip__missing_transition__39729",
+  "mutation_operator": "action_corruption,guard_flip,missing_transition",
+  "changed_transition_id": "t4054_2",
+  "description": "Higher-order mutant applying 3 operators: action_corruption, guard_flip, missing_transition",
+  "seed": 39729,
+  "mutation_complexity": null,
+  "mutation_scope": null,
+  "mutation_mode": null,
+  "mutation_order": 3,
+  "component_faults": [
+    {
+      "operator": "action_corruption",
+      "seed": 39729,
+      "bug_id": "synthetic_4054_3_2__action_corruption__39729",
+      "changed_transition_id": "t4054_3",
+      "description": "Changed action of transition 't4054_3' from 'act4054_3' to 'wrong_act4054_3'"
+    },
+    {
+      "operator": "guard_flip",
+      "seed": 40729,
+      "bug_id": "synthetic_4054_3_2__faulty__action_corruption__39729__guard_flip__40729",
+      "changed_transition_id": "t4054_4",
+      "description": "Changed guard of transition 't4054_4' from 'x_4054_3 > 0' to 'not_x_4054_3 > 0'"
+    },
+    {
+      "operator": "missing_transition",
+      "seed": 41729,
+      "bug_id": "synthetic_4054_3_2__faulty__action_corruption__39729__faulty__guard_flip__40729__missing_transition__41729",
+      "changed_transition_id": "t4054_2",
+      "description": "Removed transition 't4054_2'"
+    }
+  ],
+  "is_higher_order": true,
+  "coupled_to_simple_faults": [
+    "synthetic_4054_3_2__action_corruption__39729",
+    "synthetic_4054_3_2__faulty__action_corruption__39729__guard_flip__40729",
+    "synthetic_4054_3_2__faulty__action_corruption__39729__faulty__guard_flip__40729__missing_transition__41729"
+  ],
+  "is_negative_control": false
+}

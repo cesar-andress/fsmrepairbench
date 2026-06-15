@@ -1,0 +1,43 @@
+{
+  "bug_id": "synthetic_16315_3_2__hom__delay_corruption__wrong_source__guard_weaken__57510",
+  "reference_fsm_id": "synthetic_16315_3_2",
+  "faulty_fsm_id": "synthetic_16315_3_2__faulty__hom__delay_corruption__wrong_source__guard_weaken__57510",
+  "mutation_operator": "delay_corruption,wrong_source,guard_weaken",
+  "changed_transition_id": "t16315_4",
+  "description": "Higher-order mutant applying 3 operators: delay_corruption, wrong_source, guard_weaken",
+  "seed": 57510,
+  "mutation_complexity": null,
+  "mutation_scope": null,
+  "mutation_mode": null,
+  "mutation_order": 3,
+  "component_faults": [
+    {
+      "operator": "delay_corruption",
+      "seed": 57510,
+      "bug_id": "synthetic_16315_3_2__delay_corruption__57510",
+      "changed_transition_id": "t16315_3",
+      "description": "Corrupted delay on transition 't16315_3' to 1.5"
+    },
+    {
+      "operator": "wrong_source",
+      "seed": 58510,
+      "bug_id": "synthetic_16315_3_2__faulty__delay_corruption__57510__wrong_source__58510",
+      "changed_transition_id": "t16315_5",
+      "description": "Changed source of transition 't16315_5' from 's16315_2' to 's16315_0'"
+    },
+    {
+      "operator": "guard_weaken",
+      "seed": 59510,
+      "bug_id": "synthetic_16315_3_2__faulty__delay_corruption__57510__faulty__wrong_source__58510__guard_weaken__59510",
+      "changed_transition_id": "t16315_4",
+      "description": "Weakened guard on transition 't16315_4' to 'true'"
+    }
+  ],
+  "is_higher_order": true,
+  "coupled_to_simple_faults": [
+    "synthetic_16315_3_2__delay_corruption__57510",
+    "synthetic_16315_3_2__faulty__delay_corruption__57510__wrong_source__58510",
+    "synthetic_16315_3_2__faulty__delay_corruption__57510__faulty__wrong_source__58510__guard_weaken__59510"
+  ],
+  "is_negative_control": false
+}

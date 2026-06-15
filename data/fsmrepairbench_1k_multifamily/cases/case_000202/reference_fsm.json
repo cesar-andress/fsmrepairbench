@@ -1,0 +1,106 @@
+{
+  "id": "synthetic_3882_3_2",
+  "name": "Synthetic FSM (custom)",
+  "description": "Synthetic FSM generated with seed=3882, states=3, events=2, branching_factor=1, deterministic=True, allow_dead_states=False",
+  "states": [
+    {
+      "id": "s3882_0",
+      "state_output": null,
+      "refusal": false,
+      "quiescence": false
+    },
+    {
+      "id": "s3882_1",
+      "state_output": null,
+      "refusal": false,
+      "quiescence": false
+    },
+    {
+      "id": "s3882_2",
+      "state_output": null,
+      "refusal": false,
+      "quiescence": false
+    }
+  ],
+  "initial_state": "s3882_0",
+  "events": [
+    "e3882_0",
+    "e3882_1"
+  ],
+  "transitions": [
+    {
+      "id": "t3882_1",
+      "source": "s3882_0",
+      "event": "e3882_1",
+      "target": "s3882_1",
+      "guard": "x_3882_0 > 0",
+      "action": "act3882_1",
+      "output": "out_3882_0",
+      "timeout": null,
+      "delay": null,
+      "requirements": [],
+      "probability": null,
+      "is_nondeterministic": false,
+      "refusal": false,
+      "quiescence": false,
+      "discrete_time": null
+    },
+    {
+      "id": "t3882_2",
+      "source": "s3882_0",
+      "event": "e3882_1",
+      "target": "s3882_2",
+      "guard": "x_3882_1 > 0",
+      "action": "act3882_2",
+      "output": "out_3882_1",
+      "timeout": null,
+      "delay": null,
+      "requirements": [],
+      "probability": null,
+      "is_nondeterministic": false,
+      "refusal": false,
+      "quiescence": false,
+      "discrete_time": null
+    },
+    {
+      "id": "t3882_3",
+      "source": "s3882_1",
+      "event": "e3882_0",
+      "target": "s3882_1",
+      "guard": "x_3882_2 > 0",
+      "action": "act3882_3",
+      "output": "out_3882_2",
+      "timeout": null,
+      "delay": null,
+      "requirements": [],
+      "probability": null,
+      "is_nondeterministic": false,
+      "refusal": false,
+      "quiescence": false,
+      "discrete_time": null
+    },
+    {
+      "id": "t3882_4",
+      "source": "s3882_2",
+      "event": "e3882_0",
+      "target": "s3882_2",
+      "guard": "x_3882_3 > 0",
+      "action": "act3882_4",
+      "output": "out_3882_3",
+      "timeout": null,
+      "delay": null,
+      "requirements": [],
+      "probability": null,
+      "is_nondeterministic": false,
+      "refusal": false,
+      "quiescence": false,
+      "discrete_time": null
+    }
+  ],
+  "variables": {},
+  "parent_fsm_id": null,
+  "reference_fsm_id": null,
+  "discrete_time_step": null,
+  "semantics_mode": null,
+  "cyclic_metadata": null
+}

@@ -1,0 +1,35 @@
+{
+  "bug_id": "synthetic_5837_3_2__hom__duplicate_transition__guard_weaken__48464",
+  "reference_fsm_id": "synthetic_5837_3_2",
+  "faulty_fsm_id": "synthetic_5837_3_2__faulty__hom__duplicate_transition__guard_weaken__48464",
+  "mutation_operator": "duplicate_transition,guard_weaken",
+  "changed_transition_id": "t5837_4",
+  "description": "Higher-order mutant applying 2 operators: duplicate_transition, guard_weaken",
+  "seed": 48464,
+  "mutation_complexity": null,
+  "mutation_scope": null,
+  "mutation_mode": null,
+  "mutation_order": 2,
+  "component_faults": [
+    {
+      "operator": "duplicate_transition",
+      "seed": 48464,
+      "bug_id": "synthetic_5837_3_2__duplicate_transition__48464",
+      "changed_transition_id": "t5837_2",
+      "description": "Duplicated transition 't5837_2' as 't5837_2__dup__48464'"
+    },
+    {
+      "operator": "guard_weaken",
+      "seed": 49464,
+      "bug_id": "synthetic_5837_3_2__faulty__duplicate_transition__48464__guard_weaken__49464",
+      "changed_transition_id": "t5837_4",
+      "description": "Weakened guard on transition 't5837_4' to 'true'"
+    }
+  ],
+  "is_higher_order": true,
+  "coupled_to_simple_faults": [
+    "synthetic_5837_3_2__duplicate_transition__48464",
+    "synthetic_5837_3_2__faulty__duplicate_transition__48464__guard_weaken__49464"
+  ],
+  "is_negative_control": false
+}

@@ -1,0 +1,43 @@
+{
+  "bug_id": "synthetic_3867_3_2__hom__action_corruption__wrong_event__wrong_source__593",
+  "reference_fsm_id": "synthetic_3867_3_2",
+  "faulty_fsm_id": "synthetic_3867_3_2__faulty__hom__action_corruption__wrong_event__wrong_source__593",
+  "mutation_operator": "action_corruption,wrong_event,wrong_source",
+  "changed_transition_id": "t3867_4",
+  "description": "Higher-order mutant applying 3 operators: action_corruption, wrong_event, wrong_source",
+  "seed": 593,
+  "mutation_complexity": null,
+  "mutation_scope": null,
+  "mutation_mode": null,
+  "mutation_order": 3,
+  "component_faults": [
+    {
+      "operator": "action_corruption",
+      "seed": 593,
+      "bug_id": "synthetic_3867_3_2__action_corruption__593",
+      "changed_transition_id": "t3867_3",
+      "description": "Changed action of transition 't3867_3' from 'act3867_3' to 'wrong_act3867_3'"
+    },
+    {
+      "operator": "wrong_event",
+      "seed": 1593,
+      "bug_id": "synthetic_3867_3_2__faulty__action_corruption__593__wrong_event__1593",
+      "changed_transition_id": "t3867_4",
+      "description": "Changed event of transition 't3867_4' from 'e3867_0' to 'e3867_1'"
+    },
+    {
+      "operator": "wrong_source",
+      "seed": 2593,
+      "bug_id": "synthetic_3867_3_2__faulty__action_corruption__593__faulty__wrong_event__1593__wrong_source__2593",
+      "changed_transition_id": "t3867_4",
+      "description": "Changed source of transition 't3867_4' from 's3867_2' to 's3867_0'"
+    }
+  ],
+  "is_higher_order": true,
+  "coupled_to_simple_faults": [
+    "synthetic_3867_3_2__action_corruption__593",
+    "synthetic_3867_3_2__faulty__action_corruption__593__wrong_event__1593",
+    "synthetic_3867_3_2__faulty__action_corruption__593__faulty__wrong_event__1593__wrong_source__2593"
+  ],
+  "is_negative_control": false
+}

@@ -1,0 +1,43 @@
+{
+  "bug_id": "synthetic_1133_3_2__hom__nondeterminism_intro__guard_flip__missing_transition__81128",
+  "reference_fsm_id": "synthetic_1133_3_2",
+  "faulty_fsm_id": "synthetic_1133_3_2__faulty__hom__nondeterminism_intro__guard_flip__missing_transition__81128",
+  "mutation_operator": "nondeterminism_intro,guard_flip,missing_transition",
+  "changed_transition_id": "t1133_1",
+  "description": "Higher-order mutant applying 3 operators: nondeterminism_intro, guard_flip, missing_transition",
+  "seed": 81128,
+  "mutation_complexity": null,
+  "mutation_scope": null,
+  "mutation_mode": null,
+  "mutation_order": 3,
+  "component_faults": [
+    {
+      "operator": "nondeterminism_intro",
+      "seed": 81128,
+      "bug_id": "synthetic_1133_3_2__nondeterminism_intro__81128",
+      "changed_transition_id": "t1133_1",
+      "description": "Added nondeterministic duplicate for event 'e1133_1' from 's1133_0'"
+    },
+    {
+      "operator": "guard_flip",
+      "seed": 82128,
+      "bug_id": "synthetic_1133_3_2__faulty__nondeterminism_intro__81128__guard_flip__82128",
+      "changed_transition_id": "t1133_1",
+      "description": "Added guard 'unexpected_guard' to transition 't1133_1'"
+    },
+    {
+      "operator": "missing_transition",
+      "seed": 83128,
+      "bug_id": "synthetic_1133_3_2__faulty__nondeterminism_intro__81128__faulty__guard_flip__82128__missing_transition__83128",
+      "changed_transition_id": "t1133_1",
+      "description": "Removed transition 't1133_1'"
+    }
+  ],
+  "is_higher_order": true,
+  "coupled_to_simple_faults": [
+    "synthetic_1133_3_2__nondeterminism_intro__81128",
+    "synthetic_1133_3_2__faulty__nondeterminism_intro__81128__guard_flip__82128",
+    "synthetic_1133_3_2__faulty__nondeterminism_intro__81128__faulty__guard_flip__82128__missing_transition__83128"
+  ],
+  "is_negative_control": false
+}

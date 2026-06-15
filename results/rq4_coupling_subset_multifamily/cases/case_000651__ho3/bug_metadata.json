@@ -1,0 +1,43 @@
+{
+  "bug_id": "synthetic_12426_3_2__hom__guard_strengthen__guard_flip__missing_transition__91100",
+  "reference_fsm_id": "synthetic_12426_3_2",
+  "faulty_fsm_id": "synthetic_12426_3_2__faulty__hom__guard_strengthen__guard_flip__missing_transition__91100",
+  "mutation_operator": "guard_strengthen,guard_flip,missing_transition",
+  "changed_transition_id": "t12426_1",
+  "description": "Higher-order mutant applying 3 operators: guard_strengthen, guard_flip, missing_transition",
+  "seed": 91100,
+  "mutation_complexity": null,
+  "mutation_scope": null,
+  "mutation_mode": null,
+  "mutation_order": 3,
+  "component_faults": [
+    {
+      "operator": "guard_strengthen",
+      "seed": 91100,
+      "bug_id": "synthetic_12426_3_2__guard_strengthen__91100",
+      "changed_transition_id": "t12426_1",
+      "description": "Strengthened guard on transition 't12426_1'"
+    },
+    {
+      "operator": "guard_flip",
+      "seed": 92100,
+      "bug_id": "synthetic_12426_3_2__faulty__guard_strengthen__91100__guard_flip__92100",
+      "changed_transition_id": "t12426_2",
+      "description": "Changed guard of transition 't12426_2' from 'x_12426_1 > 0 and y_12426_1 < 10' to 'not_x_12426_1 > 0 and y_12426_1 < 10'"
+    },
+    {
+      "operator": "missing_transition",
+      "seed": 93100,
+      "bug_id": "synthetic_12426_3_2__faulty__guard_strengthen__91100__faulty__guard_flip__92100__missing_transition__93100",
+      "changed_transition_id": "t12426_1",
+      "description": "Removed transition 't12426_1'"
+    }
+  ],
+  "is_higher_order": true,
+  "coupled_to_simple_faults": [
+    "synthetic_12426_3_2__guard_strengthen__91100",
+    "synthetic_12426_3_2__faulty__guard_strengthen__91100__guard_flip__92100",
+    "synthetic_12426_3_2__faulty__guard_strengthen__91100__faulty__guard_flip__92100__missing_transition__93100"
+  ],
+  "is_negative_control": false
+}

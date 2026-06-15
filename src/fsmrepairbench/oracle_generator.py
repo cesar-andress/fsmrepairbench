@@ -13,7 +13,14 @@ from typing import Literal
 
 from fsmrepairbench.models import FSM, OracleScenario, OracleStep, OracleSuite, Transition
 
-DepthLevel = Literal["shallow", "medium", "deep", "exhaustive_like"]
+DepthLevel = Literal[
+    "shallow",
+    "medium",
+    "deep",
+    "exhaustive_like",
+    "extended_50",
+    "extended_60",
+]
 ScenarioPolicy = Literal["shortest-path", "depth-forced"]
 
 DEPTH_MAX_STEPS: dict[DepthLevel, int] = {
@@ -21,6 +28,8 @@ DEPTH_MAX_STEPS: dict[DepthLevel, int] = {
     "medium": 12,
     "deep": 25,
     "exhaustive_like": 40,
+    "extended_50": 50,
+    "extended_60": 60,
 }
 
 DEPTH_FORCED_TARGETS: dict[DepthLevel, dict[str, int]] = {
@@ -44,7 +53,27 @@ DEPTH_FORCED_TARGETS: dict[DepthLevel, dict[str, int]] = {
         "target_max_steps": 40,
         "min_extra_scenarios": 12,
     },
+    "extended_50": {
+        "target_mean_steps": 38,
+        "target_max_steps": 50,
+        "min_extra_scenarios": 16,
+    },
+    "extended_60": {
+        "target_mean_steps": 46,
+        "target_max_steps": 60,
+        "min_extra_scenarios": 20,
+    },
 }
+
+STANDARD_ABLATION_DEPTHS: tuple[DepthLevel, ...] = ("shallow", "medium", "deep")
+EXTENDED_ABLATION_DEPTHS: tuple[DepthLevel, ...] = (
+    "shallow",
+    "medium",
+    "deep",
+    "exhaustive_like",
+    "extended_50",
+    "extended_60",
+)
 
 
 class OracleGeneratorError(ValueError):

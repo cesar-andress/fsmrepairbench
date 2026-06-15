@@ -19,13 +19,18 @@ from fsmrepairbench.patch import (
     ReplaceTransitionEventOperation,
     ReplaceTransitionSourceOperation,
     ReplaceTransitionTargetOperation,
+    apply_patch,
     validate_patch,
 )
+from fsmrepairbench.scorer import score_oracle_suite
 
 BASELINE_ENGINE_NAMES: tuple[str, ...] = (
     "missing-transition",
     "wrong-target",
     "random",
+    "search-bpr",
+    "oracle-composite",
+    "llm-template",
 )
 
 
@@ -299,6 +304,186 @@ def _random_operation_candidates(fsm: FSM) -> list[PatchOperation]:
     return candidates
 
 
+def _operation_sort_key(operation: PatchOperation) -> tuple[str, ...]:
+    payload = operation.model_dump()
+    op_name = str(payload.get("op", ""))
+    parts = [op_name]
+    for key in sorted(payload):
+        if key == "op":
+            continue
+        parts.append(f"{key}={payload[key]!r}")
+    return tuple(parts)
+
+
+def _dedupe_operations(operations: Sequence[PatchOperation]) -> list[PatchOperation]:
+    seen: set[tuple[str, ...]] = set()
+    deduped: list[PatchOperation] = []
+    for operation in operations:
+        key = _operation_sort_key(operation)
+        if key in seen:
+            continue
+        seen.add(key)
+        deduped.append(operation)
+    return deduped
+
+
+def _oracle_repair_candidates(fsm: FSM, oracle_suite: OracleSuite) -> list[PatchOperation]:
+    """Build deterministic oracle-guided repair candidates for search/composite engines."""
+    candidates: list[PatchOperation] = []
+    candidates.extend(OracleGuidedMissingTransitionRepair().propose_patch(fsm, oracle_suite).operations)
+    candidates.extend(OracleGuidedWrongTargetRepair().propose_patch(fsm, oracle_suite).operations)
+
+    failures = collect_oracle_failures(fsm, oracle_suite)
+    transition_by_id = {transition.id: transition for transition in fsm.transitions}
+
+    for failure in failures:
+        if failure.failure_reason == "no_matching_transition":
+            for transition in fsm.transitions:
+                if transition.source == failure.current_state and transition.event != failure.step.event:
+                    candidates.append(
+                        ReplaceTransitionEventOperation(
+                            transition_id=transition.id,
+                            event=failure.step.event,
+                        )
+                    )
+                if (
+                    transition.event == failure.step.event
+                    and transition.target == failure.step.expected_state
+                    and transition.source != failure.current_state
+                ):
+                    candidates.append(
+                        ReplaceTransitionSourceOperation(
+                            transition_id=transition.id,
+                            source=failure.current_state,
+                        )
+                    )
+
+        if failure.failure_reason == "unexpected_state" and failure.transition_id is not None:
+            transition = transition_by_id.get(failure.transition_id)
+            if transition is not None and transition.event != failure.step.event:
+                candidates.append(
+                    ReplaceTransitionEventOperation(
+                        transition_id=transition.id,
+                        event=failure.step.event,
+                    )
+                )
+
+        if failure.step_index == 0 and failure.failure_reason == "no_matching_transition":
+            candidates.append(
+                ReplaceInitialStateOperation(initial_state=failure.current_state)
+            )
+
+    return _dedupe_operations(candidates)
+
+
+def _merge_valid_operations(
+    fsm: FSM,
+    operations: Sequence[PatchOperation],
+) -> list[PatchOperation]:
+    """Keep the largest valid prefix of *operations* under cumulative patch validation."""
+    selected: list[PatchOperation] = []
+    for operation in operations:
+        trial = selected + [operation]
+        patch = _make_patch(fsm, patch_id="trial", operations=trial)
+        if validate_patch(fsm, patch):
+            continue
+        selected.append(operation)
+    return selected
+
+
+class OracleGuidedCompositeRepair:
+    """Apply oracle-guided structural alignment repairs without conflicting operations."""
+
+    def propose_patch(self, fsm: FSM, oracle_suite: OracleSuite) -> FSMPatch:
+        candidates = _oracle_repair_candidates(fsm, oracle_suite)
+        operations = _merge_valid_operations(fsm, candidates)
+        return _make_patch(
+            fsm,
+            patch_id=f"baseline_oracle_composite_{fsm.id}",
+            operations=operations,
+        )
+
+
+class OracleGuidedSearchRepair:
+    """Greedy search over oracle-guided candidates to maximize behavioural pass rate."""
+
+    def __init__(self, seed: int = 0, max_iterations: int = 20) -> None:
+        self.seed = seed
+        self.max_iterations = max_iterations
+
+    def propose_patch(self, fsm: FSM, oracle_suite: OracleSuite) -> FSMPatch:
+        candidates = _oracle_repair_candidates(fsm, oracle_suite)
+        if not candidates:
+            return _make_patch(
+                fsm,
+                patch_id=f"baseline_search_bpr_{self.seed}_{fsm.id}",
+                operations=[],
+            )
+
+        selected: list[PatchOperation] = []
+        current = fsm.model_copy(deep=True)
+        rng = random.Random(self.seed)
+
+        for _ in range(self.max_iterations):
+            current_bpr = score_oracle_suite(current, oracle_suite).bpr
+            if current_bpr >= 1.0 - 1e-9:
+                break
+
+            best_operation: PatchOperation | None = None
+            best_bpr = current_bpr
+            shuffled = list(candidates)
+            rng.shuffle(shuffled)
+            shuffled.sort(key=_operation_sort_key)
+
+            for operation in shuffled:
+                if any(_operation_sort_key(operation) == _operation_sort_key(chosen) for chosen in selected):
+                    continue
+                trial_ops = selected + [operation]
+                patch = _make_patch(
+                    current,
+                    patch_id=f"trial_{self.seed}",
+                    operations=trial_ops,
+                )
+                if validate_patch(current, patch):
+                    continue
+                trial_fsm = apply_patch(current, patch)
+                trial_bpr = score_oracle_suite(trial_fsm, oracle_suite).bpr
+                if trial_bpr > best_bpr + 1e-9:
+                    best_bpr = trial_bpr
+                    best_operation = operation
+
+            if best_operation is None:
+                break
+
+            selected.append(best_operation)
+            trial_patch = _make_patch(
+                current,
+                patch_id=f"trial_{self.seed}",
+                operations=selected,
+            )
+            current = apply_patch(current, trial_patch)
+
+        return _make_patch(
+            fsm,
+            patch_id=f"baseline_search_bpr_{self.seed}_{fsm.id}",
+            operations=selected,
+        )
+
+
+class TemplateLLMRepair:
+    """Deterministic LLM-style template baseline without a live model API."""
+
+    def __init__(self, seed: int = 0) -> None:
+        self.seed = seed
+
+    def propose_patch(self, fsm: FSM, oracle_suite: OracleSuite) -> FSMPatch:
+        _ = self.seed
+        composite = OracleGuidedCompositeRepair().propose_patch(fsm, oracle_suite)
+        return composite.model_copy(
+            update={"patch_id": f"baseline_llm_template_{fsm.id}"},
+        )
+
+
 def get_baseline_engine(name: str, *, seed: int = 0) -> BaselineRepairEngine:
     """Return a baseline repair engine instance for *name*."""
     if name == "missing-transition":
@@ -307,6 +492,12 @@ def get_baseline_engine(name: str, *, seed: int = 0) -> BaselineRepairEngine:
         return OracleGuidedWrongTargetRepair()
     if name == "random":
         return RandomRepair(seed=seed)
+    if name == "search-bpr":
+        return OracleGuidedSearchRepair(seed=seed)
+    if name == "oracle-composite":
+        return OracleGuidedCompositeRepair()
+    if name == "llm-template":
+        return TemplateLLMRepair(seed=seed)
     known = ", ".join(BASELINE_ENGINE_NAMES)
     msg = f"Unknown baseline engine '{name}'. Known: {known}"
     raise BaselineEngineError(msg)

@@ -1,0 +1,43 @@
+{
+  "bug_id": "synthetic_5786_3_2__hom__duplicate_transition__wrong_event__wrong_source__30276",
+  "reference_fsm_id": "synthetic_5786_3_2",
+  "faulty_fsm_id": "synthetic_5786_3_2__faulty__hom__duplicate_transition__wrong_event__wrong_source__30276",
+  "mutation_operator": "duplicate_transition,wrong_event,wrong_source",
+  "changed_transition_id": "t5786_5",
+  "description": "Higher-order mutant applying 3 operators: duplicate_transition, wrong_event, wrong_source",
+  "seed": 30276,
+  "mutation_complexity": null,
+  "mutation_scope": null,
+  "mutation_mode": null,
+  "mutation_order": 3,
+  "component_faults": [
+    {
+      "operator": "duplicate_transition",
+      "seed": 30276,
+      "bug_id": "synthetic_5786_3_2__duplicate_transition__30276",
+      "changed_transition_id": "t5786_5",
+      "description": "Duplicated transition 't5786_5' as 't5786_5__dup__30276'"
+    },
+    {
+      "operator": "wrong_event",
+      "seed": 31276,
+      "bug_id": "synthetic_5786_3_2__faulty__duplicate_transition__30276__wrong_event__31276",
+      "changed_transition_id": "t5786_11",
+      "description": "Changed event of transition 't5786_11' from 'e5786_1' to 'e5786_0'"
+    },
+    {
+      "operator": "wrong_source",
+      "seed": 32276,
+      "bug_id": "synthetic_5786_3_2__faulty__duplicate_transition__30276__faulty__wrong_event__31276__wrong_source__32276",
+      "changed_transition_id": "t5786_5",
+      "description": "Changed source of transition 't5786_5' from 's5786_0' to 's5786_2'"
+    }
+  ],
+  "is_higher_order": true,
+  "coupled_to_simple_faults": [
+    "synthetic_5786_3_2__duplicate_transition__30276",
+    "synthetic_5786_3_2__faulty__duplicate_transition__30276__wrong_event__31276",
+    "synthetic_5786_3_2__faulty__duplicate_transition__30276__faulty__wrong_event__31276__wrong_source__32276"
+  ],
+  "is_negative_control": false
+}

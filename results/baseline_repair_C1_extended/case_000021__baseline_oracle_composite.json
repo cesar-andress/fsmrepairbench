@@ -1,0 +1,282 @@
+{
+  "case_id": "case_000021",
+  "tool_id": "baseline_oracle_composite",
+  "tool_type": "baseline",
+  "model": "baseline_oracle_composite",
+  "mutation_operator": "wrong_target",
+  "status": "completed",
+  "failure_class": "complete_repair",
+  "input_format": "fsmrepairbench_case_v1",
+  "output_format": "fsmrepairbench_repair_result_v1",
+  "initial_bpr": 0.9615384615384616,
+  "final_bpr": 1.0,
+  "delta_bpr": 0.038461538461538436,
+  "complete_repair": true,
+  "effective_repair": true,
+  "regression": false,
+  "patch_parse_failures": 0,
+  "patch_validation_failures": 0,
+  "patch_application_failures": 0,
+  "iterations_completed": 1,
+  "runtime_seconds": 0.0005,
+  "repair_result": {
+    "bug_id": "synthetic_64_5_3__faulty__wrong_target__21043",
+    "passed": true,
+    "score": 1.0,
+    "details": {
+      "model": "baseline_oracle_composite",
+      "backend": "baseline",
+      "baseline_engine": "oracle-composite",
+      "baseline_seed": 0,
+      "temperature": 0.0,
+      "max_iterations": 1,
+      "runtime_seconds": 0.0005,
+      "iterations": [
+        {
+          "iteration": 1,
+          "bpr_before": 0.9615384615384616,
+          "patch_valid": true,
+          "patch_applied": true,
+          "patch": {
+            "patch_id": "baseline_oracle_composite_synthetic_64_5_3__faulty__wrong_target__21043",
+            "target_fsm_id": "synthetic_64_5_3__faulty__wrong_target__21043",
+            "operations": [
+              {
+                "op": "replace_transition_target",
+                "transition_id": "t64_10",
+                "target": "s64_3"
+              }
+            ]
+          },
+          "validation_errors": [],
+          "bpr_after": 1.0
+        }
+      ],
+      "final_fsm": {
+        "id": "synthetic_64_5_3__faulty__wrong_target__21043",
+        "name": "Synthetic FSM (small) (faulty: wrong_target)",
+        "description": "Synthetic FSM generated with seed=64, states=5, events=3, branching_factor=2, deterministic=True, allow_dead_states=False",
+        "states": [
+          {
+            "id": "s64_0",
+            "state_output": null,
+            "refusal": false,
+            "quiescence": false
+          },
+          {
+            "id": "s64_1",
+            "state_output": null,
+            "refusal": false,
+            "quiescence": false
+          },
+          {
+            "id": "s64_2",
+            "state_output": null,
+            "refusal": false,
+            "quiescence": false
+          },
+          {
+            "id": "s64_3",
+            "state_output": null,
+            "refusal": false,
+            "quiescence": false
+          },
+          {
+            "id": "s64_4",
+            "state_output": null,
+            "refusal": false,
+            "quiescence": false
+          }
+        ],
+        "initial_state": "s64_0",
+        "events": [
+          "e64_0",
+          "e64_1",
+          "e64_2"
+        ],
+        "transitions": [
+          {
+            "id": "t64_1",
+            "source": "s64_0",
+            "event": "e64_0",
+            "target": "s64_1",
+            "guard": null,
+            "action": "act64_1",
+            "output": null,
+            "timeout": null,
+            "delay": null,
+            "requirements": [],
+            "probability": null,
+            "is_nondeterministic": false,
+            "refusal": false,
+            "quiescence": false,
+            "discrete_time": null
+          },
+          {
+            "id": "t64_2",
+            "source": "s64_1",
+            "event": "e64_2",
+            "target": "s64_2",
+            "guard": null,
+            "action": "act64_2",
+            "output": null,
+            "timeout": null,
+            "delay": null,
+            "requirements": [],
+            "probability": null,
+            "is_nondeterministic": false,
+            "refusal": false,
+            "quiescence": false,
+            "discrete_time": null
+          },
+          {
+            "id": "t64_3",
+            "source": "s64_2",
+            "event": "e64_0",
+            "target": "s64_3",
+            "guard": null,
+            "action": "act64_3",
+            "output": null,
+            "timeout": null,
+            "delay": null,
+            "requirements": [],
+            "probability": null,
+            "is_nondeterministic": false,
+            "refusal": false,
+            "quiescence": false,
+            "discrete_time": null
+          },
+          {
+            "id": "t64_4",
+            "source": "s64_1",
+            "event": "e64_1",
+            "target": "s64_4",
+            "guard": null,
+            "action": "act64_4",
+            "output": null,
+            "timeout": null,
+            "delay": null,
+            "requirements": [],
+            "probability": null,
+            "is_nondeterministic": false,
+            "refusal": false,
+            "quiescence": false,
+            "discrete_time": null
+          },
+          {
+            "id": "t64_5",
+            "source": "s64_0",
+            "event": "e64_2",
+            "target": "s64_1",
+            "guard": null,
+            "action": "act64_5",
+            "output": null,
+            "timeout": null,
+            "delay": null,
+            "requirements": [],
+            "probability": null,
+            "is_nondeterministic": false,
+            "refusal": false,
+            "quiescence": false,
+            "discrete_time": null
+          },
+          {
+            "id": "t64_6",
+            "source": "s64_2",
+            "event": "e64_0",
+            "target": "s64_1",
+            "guard": "g64_5_1",
+            "action": "act64_6",
+            "output": null,
+            "timeout": null,
+            "delay": null,
+            "requirements": [],
+            "probability": null,
+            "is_nondeterministic": false,
+            "refusal": false,
+            "quiescence": false,
+            "discrete_time": null
+          },
+          {
+            "id": "t64_7",
+            "source": "s64_3",
+            "event": "e64_1",
+            "target": "s64_3",
+            "guard": null,
+            "action": "act64_7",
+            "output": null,
+            "timeout": null,
+            "delay": null,
+            "requirements": [],
+            "probability": null,
+            "is_nondeterministic": false,
+            "refusal": false,
+            "quiescence": false,
+            "discrete_time": null
+          },
+          {
+            "id": "t64_8",
+            "source": "s64_3",
+            "event": "e64_2",
+            "target": "s64_1",
+            "guard": null,
+            "action": "act64_8",
+            "output": null,
+            "timeout": null,
+            "delay": null,
+            "requirements": [],
+            "probability": null,
+            "is_nondeterministic": false,
+            "refusal": false,
+            "quiescence": false,
+            "discrete_time": null
+          },
+          {
+            "id": "t64_9",
+            "source": "s64_4",
+            "event": "e64_0",
+            "target": "s64_0",
+            "guard": null,
+            "action": "act64_9",
+            "output": null,
+            "timeout": null,
+            "delay": null,
+            "requirements": [],
+            "probability": null,
+            "is_nondeterministic": false,
+            "refusal": false,
+            "quiescence": false,
+            "discrete_time": null
+          },
+          {
+            "id": "t64_10",
+            "source": "s64_4",
+            "event": "e64_2",
+            "target": "s64_3",
+            "guard": null,
+            "action": "act64_10",
+            "output": null,
+            "timeout": null,
+            "delay": null,
+            "requirements": [],
+            "probability": null,
+            "is_nondeterministic": false,
+            "refusal": false,
+            "quiescence": false,
+            "discrete_time": null
+          }
+        ],
+        "variables": {},
+        "parent_fsm_id": "synthetic_64_5_3",
+        "reference_fsm_id": "synthetic_64_5_3",
+        "discrete_time_step": null,
+        "semantics_mode": null,
+        "cyclic_metadata": null
+      },
+      "passed_steps": 26,
+      "total_steps": 26,
+      "passed_scenarios": 10,
+      "total_scenarios": 10
+    }
+  }
+}

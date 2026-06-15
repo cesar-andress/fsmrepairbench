@@ -1,0 +1,61 @@
+{
+  "id": "synthetic_8690_3_2__faulty__hom__dead_state_intro__wrong_event__6334",
+  "name": "Synthetic FSM (custom) (higher-order: dead_state_intro, wrong_event)",
+  "description": "Synthetic FSM generated with seed=8690, states=3, events=2, branching_factor=1, deterministic=True, allow_dead_states=True",
+  "states": [
+    {
+      "id": "s8690_0",
+      "state_output": "out_8690_0",
+      "refusal": false,
+      "quiescence": false
+    },
+    {
+      "id": "s8690_1",
+      "state_output": "out_8690_1",
+      "refusal": false,
+      "quiescence": false
+    },
+    {
+      "id": "s8690_2",
+      "state_output": "out_8690_2",
+      "refusal": false,
+      "quiescence": false
+    },
+    {
+      "id": "dead_6334",
+      "state_output": null,
+      "refusal": false,
+      "quiescence": false
+    }
+  ],
+  "initial_state": "s8690_0",
+  "events": [
+    "e8690_0",
+    "e8690_1"
+  ],
+  "transitions": [
+    {
+      "id": "t8690_1",
+      "source": "s8690_0",
+      "event": "e8690_0",
+      "target": "s8690_0",
+      "guard": null,
+      "action": "act8690_1",
+      "output": null,
+      "timeout": null,
+      "delay": null,
+      "requirements": [],
+      "probability": null,
+      "is_nondeterministic": false,
+      "refusal": false,
+      "quiescence": false,
+      "discrete_time": null
+    }
+  ],
+  "variables": {},
+  "parent_fsm_id": "synthetic_8690_3_2",
+  "reference_fsm_id": "synthetic_8690_3_2",
+  "discrete_time_step": null,
+  "semantics_mode": null,
+  "cyclic_metadata": null
+}

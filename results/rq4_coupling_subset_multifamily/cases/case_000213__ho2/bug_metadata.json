@@ -1,0 +1,35 @@
+{
+  "bug_id": "synthetic_4071_3_2__hom__action_corruption__missing_transition__23082",
+  "reference_fsm_id": "synthetic_4071_3_2",
+  "faulty_fsm_id": "synthetic_4071_3_2__faulty__hom__action_corruption__missing_transition__23082",
+  "mutation_operator": "action_corruption,missing_transition",
+  "changed_transition_id": "t4071_3",
+  "description": "Higher-order mutant applying 2 operators: action_corruption, missing_transition",
+  "seed": 23082,
+  "mutation_complexity": null,
+  "mutation_scope": null,
+  "mutation_mode": null,
+  "mutation_order": 2,
+  "component_faults": [
+    {
+      "operator": "action_corruption",
+      "seed": 23082,
+      "bug_id": "synthetic_4071_3_2__action_corruption__23082",
+      "changed_transition_id": "t4071_1",
+      "description": "Changed action of transition 't4071_1' from 'act4071_1' to 'wrong_act4071_1'"
+    },
+    {
+      "operator": "missing_transition",
+      "seed": 24082,
+      "bug_id": "synthetic_4071_3_2__faulty__action_corruption__23082__missing_transition__24082",
+      "changed_transition_id": "t4071_3",
+      "description": "Removed transition 't4071_3'"
+    }
+  ],
+  "is_higher_order": true,
+  "coupled_to_simple_faults": [
+    "synthetic_4071_3_2__action_corruption__23082",
+    "synthetic_4071_3_2__faulty__action_corruption__23082__missing_transition__24082"
+  ],
+  "is_negative_control": false
+}

@@ -1,0 +1,35 @@
+{
+  "bug_id": "synthetic_18268_3_2__hom__missing_transition__wrong_source__89625",
+  "reference_fsm_id": "synthetic_18268_3_2",
+  "faulty_fsm_id": "synthetic_18268_3_2__faulty__hom__missing_transition__wrong_source__89625",
+  "mutation_operator": "missing_transition,wrong_source",
+  "changed_transition_id": "t18268_3",
+  "description": "Higher-order mutant applying 2 operators: missing_transition, wrong_source",
+  "seed": 89625,
+  "mutation_complexity": null,
+  "mutation_scope": null,
+  "mutation_mode": null,
+  "mutation_order": 2,
+  "component_faults": [
+    {
+      "operator": "missing_transition",
+      "seed": 89625,
+      "bug_id": "synthetic_18268_3_2__missing_transition__89625",
+      "changed_transition_id": "t18268_2",
+      "description": "Removed transition 't18268_2'"
+    },
+    {
+      "operator": "wrong_source",
+      "seed": 90625,
+      "bug_id": "synthetic_18268_3_2__faulty__missing_transition__89625__wrong_source__90625",
+      "changed_transition_id": "t18268_3",
+      "description": "Changed source of transition 't18268_3' from 's18268_1' to 's18268_2'"
+    }
+  ],
+  "is_higher_order": true,
+  "coupled_to_simple_faults": [
+    "synthetic_18268_3_2__missing_transition__89625",
+    "synthetic_18268_3_2__faulty__missing_transition__89625__wrong_source__90625"
+  ],
+  "is_negative_control": false
+}

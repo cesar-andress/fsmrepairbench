@@ -1,0 +1,35 @@
+{
+  "bug_id": "synthetic_7807_3_2__hom__wrong_initial_state__guard_weaken__54590",
+  "reference_fsm_id": "synthetic_7807_3_2",
+  "faulty_fsm_id": "synthetic_7807_3_2__faulty__hom__wrong_initial_state__guard_weaken__54590",
+  "mutation_operator": "wrong_initial_state,guard_weaken",
+  "changed_transition_id": "t7807_1",
+  "description": "Higher-order mutant applying 2 operators: wrong_initial_state, guard_weaken",
+  "seed": 54590,
+  "mutation_complexity": null,
+  "mutation_scope": null,
+  "mutation_mode": null,
+  "mutation_order": 2,
+  "component_faults": [
+    {
+      "operator": "wrong_initial_state",
+      "seed": 54590,
+      "bug_id": "synthetic_7807_3_2__wrong_initial_state__54590",
+      "changed_transition_id": null,
+      "description": "Changed initial_state from 's7807_0' to 's7807_1'"
+    },
+    {
+      "operator": "guard_weaken",
+      "seed": 55590,
+      "bug_id": "synthetic_7807_3_2__faulty__wrong_initial_state__54590__guard_weaken__55590",
+      "changed_transition_id": "t7807_1",
+      "description": "Weakened guard on transition 't7807_1' to 'true'"
+    }
+  ],
+  "is_higher_order": true,
+  "coupled_to_simple_faults": [
+    "synthetic_7807_3_2__wrong_initial_state__54590",
+    "synthetic_7807_3_2__faulty__wrong_initial_state__54590__guard_weaken__55590"
+  ],
+  "is_negative_control": false
+}

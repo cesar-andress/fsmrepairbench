@@ -1,0 +1,35 @@
+{
+  "bug_id": "synthetic_3986_3_2__hom__action_corruption__guard_weaken__16119",
+  "reference_fsm_id": "synthetic_3986_3_2",
+  "faulty_fsm_id": "synthetic_3986_3_2__faulty__hom__action_corruption__guard_weaken__16119",
+  "mutation_operator": "action_corruption,guard_weaken",
+  "changed_transition_id": "t3986_4",
+  "description": "Higher-order mutant applying 2 operators: action_corruption, guard_weaken",
+  "seed": 16119,
+  "mutation_complexity": null,
+  "mutation_scope": null,
+  "mutation_mode": null,
+  "mutation_order": 2,
+  "component_faults": [
+    {
+      "operator": "action_corruption",
+      "seed": 16119,
+      "bug_id": "synthetic_3986_3_2__action_corruption__16119",
+      "changed_transition_id": "t3986_3",
+      "description": "Changed action of transition 't3986_3' from 'act3986_3' to 'wrong_act3986_3'"
+    },
+    {
+      "operator": "guard_weaken",
+      "seed": 17119,
+      "bug_id": "synthetic_3986_3_2__faulty__action_corruption__16119__guard_weaken__17119",
+      "changed_transition_id": "t3986_4",
+      "description": "Weakened guard on transition 't3986_4' to 'true'"
+    }
+  ],
+  "is_higher_order": true,
+  "coupled_to_simple_faults": [
+    "synthetic_3986_3_2__action_corruption__16119",
+    "synthetic_3986_3_2__faulty__action_corruption__16119__guard_weaken__17119"
+  ],
+  "is_negative_control": false
+}

@@ -1,0 +1,43 @@
+{
+  "bug_id": "synthetic_15398_3_2__hom__timeout_corruption__wrong_event__wrong_source__67955",
+  "reference_fsm_id": "synthetic_15398_3_2",
+  "faulty_fsm_id": "synthetic_15398_3_2__faulty__hom__timeout_corruption__wrong_event__wrong_source__67955",
+  "mutation_operator": "timeout_corruption,wrong_event,wrong_source",
+  "changed_transition_id": "t15398_1",
+  "description": "Higher-order mutant applying 3 operators: timeout_corruption, wrong_event, wrong_source",
+  "seed": 67955,
+  "mutation_complexity": null,
+  "mutation_scope": null,
+  "mutation_mode": null,
+  "mutation_order": 3,
+  "component_faults": [
+    {
+      "operator": "timeout_corruption",
+      "seed": 67955,
+      "bug_id": "synthetic_15398_3_2__timeout_corruption__67955",
+      "changed_transition_id": "t15398_3",
+      "description": "Corrupted timeout on transition 't15398_3' to 6.0"
+    },
+    {
+      "operator": "wrong_event",
+      "seed": 68955,
+      "bug_id": "synthetic_15398_3_2__faulty__timeout_corruption__67955__wrong_event__68955",
+      "changed_transition_id": "t15398_2",
+      "description": "Changed event of transition 't15398_2' from 'e15398_0' to 'e15398_1'"
+    },
+    {
+      "operator": "wrong_source",
+      "seed": 69955,
+      "bug_id": "synthetic_15398_3_2__faulty__timeout_corruption__67955__faulty__wrong_event__68955__wrong_source__69955",
+      "changed_transition_id": "t15398_1",
+      "description": "Changed source of transition 't15398_1' from 's15398_0' to 's15398_2'"
+    }
+  ],
+  "is_higher_order": true,
+  "coupled_to_simple_faults": [
+    "synthetic_15398_3_2__timeout_corruption__67955",
+    "synthetic_15398_3_2__faulty__timeout_corruption__67955__wrong_event__68955",
+    "synthetic_15398_3_2__faulty__timeout_corruption__67955__faulty__wrong_event__68955__wrong_source__69955"
+  ],
+  "is_negative_control": false
+}

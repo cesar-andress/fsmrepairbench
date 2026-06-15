@@ -1,0 +1,99 @@
+{
+  "artifacts": [
+    {
+      "media_type": "csv",
+      "relative_path": "coupling_metrics.csv",
+      "sha256": "32c1aa4c3fd5543fc3f5e811093e1fe80c10b29b2c8ee4d8704e5774b81fe9d8"
+    },
+    {
+      "media_type": "csv",
+      "relative_path": "per_case_results.csv",
+      "sha256": "bfe1c3fcb7b5a474cb4e7fe3f3d552e6ba5630a95feb0822a5f0e96d1ba1697f"
+    },
+    {
+      "media_type": "csv",
+      "relative_path": "summary.csv",
+      "sha256": "bdf6acea02264db1d2d36e6fd8fa3557edcbad5468adf769ff5de3da08c839f1"
+    },
+    {
+      "media_type": "csv",
+      "relative_path": "summary_metrics_with_ci.csv",
+      "sha256": "087a98d87a13ed1125503e2b8e9d247398caf051cbccfa7372063017bf8c97b2"
+    },
+    {
+      "media_type": "tex",
+      "relative_path": "tables/table_coupling_summary.tex",
+      "sha256": "c15d6e6e54f673586f726d010e48e615b28ff91e4c309749b6d71099381f8602"
+    },
+    {
+      "media_type": "tex",
+      "relative_path": "tables/table_repair_detectable_by_order.tex",
+      "sha256": "17de78df080e1224d7e08141ac61cf83c9574bc8e5a4e8c0934bb164fa4cb498"
+    },
+    {
+      "media_type": "tex",
+      "relative_path": "tables/table_detection_by_operator_order.tex",
+      "sha256": "a2eb140b2ed15357b33689375b64ac60beb6f294b51075620e0c6dc2145c894c"
+    },
+    {
+      "media_type": "tex",
+      "relative_path": "tables/table_repair_by_order.tex",
+      "sha256": "35679882c5f402249aaec677e912cf4e9f1431d1b94ba000cd20a62370e5a717"
+    },
+    {
+      "media_type": "png",
+      "relative_path": "figures/detection_rate_by_order.png",
+      "sha256": "5cbbcc1066e2f8d423997baad332efc0bc475fab26ea7f3b5a34416774d60e81"
+    },
+    {
+      "media_type": "png",
+      "relative_path": "figures/complete_repair_rate_by_order.png",
+      "sha256": "d2ec1b18fbf81a2d7f3e36489133f57ec67cab8b469e120206a834566c315f1d"
+    },
+    {
+      "media_type": "png",
+      "relative_path": "figures/complete_repair_rate_by_order_partition.png",
+      "sha256": "0c4a01c7cedf609d8746260336e84fb4fbaa9f7ca624d98ee7df92eda41fc742"
+    },
+    {
+      "media_type": "png",
+      "relative_path": "figures/effective_repair_rate_by_order_partition.png",
+      "sha256": "f1f40906ec4356158d5b4743db8208ddda6f076fcdcfbaec07fe51852130a43f"
+    },
+    {
+      "media_type": "png",
+      "relative_path": "figures/coupling_effect_overall.png",
+      "sha256": "9f1732cd4580e98f079198cc2b09a5be0a604dfe4385c7d464f3b2c91f82659b"
+    }
+  ],
+  "campaign_id": "rq4",
+  "campaign_label": "RQ4 coupling",
+  "metrics": [
+    {
+      "description": "order-1 detection rate",
+      "expected": 0.472,
+      "file": "coupling_metrics.csv",
+      "metric": "detection_rate",
+      "mutation_order": "1"
+    },
+    {
+      "description": "order-2 detection rate",
+      "expected": 0.992,
+      "file": "coupling_metrics.csv",
+      "metric": "detection_rate",
+      "mutation_order": "2"
+    },
+    {
+      "description": "coupling effect estimate",
+      "expected": 1.0,
+      "file": "coupling_metrics.csv",
+      "metric": "coupling_effect_estimate"
+    }
+  ],
+  "regeneration_commands": [
+    "python ../paper1/scripts/generate_rq4_coupling_outputs.py"
+  ],
+  "release_label": "v0.2.0-analysis",
+  "results_subdir": "rq4_coupling_250",
+  "zenodo_doi": "10.5281/zenodo.20602528"
+}

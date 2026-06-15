@@ -1,0 +1,78 @@
+{
+  "id": "synthetic_10898_3_2__faulty__unreachable_state_intro__573046",
+  "name": "Synthetic FSM (custom) (faulty: unreachable_state_intro)",
+  "description": "Synthetic FSM generated with seed=10898, states=3, events=2, branching_factor=1, deterministic=True, allow_dead_states=True",
+  "states": [
+    {
+      "id": "s10898_0",
+      "state_output": "out_10898_0",
+      "refusal": false,
+      "quiescence": false
+    },
+    {
+      "id": "s10898_1",
+      "state_output": "out_10898_1",
+      "refusal": false,
+      "quiescence": false
+    },
+    {
+      "id": "s10898_2",
+      "state_output": "out_10898_2",
+      "refusal": false,
+      "quiescence": false
+    },
+    {
+      "id": "unreachable_573046",
+      "state_output": null,
+      "refusal": false,
+      "quiescence": false
+    }
+  ],
+  "initial_state": "s10898_0",
+  "events": [
+    "e10898_0",
+    "e10898_1"
+  ],
+  "transitions": [
+    {
+      "id": "t10898_1",
+      "source": "s10898_0",
+      "event": "e10898_1",
+      "target": "s10898_1",
+      "guard": null,
+      "action": "act10898_1",
+      "output": null,
+      "timeout": null,
+      "delay": null,
+      "requirements": [],
+      "probability": null,
+      "is_nondeterministic": false,
+      "refusal": false,
+      "quiescence": false,
+      "discrete_time": null
+    },
+    {
+      "id": "t10898_2",
+      "source": "s10898_1",
+      "event": "e10898_1",
+      "target": "s10898_2",
+      "guard": null,
+      "action": "act10898_2",
+      "output": null,
+      "timeout": null,
+      "delay": null,
+      "requirements": [],
+      "probability": null,
+      "is_nondeterministic": false,
+      "refusal": false,
+      "quiescence": false,
+      "discrete_time": null
+    }
+  ],
+  "variables": {},
+  "parent_fsm_id": "synthetic_10898_3_2",
+  "reference_fsm_id": "synthetic_10898_3_2",
+  "discrete_time_step": null,
+  "semantics_mode": null,
+  "cyclic_metadata": null
+}

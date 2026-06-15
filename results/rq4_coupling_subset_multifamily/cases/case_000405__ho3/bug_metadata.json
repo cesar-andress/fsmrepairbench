@@ -1,0 +1,43 @@
+{
+  "bug_id": "synthetic_15658_3_2__hom__wrong_initial_state__wrong_target__guard_flip__78180",
+  "reference_fsm_id": "synthetic_15658_3_2",
+  "faulty_fsm_id": "synthetic_15658_3_2__faulty__hom__wrong_initial_state__wrong_target__guard_flip__78180",
+  "mutation_operator": "wrong_initial_state,wrong_target,guard_flip",
+  "changed_transition_id": "t15658_1",
+  "description": "Higher-order mutant applying 3 operators: wrong_initial_state, wrong_target, guard_flip",
+  "seed": 78180,
+  "mutation_complexity": null,
+  "mutation_scope": null,
+  "mutation_mode": null,
+  "mutation_order": 3,
+  "component_faults": [
+    {
+      "operator": "wrong_initial_state",
+      "seed": 78180,
+      "bug_id": "synthetic_15658_3_2__wrong_initial_state__78180",
+      "changed_transition_id": null,
+      "description": "Changed initial_state from 's15658_0' to 's15658_2'"
+    },
+    {
+      "operator": "wrong_target",
+      "seed": 79180,
+      "bug_id": "synthetic_15658_3_2__faulty__wrong_initial_state__78180__wrong_target__79180",
+      "changed_transition_id": "t15658_1",
+      "description": "Changed target of transition 't15658_1' from 's15658_1' to 's15658_0'"
+    },
+    {
+      "operator": "guard_flip",
+      "seed": 80180,
+      "bug_id": "synthetic_15658_3_2__faulty__wrong_initial_state__78180__faulty__wrong_target__79180__guard_flip__80180",
+      "changed_transition_id": "t15658_1",
+      "description": "Added guard 'unexpected_guard' to transition 't15658_1'"
+    }
+  ],
+  "is_higher_order": true,
+  "coupled_to_simple_faults": [
+    "synthetic_15658_3_2__wrong_initial_state__78180",
+    "synthetic_15658_3_2__faulty__wrong_initial_state__78180__wrong_target__79180",
+    "synthetic_15658_3_2__faulty__wrong_initial_state__78180__faulty__wrong_target__79180__guard_flip__80180"
+  ],
+  "is_negative_control": false
+}

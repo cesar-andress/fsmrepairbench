@@ -1,0 +1,25 @@
+{
+  "zenodo_doi": "10.5281/zenodo.20602528",
+  "generated_at_utc": "2026-06-15T17:55:41.852675+00:00",
+  "paired_cohort_manifest": "coupling_campaign_250.txt",
+  "paired_cohort_sha256": "86222a059d56a7c913ecf9f847bbc8650ad1ce0f3cea0decbe124d7147bd7979",
+  "paired_case_count": 250,
+  "campaign_lanes": [
+    "c1_missing_transition",
+    "rq4_first_order",
+    "rq4_higher_order",
+    "rq3_ochiai"
+  ],
+  "c1_release_label": "v0.2.0-analysis",
+  "rq4_repair_engine": "missing-transition",
+  "output_files": [
+    "paired_cohort_case_metrics.csv",
+    "paired_cohort_summary.csv",
+    "paired_fo_ho_transitions.csv",
+    "figures/paired_cohort_cross_campaign.png",
+    "tables/table_paired_cohort_cross_campaign.tex"
+  ],
+  "regeneration_commands": [
+    "python ../paper1/scripts/generate_campaign_paired_comparison_outputs.py"
+  ]
+}

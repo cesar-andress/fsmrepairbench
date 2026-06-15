@@ -1,0 +1,19 @@
+\begin{table}[t]
+\caption{Detectable-only $\Delta$ complete repair (percentage points; tool~A minus tool~B) by mutation operator and baseline pair on the C1 cohort ($n=495$ overall; 505/1{,}000 oracle-saturated excluded). Positive values favour the first engine in each column header.}
+\label{tab:baseline-delta-by-operator}
+\begin{tabular}{@{}lrrr@{}}
+\toprule
+Mutation operator & missing-transition $-$ wrong-target & missing-transition $-$ random & wrong-target $-$ random \\
+\midrule
+\texttt{guard\_flip} & +100.0 & +100.0 & +0.0 \\
+\texttt{guard\_inter\_class} & +0.0 & +0.0 & +0.0 \\
+\texttt{guard\_strengthen} & +100.0 & +100.0 & +0.0 \\
+\texttt{guard\_weaken} & +100.0 & +100.0 & +0.0 \\
+\texttt{missing\_transition} & +100.0 & +100.0 & +0.0 \\
+\texttt{wrong\_event} & +0.0 & +0.0 & +0.0 \\
+\texttt{wrong\_initial\_state} & +0.0 & +0.0 & +0.0 \\
+\texttt{wrong\_source} & +0.0 & +0.0 & +0.0 \\
+\texttt{wrong\_target} & -100.0 & +0.0 & +100.0 \\
+\bottomrule
+\end{tabular}
+\end{table}

@@ -1,0 +1,35 @@
+{
+  "bug_id": "synthetic_12562_3_2__hom__guard_strengthen__wrong_initial_state__12044",
+  "reference_fsm_id": "synthetic_12562_3_2",
+  "faulty_fsm_id": "synthetic_12562_3_2__faulty__hom__guard_strengthen__wrong_initial_state__12044",
+  "mutation_operator": "guard_strengthen,wrong_initial_state",
+  "changed_transition_id": null,
+  "description": "Higher-order mutant applying 2 operators: guard_strengthen, wrong_initial_state",
+  "seed": 12044,
+  "mutation_complexity": null,
+  "mutation_scope": null,
+  "mutation_mode": null,
+  "mutation_order": 2,
+  "component_faults": [
+    {
+      "operator": "guard_strengthen",
+      "seed": 12044,
+      "bug_id": "synthetic_12562_3_2__guard_strengthen__12044",
+      "changed_transition_id": "t12562_5",
+      "description": "Strengthened guard on transition 't12562_5'"
+    },
+    {
+      "operator": "wrong_initial_state",
+      "seed": 13044,
+      "bug_id": "synthetic_12562_3_2__faulty__guard_strengthen__12044__wrong_initial_state__13044",
+      "changed_transition_id": null,
+      "description": "Changed initial_state from 's12562_0' to 's12562_1'"
+    }
+  ],
+  "is_higher_order": true,
+  "coupled_to_simple_faults": [
+    "synthetic_12562_3_2__guard_strengthen__12044",
+    "synthetic_12562_3_2__faulty__guard_strengthen__12044__wrong_initial_state__13044"
+  ],
+  "is_negative_control": false
+}

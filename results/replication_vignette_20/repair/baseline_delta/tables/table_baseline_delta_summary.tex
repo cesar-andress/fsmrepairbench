@@ -1,0 +1,16 @@
+\begin{table}[t]
+\caption{Paired baseline deltas on the C1 1{,}000-case \texttt{plain\_fsm}/shallow-oracle cohort. Each row subtracts tool~B from tool~A on aligned per-case outcomes (complete/effective repair rates in percentage points; mean $\Delta$BPR as paired differences). Detectable-only primary subset ($n=10$); 505/1{,}000 oracle-saturated cases excluded. Cohort-wide rows inherit oracle-saturation confounds (Section~\ref{sec:threats-construct}).}
+\label{tab:baseline-delta-summary}
+\begin{tabular}{@{}llrrrr@{}}
+\toprule
+Partition & Comparison & $n$ & $\Delta$ complete & $\Delta$ effective & $\Delta$ mean $\Delta$BPR \\
+\midrule
+cohort-wide & missing-transition vs random & 20 & +25.0 & +25.0 & +0.054 \\
+cohort-wide & missing-transition vs wrong-target & 20 & +20.0 & +15.0 & +0.003 \\
+cohort-wide & wrong-target vs random & 20 & +5.0 & +10.0 & +0.051 \\
+detectable-only & missing-transition vs random & 10 & +50.0 & +50.0 & +0.108 \\
+detectable-only & missing-transition vs wrong-target & 10 & +40.0 & +30.0 & +0.007 \\
+detectable-only & wrong-target vs random & 10 & +10.0 & +20.0 & +0.101 \\
+\bottomrule
+\end{tabular}
+\end{table}

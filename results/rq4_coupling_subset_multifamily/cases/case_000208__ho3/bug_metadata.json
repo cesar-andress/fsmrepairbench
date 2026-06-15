@@ -1,0 +1,43 @@
+{
+  "bug_id": "synthetic_3986_3_2__hom__action_corruption__wrong_event__wrong_source__61018",
+  "reference_fsm_id": "synthetic_3986_3_2",
+  "faulty_fsm_id": "synthetic_3986_3_2__faulty__hom__action_corruption__wrong_event__wrong_source__61018",
+  "mutation_operator": "action_corruption,wrong_event,wrong_source",
+  "changed_transition_id": "t3986_2",
+  "description": "Higher-order mutant applying 3 operators: action_corruption, wrong_event, wrong_source",
+  "seed": 61018,
+  "mutation_complexity": null,
+  "mutation_scope": null,
+  "mutation_mode": null,
+  "mutation_order": 3,
+  "component_faults": [
+    {
+      "operator": "action_corruption",
+      "seed": 61018,
+      "bug_id": "synthetic_3986_3_2__action_corruption__61018",
+      "changed_transition_id": "t3986_2",
+      "description": "Changed action of transition 't3986_2' from 'act3986_2' to 'wrong_act3986_2'"
+    },
+    {
+      "operator": "wrong_event",
+      "seed": 62018,
+      "bug_id": "synthetic_3986_3_2__faulty__action_corruption__61018__wrong_event__62018",
+      "changed_transition_id": "t3986_1",
+      "description": "Changed event of transition 't3986_1' from 'e3986_1' to 'e3986_0'"
+    },
+    {
+      "operator": "wrong_source",
+      "seed": 63018,
+      "bug_id": "synthetic_3986_3_2__faulty__action_corruption__61018__faulty__wrong_event__62018__wrong_source__63018",
+      "changed_transition_id": "t3986_2",
+      "description": "Changed source of transition 't3986_2' from 's3986_0' to 's3986_1'"
+    }
+  ],
+  "is_higher_order": true,
+  "coupled_to_simple_faults": [
+    "synthetic_3986_3_2__action_corruption__61018",
+    "synthetic_3986_3_2__faulty__action_corruption__61018__wrong_event__62018",
+    "synthetic_3986_3_2__faulty__action_corruption__61018__faulty__wrong_event__62018__wrong_source__63018"
+  ],
+  "is_negative_control": false
+}

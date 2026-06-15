@@ -4,7 +4,7 @@ Spectrum-based fault localization ranks transitions by Ochiai suspiciousness usi
 
 ## Experimental design
 
-- **Dataset:** `data/fsmrepairbench_1k`
+- **Dataset:** `/home/cesar/papers/fsmrepairbench/fsmrepairbench/data/fsmrepairbench_1k`
 - **Campaign:** RQ3-localization-ochiai-1k
 - **Method:** ochiai on transition elements only
 - **Top-k metrics:** top-1, top-3, top-5, MRR
@@ -87,6 +87,11 @@ Exports: `confidence_intervals.csv` and `confidence_intervals.json`.
 - `top_3_hit_rate`: 0.187879 [0.153535, 0.222222] (n=495)
 - `top_5_hit_rate`: 0.228283 [0.191919, 0.264646] (n=495)
 - `mrr`: 0.201018 [0.170688, 0.231904] (n=495)
+
+
+
+
+
 
 
 

@@ -1,0 +1,35 @@
+{
+  "bug_id": "synthetic_6822_3_2__hom__wrong_target__wrong_initial_state__41570",
+  "reference_fsm_id": "synthetic_6822_3_2",
+  "faulty_fsm_id": "synthetic_6822_3_2__faulty__hom__wrong_target__wrong_initial_state__41570",
+  "mutation_operator": "wrong_target,wrong_initial_state",
+  "changed_transition_id": null,
+  "description": "Higher-order mutant applying 2 operators: wrong_target, wrong_initial_state",
+  "seed": 41570,
+  "mutation_complexity": null,
+  "mutation_scope": null,
+  "mutation_mode": null,
+  "mutation_order": 2,
+  "component_faults": [
+    {
+      "operator": "wrong_target",
+      "seed": 41570,
+      "bug_id": "synthetic_6822_3_2__wrong_target__41570",
+      "changed_transition_id": "t6822_4",
+      "description": "Changed target of transition 't6822_4' from 's6822_2' to 's6822_1'"
+    },
+    {
+      "operator": "wrong_initial_state",
+      "seed": 42570,
+      "bug_id": "synthetic_6822_3_2__faulty__wrong_target__41570__wrong_initial_state__42570",
+      "changed_transition_id": null,
+      "description": "Changed initial_state from 's6822_0' to 's6822_1'"
+    }
+  ],
+  "is_higher_order": true,
+  "coupled_to_simple_faults": [
+    "synthetic_6822_3_2__wrong_target__41570",
+    "synthetic_6822_3_2__faulty__wrong_target__41570__wrong_initial_state__42570"
+  ],
+  "is_negative_control": false
+}

@@ -1,0 +1,43 @@
+{
+  "bug_id": "synthetic_3052_3_2__hom__wrong_event__guard_weaken__guard_strengthen__17896",
+  "reference_fsm_id": "synthetic_3052_3_2",
+  "faulty_fsm_id": "synthetic_3052_3_2__faulty__hom__wrong_event__guard_weaken__guard_strengthen__17896",
+  "mutation_operator": "wrong_event,guard_weaken,guard_strengthen",
+  "changed_transition_id": "t3052_1",
+  "description": "Higher-order mutant applying 3 operators: wrong_event, guard_weaken, guard_strengthen",
+  "seed": 17896,
+  "mutation_complexity": null,
+  "mutation_scope": null,
+  "mutation_mode": null,
+  "mutation_order": 3,
+  "component_faults": [
+    {
+      "operator": "wrong_event",
+      "seed": 17896,
+      "bug_id": "synthetic_3052_3_2__wrong_event__17896",
+      "changed_transition_id": "t3052_1",
+      "description": "Changed event of transition 't3052_1' from 'e3052_0' to 'e3052_1'"
+    },
+    {
+      "operator": "guard_weaken",
+      "seed": 18896,
+      "bug_id": "synthetic_3052_3_2__faulty__wrong_event__17896__guard_weaken__18896",
+      "changed_transition_id": "t3052_1",
+      "description": "Weakened guard on transition 't3052_1' to 'true'"
+    },
+    {
+      "operator": "guard_strengthen",
+      "seed": 19896,
+      "bug_id": "synthetic_3052_3_2__faulty__wrong_event__17896__faulty__guard_weaken__18896__guard_strengthen__19896",
+      "changed_transition_id": "t3052_1",
+      "description": "Strengthened guard on transition 't3052_1'"
+    }
+  ],
+  "is_higher_order": true,
+  "coupled_to_simple_faults": [
+    "synthetic_3052_3_2__wrong_event__17896",
+    "synthetic_3052_3_2__faulty__wrong_event__17896__guard_weaken__18896",
+    "synthetic_3052_3_2__faulty__wrong_event__17896__faulty__guard_weaken__18896__guard_strengthen__19896"
+  ],
+  "is_negative_control": false
+}

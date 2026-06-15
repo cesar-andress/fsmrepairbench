@@ -48,6 +48,7 @@ def _write_c1_csv(path: Path, rows: list[dict[str, str]]) -> None:
                 "complete_repair",
                 "effective_repair",
                 "delta_bpr",
+                "oracle_detected",
             ],
         )
         writer.writeheader()
@@ -101,6 +102,7 @@ def _fixture_paths(tmp_path: Path):
                 "complete_repair": "True",
                 "effective_repair": "True",
                 "delta_bpr": "0.1",
+                "oracle_detected": "True",
             },
             {
                 "case_id": "case_a",
@@ -108,6 +110,7 @@ def _fixture_paths(tmp_path: Path):
                 "complete_repair": "False",
                 "effective_repair": "False",
                 "delta_bpr": "0.0",
+                "oracle_detected": "True",
             },
             {
                 "case_id": "case_a",
@@ -115,6 +118,7 @@ def _fixture_paths(tmp_path: Path):
                 "complete_repair": "False",
                 "effective_repair": "False",
                 "delta_bpr": "0.0",
+                "oracle_detected": "True",
             },
         ],
     )
@@ -148,6 +152,7 @@ def _fixture_paths(tmp_path: Path):
         [
             "case_id",
             "mutation_order",
+            "source_case_id",
             "fault_detected",
             "complete_repair",
             "effective_repair",
@@ -156,12 +161,22 @@ def _fixture_paths(tmp_path: Path):
         [
             {
                 "case_id": "case_a",
+                "source_case_id": "case_a",
                 "mutation_order": "1",
                 "fault_detected": "True",
                 "complete_repair": "True",
                 "effective_repair": "True",
                 "bpr_delta": "0.1",
-            }
+            },
+            {
+                "case_id": "case_a__ho2",
+                "source_case_id": "case_a",
+                "mutation_order": "2",
+                "fault_detected": "False",
+                "complete_repair": "False",
+                "effective_repair": "False",
+                "bpr_delta": "0.0",
+            },
         ],
     )
 
@@ -228,12 +243,14 @@ def test_bootstrap_mean_ci_handles_empty_values() -> None:
 
 def test_collect_paper_confidence_intervals_is_deterministic(tmp_path: Path) -> None:
     paths = _fixture_paths(tmp_path)
-    rows_a = collect_paper_confidence_intervals(paths=paths, repo_root=tmp_path)
-    rows_b = collect_paper_confidence_intervals(paths=paths, repo_root=tmp_path)
+    rows_a, paired_a = collect_paper_confidence_intervals(paths=paths, repo_root=tmp_path)
+    rows_b, paired_b = collect_paper_confidence_intervals(paths=paths, repo_root=tmp_path)
     assert rows_a == rows_b
+    assert paired_a == paired_b
     assert any(row.metric == "overall_detection_rate" and row.group == "RQ2" for row in rows_a)
     assert any(
-        row.metric == "complete_repair_rate_detectable_only"
+        row.metric == "complete_repair_rate"
+        and row.partition == "detectable_only"
         and row.subgroup == "baseline_missing_transition"
         for row in rows_a
     )
@@ -252,9 +269,16 @@ def test_export_paper_confidence_intervals_schema_and_tex(tmp_path: Path) -> Non
 
     assert result.csv_path.is_file()
     assert result.json_path.is_file()
+    assert result.paired_csv_path.is_file()
     assert result.main_tex_path.is_file()
+    assert result.campaign_tex_path.is_file()
+    assert result.paired_tex_path.is_file()
     assert result.paper_main_tex_path is not None
     assert result.paper_main_tex_path.is_file()
+    assert result.paper_campaign_tex_path is not None
+    assert result.paper_campaign_tex_path.is_file()
+    assert result.paper_paired_tex_path is not None
+    assert result.paper_paired_tex_path.is_file()
 
     with result.csv_path.open(encoding="utf-8", newline="") as handle:
         reader = csv.DictReader(handle)
@@ -268,6 +292,15 @@ def test_export_paper_confidence_intervals_schema_and_tex(tmp_path: Path) -> Non
     tex = result.main_tex_path.read_text(encoding="utf-8")
     assert "\\label{tab:ci-main-results}" in tex
     assert "overall\\_detection\\_rate" in tex
+    assert result.campaign_tex_path.read_text(encoding="utf-8").find("\\label{tab:ci-campaign-metrics}") >= 0
+    assert result.paired_tex_path.read_text(encoding="utf-8").find("\\label{tab:ci-paired-comparisons}") >= 0
+
+    c1_ci = tmp_path / "results/baseline_repair_C1/confidence_intervals.csv"
+    assert c1_ci.is_file()
+    rq3_ci = tmp_path / "results/rq3_localization_1k/localization_metrics_with_ci.csv"
+    assert rq3_ci.is_file()
+    rq4_paired = tmp_path / "results/rq4_coupling_250/paired_confidence_intervals.csv"
+    assert rq4_paired.is_file()
 
     main_rows = filter_paper_main_ci_rows(result.rows)
     assert render_paper_main_ci_tex(main_rows) == tex

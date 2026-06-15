@@ -1,0 +1,138 @@
+{
+  "case_id": "case_000025",
+  "tool_id": "baseline_missing_transition",
+  "tool_type": "baseline",
+  "model": "baseline_missing_transition",
+  "mutation_operator": "missing_transition",
+  "status": "completed",
+  "failure_class": "complete_repair",
+  "input_format": "fsmrepairbench_case_v1",
+  "output_format": "fsmrepairbench_repair_result_v1",
+  "initial_bpr": 0.6666666666666666,
+  "final_bpr": 1.0,
+  "delta_bpr": 0.33333333333333337,
+  "complete_repair": true,
+  "effective_repair": true,
+  "regression": false,
+  "patch_parse_failures": 0,
+  "patch_validation_failures": 0,
+  "patch_application_failures": 0,
+  "iterations_completed": 1,
+  "runtime_seconds": 0.0001,
+  "repair_result": {
+    "bug_id": "synthetic_471_3_2__faulty__missing_transition__25046",
+    "passed": true,
+    "score": 1.0,
+    "details": {
+      "model": "baseline_missing_transition",
+      "backend": "baseline",
+      "baseline_engine": "missing-transition",
+      "baseline_seed": 0,
+      "temperature": 0.0,
+      "max_iterations": 1,
+      "runtime_seconds": 0.0001,
+      "iterations": [
+        {
+          "iteration": 1,
+          "bpr_before": 0.6666666666666666,
+          "patch_valid": true,
+          "patch_applied": true,
+          "patch": {
+            "patch_id": "baseline_missing_transition_synthetic_471_3_2__faulty__missing_transition__25046",
+            "target_fsm_id": "synthetic_471_3_2__faulty__missing_transition__25046",
+            "operations": [
+              {
+                "op": "add_transition",
+                "id": "baseline_add_cover_transition_t471_2_1",
+                "source": "s471_1",
+                "event": "e471_1",
+                "target": "s471_2",
+                "guard": null,
+                "action": null,
+                "requirements": []
+              }
+            ]
+          },
+          "validation_errors": [],
+          "bpr_after": 1.0
+        }
+      ],
+      "final_fsm": {
+        "id": "synthetic_471_3_2__faulty__missing_transition__25046",
+        "name": "Synthetic FSM (custom) (faulty: missing_transition)",
+        "description": "Synthetic FSM generated with seed=471, states=3, events=2, branching_factor=1, deterministic=True, allow_dead_states=True",
+        "states": [
+          {
+            "id": "s471_0",
+            "state_output": null,
+            "refusal": false,
+            "quiescence": false
+          },
+          {
+            "id": "s471_1",
+            "state_output": null,
+            "refusal": false,
+            "quiescence": false
+          },
+          {
+            "id": "s471_2",
+            "state_output": null,
+            "refusal": false,
+            "quiescence": false
+          }
+        ],
+        "initial_state": "s471_0",
+        "events": [
+          "e471_0",
+          "e471_1"
+        ],
+        "transitions": [
+          {
+            "id": "t471_1",
+            "source": "s471_0",
+            "event": "e471_1",
+            "target": "s471_1",
+            "guard": null,
+            "action": "act471_1",
+            "output": null,
+            "timeout": null,
+            "delay": null,
+            "requirements": [],
+            "probability": null,
+            "is_nondeterministic": false,
+            "refusal": false,
+            "quiescence": false,
+            "discrete_time": null
+          },
+          {
+            "id": "baseline_add_cover_transition_t471_2_1",
+            "source": "s471_1",
+            "event": "e471_1",
+            "target": "s471_2",
+            "guard": null,
+            "action": null,
+            "output": null,
+            "timeout": null,
+            "delay": null,
+            "requirements": [],
+            "probability": null,
+            "is_nondeterministic": false,
+            "refusal": false,
+            "quiescence": false,
+            "discrete_time": null
+          }
+        ],
+        "variables": {},
+        "parent_fsm_id": "synthetic_471_3_2",
+        "reference_fsm_id": "synthetic_471_3_2",
+        "discrete_time_step": null,
+        "semantics_mode": null,
+        "cyclic_metadata": null
+      },
+      "passed_steps": 3,
+      "total_steps": 3,
+      "passed_scenarios": 2,
+      "total_scenarios": 2
+    }
+  }
+}

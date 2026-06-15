@@ -1,0 +1,19 @@
+% Auto-generated from fsmrepairbench.saturation_inflation
+\begin{table}[t]
+\caption{Saturation inflation in cohort-wide complete repair for C1 baseline engines ($n=1{,}000$ \texttt{plain\_fsm} shallow-oracle cohort; 505/1{,}000 oracle-saturated). Inflation is cohort-wide minus detectable-only complete repair (percentage points); bracketed ranges are case-level bootstrap 95\% confidence intervals (10{,}000 resamples; seed~44). Takeaway: the random control shows the largest inflation because it repairs almost nothing on detectable faults yet reaches the saturation floor cohort-wide.}
+\label{tab:saturation-inflation}
+\scriptsize
+\setlength{\tabcolsep}{3pt}
+\begin{tabular}{@{}lrrrr@{}}
+\toprule
+Engine & Detectable-only complete & Cohort-wide complete$^\dagger$ & Inflation (pp) & Effective inflation (pp) \\
+\midrule
+\texttt{missing-transition} & 68.5\% & 84.4\% & 15.9 [13.7--18.3] & -39.4 \\
+\texttt{wrong-target} & 12.1\% & 56.5\% & 44.4 [41.3--47.5] & -11.1 \\
+\texttt{random} & 0.2\% & 50.6\% & 50.4 [47.3--53.5] & -0.3 \\
+\texttt{search-bpr} & 86.3\% & 93.2\% & 6.9 [5.4--8.6] & -49.5 \\
+\texttt{oracle-composite} & 67.5\% & 83.9\% & 16.4 [14.2--18.8] & -41.7 \\
+\texttt{llm-template} & 67.5\% & 83.9\% & 16.4 [14.2--18.8] & -41.7 \\
+\bottomrule
+\end{tabular}
+\end{table}

@@ -1,0 +1,43 @@
+{
+  "bug_id": "synthetic_17300_3_2__hom__wrong_target__wrong_initial_state__guard_flip__64677",
+  "reference_fsm_id": "synthetic_17300_3_2",
+  "faulty_fsm_id": "synthetic_17300_3_2__faulty__hom__wrong_target__wrong_initial_state__guard_flip__64677",
+  "mutation_operator": "wrong_target,wrong_initial_state,guard_flip",
+  "changed_transition_id": "t17300_3",
+  "description": "Higher-order mutant applying 3 operators: wrong_target, wrong_initial_state, guard_flip",
+  "seed": 64677,
+  "mutation_complexity": null,
+  "mutation_scope": null,
+  "mutation_mode": null,
+  "mutation_order": 3,
+  "component_faults": [
+    {
+      "operator": "wrong_target",
+      "seed": 64677,
+      "bug_id": "synthetic_17300_3_2__wrong_target__64677",
+      "changed_transition_id": "t17300_10",
+      "description": "Changed target of transition 't17300_10' from 's17300_2' to 's17300_1'"
+    },
+    {
+      "operator": "wrong_initial_state",
+      "seed": 65677,
+      "bug_id": "synthetic_17300_3_2__faulty__wrong_target__64677__wrong_initial_state__65677",
+      "changed_transition_id": null,
+      "description": "Changed initial_state from 's17300_0' to 's17300_1'"
+    },
+    {
+      "operator": "guard_flip",
+      "seed": 66677,
+      "bug_id": "synthetic_17300_3_2__faulty__wrong_target__64677__faulty__wrong_initial_state__65677__guard_flip__66677",
+      "changed_transition_id": "t17300_3",
+      "description": "Changed guard of transition 't17300_3' from 'x_17300_2 > 0' to 'not_x_17300_2 > 0'"
+    }
+  ],
+  "is_higher_order": true,
+  "coupled_to_simple_faults": [
+    "synthetic_17300_3_2__wrong_target__64677",
+    "synthetic_17300_3_2__faulty__wrong_target__64677__wrong_initial_state__65677",
+    "synthetic_17300_3_2__faulty__wrong_target__64677__faulty__wrong_initial_state__65677__guard_flip__66677"
+  ],
+  "is_negative_control": false
+}

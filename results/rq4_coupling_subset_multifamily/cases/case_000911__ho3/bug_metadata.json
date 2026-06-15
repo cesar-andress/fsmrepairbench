@@ -1,0 +1,43 @@
+{
+  "bug_id": "synthetic_17351_3_2__hom__wrong_target__missing_transition__wrong_event__65565",
+  "reference_fsm_id": "synthetic_17351_3_2",
+  "faulty_fsm_id": "synthetic_17351_3_2__faulty__hom__wrong_target__missing_transition__wrong_event__65565",
+  "mutation_operator": "wrong_target,missing_transition,wrong_event",
+  "changed_transition_id": "t17351_10",
+  "description": "Higher-order mutant applying 3 operators: wrong_target, missing_transition, wrong_event",
+  "seed": 65565,
+  "mutation_complexity": null,
+  "mutation_scope": null,
+  "mutation_mode": null,
+  "mutation_order": 3,
+  "component_faults": [
+    {
+      "operator": "wrong_target",
+      "seed": 65565,
+      "bug_id": "synthetic_17351_3_2__wrong_target__65565",
+      "changed_transition_id": "t17351_1",
+      "description": "Changed target of transition 't17351_1' from 's17351_1' to 's17351_0'"
+    },
+    {
+      "operator": "missing_transition",
+      "seed": 66565,
+      "bug_id": "synthetic_17351_3_2__faulty__wrong_target__65565__missing_transition__66565",
+      "changed_transition_id": "t17351_8",
+      "description": "Removed transition 't17351_8'"
+    },
+    {
+      "operator": "wrong_event",
+      "seed": 67565,
+      "bug_id": "synthetic_17351_3_2__faulty__wrong_target__65565__faulty__missing_transition__66565__wrong_event__67565",
+      "changed_transition_id": "t17351_10",
+      "description": "Changed event of transition 't17351_10' from 'e17351_0' to 'e17351_1'"
+    }
+  ],
+  "is_higher_order": true,
+  "coupled_to_simple_faults": [
+    "synthetic_17351_3_2__wrong_target__65565",
+    "synthetic_17351_3_2__faulty__wrong_target__65565__missing_transition__66565",
+    "synthetic_17351_3_2__faulty__wrong_target__65565__faulty__missing_transition__66565__wrong_event__67565"
+  ],
+  "is_negative_control": false
+}

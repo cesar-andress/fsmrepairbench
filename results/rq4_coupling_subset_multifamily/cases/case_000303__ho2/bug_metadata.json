@@ -1,0 +1,35 @@
+{
+  "bug_id": "synthetic_5803_3_2__hom__duplicate_transition__wrong_target__50831",
+  "reference_fsm_id": "synthetic_5803_3_2",
+  "faulty_fsm_id": "synthetic_5803_3_2__faulty__hom__duplicate_transition__wrong_target__50831",
+  "mutation_operator": "duplicate_transition,wrong_target",
+  "changed_transition_id": "t5803_2",
+  "description": "Higher-order mutant applying 2 operators: duplicate_transition, wrong_target",
+  "seed": 50831,
+  "mutation_complexity": null,
+  "mutation_scope": null,
+  "mutation_mode": null,
+  "mutation_order": 2,
+  "component_faults": [
+    {
+      "operator": "duplicate_transition",
+      "seed": 50831,
+      "bug_id": "synthetic_5803_3_2__duplicate_transition__50831",
+      "changed_transition_id": "t5803_8",
+      "description": "Duplicated transition 't5803_8' as 't5803_8__dup__50831'"
+    },
+    {
+      "operator": "wrong_target",
+      "seed": 51831,
+      "bug_id": "synthetic_5803_3_2__faulty__duplicate_transition__50831__wrong_target__51831",
+      "changed_transition_id": "t5803_2",
+      "description": "Changed target of transition 't5803_2' from 's5803_2' to 's5803_0'"
+    }
+  ],
+  "is_higher_order": true,
+  "coupled_to_simple_faults": [
+    "synthetic_5803_3_2__duplicate_transition__50831",
+    "synthetic_5803_3_2__faulty__duplicate_transition__50831__wrong_target__51831"
+  ],
+  "is_negative_control": false
+}

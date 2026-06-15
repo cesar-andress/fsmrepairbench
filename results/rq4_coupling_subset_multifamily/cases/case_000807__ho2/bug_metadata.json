@@ -1,0 +1,35 @@
+{
+  "bug_id": "synthetic_15381_3_2__hom__timeout_corruption__wrong_target__86874",
+  "reference_fsm_id": "synthetic_15381_3_2",
+  "faulty_fsm_id": "synthetic_15381_3_2__faulty__hom__timeout_corruption__wrong_target__86874",
+  "mutation_operator": "timeout_corruption,wrong_target",
+  "changed_transition_id": "t15381_3",
+  "description": "Higher-order mutant applying 2 operators: timeout_corruption, wrong_target",
+  "seed": 86874,
+  "mutation_complexity": null,
+  "mutation_scope": null,
+  "mutation_mode": null,
+  "mutation_order": 2,
+  "component_faults": [
+    {
+      "operator": "timeout_corruption",
+      "seed": 86874,
+      "bug_id": "synthetic_15381_3_2__timeout_corruption__86874",
+      "changed_transition_id": "t15381_4",
+      "description": "Corrupted timeout on transition 't15381_4' to 8.0"
+    },
+    {
+      "operator": "wrong_target",
+      "seed": 87874,
+      "bug_id": "synthetic_15381_3_2__faulty__timeout_corruption__86874__wrong_target__87874",
+      "changed_transition_id": "t15381_3",
+      "description": "Changed target of transition 't15381_3' from 's15381_1' to 's15381_0'"
+    }
+  ],
+  "is_higher_order": true,
+  "coupled_to_simple_faults": [
+    "synthetic_15381_3_2__timeout_corruption__86874",
+    "synthetic_15381_3_2__faulty__timeout_corruption__86874__wrong_target__87874"
+  ],
+  "is_negative_control": false
+}

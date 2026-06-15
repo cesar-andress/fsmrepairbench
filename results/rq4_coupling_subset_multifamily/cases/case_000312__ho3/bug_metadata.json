@@ -1,0 +1,43 @@
+{
+  "bug_id": "synthetic_5956_3_2__hom__duplicate_transition__wrong_initial_state__wrong_target__30631",
+  "reference_fsm_id": "synthetic_5956_3_2",
+  "faulty_fsm_id": "synthetic_5956_3_2__faulty__hom__duplicate_transition__wrong_initial_state__wrong_target__30631",
+  "mutation_operator": "duplicate_transition,wrong_initial_state,wrong_target",
+  "changed_transition_id": "t5956_6",
+  "description": "Higher-order mutant applying 3 operators: duplicate_transition, wrong_initial_state, wrong_target",
+  "seed": 30631,
+  "mutation_complexity": null,
+  "mutation_scope": null,
+  "mutation_mode": null,
+  "mutation_order": 3,
+  "component_faults": [
+    {
+      "operator": "duplicate_transition",
+      "seed": 30631,
+      "bug_id": "synthetic_5956_3_2__duplicate_transition__30631",
+      "changed_transition_id": "t5956_1",
+      "description": "Duplicated transition 't5956_1' as 't5956_1__dup__30631'"
+    },
+    {
+      "operator": "wrong_initial_state",
+      "seed": 31631,
+      "bug_id": "synthetic_5956_3_2__faulty__duplicate_transition__30631__wrong_initial_state__31631",
+      "changed_transition_id": null,
+      "description": "Changed initial_state from 's5956_0' to 's5956_2'"
+    },
+    {
+      "operator": "wrong_target",
+      "seed": 32631,
+      "bug_id": "synthetic_5956_3_2__faulty__duplicate_transition__30631__faulty__wrong_initial_state__31631__wrong_target__32631",
+      "changed_transition_id": "t5956_6",
+      "description": "Changed target of transition 't5956_6' from 's5956_2' to 's5956_1'"
+    }
+  ],
+  "is_higher_order": true,
+  "coupled_to_simple_faults": [
+    "synthetic_5956_3_2__duplicate_transition__30631",
+    "synthetic_5956_3_2__faulty__duplicate_transition__30631__wrong_initial_state__31631",
+    "synthetic_5956_3_2__faulty__duplicate_transition__30631__faulty__wrong_initial_state__31631__wrong_target__32631"
+  ],
+  "is_negative_control": false
+}

@@ -10,43 +10,83 @@
   "method": "ochiai",
   "element_type": "transition",
   "ground_truth": "changed_transition_id",
+  "ground_truth_modes": [
+    "primary",
+    "deleted_transition_proxy",
+    "initial_state_outgoing"
+  ],
+  "partitions": {
+    "all_cohort": 1000,
+    "all_detectable": 495,
+    "transition_localizable_gt": 376
+  },
   "case_count": 1000,
   "localized_cases": 495,
   "skipped_cases": 505,
   "detectable_denominator": 495,
   "metrics": {
-    "cohort_size": 1000,
-    "localized_cases": 495,
-    "skipped_cases": 505,
-    "top1_hit_rate": 0.149495,
-    "top3_hit_rate": 0.187879,
-    "top5_hit_rate": 0.228283,
-    "mrr": 0.201018
+    "all_detectable": {
+      "cohort_size": 1000,
+      "localized_cases": 495,
+      "skipped_cases": 505,
+      "top1_hit_rate": 0.149495,
+      "top3_hit_rate": 0.187879,
+      "top5_hit_rate": 0.228283,
+      "mrr": 0.201018
+    },
+    "transition_localizable_gt": {
+      "localized_cases": 376,
+      "top1_hit_rate": 0.196809,
+      "top3_hit_rate": 0.24734,
+      "top5_hit_rate": 0.300532,
+      "mrr": 0.264639
+    }
   },
   "output_files": [
     "confidence_intervals.csv",
     "confidence_intervals.json",
+    "figures/method_comparison_mrr_localizable.png",
+    "figures/method_comparison_top5_by_operator_localizable.png",
+    "figures/method_comparison_topk_localizable.png",
     "figures/rank_distribution.png",
+    "figures/rank_distribution_by_operator.png",
+    "figures/rank_distribution_by_operator_stacked.png",
+    "figures/rank_distribution_cohort.png",
     "figures/reciprocal_rank_distribution.png",
     "figures/top5_hit_rate_by_operator.png",
     "figures/topk_hit_histogram.png",
     "figures/topk_hit_rates.png",
     "figures/topk_rank_histogram.png",
     "leaderboard.csv",
+    "localizability_audit.csv",
+    "localization_baseline_comparison.csv",
+    "localization_method_by_operator.csv",
     "localization_metrics.csv",
+    "localization_metrics_by_operator.csv",
+    "localization_metrics_localizable_only.csv",
     "manifest.json",
+    "not_ranked_by_operator.csv",
     "per_case_results.csv",
+    "rank_distribution_by_operator.csv",
     "report.md",
     "summary.csv",
     "tables/table_leaderboard.tex",
+    "tables/table_localizability_by_operator.tex",
+    "tables/table_localization_baselines_dual.tex",
+    "tables/table_localization_baselines_localizable.tex",
     "tables/table_localization_by_operator.tex",
+    "tables/table_localization_localizable_only.tex",
+    "tables/table_localization_method_by_operator.tex",
+    "tables/table_localization_metrics_by_operator.tex",
     "tables/table_localization_summary.tex",
+    "tables/table_not_ranked_by_operator.tex",
     "tables/table_rank_distribution.tex"
   ],
   "regeneration_commands": [
-    "fsmrepairbench run-localization-campaign data/fsmrepairbench_1k --out results/rq3_localization_1k",
-    "fsmrepairbench run-localization-campaign data/fsmrepairbench_1k --out results/rq3_localization_1k --cohort-file data/fsmrepairbench_1k/localization_cohort_1k.txt"
+    "fsmrepairbench run-localization-campaign data/fsmrepairbench_1k --out /home/cesar/papers/fsmrepairbench/fsmrepairbench/results/rq3_localization_1k --cohort-file /home/cesar/papers/fsmrepairbench/fsmrepairbench/data/fsmrepairbench_1k/localization_cohort_1k.txt",
+    "fsmrepairbench audit-rq3-localization-localizability data/fsmrepairbench_1k --out /home/cesar/papers/fsmrepairbench/fsmrepairbench/results/rq3_localization_1k",
+    "python ../paper1/scripts/generate_rq3_localization_outputs.py"
   ],
-  "git_commit_hash": "461520cb2ace87962f469fafb36048716d23123d",
-  "generated_at": "2026-06-09T07:49:10.003034+00:00"
+  "git_commit_hash": "4bd61aebcf248450fa6ae0311b581a9d4b2ee907",
+  "generated_at": "2026-06-09T19:33:53.511320+00:00"
 }

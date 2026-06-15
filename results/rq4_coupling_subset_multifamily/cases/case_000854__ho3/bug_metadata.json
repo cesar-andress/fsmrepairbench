@@ -1,0 +1,43 @@
+{
+  "bug_id": "synthetic_16281_3_2__hom__delay_corruption__wrong_initial_state__wrong_target__27155",
+  "reference_fsm_id": "synthetic_16281_3_2",
+  "faulty_fsm_id": "synthetic_16281_3_2__faulty__hom__delay_corruption__wrong_initial_state__wrong_target__27155",
+  "mutation_operator": "delay_corruption,wrong_initial_state,wrong_target",
+  "changed_transition_id": "t16281_2",
+  "description": "Higher-order mutant applying 3 operators: delay_corruption, wrong_initial_state, wrong_target",
+  "seed": 27155,
+  "mutation_complexity": null,
+  "mutation_scope": null,
+  "mutation_mode": null,
+  "mutation_order": 3,
+  "component_faults": [
+    {
+      "operator": "delay_corruption",
+      "seed": 27155,
+      "bug_id": "synthetic_16281_3_2__delay_corruption__27155",
+      "changed_transition_id": "t16281_2",
+      "description": "Corrupted delay on transition 't16281_2' to 1.5"
+    },
+    {
+      "operator": "wrong_initial_state",
+      "seed": 28155,
+      "bug_id": "synthetic_16281_3_2__faulty__delay_corruption__27155__wrong_initial_state__28155",
+      "changed_transition_id": null,
+      "description": "Changed initial_state from 's16281_0' to 's16281_1'"
+    },
+    {
+      "operator": "wrong_target",
+      "seed": 29155,
+      "bug_id": "synthetic_16281_3_2__faulty__delay_corruption__27155__faulty__wrong_initial_state__28155__wrong_target__29155",
+      "changed_transition_id": "t16281_2",
+      "description": "Changed target of transition 't16281_2' from 's16281_0' to 's16281_1'"
+    }
+  ],
+  "is_higher_order": true,
+  "coupled_to_simple_faults": [
+    "synthetic_16281_3_2__delay_corruption__27155",
+    "synthetic_16281_3_2__faulty__delay_corruption__27155__wrong_initial_state__28155",
+    "synthetic_16281_3_2__faulty__delay_corruption__27155__faulty__wrong_initial_state__28155__wrong_target__29155"
+  ],
+  "is_negative_control": false
+}

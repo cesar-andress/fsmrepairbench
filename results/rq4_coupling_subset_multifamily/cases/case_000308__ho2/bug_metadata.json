@@ -1,0 +1,35 @@
+{
+  "bug_id": "synthetic_5888_3_2__hom__duplicate_transition__wrong_event__20289",
+  "reference_fsm_id": "synthetic_5888_3_2",
+  "faulty_fsm_id": "synthetic_5888_3_2__faulty__hom__duplicate_transition__wrong_event__20289",
+  "mutation_operator": "duplicate_transition,wrong_event",
+  "changed_transition_id": "t5888_6",
+  "description": "Higher-order mutant applying 2 operators: duplicate_transition, wrong_event",
+  "seed": 20289,
+  "mutation_complexity": null,
+  "mutation_scope": null,
+  "mutation_mode": null,
+  "mutation_order": 2,
+  "component_faults": [
+    {
+      "operator": "duplicate_transition",
+      "seed": 20289,
+      "bug_id": "synthetic_5888_3_2__duplicate_transition__20289",
+      "changed_transition_id": "t5888_8",
+      "description": "Duplicated transition 't5888_8' as 't5888_8__dup__20289'"
+    },
+    {
+      "operator": "wrong_event",
+      "seed": 21289,
+      "bug_id": "synthetic_5888_3_2__faulty__duplicate_transition__20289__wrong_event__21289",
+      "changed_transition_id": "t5888_6",
+      "description": "Changed event of transition 't5888_6' from 'e5888_1' to 'e5888_0'"
+    }
+  ],
+  "is_higher_order": true,
+  "coupled_to_simple_faults": [
+    "synthetic_5888_3_2__duplicate_transition__20289",
+    "synthetic_5888_3_2__faulty__duplicate_transition__20289__wrong_event__21289"
+  ],
+  "is_negative_control": false
+}

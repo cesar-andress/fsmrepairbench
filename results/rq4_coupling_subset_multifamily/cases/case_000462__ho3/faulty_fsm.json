@@ -1,0 +1,78 @@
+{
+  "id": "synthetic_16728_3_2__faulty__hom__dead_state_intro__wrong_target__guard_flip__23927",
+  "name": "Synthetic FSM (custom) (higher-order: dead_state_intro, wrong_target, guard_flip)",
+  "description": "Synthetic FSM generated with seed=16728, states=3, events=2, branching_factor=1, deterministic=True, allow_dead_states=True",
+  "states": [
+    {
+      "id": "s16728_0",
+      "state_output": "out_16728_0",
+      "refusal": false,
+      "quiescence": false
+    },
+    {
+      "id": "s16728_1",
+      "state_output": "out_16728_1",
+      "refusal": false,
+      "quiescence": false
+    },
+    {
+      "id": "s16728_2",
+      "state_output": "out_16728_2",
+      "refusal": false,
+      "quiescence": false
+    },
+    {
+      "id": "dead_23927",
+      "state_output": null,
+      "refusal": false,
+      "quiescence": false
+    }
+  ],
+  "initial_state": "s16728_0",
+  "events": [
+    "e16728_0",
+    "e16728_1"
+  ],
+  "transitions": [
+    {
+      "id": "t16728_1",
+      "source": "s16728_0",
+      "event": "e16728_1",
+      "target": "dead_23927",
+      "guard": null,
+      "action": "act16728_1",
+      "output": null,
+      "timeout": null,
+      "delay": null,
+      "requirements": [],
+      "probability": null,
+      "is_nondeterministic": false,
+      "refusal": false,
+      "quiescence": false,
+      "discrete_time": null
+    },
+    {
+      "id": "t16728_2",
+      "source": "s16728_1",
+      "event": "e16728_0",
+      "target": "s16728_2",
+      "guard": "unexpected_guard",
+      "action": "act16728_2",
+      "output": null,
+      "timeout": null,
+      "delay": null,
+      "requirements": [],
+      "probability": null,
+      "is_nondeterministic": false,
+      "refusal": false,
+      "quiescence": false,
+      "discrete_time": null
+    }
+  ],
+  "variables": {},
+  "parent_fsm_id": "synthetic_16728_3_2",
+  "reference_fsm_id": "synthetic_16728_3_2",
+  "discrete_time_step": null,
+  "semantics_mode": null,
+  "cyclic_metadata": null
+}

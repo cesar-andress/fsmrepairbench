@@ -1,0 +1,16 @@
+% Auto-generated from fsmrepairbench.c1_baseline_repair_exports
+\begin{table}[t]
+\caption{Complete repair by structural complexity tier under the \texttt{missing-transition} baseline ($n=20$). \textbf{Detectable-only primary}; cohort-wide$^\dagger$ includes 10/1{,}000 oracle-saturated cases.}
+\label{tab:baseline-repair-by-tier}
+\begin{tabular}{@{}lrrrrr@{}}
+\toprule
+Tier & Detectable & Complete (detectable-only) & Complete (cohort-wide$^\dagger$) & Mean difficulty & Mean $\Delta$BPR \\
+\midrule
+small & 3 & 66.7\% & 80.0\% & 14.16 & 0.0508 \\
+medium & 3 & 33.3\% & 71.4\% & 21.31 & 0.0123 \\
+large & 2 & 50.0\% & 80.0\% & 33.39 & 0.0905 \\
+very\_large & 2 & 50.0\% & 66.7\% & 60.40 & 0.0048 \\
+\bottomrule
+\end{tabular}
+\par\footnotesize Cohort-wide complete/effective repair includes 505 oracle-saturated cases (faulty BPR $= 1.0$). Rows with detection $= 0\%$ and mean $\Delta$BPR $= 0$ but cohort-wide complete repair $= 100\%$ reflect oracle saturation, not structural repair. Source: cohort digest prefix \texttt{06a4d9f477a6da71...} in \texttt{manifest.json}.
+\end{table}

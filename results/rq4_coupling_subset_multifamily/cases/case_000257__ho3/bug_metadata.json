@@ -1,0 +1,43 @@
+{
+  "bug_id": "synthetic_4920_3_2__hom__guard_flip__guard_strengthen__wrong_initial_state__69113",
+  "reference_fsm_id": "synthetic_4920_3_2",
+  "faulty_fsm_id": "synthetic_4920_3_2__faulty__hom__guard_flip__guard_strengthen__wrong_initial_state__69113",
+  "mutation_operator": "guard_flip,guard_strengthen,wrong_initial_state",
+  "changed_transition_id": null,
+  "description": "Higher-order mutant applying 3 operators: guard_flip, guard_strengthen, wrong_initial_state",
+  "seed": 69113,
+  "mutation_complexity": null,
+  "mutation_scope": null,
+  "mutation_mode": null,
+  "mutation_order": 3,
+  "component_faults": [
+    {
+      "operator": "guard_flip",
+      "seed": 69113,
+      "bug_id": "synthetic_4920_3_2__guard_flip__69113",
+      "changed_transition_id": "t4920_2",
+      "description": "Changed guard of transition 't4920_2' from 'x_4920_1 > 0' to 'not_x_4920_1 > 0'"
+    },
+    {
+      "operator": "guard_strengthen",
+      "seed": 70113,
+      "bug_id": "synthetic_4920_3_2__faulty__guard_flip__69113__guard_strengthen__70113",
+      "changed_transition_id": "t4920_2",
+      "description": "Strengthened guard on transition 't4920_2'"
+    },
+    {
+      "operator": "wrong_initial_state",
+      "seed": 71113,
+      "bug_id": "synthetic_4920_3_2__faulty__guard_flip__69113__faulty__guard_strengthen__70113__wrong_initial_state__71113",
+      "changed_transition_id": null,
+      "description": "Changed initial_state from 's4920_0' to 's4920_2'"
+    }
+  ],
+  "is_higher_order": true,
+  "coupled_to_simple_faults": [
+    "synthetic_4920_3_2__guard_flip__69113",
+    "synthetic_4920_3_2__faulty__guard_flip__69113__guard_strengthen__70113",
+    "synthetic_4920_3_2__faulty__guard_flip__69113__faulty__guard_strengthen__70113__wrong_initial_state__71113"
+  ],
+  "is_negative_control": false
+}

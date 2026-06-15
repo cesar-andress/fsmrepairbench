@@ -1,0 +1,55 @@
+{
+  "id": "synthetic_4852_3_2__faulty__hom__guard_flip__guard_weaken__guard_strengthen__89763",
+  "name": "Synthetic FSM (custom) (higher-order: guard_flip, guard_weaken, guard_strengthen)",
+  "description": "Synthetic FSM generated with seed=4852, states=3, events=2, branching_factor=2, deterministic=True, allow_dead_states=True",
+  "states": [
+    {
+      "id": "s4852_0",
+      "state_output": null,
+      "refusal": false,
+      "quiescence": false
+    },
+    {
+      "id": "s4852_1",
+      "state_output": null,
+      "refusal": false,
+      "quiescence": false
+    },
+    {
+      "id": "s4852_2",
+      "state_output": null,
+      "refusal": false,
+      "quiescence": false
+    }
+  ],
+  "initial_state": "s4852_0",
+  "events": [
+    "e4852_0",
+    "e4852_1"
+  ],
+  "transitions": [
+    {
+      "id": "t4852_2",
+      "source": "s4852_0",
+      "event": "e4852_0",
+      "target": "s4852_0",
+      "guard": "(true) and strict_check",
+      "action": "act4852_2",
+      "output": "out_4852_1",
+      "timeout": null,
+      "delay": null,
+      "requirements": [],
+      "probability": null,
+      "is_nondeterministic": false,
+      "refusal": false,
+      "quiescence": false,
+      "discrete_time": null
+    }
+  ],
+  "variables": {},
+  "parent_fsm_id": "synthetic_4852_3_2",
+  "reference_fsm_id": "synthetic_4852_3_2",
+  "discrete_time_step": null,
+  "semantics_mode": null,
+  "cyclic_metadata": null
+}

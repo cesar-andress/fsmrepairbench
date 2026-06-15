@@ -1,0 +1,43 @@
+{
+  "bug_id": "synthetic_15466_3_2__hom__timeout_corruption__guard_flip__missing_transition__23128",
+  "reference_fsm_id": "synthetic_15466_3_2",
+  "faulty_fsm_id": "synthetic_15466_3_2__faulty__hom__timeout_corruption__guard_flip__missing_transition__23128",
+  "mutation_operator": "timeout_corruption,guard_flip,missing_transition",
+  "changed_transition_id": "t15466_3",
+  "description": "Higher-order mutant applying 3 operators: timeout_corruption, guard_flip, missing_transition",
+  "seed": 23128,
+  "mutation_complexity": null,
+  "mutation_scope": null,
+  "mutation_mode": null,
+  "mutation_order": 3,
+  "component_faults": [
+    {
+      "operator": "timeout_corruption",
+      "seed": 23128,
+      "bug_id": "synthetic_15466_3_2__timeout_corruption__23128",
+      "changed_transition_id": "t15466_2",
+      "description": "Corrupted timeout on transition 't15466_2' to 4.0"
+    },
+    {
+      "operator": "guard_flip",
+      "seed": 24128,
+      "bug_id": "synthetic_15466_3_2__faulty__timeout_corruption__23128__guard_flip__24128",
+      "changed_transition_id": "t15466_2",
+      "description": "Changed guard of transition 't15466_2' from 'x_15466_1 > 0' to 'not_x_15466_1 > 0'"
+    },
+    {
+      "operator": "missing_transition",
+      "seed": 25128,
+      "bug_id": "synthetic_15466_3_2__faulty__timeout_corruption__23128__faulty__guard_flip__24128__missing_transition__25128",
+      "changed_transition_id": "t15466_3",
+      "description": "Removed transition 't15466_3'"
+    }
+  ],
+  "is_higher_order": true,
+  "coupled_to_simple_faults": [
+    "synthetic_15466_3_2__timeout_corruption__23128",
+    "synthetic_15466_3_2__faulty__timeout_corruption__23128__guard_flip__24128",
+    "synthetic_15466_3_2__faulty__timeout_corruption__23128__faulty__guard_flip__24128__missing_transition__25128"
+  ],
+  "is_negative_control": false
+}

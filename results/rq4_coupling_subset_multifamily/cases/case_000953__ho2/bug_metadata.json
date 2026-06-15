@@ -1,0 +1,35 @@
+{
+  "bug_id": "synthetic_18166_3_2__hom__missing_transition__wrong_target__47633",
+  "reference_fsm_id": "synthetic_18166_3_2",
+  "faulty_fsm_id": "synthetic_18166_3_2__faulty__hom__missing_transition__wrong_target__47633",
+  "mutation_operator": "missing_transition,wrong_target",
+  "changed_transition_id": "t18166_5",
+  "description": "Higher-order mutant applying 2 operators: missing_transition, wrong_target",
+  "seed": 47633,
+  "mutation_complexity": null,
+  "mutation_scope": null,
+  "mutation_mode": null,
+  "mutation_order": 2,
+  "component_faults": [
+    {
+      "operator": "missing_transition",
+      "seed": 47633,
+      "bug_id": "synthetic_18166_3_2__missing_transition__47633",
+      "changed_transition_id": "t18166_7",
+      "description": "Removed transition 't18166_7'"
+    },
+    {
+      "operator": "wrong_target",
+      "seed": 48633,
+      "bug_id": "synthetic_18166_3_2__faulty__missing_transition__47633__wrong_target__48633",
+      "changed_transition_id": "t18166_5",
+      "description": "Changed target of transition 't18166_5' from 's18166_2' to 's18166_0'"
+    }
+  ],
+  "is_higher_order": true,
+  "coupled_to_simple_faults": [
+    "synthetic_18166_3_2__missing_transition__47633",
+    "synthetic_18166_3_2__faulty__missing_transition__47633__wrong_target__48633"
+  ],
+  "is_negative_control": false
+}

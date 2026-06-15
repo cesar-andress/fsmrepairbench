@@ -21,6 +21,15 @@ from fsmrepairbench.freeze import get_git_commit, sha256_file
 from fsmrepairbench.generators.stratified_specs import DatasetPlan, load_dataset_plan, total_planned_cases
 
 MULTIFAMILY_EXPERIMENT = "multifamily-v0.3.0-external-validity-pilot"
+MULTIFAMILY_PILOT_EXPERIMENT = "multifamily-v0.3.0-pilot"
+MULTIFAMILY_PILOT_RELEASE = "v0.3.0-multifamily-pilot"
+MULTIFAMILY_SMOKE_RELEASE = "v0.3.0-external-validity-pilot"
+FROZEN_V020_ZENODO_DOI = "10.5281/zenodo.20602528"
+FROZEN_1K_COHORT_PATH = Path("data/fsmrepairbench_1k/analysis_cohort_1k.txt")
+DEFAULT_PILOT_PLAN_PATH = Path("plans/fsmrepairbench_multifamily_pilot_plan.yaml")
+DEFAULT_PILOT_DATASET_DIR = Path("data/fsmrepairbench_multifamily_pilot")
+DEFAULT_PILOT_OUTPUT_DIR = Path("results/multifamily_pilot")
+DEFAULT_PILOT_PAPER_EXPORT = Path("../paper1/results/multifamily_pilot")
 MULTIFAMILY_TARGET_FAMILIES: tuple[str, ...] = (
     "plain_fsm",
     "mealy",
@@ -92,6 +101,165 @@ class MultifamilyAnalysisResult:
     figures_dir: Path
     tables_dir: Path
     case_count: int
+    coverage_dir: Path | None = None
+
+
+def _resolve_release_metadata(plan: DatasetPlan) -> tuple[str, str]:
+    if plan.name == "fsmrepairbench_multifamily_pilot":
+        return MULTIFAMILY_PILOT_EXPERIMENT, MULTIFAMILY_PILOT_RELEASE
+    return MULTIFAMILY_EXPERIMENT, MULTIFAMILY_SMOKE_RELEASE
+
+
+def _frozen_1k_reference() -> dict[str, str]:
+    cohort_path = FROZEN_1K_COHORT_PATH
+    payload: dict[str, str] = {
+        "zenodo_doi": FROZEN_V020_ZENODO_DOI,
+        "release_label": "v0.2.0-analysis",
+        "cohort_path": str(cohort_path),
+        "note": "Frozen plain_fsm 1k cohort; not modified by multifamily pilot builds.",
+    }
+    if cohort_path.is_file():
+        payload["cohort_sha256"] = sha256_file(cohort_path)
+    return payload
+
+
+def _list_output_files(output_dir: Path) -> list[str]:
+    files: list[str] = []
+    for path in sorted(output_dir.rglob("*")):
+        if path.is_file() and path.name != "manifest.json":
+            files.append(path.relative_to(output_dir).as_posix())
+    return files
+
+
+def _build_output_sha256_index(output_dir: Path) -> dict[str, str]:
+    index: dict[str, str] = {}
+    for relative_path in _list_output_files(output_dir):
+        index[relative_path] = sha256_file(output_dir / relative_path)
+    return index
+
+
+def _load_csv_rows(path: Path) -> list[dict[str, str]]:
+    if not path.is_file():
+        return []
+    with path.open(encoding="utf-8", newline="") as handle:
+        return list(csv.DictReader(handle))
+
+
+def _append_coverage_report_section(
+    lines: list[str],
+    *,
+    coverage_dir: Path,
+) -> None:
+    dimension_rows = _load_csv_rows(coverage_dir / "dimension_summary.csv")
+    operator_rows = _load_csv_rows(coverage_dir / "coverage_by_mutation_operator.csv")
+    tier_rows = _load_csv_rows(coverage_dir / "coverage_by_complexity_tier.csv")
+    machine_rows = _load_csv_rows(coverage_dir / "coverage_by_fsm_family.csv")
+    summary_rows = _load_csv_rows(coverage_dir / "summary.csv")
+    summary_metrics = {row["metric"]: row["value"] for row in summary_rows}
+
+    lines.extend(
+        [
+            "",
+            "## Taxonomy coverage ratios",
+            "",
+            "Coverage ratios are computed on the pilot cohort using the same taxonomy "
+            "dimensions as the frozen `v0.2.0-analysis` release.",
+            "",
+        ]
+    )
+    if summary_metrics:
+        lines.append(
+            f"- Mean dimension coverage: **{float(summary_metrics.get('mean_dimension_coverage_ratio', 0.0)):.1%}**"
+        )
+        lines.append(
+            f"- Mutation-operator coverage: **{float(summary_metrics.get('mutation_operator_coverage_ratio', 0.0)):.1%}**"
+        )
+        lines.append(
+            f"- Complexity-tier coverage: **{float(summary_metrics.get('complexity_tier_coverage_ratio', 0.0)):.1%}**"
+        )
+        lines.append(
+            f"- Machine-type coverage: **{float(summary_metrics.get('fsm_family_coverage_ratio', 0.0)):.1%}**"
+        )
+
+    if dimension_rows:
+        lines.extend(
+            [
+                "",
+                "### Coverage by taxonomy dimension",
+                "",
+                "| Dimension | Observed | Universe | Coverage |",
+                "|-----------|---------:|---------:|---------:|",
+            ]
+        )
+        for row in dimension_rows:
+            lines.append(
+                f"| `{row['dimension']}` | {row['observed_values']} | {row['universe_values']} | "
+                f"{float(row['coverage_ratio']):.1%} |"
+            )
+
+    if operator_rows:
+        lines.extend(
+            [
+                "",
+                "### Coverage by mutation operator",
+                "",
+                "| Operator | Cases | Cohort share | Subgroup coverage |",
+                "|----------|------:|-------------:|------------------:|",
+            ]
+        )
+        for row in operator_rows:
+            if int(float(row["case_count"])) <= 0:
+                continue
+            lines.append(
+                f"| `{row['group_value']}` | {row['case_count']} | "
+                f"{float(row['cohort_fraction']):.1%} | "
+                f"{float(row['subgroup_coverage_ratio']):.1%} |"
+            )
+
+    if tier_rows:
+        lines.extend(
+            [
+                "",
+                "### Coverage by complexity tier",
+                "",
+                "| Tier | Cases | Cohort share | Subgroup coverage |",
+                "|------|------:|-------------:|------------------:|",
+            ]
+        )
+        for row in tier_rows:
+            if int(float(row["case_count"])) <= 0:
+                continue
+            lines.append(
+                f"| `{row['group_value']}` | {row['case_count']} | "
+                f"{float(row['cohort_fraction']):.1%} | "
+                f"{float(row['subgroup_coverage_ratio']):.1%} |"
+            )
+
+    if machine_rows:
+        lines.extend(
+            [
+                "",
+                "### Coverage by machine type",
+                "",
+                "| Machine type | Cases | Cohort share | Operator diversity |",
+                "|--------------|------:|-------------:|-------------------:|",
+            ]
+        )
+        for row in machine_rows:
+            if int(float(row["case_count"])) <= 0:
+                continue
+            lines.append(
+                f"| `{row['group_value']}` | {row['case_count']} | "
+                f"{float(row['cohort_fraction']):.1%} | {row['distinct_subgroups']} |"
+            )
+
+    lines.extend(
+        [
+            "",
+            f"Full taxonomy coverage artefacts: `{coverage_dir}`",
+            "",
+        ]
+    )
 
 
 def planned_counts_by_family(plan: DatasetPlan) -> dict[str, int]:
@@ -251,6 +419,7 @@ def _write_summary_csv(
     records: list[MultifamilyCaseRecord],
     planned_by_family: dict[str, int],
     plan: DatasetPlan,
+    experiment: str,
 ) -> None:
     cases = [record.case for record in records]
     analytics = compute_benchmark_analytics(cases)
@@ -275,7 +444,7 @@ def _write_summary_csv(
         )
     extra_rows.extend(
         [
-            {"metric": "experiment", "value": MULTIFAMILY_EXPERIMENT},
+            {"metric": "experiment", "value": experiment},
             {"metric": "plan_name", "value": plan.name},
             {"metric": "plan_version", "value": plan.version},
             {"metric": "plan_seed", "value": plan.seed},
@@ -363,6 +532,9 @@ def _write_multifamily_tables(
     family_summary_rows: list[dict[str, str | float | int]],
     detection_rows: list[dict[str, str | float | int]],
 ) -> None:
+    def _tex_ident(name: str) -> str:
+        return str(name).replace("_", "\\_")
+
     tables_dir.mkdir(parents=True, exist_ok=True)
     summary_lines = [
         "% Auto-generated by analyze-multifamily-cohort",
@@ -377,7 +549,7 @@ def _write_multifamily_tables(
     ]
     for row in family_summary_rows:
         summary_lines.append(
-            f"{row['machine_type']} & {row['built_case_count']} & {row['build_failure_count']} & "
+            f"\\texttt{{{_tex_ident(row['machine_type'])}}} & {row['built_case_count']} & {row['build_failure_count']} & "
             f"{100 * float(row['detection_rate']):.1f}\\% & "
             f"{float(row['mean_faulty_bpr']):.3f} & "
             f"{float(row['mean_bpr_delta']):.3f} & "
@@ -402,7 +574,7 @@ def _write_multifamily_tables(
     ]
     for row in detection_rows:
         detection_lines.append(
-            f"{row['machine_type']} & {row['case_count']} & {row['detected_cases']} & "
+            f"\\texttt{{{_tex_ident(row['machine_type'])}}} & {row['case_count']} & {row['detected_cases']} & "
             f"{100 * float(row['detection_rate']):.1f}\\% & "
             f"{float(row['mean_bpr_delta']):.3f} \\\\"
         )
@@ -419,14 +591,17 @@ def _write_multifamily_report(
     dataset_dir: Path,
     output_dir: Path,
     plan: DatasetPlan,
+    plan_path: Path,
+    release_label: str,
     family_summary_rows: list[dict[str, str | float | int]],
     operator_rows: list[dict[str, str | float | int]],
     records: list[MultifamilyCaseRecord],
+    coverage_dir: Path | None = None,
 ) -> None:
     total_built = len(records)
     total_detected = sum(1 for record in records if record.case.bpr_delta > 0.0)
     lines = [
-        "# Multi-Family External-Validity Pilot (v0.3.0)",
+        f"# Multi-Family External-Validity Pilot ({release_label})",
         "",
         "**Status:** pilot external-validity mini-cohort for manuscript sensitivity analysis.",
         "",
@@ -437,10 +612,11 @@ def _write_multifamily_report(
         "",
         "## Dataset",
         "",
-        f"- Plan: `{DEFAULT_PLAN_PATH}` (`{plan.name}`, version {plan.version}, seed {plan.seed})",
+        f"- Plan: `{plan_path}` (`{plan.name}`, version {plan.version}, seed {plan.seed})",
         f"- Built dataset: `{dataset_dir}`",
         f"- Built cases: {total_built}",
         f"- Target families: {', '.join(MULTIFAMILY_TARGET_FAMILIES)}",
+        f"- Frozen v0.2.0 reference cohort: `{FROZEN_1K_COHORT_PATH}` (unchanged)",
         "",
         "## Overall metrics",
         "",
@@ -498,6 +674,8 @@ def _write_multifamily_report(
             "",
         ]
     )
+    if coverage_dir is not None:
+        _append_coverage_report_section(lines, coverage_dir=coverage_dir)
     path.write_text("\n".join(lines) + "\n", encoding="utf-8")
 
 
@@ -524,6 +702,16 @@ def _copy_paper_exports(*, output_dir: Path, paper_export_dir: Path) -> None:
         for item in folder.iterdir():
             if item.is_file():
                 shutil.copy2(item, target / item.name)
+    coverage_dir = output_dir / "coverage"
+    if coverage_dir.is_dir():
+        paper_coverage = paper_export_dir / "coverage"
+        paper_coverage.mkdir(parents=True, exist_ok=True)
+        for path in sorted(coverage_dir.rglob("*")):
+            if path.is_file():
+                relative = path.relative_to(coverage_dir)
+                destination = paper_coverage / relative
+                destination.parent.mkdir(parents=True, exist_ok=True)
+                shutil.copy2(path, destination)
 
 
 def analyze_multifamily_cohort(
@@ -532,6 +720,8 @@ def analyze_multifamily_cohort(
     plan_path: Path | None = None,
     output_dir: Path | None = None,
     paper_export_dir: Path | None = None,
+    include_taxonomy_coverage: bool = True,
+    cohort_path: Path | None = None,
 ) -> MultifamilyAnalysisResult:
     """Analyze a built multi-family pilot dataset and export paper-ready artifacts."""
     if not dataset_dir.is_dir():
@@ -544,8 +734,13 @@ def analyze_multifamily_cohort(
         raise MultifamilyAnalysisError(msg)
 
     plan = load_dataset_plan(plan_file)
-    out = output_dir or DEFAULT_OUTPUT_DIR
-    paper_dir = paper_export_dir or DEFAULT_PAPER_EXPORT
+    experiment, release_label = _resolve_release_metadata(plan)
+    out = output_dir or (
+        DEFAULT_PILOT_OUTPUT_DIR if plan.name == "fsmrepairbench_multifamily_pilot" else DEFAULT_OUTPUT_DIR
+    )
+    paper_dir = paper_export_dir or (
+        DEFAULT_PILOT_PAPER_EXPORT if plan.name == "fsmrepairbench_multifamily_pilot" else DEFAULT_PAPER_EXPORT
+    )
     out.mkdir(parents=True, exist_ok=True)
 
     records = load_multifamily_records(dataset_dir)
@@ -568,6 +763,7 @@ def analyze_multifamily_cohort(
         records=records,
         planned_by_family=planned_by_family,
         plan=plan,
+        experiment=experiment,
     )
     _write_csv(family_summary_path, FAMILY_SUMMARY_COLUMNS, family_summary_rows)
     _write_csv(operator_by_family_path, OPERATOR_BY_FAMILY_COLUMNS, operator_rows)
@@ -582,32 +778,98 @@ def analyze_multifamily_cohort(
         family_summary_rows=family_summary_rows,
         detection_rows=detection_rows,
     )
+
+    coverage_dir: Path | None = None
+    if include_taxonomy_coverage:
+        from fsmrepairbench.multifamily_cohort import ANALYSIS_COHORT_TXT, load_completed_case_ids
+        from fsmrepairbench.taxonomy_coverage import generate_taxonomy_coverage_report
+
+        resolved_cohort = cohort_path
+        if resolved_cohort is None:
+            default_cohort = dataset_dir / ANALYSIS_COHORT_TXT
+            if default_cohort.is_file():
+                resolved_cohort = default_cohort
+            else:
+                completed_ids = load_completed_case_ids(dataset_dir)
+                if completed_ids:
+                    implicit_cohort = out / ".cohort_all_cases.txt"
+                    implicit_cohort.write_text("\n".join(completed_ids) + "\n", encoding="utf-8")
+                    resolved_cohort = implicit_cohort
+        coverage_dir = out / "coverage"
+        generate_taxonomy_coverage_report(
+            dataset_dir,
+            output_dir=coverage_dir,
+            cohort_path=resolved_cohort,
+        )
+
     _write_multifamily_report(
         report_path,
         dataset_dir=dataset_dir,
         output_dir=out,
         plan=plan,
+        plan_path=plan_file,
+        release_label=release_label,
         family_summary_rows=family_summary_rows,
         operator_rows=operator_rows,
         records=records,
+        coverage_dir=coverage_dir,
     )
 
+    cohort_manifests: dict[str, object] = {}
+    for txt_name, json_name in (
+        ("analysis_cohort_multifamily.txt", "analysis_cohort_multifamily.json"),
+        ("localization_cohort_multifamily.txt", "localization_cohort_multifamily.json"),
+        ("coupling_campaign_multifamily.txt", "coupling_campaign_multifamily.json"),
+        ("oracle_depth_ablation_multifamily.txt", "oracle_depth_ablation_multifamily.json"),
+    ):
+        txt_path = dataset_dir / txt_name
+        json_path = dataset_dir / json_name
+        if txt_path.is_file():
+            entry: dict[str, object] = {
+                "txt_path": str(txt_path),
+                "txt_sha256": sha256_file(txt_path),
+            }
+            if json_path.is_file():
+                entry["json_path"] = str(json_path)
+                entry["json_sha256"] = sha256_file(json_path)
+            cohort_manifests[txt_name] = entry
+
     manifest = {
-        "experiment": MULTIFAMILY_EXPERIMENT,
+        "experiment": experiment,
         "dataset_dir": str(dataset_dir),
         "plan_path": str(plan_file),
         "plan_sha256": sha256_file(plan_file),
         "output_dir": str(out),
         "paper_export_dir": str(paper_dir),
-        "release_label": "v0.3.0-external-validity-pilot",
+        "release_label": release_label,
+        "zenodo_doi": FROZEN_V020_ZENODO_DOI,
         "replaces_v0_2_analysis": False,
+        "frozen_v0_2_reference": _frozen_1k_reference(),
         "target_families": list(MULTIFAMILY_TARGET_FAMILIES),
         "planned_by_family": planned_by_family,
         "built_case_count": len(records),
         "family_summary": family_summary_rows,
+        "cohort_manifests": cohort_manifests,
+        "coverage_dir": str(coverage_dir) if coverage_dir is not None else None,
         "git_commit_hash": get_git_commit(),
         "generated_at": datetime.now(UTC).isoformat(),
     }
+    manifest_path.write_text(json.dumps(manifest, indent=2) + "\n", encoding="utf-8")
+    manifest["output_files"] = sorted(_list_output_files(out) + ["manifest.json"])
+    manifest["output_sha256"] = _build_output_sha256_index(out)
+    manifest["regeneration_commands"] = [
+        "python ../paper1/scripts/build_multifamily_pilot_dataset.py",
+        "python ../paper1/scripts/pin_multifamily_pilot_cohorts.py",
+        "python ../paper1/scripts/generate_multifamily_pilot_outputs.py",
+    ] if plan.name == "fsmrepairbench_multifamily_pilot" else [
+        "python ../paper1/scripts/build_multifamily_v0_3_dataset.py",
+        "python ../paper1/scripts/pin_multifamily_cohorts.py",
+        "python ../paper1/scripts/generate_multifamily_v0_3_outputs.py",
+    ]
+    manifest["limitations_note"] = (
+        "External-validity pilot on a multi-family cohort; does not replace v0.2.0-analysis "
+        "headline metrics (plain_fsm / shallow-oracle slice)."
+    )
     manifest_path.write_text(json.dumps(manifest, indent=2) + "\n", encoding="utf-8")
     _copy_paper_exports(output_dir=out, paper_export_dir=paper_dir)
 
@@ -624,4 +886,5 @@ def analyze_multifamily_cohort(
         figures_dir=figures_dir,
         tables_dir=tables_dir,
         case_count=len(records),
+        coverage_dir=coverage_dir,
     )

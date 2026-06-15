@@ -1,0 +1,35 @@
+{
+  "bug_id": "synthetic_7756_3_2__hom__wrong_initial_state__wrong_event__29194",
+  "reference_fsm_id": "synthetic_7756_3_2",
+  "faulty_fsm_id": "synthetic_7756_3_2__faulty__hom__wrong_initial_state__wrong_event__29194",
+  "mutation_operator": "wrong_initial_state,wrong_event",
+  "changed_transition_id": "t7756_1",
+  "description": "Higher-order mutant applying 2 operators: wrong_initial_state, wrong_event",
+  "seed": 29194,
+  "mutation_complexity": null,
+  "mutation_scope": null,
+  "mutation_mode": null,
+  "mutation_order": 2,
+  "component_faults": [
+    {
+      "operator": "wrong_initial_state",
+      "seed": 29194,
+      "bug_id": "synthetic_7756_3_2__wrong_initial_state__29194",
+      "changed_transition_id": null,
+      "description": "Changed initial_state from 's7756_0' to 's7756_1'"
+    },
+    {
+      "operator": "wrong_event",
+      "seed": 30194,
+      "bug_id": "synthetic_7756_3_2__faulty__wrong_initial_state__29194__wrong_event__30194",
+      "changed_transition_id": "t7756_1",
+      "description": "Changed event of transition 't7756_1' from 'e7756_0' to 'e7756_1'"
+    }
+  ],
+  "is_higher_order": true,
+  "coupled_to_simple_faults": [
+    "synthetic_7756_3_2__wrong_initial_state__29194",
+    "synthetic_7756_3_2__faulty__wrong_initial_state__29194__wrong_event__30194"
+  ],
+  "is_negative_control": false
+}

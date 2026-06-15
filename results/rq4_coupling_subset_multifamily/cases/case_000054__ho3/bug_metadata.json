@@ -1,0 +1,43 @@
+{
+  "bug_id": "synthetic_1065_3_2__hom__nondeterminism_intro__missing_transition__wrong_event__27455",
+  "reference_fsm_id": "synthetic_1065_3_2",
+  "faulty_fsm_id": "synthetic_1065_3_2__faulty__hom__nondeterminism_intro__missing_transition__wrong_event__27455",
+  "mutation_operator": "nondeterminism_intro,missing_transition,wrong_event",
+  "changed_transition_id": "t1065_3",
+  "description": "Higher-order mutant applying 3 operators: nondeterminism_intro, missing_transition, wrong_event",
+  "seed": 27455,
+  "mutation_complexity": null,
+  "mutation_scope": null,
+  "mutation_mode": null,
+  "mutation_order": 3,
+  "component_faults": [
+    {
+      "operator": "nondeterminism_intro",
+      "seed": 27455,
+      "bug_id": "synthetic_1065_3_2__nondeterminism_intro__27455",
+      "changed_transition_id": "t1065_3",
+      "description": "Added nondeterministic duplicate for event 'e1065_1' from 's1065_1'"
+    },
+    {
+      "operator": "missing_transition",
+      "seed": 28455,
+      "bug_id": "synthetic_1065_3_2__faulty__nondeterminism_intro__27455__missing_transition__28455",
+      "changed_transition_id": "t1065_2",
+      "description": "Removed transition 't1065_2'"
+    },
+    {
+      "operator": "wrong_event",
+      "seed": 29455,
+      "bug_id": "synthetic_1065_3_2__faulty__nondeterminism_intro__27455__faulty__missing_transition__28455__wrong_event__29455",
+      "changed_transition_id": "t1065_3",
+      "description": "Changed event of transition 't1065_3' from 'e1065_1' to 'e1065_0'"
+    }
+  ],
+  "is_higher_order": true,
+  "coupled_to_simple_faults": [
+    "synthetic_1065_3_2__nondeterminism_intro__27455",
+    "synthetic_1065_3_2__faulty__nondeterminism_intro__27455__missing_transition__28455",
+    "synthetic_1065_3_2__faulty__nondeterminism_intro__27455__faulty__missing_transition__28455__wrong_event__29455"
+  ],
+  "is_negative_control": false
+}

@@ -1,0 +1,43 @@
+{
+  "bug_id": "synthetic_3069_3_2__hom__wrong_event__guard_flip__missing_transition__95614",
+  "reference_fsm_id": "synthetic_3069_3_2",
+  "faulty_fsm_id": "synthetic_3069_3_2__faulty__hom__wrong_event__guard_flip__missing_transition__95614",
+  "mutation_operator": "wrong_event,guard_flip,missing_transition",
+  "changed_transition_id": "t3069_1",
+  "description": "Higher-order mutant applying 3 operators: wrong_event, guard_flip, missing_transition",
+  "seed": 95614,
+  "mutation_complexity": null,
+  "mutation_scope": null,
+  "mutation_mode": null,
+  "mutation_order": 3,
+  "component_faults": [
+    {
+      "operator": "wrong_event",
+      "seed": 95614,
+      "bug_id": "synthetic_3069_3_2__wrong_event__95614",
+      "changed_transition_id": "t3069_1",
+      "description": "Changed event of transition 't3069_1' from 'e3069_1' to 'e3069_0'"
+    },
+    {
+      "operator": "guard_flip",
+      "seed": 96614,
+      "bug_id": "synthetic_3069_3_2__faulty__wrong_event__95614__guard_flip__96614",
+      "changed_transition_id": "t3069_1",
+      "description": "Added guard 'unexpected_guard' to transition 't3069_1'"
+    },
+    {
+      "operator": "missing_transition",
+      "seed": 97614,
+      "bug_id": "synthetic_3069_3_2__faulty__wrong_event__95614__faulty__guard_flip__96614__missing_transition__97614",
+      "changed_transition_id": "t3069_1",
+      "description": "Removed transition 't3069_1'"
+    }
+  ],
+  "is_higher_order": true,
+  "coupled_to_simple_faults": [
+    "synthetic_3069_3_2__wrong_event__95614",
+    "synthetic_3069_3_2__faulty__wrong_event__95614__guard_flip__96614",
+    "synthetic_3069_3_2__faulty__wrong_event__95614__faulty__guard_flip__96614__missing_transition__97614"
+  ],
+  "is_negative_control": false
+}

@@ -1,0 +1,35 @@
+{
+  "bug_id": "synthetic_4954_3_2__hom__guard_flip__wrong_target__58278",
+  "reference_fsm_id": "synthetic_4954_3_2",
+  "faulty_fsm_id": "synthetic_4954_3_2__faulty__hom__guard_flip__wrong_target__58278",
+  "mutation_operator": "guard_flip,wrong_target",
+  "changed_transition_id": "t4954_2",
+  "description": "Higher-order mutant applying 2 operators: guard_flip, wrong_target",
+  "seed": 58278,
+  "mutation_complexity": null,
+  "mutation_scope": null,
+  "mutation_mode": null,
+  "mutation_order": 2,
+  "component_faults": [
+    {
+      "operator": "guard_flip",
+      "seed": 58278,
+      "bug_id": "synthetic_4954_3_2__guard_flip__58278",
+      "changed_transition_id": "t4954_1",
+      "description": "Changed guard of transition 't4954_1' from 'x_4954_0 > 0' to 'not_x_4954_0 > 0'"
+    },
+    {
+      "operator": "wrong_target",
+      "seed": 59278,
+      "bug_id": "synthetic_4954_3_2__faulty__guard_flip__58278__wrong_target__59278",
+      "changed_transition_id": "t4954_2",
+      "description": "Changed target of transition 't4954_2' from 's4954_1' to 's4954_0'"
+    }
+  ],
+  "is_higher_order": true,
+  "coupled_to_simple_faults": [
+    "synthetic_4954_3_2__guard_flip__58278",
+    "synthetic_4954_3_2__faulty__guard_flip__58278__wrong_target__59278"
+  ],
+  "is_negative_control": false
+}

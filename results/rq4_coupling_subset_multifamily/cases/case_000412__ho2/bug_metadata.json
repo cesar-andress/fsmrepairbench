@@ -1,0 +1,35 @@
+{
+  "bug_id": "synthetic_7858_3_2__hom__wrong_initial_state__wrong_source__48019",
+  "reference_fsm_id": "synthetic_7858_3_2",
+  "faulty_fsm_id": "synthetic_7858_3_2__faulty__hom__wrong_initial_state__wrong_source__48019",
+  "mutation_operator": "wrong_initial_state,wrong_source",
+  "changed_transition_id": "t7858_1",
+  "description": "Higher-order mutant applying 2 operators: wrong_initial_state, wrong_source",
+  "seed": 48019,
+  "mutation_complexity": null,
+  "mutation_scope": null,
+  "mutation_mode": null,
+  "mutation_order": 2,
+  "component_faults": [
+    {
+      "operator": "wrong_initial_state",
+      "seed": 48019,
+      "bug_id": "synthetic_7858_3_2__wrong_initial_state__48019",
+      "changed_transition_id": null,
+      "description": "Changed initial_state from 's7858_0' to 's7858_2'"
+    },
+    {
+      "operator": "wrong_source",
+      "seed": 49019,
+      "bug_id": "synthetic_7858_3_2__faulty__wrong_initial_state__48019__wrong_source__49019",
+      "changed_transition_id": "t7858_1",
+      "description": "Changed source of transition 't7858_1' from 's7858_0' to 's7858_2'"
+    }
+  ],
+  "is_higher_order": true,
+  "coupled_to_simple_faults": [
+    "synthetic_7858_3_2__wrong_initial_state__48019",
+    "synthetic_7858_3_2__faulty__wrong_initial_state__48019__wrong_source__49019"
+  ],
+  "is_negative_control": false
+}

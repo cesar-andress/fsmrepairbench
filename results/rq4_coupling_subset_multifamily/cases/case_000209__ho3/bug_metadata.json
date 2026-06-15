@@ -1,0 +1,43 @@
+{
+  "bug_id": "synthetic_4003_3_2__hom__action_corruption__guard_strengthen__wrong_initial_state__46300",
+  "reference_fsm_id": "synthetic_4003_3_2",
+  "faulty_fsm_id": "synthetic_4003_3_2__faulty__hom__action_corruption__guard_strengthen__wrong_initial_state__46300",
+  "mutation_operator": "action_corruption,guard_strengthen,wrong_initial_state",
+  "changed_transition_id": null,
+  "description": "Higher-order mutant applying 3 operators: action_corruption, guard_strengthen, wrong_initial_state",
+  "seed": 46300,
+  "mutation_complexity": null,
+  "mutation_scope": null,
+  "mutation_mode": null,
+  "mutation_order": 3,
+  "component_faults": [
+    {
+      "operator": "action_corruption",
+      "seed": 46300,
+      "bug_id": "synthetic_4003_3_2__action_corruption__46300",
+      "changed_transition_id": "t4003_1",
+      "description": "Changed action of transition 't4003_1' from 'act4003_1' to 'wrong_act4003_1'"
+    },
+    {
+      "operator": "guard_strengthen",
+      "seed": 47300,
+      "bug_id": "synthetic_4003_3_2__faulty__action_corruption__46300__guard_strengthen__47300",
+      "changed_transition_id": "t4003_4",
+      "description": "Strengthened guard on transition 't4003_4'"
+    },
+    {
+      "operator": "wrong_initial_state",
+      "seed": 48300,
+      "bug_id": "synthetic_4003_3_2__faulty__action_corruption__46300__faulty__guard_strengthen__47300__wrong_initial_state__48300",
+      "changed_transition_id": null,
+      "description": "Changed initial_state from 's4003_0' to 's4003_2'"
+    }
+  ],
+  "is_higher_order": true,
+  "coupled_to_simple_faults": [
+    "synthetic_4003_3_2__action_corruption__46300",
+    "synthetic_4003_3_2__faulty__action_corruption__46300__guard_strengthen__47300",
+    "synthetic_4003_3_2__faulty__action_corruption__46300__faulty__guard_strengthen__47300__wrong_initial_state__48300"
+  ],
+  "is_negative_control": false
+}

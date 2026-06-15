@@ -1,0 +1,43 @@
+{
+  "bug_id": "synthetic_12630_3_2__hom__guard_strengthen__missing_transition__wrong_event__30612",
+  "reference_fsm_id": "synthetic_12630_3_2",
+  "faulty_fsm_id": "synthetic_12630_3_2__faulty__hom__guard_strengthen__missing_transition__wrong_event__30612",
+  "mutation_operator": "guard_strengthen,missing_transition,wrong_event",
+  "changed_transition_id": "t12630_1",
+  "description": "Higher-order mutant applying 3 operators: guard_strengthen, missing_transition, wrong_event",
+  "seed": 30612,
+  "mutation_complexity": null,
+  "mutation_scope": null,
+  "mutation_mode": null,
+  "mutation_order": 3,
+  "component_faults": [
+    {
+      "operator": "guard_strengthen",
+      "seed": 30612,
+      "bug_id": "synthetic_12630_3_2__guard_strengthen__30612",
+      "changed_transition_id": "t12630_1",
+      "description": "Strengthened guard on transition 't12630_1'"
+    },
+    {
+      "operator": "missing_transition",
+      "seed": 31612,
+      "bug_id": "synthetic_12630_3_2__faulty__guard_strengthen__30612__missing_transition__31612",
+      "changed_transition_id": "t12630_4",
+      "description": "Removed transition 't12630_4'"
+    },
+    {
+      "operator": "wrong_event",
+      "seed": 32612,
+      "bug_id": "synthetic_12630_3_2__faulty__guard_strengthen__30612__faulty__missing_transition__31612__wrong_event__32612",
+      "changed_transition_id": "t12630_1",
+      "description": "Changed event of transition 't12630_1' from 'e12630_1' to 'e12630_0'"
+    }
+  ],
+  "is_higher_order": true,
+  "coupled_to_simple_faults": [
+    "synthetic_12630_3_2__guard_strengthen__30612",
+    "synthetic_12630_3_2__faulty__guard_strengthen__30612__missing_transition__31612",
+    "synthetic_12630_3_2__faulty__guard_strengthen__30612__faulty__missing_transition__31612__wrong_event__32612"
+  ],
+  "is_negative_control": false
+}

@@ -1,0 +1,43 @@
+{
+  "bug_id": "synthetic_14498_3_2__hom__missing_transition__guard_strengthen__wrong_initial_state__1847",
+  "reference_fsm_id": "synthetic_14498_3_2",
+  "faulty_fsm_id": "synthetic_14498_3_2__faulty__hom__missing_transition__guard_strengthen__wrong_initial_state__1847",
+  "mutation_operator": "missing_transition,guard_strengthen,wrong_initial_state",
+  "changed_transition_id": null,
+  "description": "Higher-order mutant applying 3 operators: missing_transition, guard_strengthen, wrong_initial_state",
+  "seed": 1847,
+  "mutation_complexity": null,
+  "mutation_scope": null,
+  "mutation_mode": null,
+  "mutation_order": 3,
+  "component_faults": [
+    {
+      "operator": "missing_transition",
+      "seed": 1847,
+      "bug_id": "synthetic_14498_3_2__missing_transition__1847",
+      "changed_transition_id": "t14498_1",
+      "description": "Removed transition 't14498_1'"
+    },
+    {
+      "operator": "guard_strengthen",
+      "seed": 2847,
+      "bug_id": "synthetic_14498_3_2__faulty__missing_transition__1847__guard_strengthen__2847",
+      "changed_transition_id": "t14498_2",
+      "description": "Strengthened guard on transition 't14498_2'"
+    },
+    {
+      "operator": "wrong_initial_state",
+      "seed": 3847,
+      "bug_id": "synthetic_14498_3_2__faulty__missing_transition__1847__faulty__guard_strengthen__2847__wrong_initial_state__3847",
+      "changed_transition_id": null,
+      "description": "Changed initial_state from 's14498_0' to 's14498_2'"
+    }
+  ],
+  "is_higher_order": true,
+  "coupled_to_simple_faults": [
+    "synthetic_14498_3_2__missing_transition__1847",
+    "synthetic_14498_3_2__faulty__missing_transition__1847__guard_strengthen__2847",
+    "synthetic_14498_3_2__faulty__missing_transition__1847__faulty__guard_strengthen__2847__wrong_initial_state__3847"
+  ],
+  "is_negative_control": false
+}

@@ -1,0 +1,91 @@
+{
+  "release_label": "C1-baseline-repair",
+  "source_dir": "/home/cesar/papers/fsmrepairbench/paper1/results/baseline_repair_C1",
+  "bootstrap": {
+    "method": "percentile_case_resample",
+    "ci": 0.95,
+    "resamples": 10000,
+    "seed": 44
+  },
+  "rows": [
+    {
+      "engine": "missing-transition",
+      "detectable_only_complete_repair": 0.684848,
+      "cohort_wide_complete_repair": 0.844,
+      "saturation_inflation_pp": 15.915152,
+      "detectable_only_effective_repair": 0.779798,
+      "cohort_wide_effective_repair": 0.386,
+      "saturated_cases": 505,
+      "detectable_cases": 495,
+      "total_cases": 1000,
+      "saturation_inflation_ci95_low_pp": 13.725,
+      "saturation_inflation_ci95_high_pp": 18.261616
+    },
+    {
+      "engine": "wrong-target",
+      "detectable_only_complete_repair": 0.121212,
+      "cohort_wide_complete_repair": 0.565,
+      "saturation_inflation_pp": 44.378788,
+      "detectable_only_effective_repair": 0.220202,
+      "cohort_wide_effective_repair": 0.109,
+      "saturated_cases": 505,
+      "detectable_cases": 495,
+      "total_cases": 1000,
+      "saturation_inflation_ci95_low_pp": 41.286528,
+      "saturation_inflation_ci95_high_pp": 47.508917
+    },
+    {
+      "engine": "random",
+      "detectable_only_complete_repair": 0.00202,
+      "cohort_wide_complete_repair": 0.506,
+      "saturation_inflation_pp": 50.39798,
+      "detectable_only_effective_repair": 0.006061,
+      "cohort_wide_effective_repair": 0.003,
+      "saturated_cases": 505,
+      "detectable_cases": 495,
+      "total_cases": 1000,
+      "saturation_inflation_ci95_low_pp": 47.319048,
+      "saturation_inflation_ci95_high_pp": 53.468035
+    },
+    {
+      "engine": "search-bpr",
+      "detectable_only_complete_repair": 0.862626,
+      "cohort_wide_complete_repair": 0.932,
+      "saturation_inflation_pp": 6.937374,
+      "detectable_only_effective_repair": 0.979798,
+      "cohort_wide_effective_repair": 0.485,
+      "saturated_cases": 505,
+      "detectable_cases": 495,
+      "total_cases": 1000,
+      "saturation_inflation_ci95_low_pp": 5.433947,
+      "saturation_inflation_ci95_high_pp": 8.558333
+    },
+    {
+      "engine": "oracle-composite",
+      "detectable_only_complete_repair": 0.674747,
+      "cohort_wide_complete_repair": 0.839,
+      "saturation_inflation_pp": 16.425253,
+      "detectable_only_effective_repair": 0.826263,
+      "cohort_wide_effective_repair": 0.409,
+      "saturated_cases": 505,
+      "detectable_cases": 495,
+      "total_cases": 1000,
+      "saturation_inflation_ci95_low_pp": 14.211861,
+      "saturation_inflation_ci95_high_pp": 18.82437
+    },
+    {
+      "engine": "llm-template",
+      "detectable_only_complete_repair": 0.674747,
+      "cohort_wide_complete_repair": 0.839,
+      "saturation_inflation_pp": 16.425253,
+      "detectable_only_effective_repair": 0.826263,
+      "cohort_wide_effective_repair": 0.409,
+      "saturated_cases": 505,
+      "detectable_cases": 495,
+      "total_cases": 1000,
+      "saturation_inflation_ci95_low_pp": 14.211861,
+      "saturation_inflation_ci95_high_pp": 18.82437
+    }
+  ],
+  "generated_at_utc": "2026-06-15T18:04:17.847630+00:00"
+}

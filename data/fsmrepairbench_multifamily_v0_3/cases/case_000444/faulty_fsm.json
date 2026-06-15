@@ -1,0 +1,89 @@
+{
+  "id": "synthetic_8402_3_2__faulty__wrong_initial_state__444046",
+  "name": "Synthetic FSM (custom) (faulty: wrong_initial_state)",
+  "description": "Synthetic FSM generated with seed=8402, states=3, events=2, branching_factor=1, deterministic=True, allow_dead_states=True",
+  "states": [
+    {
+      "id": "s8402_0",
+      "state_output": "out_8402_0",
+      "refusal": false,
+      "quiescence": false
+    },
+    {
+      "id": "s8402_1",
+      "state_output": "out_8402_1",
+      "refusal": false,
+      "quiescence": false
+    },
+    {
+      "id": "s8402_2",
+      "state_output": "out_8402_2",
+      "refusal": false,
+      "quiescence": false
+    }
+  ],
+  "initial_state": "s8402_2",
+  "events": [
+    "e8402_0",
+    "e8402_1"
+  ],
+  "transitions": [
+    {
+      "id": "t8402_1",
+      "source": "s8402_0",
+      "event": "e8402_0",
+      "target": "s8402_1",
+      "guard": null,
+      "action": "act8402_1",
+      "output": null,
+      "timeout": null,
+      "delay": null,
+      "requirements": [],
+      "probability": null,
+      "is_nondeterministic": false,
+      "refusal": false,
+      "quiescence": false,
+      "discrete_time": null
+    },
+    {
+      "id": "t8402_3",
+      "source": "s8402_1",
+      "event": "e8402_1",
+      "target": "s8402_1",
+      "guard": null,
+      "action": "act8402_3",
+      "output": null,
+      "timeout": null,
+      "delay": null,
+      "requirements": [],
+      "probability": null,
+      "is_nondeterministic": false,
+      "refusal": false,
+      "quiescence": false,
+      "discrete_time": null
+    },
+    {
+      "id": "t8402_4",
+      "source": "s8402_2",
+      "event": "e8402_0",
+      "target": "s8402_2",
+      "guard": null,
+      "action": "act8402_4",
+      "output": null,
+      "timeout": null,
+      "delay": null,
+      "requirements": [],
+      "probability": null,
+      "is_nondeterministic": false,
+      "refusal": false,
+      "quiescence": false,
+      "discrete_time": null
+    }
+  ],
+  "variables": {},
+  "parent_fsm_id": "synthetic_8402_3_2",
+  "reference_fsm_id": "synthetic_8402_3_2",
+  "discrete_time_step": null,
+  "semantics_mode": null,
+  "cyclic_metadata": null
+}

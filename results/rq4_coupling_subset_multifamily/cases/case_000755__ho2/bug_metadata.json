@@ -1,0 +1,35 @@
+{
+  "bug_id": "synthetic_14396_3_2__hom__missing_transition__guard_flip__4253",
+  "reference_fsm_id": "synthetic_14396_3_2",
+  "faulty_fsm_id": "synthetic_14396_3_2__faulty__hom__missing_transition__guard_flip__4253",
+  "mutation_operator": "missing_transition,guard_flip",
+  "changed_transition_id": "t14396_4",
+  "description": "Higher-order mutant applying 2 operators: missing_transition, guard_flip",
+  "seed": 4253,
+  "mutation_complexity": null,
+  "mutation_scope": null,
+  "mutation_mode": null,
+  "mutation_order": 2,
+  "component_faults": [
+    {
+      "operator": "missing_transition",
+      "seed": 4253,
+      "bug_id": "synthetic_14396_3_2__missing_transition__4253",
+      "changed_transition_id": "t14396_6",
+      "description": "Removed transition 't14396_6'"
+    },
+    {
+      "operator": "guard_flip",
+      "seed": 5253,
+      "bug_id": "synthetic_14396_3_2__faulty__missing_transition__4253__guard_flip__5253",
+      "changed_transition_id": "t14396_4",
+      "description": "Changed guard of transition 't14396_4' from 'x_14396_3 > 0 and y_14396_3 < 10' to 'not_x_14396_3 > 0 and y_14396_3 < 10'"
+    }
+  ],
+  "is_higher_order": true,
+  "coupled_to_simple_faults": [
+    "synthetic_14396_3_2__missing_transition__4253",
+    "synthetic_14396_3_2__faulty__missing_transition__4253__guard_flip__5253"
+  ],
+  "is_negative_control": false
+}

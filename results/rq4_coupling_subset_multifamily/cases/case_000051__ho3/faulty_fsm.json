@@ -1,0 +1,72 @@
+{
+  "id": "synthetic_1014_3_2__faulty__hom__nondeterminism_intro__guard_flip__missing_transition__58883",
+  "name": "Synthetic FSM (custom) (higher-order: nondeterminism_intro, guard_flip, missing_transition)",
+  "description": "Synthetic FSM generated with seed=1014, states=3, events=2, branching_factor=1, deterministic=False, allow_dead_states=True",
+  "states": [
+    {
+      "id": "s1014_0",
+      "state_output": null,
+      "refusal": false,
+      "quiescence": false
+    },
+    {
+      "id": "s1014_1",
+      "state_output": null,
+      "refusal": false,
+      "quiescence": false
+    },
+    {
+      "id": "s1014_2",
+      "state_output": null,
+      "refusal": false,
+      "quiescence": false
+    }
+  ],
+  "initial_state": "s1014_0",
+  "events": [
+    "e1014_0",
+    "e1014_1"
+  ],
+  "transitions": [
+    {
+      "id": "t1014_1",
+      "source": "s1014_0",
+      "event": "e1014_0",
+      "target": "s1014_1",
+      "guard": null,
+      "action": "act1014_1",
+      "output": null,
+      "timeout": null,
+      "delay": null,
+      "requirements": [],
+      "probability": null,
+      "is_nondeterministic": false,
+      "refusal": false,
+      "quiescence": false,
+      "discrete_time": null
+    },
+    {
+      "id": "t1014_2__nd__58883",
+      "source": "s1014_1",
+      "event": "e1014_0",
+      "target": "s1014_1",
+      "guard": "unexpected_guard",
+      "action": "act1014_2",
+      "output": null,
+      "timeout": null,
+      "delay": null,
+      "requirements": [],
+      "probability": null,
+      "is_nondeterministic": false,
+      "refusal": false,
+      "quiescence": false,
+      "discrete_time": null
+    }
+  ],
+  "variables": {},
+  "parent_fsm_id": "synthetic_1014_3_2",
+  "reference_fsm_id": "synthetic_1014_3_2",
+  "discrete_time_step": null,
+  "semantics_mode": null,
+  "cyclic_metadata": null
+}

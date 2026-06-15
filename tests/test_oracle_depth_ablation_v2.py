@@ -14,9 +14,11 @@ from fsmrepairbench.oracle_depth_ablation import (
     PAIRED_DETECTION_COLUMNS,
     V2_EXPERIMENT,
     V2_PER_CASE_COLUMNS,
+    build_construct_validity_comparison,
     compute_paired_detection_changes,
     run_oracle_depth_ablation,
     score_case_at_depth,
+    write_construct_validity_comparison_exports,
 )
 from fsmrepairbench.oracle_generator import generate_oracle_suite
 from fsmrepairbench.validators import load_fsm_json
@@ -151,3 +153,61 @@ def test_run_oracle_depth_ablation_v2_cli(tmp_path: Path) -> None:
     assert result.exit_code == 0, result.stdout
     assert (out / "paired_detection_changes.csv").is_file()
     assert (out / "coverage_by_depth.csv").is_file()
+
+
+def test_construct_validity_comparison_detects_path_length_increase(tmp_path: Path) -> None:
+    v1_csv = tmp_path / "v1_depth_summary.csv"
+    v2_csv = tmp_path / "v2_depth_summary.csv"
+    v1_csv.write_text(
+        "\n".join(
+            [
+                "oracle_depth,declared_max_steps,case_count,overall_detection_rate,"
+                "detectable_case_ratio,mean_reference_bpr,mean_faulty_bpr,mean_bpr_delta,"
+                "mean_oracle_state_coverage,mean_oracle_transition_coverage,"
+                "mean_oracle_event_coverage,mean_scenario_count,mean_max_scenario_steps,"
+                "mean_max_path_length,max_path_length,skipped_reference_bpr_cases",
+                "shallow,5,200,0.485,0.485,1.0,0.918,0.082,1.0,1.0,1.0,93.17,4.01,4.01,6,0",
+                "medium,12,200,0.485,0.485,1.0,0.918,0.082,1.0,1.0,1.0,93.17,4.01,4.01,6,0",
+                "deep,25,200,0.485,0.485,1.0,0.918,0.082,1.0,1.0,1.0,93.17,4.01,4.01,6,0",
+            ]
+        )
+        + "\n",
+        encoding="utf-8",
+    )
+    v2_csv.write_text(
+        "\n".join(
+            [
+                "oracle_depth,declared_max_steps,case_count,overall_detection_rate,"
+                "detectable_case_ratio,mean_reference_bpr,mean_faulty_bpr,mean_bpr_delta,"
+                "mean_oracle_state_coverage,mean_oracle_transition_coverage,"
+                "mean_oracle_event_coverage,mean_scenario_count,mean_max_scenario_steps,"
+                "mean_max_path_length,max_path_length,skipped_reference_bpr_cases,"
+                "scenario_policy,declared_max_depth,mean_scenario_length,"
+                "median_scenario_length,max_scenario_length,"
+                "detection_gains_vs_shallow,detection_losses_vs_shallow",
+                "shallow,5,200,0.485,0.485,1.0,0.907,0.093,1.0,1.0,1.0,88.88,5.01,5.01,6,0,"
+                "depth-forced,5,4.09,4.0,6,0,0",
+                "medium,12,200,0.485,0.485,1.0,0.874,0.126,1.0,1.0,1.0,97.16,12.0,12.0,12,0,"
+                "depth-forced,12,9.32,9.09,12,0,0",
+                "deep,25,200,0.485,0.485,1.0,0.835,0.165,1.0,1.0,1.0,101.17,25.0,25.0,25,0,"
+                "depth-forced,25,18.51,17.25,25,0,0",
+            ]
+        )
+        + "\n",
+        encoding="utf-8",
+    )
+    rows = build_construct_validity_comparison(v1_csv, v2_csv)
+    assert len(rows) == 3
+    deep = next(row for row in rows if row["oracle_depth"] == "deep")
+    assert float(deep["path_length_increase_v2_over_v1"]) == 20.99
+    assert float(deep["v1_mean_bpr_delta"]) == 0.082
+    assert float(deep["v2_mean_bpr_delta"]) == 0.165
+
+    out_dir = tmp_path / "comparison"
+    csv_path = write_construct_validity_comparison_exports(
+        out_dir,
+        shortest_path_summary=v1_csv,
+        depth_forced_summary=v2_csv,
+    )
+    assert csv_path.is_file()
+    assert (out_dir / "table_depth_construct_validity_comparison.tex").is_file()

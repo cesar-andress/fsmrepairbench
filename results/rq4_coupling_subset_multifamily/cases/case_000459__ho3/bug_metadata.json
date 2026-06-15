@@ -1,0 +1,43 @@
+{
+  "bug_id": "synthetic_8758_3_2__hom__dead_state_intro__guard_strengthen__wrong_initial_state__1252",
+  "reference_fsm_id": "synthetic_8758_3_2",
+  "faulty_fsm_id": "synthetic_8758_3_2__faulty__hom__dead_state_intro__guard_strengthen__wrong_initial_state__1252",
+  "mutation_operator": "dead_state_intro,guard_strengthen,wrong_initial_state",
+  "changed_transition_id": null,
+  "description": "Higher-order mutant applying 3 operators: dead_state_intro, guard_strengthen, wrong_initial_state",
+  "seed": 1252,
+  "mutation_complexity": null,
+  "mutation_scope": null,
+  "mutation_mode": null,
+  "mutation_order": 3,
+  "component_faults": [
+    {
+      "operator": "dead_state_intro",
+      "seed": 1252,
+      "bug_id": "synthetic_8758_3_2__dead_state_intro__1252",
+      "changed_transition_id": null,
+      "description": "Added unreachable state 'dead_1252'"
+    },
+    {
+      "operator": "guard_strengthen",
+      "seed": 2252,
+      "bug_id": "synthetic_8758_3_2__faulty__dead_state_intro__1252__guard_strengthen__2252",
+      "changed_transition_id": "t8758_1",
+      "description": "Strengthened guard on transition 't8758_1'"
+    },
+    {
+      "operator": "wrong_initial_state",
+      "seed": 3252,
+      "bug_id": "synthetic_8758_3_2__faulty__dead_state_intro__1252__faulty__guard_strengthen__2252__wrong_initial_state__3252",
+      "changed_transition_id": null,
+      "description": "Changed initial_state from 's8758_0' to 'dead_1252'"
+    }
+  ],
+  "is_higher_order": true,
+  "coupled_to_simple_faults": [
+    "synthetic_8758_3_2__dead_state_intro__1252",
+    "synthetic_8758_3_2__faulty__dead_state_intro__1252__guard_strengthen__2252",
+    "synthetic_8758_3_2__faulty__dead_state_intro__1252__faulty__guard_strengthen__2252__wrong_initial_state__3252"
+  ],
+  "is_negative_control": false
+}

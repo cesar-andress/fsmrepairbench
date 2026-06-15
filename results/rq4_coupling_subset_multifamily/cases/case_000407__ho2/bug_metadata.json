@@ -1,0 +1,35 @@
+{
+  "bug_id": "synthetic_7773_3_2__hom__wrong_initial_state__wrong_target__38860",
+  "reference_fsm_id": "synthetic_7773_3_2",
+  "faulty_fsm_id": "synthetic_7773_3_2__faulty__hom__wrong_initial_state__wrong_target__38860",
+  "mutation_operator": "wrong_initial_state,wrong_target",
+  "changed_transition_id": "t7773_1",
+  "description": "Higher-order mutant applying 2 operators: wrong_initial_state, wrong_target",
+  "seed": 38860,
+  "mutation_complexity": null,
+  "mutation_scope": null,
+  "mutation_mode": null,
+  "mutation_order": 2,
+  "component_faults": [
+    {
+      "operator": "wrong_initial_state",
+      "seed": 38860,
+      "bug_id": "synthetic_7773_3_2__wrong_initial_state__38860",
+      "changed_transition_id": null,
+      "description": "Changed initial_state from 's7773_0' to 's7773_2'"
+    },
+    {
+      "operator": "wrong_target",
+      "seed": 39860,
+      "bug_id": "synthetic_7773_3_2__faulty__wrong_initial_state__38860__wrong_target__39860",
+      "changed_transition_id": "t7773_1",
+      "description": "Changed target of transition 't7773_1' from 's7773_1' to 's7773_0'"
+    }
+  ],
+  "is_higher_order": true,
+  "coupled_to_simple_faults": [
+    "synthetic_7773_3_2__wrong_initial_state__38860",
+    "synthetic_7773_3_2__faulty__wrong_initial_state__38860__wrong_target__39860"
+  ],
+  "is_negative_control": false
+}

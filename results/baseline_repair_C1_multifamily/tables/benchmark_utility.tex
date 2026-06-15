@@ -1,0 +1,22 @@
+\begin{table}[t]
+\caption{Benchmark utility analysis for C1 engine-specific baselines on the 1{,}000-case \texttt{plain\_fsm}/shallow-oracle cohort. Pairwise Cohen's $h$ and McNemar tests use paired per-case outcomes; detectable-only complete-repair BDI~$=0.772$, utility index~$=0.587$, operator rank stability (mean Kendall $\tau$)~=~0.333, random-pair distinguishability~=~100\%. Takeaway: the benchmark separates the three shipped engines on detectable-only complete and effective repair; cohort-wide partitions inherit oracle-saturation confounds.}
+\label{tab:benchmark-utility}
+\begin{tabular}{@{}llllrrrrl@{}}
+\toprule
+Metric & Partition & Tool A & Tool B & Rate A & Rate B & Cohen's $h$ & Disagree & Distinct? \\
+\midrule
+complete-repair & detectable-only & missing-transition & wrong-target & 76.9\% & 46.0\% & 0.647 & 77.2\% & yes \\
+complete-repair & detectable-only & missing-transition & random & 76.9\% & 22.8\% & 1.141 & 54.0\% & yes \\
+complete-repair & detectable-only & wrong-target & random & 46.0\% & 22.8\% & 0.494 & 23.1\% & yes \\
+complete-repair & cohort-wide & missing-transition & wrong-target & 82.2\% & 50.3\% & 0.694 & 67.1\% & yes \\
+complete-repair & cohort-wide & missing-transition & random & 82.2\% & 32.9\% & 1.049 & 49.3\% & yes \\
+complete-repair & cohort-wide & wrong-target & random & 50.3\% & 32.9\% & 0.355 & 17.8\% & yes \\
+effective-repair & detectable-only & missing-transition & wrong-target & 54.0\% & 23.1\% & 0.647 & 77.2\% & yes \\
+effective-repair & detectable-only & missing-transition & random & 54.0\% & 0.0\% & 1.651 & 54.0\% & yes \\
+effective-repair & detectable-only & wrong-target & random & 23.1\% & 0.0\% & 1.004 & 23.1\% & yes \\
+effective-repair & cohort-wide & missing-transition & wrong-target & 49.5\% & 17.7\% & 0.692 & 67.2\% & yes \\
+effective-repair & cohort-wide & missing-transition & random & 49.5\% & 0.2\% & 1.471 & 49.3\% & yes \\
+effective-repair & cohort-wide & wrong-target & random & 17.7\% & 0.2\% & 0.779 & 17.9\% & yes \\
+\bottomrule
+\end{tabular}
+\end{table}

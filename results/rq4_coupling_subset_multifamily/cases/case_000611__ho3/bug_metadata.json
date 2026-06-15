@@ -1,0 +1,43 @@
+{
+  "bug_id": "synthetic_11645_3_2__hom__guard_weaken__wrong_target__guard_flip__86152",
+  "reference_fsm_id": "synthetic_11645_3_2",
+  "faulty_fsm_id": "synthetic_11645_3_2__faulty__hom__guard_weaken__wrong_target__guard_flip__86152",
+  "mutation_operator": "guard_weaken,wrong_target,guard_flip",
+  "changed_transition_id": "t11645_2",
+  "description": "Higher-order mutant applying 3 operators: guard_weaken, wrong_target, guard_flip",
+  "seed": 86152,
+  "mutation_complexity": null,
+  "mutation_scope": null,
+  "mutation_mode": null,
+  "mutation_order": 3,
+  "component_faults": [
+    {
+      "operator": "guard_weaken",
+      "seed": 86152,
+      "bug_id": "synthetic_11645_3_2__guard_weaken__86152",
+      "changed_transition_id": "t11645_1",
+      "description": "Weakened guard on transition 't11645_1' to 'true'"
+    },
+    {
+      "operator": "wrong_target",
+      "seed": 87152,
+      "bug_id": "synthetic_11645_3_2__faulty__guard_weaken__86152__wrong_target__87152",
+      "changed_transition_id": "t11645_1",
+      "description": "Changed target of transition 't11645_1' from 's11645_1' to 's11645_0'"
+    },
+    {
+      "operator": "guard_flip",
+      "seed": 88152,
+      "bug_id": "synthetic_11645_3_2__faulty__guard_weaken__86152__faulty__wrong_target__87152__guard_flip__88152",
+      "changed_transition_id": "t11645_2",
+      "description": "Changed guard of transition 't11645_2' from 'x_11645_1 > 0 and y_11645_1 < 10' to 'not_x_11645_1 > 0 and y_11645_1 < 10'"
+    }
+  ],
+  "is_higher_order": true,
+  "coupled_to_simple_faults": [
+    "synthetic_11645_3_2__guard_weaken__86152",
+    "synthetic_11645_3_2__faulty__guard_weaken__86152__wrong_target__87152",
+    "synthetic_11645_3_2__faulty__guard_weaken__86152__faulty__wrong_target__87152__guard_flip__88152"
+  ],
+  "is_negative_control": false
+}

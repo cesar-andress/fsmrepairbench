@@ -1,0 +1,43 @@
+{
+  "bug_id": "synthetic_7671_3_2__hom__wrong_initial_state__wrong_event__wrong_source__69166",
+  "reference_fsm_id": "synthetic_7671_3_2",
+  "faulty_fsm_id": "synthetic_7671_3_2__faulty__hom__wrong_initial_state__wrong_event__wrong_source__69166",
+  "mutation_operator": "wrong_initial_state,wrong_event,wrong_source",
+  "changed_transition_id": "t7671_1",
+  "description": "Higher-order mutant applying 3 operators: wrong_initial_state, wrong_event, wrong_source",
+  "seed": 69166,
+  "mutation_complexity": null,
+  "mutation_scope": null,
+  "mutation_mode": null,
+  "mutation_order": 3,
+  "component_faults": [
+    {
+      "operator": "wrong_initial_state",
+      "seed": 69166,
+      "bug_id": "synthetic_7671_3_2__wrong_initial_state__69166",
+      "changed_transition_id": null,
+      "description": "Changed initial_state from 's7671_0' to 's7671_2'"
+    },
+    {
+      "operator": "wrong_event",
+      "seed": 70166,
+      "bug_id": "synthetic_7671_3_2__faulty__wrong_initial_state__69166__wrong_event__70166",
+      "changed_transition_id": "t7671_1",
+      "description": "Changed event of transition 't7671_1' from 'e7671_1' to 'e7671_0'"
+    },
+    {
+      "operator": "wrong_source",
+      "seed": 71166,
+      "bug_id": "synthetic_7671_3_2__faulty__wrong_initial_state__69166__faulty__wrong_event__70166__wrong_source__71166",
+      "changed_transition_id": "t7671_1",
+      "description": "Changed source of transition 't7671_1' from 's7671_0' to 's7671_2'"
+    }
+  ],
+  "is_higher_order": true,
+  "coupled_to_simple_faults": [
+    "synthetic_7671_3_2__wrong_initial_state__69166",
+    "synthetic_7671_3_2__faulty__wrong_initial_state__69166__wrong_event__70166",
+    "synthetic_7671_3_2__faulty__wrong_initial_state__69166__faulty__wrong_event__70166__wrong_source__71166"
+  ],
+  "is_negative_control": false
+}

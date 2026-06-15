@@ -1,0 +1,43 @@
+{
+  "bug_id": "synthetic_16728_3_2__hom__dead_state_intro__wrong_target__guard_flip__23927",
+  "reference_fsm_id": "synthetic_16728_3_2",
+  "faulty_fsm_id": "synthetic_16728_3_2__faulty__hom__dead_state_intro__wrong_target__guard_flip__23927",
+  "mutation_operator": "dead_state_intro,wrong_target,guard_flip",
+  "changed_transition_id": "t16728_2",
+  "description": "Higher-order mutant applying 3 operators: dead_state_intro, wrong_target, guard_flip",
+  "seed": 23927,
+  "mutation_complexity": null,
+  "mutation_scope": null,
+  "mutation_mode": null,
+  "mutation_order": 3,
+  "component_faults": [
+    {
+      "operator": "dead_state_intro",
+      "seed": 23927,
+      "bug_id": "synthetic_16728_3_2__dead_state_intro__23927",
+      "changed_transition_id": null,
+      "description": "Added unreachable state 'dead_23927'"
+    },
+    {
+      "operator": "wrong_target",
+      "seed": 24927,
+      "bug_id": "synthetic_16728_3_2__faulty__dead_state_intro__23927__wrong_target__24927",
+      "changed_transition_id": "t16728_1",
+      "description": "Changed target of transition 't16728_1' from 's16728_1' to 'dead_23927'"
+    },
+    {
+      "operator": "guard_flip",
+      "seed": 25927,
+      "bug_id": "synthetic_16728_3_2__faulty__dead_state_intro__23927__faulty__wrong_target__24927__guard_flip__25927",
+      "changed_transition_id": "t16728_2",
+      "description": "Added guard 'unexpected_guard' to transition 't16728_2'"
+    }
+  ],
+  "is_higher_order": true,
+  "coupled_to_simple_faults": [
+    "synthetic_16728_3_2__dead_state_intro__23927",
+    "synthetic_16728_3_2__faulty__dead_state_intro__23927__wrong_target__24927",
+    "synthetic_16728_3_2__faulty__dead_state_intro__23927__faulty__wrong_target__24927__guard_flip__25927"
+  ],
+  "is_negative_control": false
+}

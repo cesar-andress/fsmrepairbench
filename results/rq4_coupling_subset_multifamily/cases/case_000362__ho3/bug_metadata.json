@@ -1,0 +1,43 @@
+{
+  "bug_id": "synthetic_6907_3_2__hom__wrong_target__wrong_source__guard_weaken__67966",
+  "reference_fsm_id": "synthetic_6907_3_2",
+  "faulty_fsm_id": "synthetic_6907_3_2__faulty__hom__wrong_target__wrong_source__guard_weaken__67966",
+  "mutation_operator": "wrong_target,wrong_source,guard_weaken",
+  "changed_transition_id": "t6907_6",
+  "description": "Higher-order mutant applying 3 operators: wrong_target, wrong_source, guard_weaken",
+  "seed": 67966,
+  "mutation_complexity": null,
+  "mutation_scope": null,
+  "mutation_mode": null,
+  "mutation_order": 3,
+  "component_faults": [
+    {
+      "operator": "wrong_target",
+      "seed": 67966,
+      "bug_id": "synthetic_6907_3_2__wrong_target__67966",
+      "changed_transition_id": "t6907_7",
+      "description": "Changed target of transition 't6907_7' from 's6907_2' to 's6907_0'"
+    },
+    {
+      "operator": "wrong_source",
+      "seed": 68966,
+      "bug_id": "synthetic_6907_3_2__faulty__wrong_target__67966__wrong_source__68966",
+      "changed_transition_id": "t6907_5",
+      "description": "Changed source of transition 't6907_5' from 's6907_1' to 's6907_2'"
+    },
+    {
+      "operator": "guard_weaken",
+      "seed": 69966,
+      "bug_id": "synthetic_6907_3_2__faulty__wrong_target__67966__faulty__wrong_source__68966__guard_weaken__69966",
+      "changed_transition_id": "t6907_6",
+      "description": "Weakened guard on transition 't6907_6' to 'true'"
+    }
+  ],
+  "is_higher_order": true,
+  "coupled_to_simple_faults": [
+    "synthetic_6907_3_2__wrong_target__67966",
+    "synthetic_6907_3_2__faulty__wrong_target__67966__wrong_source__68966",
+    "synthetic_6907_3_2__faulty__wrong_target__67966__faulty__wrong_source__68966__guard_weaken__69966"
+  ],
+  "is_negative_control": false
+}

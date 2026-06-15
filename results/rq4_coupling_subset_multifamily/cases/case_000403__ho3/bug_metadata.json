@@ -1,0 +1,43 @@
+{
+  "bug_id": "synthetic_7705_3_2__hom__wrong_initial_state__guard_flip__missing_transition__66859",
+  "reference_fsm_id": "synthetic_7705_3_2",
+  "faulty_fsm_id": "synthetic_7705_3_2__faulty__hom__wrong_initial_state__guard_flip__missing_transition__66859",
+  "mutation_operator": "wrong_initial_state,guard_flip,missing_transition",
+  "changed_transition_id": "t7705_1",
+  "description": "Higher-order mutant applying 3 operators: wrong_initial_state, guard_flip, missing_transition",
+  "seed": 66859,
+  "mutation_complexity": null,
+  "mutation_scope": null,
+  "mutation_mode": null,
+  "mutation_order": 3,
+  "component_faults": [
+    {
+      "operator": "wrong_initial_state",
+      "seed": 66859,
+      "bug_id": "synthetic_7705_3_2__wrong_initial_state__66859",
+      "changed_transition_id": null,
+      "description": "Changed initial_state from 's7705_0' to 's7705_1'"
+    },
+    {
+      "operator": "guard_flip",
+      "seed": 67859,
+      "bug_id": "synthetic_7705_3_2__faulty__wrong_initial_state__66859__guard_flip__67859",
+      "changed_transition_id": "t7705_1",
+      "description": "Added guard 'unexpected_guard' to transition 't7705_1'"
+    },
+    {
+      "operator": "missing_transition",
+      "seed": 68859,
+      "bug_id": "synthetic_7705_3_2__faulty__wrong_initial_state__66859__faulty__guard_flip__67859__missing_transition__68859",
+      "changed_transition_id": "t7705_1",
+      "description": "Removed transition 't7705_1'"
+    }
+  ],
+  "is_higher_order": true,
+  "coupled_to_simple_faults": [
+    "synthetic_7705_3_2__wrong_initial_state__66859",
+    "synthetic_7705_3_2__faulty__wrong_initial_state__66859__guard_flip__67859",
+    "synthetic_7705_3_2__faulty__wrong_initial_state__66859__faulty__guard_flip__67859__missing_transition__68859"
+  ],
+  "is_negative_control": false
+}

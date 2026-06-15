@@ -1,0 +1,35 @@
+{
+  "bug_id": "synthetic_5939_3_2__hom__duplicate_transition__wrong_initial_state__29065",
+  "reference_fsm_id": "synthetic_5939_3_2",
+  "faulty_fsm_id": "synthetic_5939_3_2__faulty__hom__duplicate_transition__wrong_initial_state__29065",
+  "mutation_operator": "duplicate_transition,wrong_initial_state",
+  "changed_transition_id": null,
+  "description": "Higher-order mutant applying 2 operators: duplicate_transition, wrong_initial_state",
+  "seed": 29065,
+  "mutation_complexity": null,
+  "mutation_scope": null,
+  "mutation_mode": null,
+  "mutation_order": 2,
+  "component_faults": [
+    {
+      "operator": "duplicate_transition",
+      "seed": 29065,
+      "bug_id": "synthetic_5939_3_2__duplicate_transition__29065",
+      "changed_transition_id": "t5939_11",
+      "description": "Duplicated transition 't5939_11' as 't5939_11__dup__29065'"
+    },
+    {
+      "operator": "wrong_initial_state",
+      "seed": 30065,
+      "bug_id": "synthetic_5939_3_2__faulty__duplicate_transition__29065__wrong_initial_state__30065",
+      "changed_transition_id": null,
+      "description": "Changed initial_state from 's5939_0' to 's5939_2'"
+    }
+  ],
+  "is_higher_order": true,
+  "coupled_to_simple_faults": [
+    "synthetic_5939_3_2__duplicate_transition__29065",
+    "synthetic_5939_3_2__faulty__duplicate_transition__29065__wrong_initial_state__30065"
+  ],
+  "is_negative_control": false
+}

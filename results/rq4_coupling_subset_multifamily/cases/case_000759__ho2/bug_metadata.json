@@ -1,0 +1,35 @@
+{
+  "bug_id": "synthetic_14464_3_2__hom__missing_transition__wrong_initial_state__60970",
+  "reference_fsm_id": "synthetic_14464_3_2",
+  "faulty_fsm_id": "synthetic_14464_3_2__faulty__hom__missing_transition__wrong_initial_state__60970",
+  "mutation_operator": "missing_transition,wrong_initial_state",
+  "changed_transition_id": null,
+  "description": "Higher-order mutant applying 2 operators: missing_transition, wrong_initial_state",
+  "seed": 60970,
+  "mutation_complexity": null,
+  "mutation_scope": null,
+  "mutation_mode": null,
+  "mutation_order": 2,
+  "component_faults": [
+    {
+      "operator": "missing_transition",
+      "seed": 60970,
+      "bug_id": "synthetic_14464_3_2__missing_transition__60970",
+      "changed_transition_id": "t14464_3",
+      "description": "Removed transition 't14464_3'"
+    },
+    {
+      "operator": "wrong_initial_state",
+      "seed": 61970,
+      "bug_id": "synthetic_14464_3_2__faulty__missing_transition__60970__wrong_initial_state__61970",
+      "changed_transition_id": null,
+      "description": "Changed initial_state from 's14464_0' to 's14464_2'"
+    }
+  ],
+  "is_higher_order": true,
+  "coupled_to_simple_faults": [
+    "synthetic_14464_3_2__missing_transition__60970",
+    "synthetic_14464_3_2__faulty__missing_transition__60970__wrong_initial_state__61970"
+  ],
+  "is_negative_control": false
+}

@@ -1,0 +1,35 @@
+{
+  "bug_id": "synthetic_15364_3_2__hom__timeout_corruption__guard_weaken__70012",
+  "reference_fsm_id": "synthetic_15364_3_2",
+  "faulty_fsm_id": "synthetic_15364_3_2__faulty__hom__timeout_corruption__guard_weaken__70012",
+  "mutation_operator": "timeout_corruption,guard_weaken",
+  "changed_transition_id": "t15364_2",
+  "description": "Higher-order mutant applying 2 operators: timeout_corruption, guard_weaken",
+  "seed": 70012,
+  "mutation_complexity": null,
+  "mutation_scope": null,
+  "mutation_mode": null,
+  "mutation_order": 2,
+  "component_faults": [
+    {
+      "operator": "timeout_corruption",
+      "seed": 70012,
+      "bug_id": "synthetic_15364_3_2__timeout_corruption__70012",
+      "changed_transition_id": "t15364_2",
+      "description": "Corrupted timeout on transition 't15364_2' to 4.0"
+    },
+    {
+      "operator": "guard_weaken",
+      "seed": 71012,
+      "bug_id": "synthetic_15364_3_2__faulty__timeout_corruption__70012__guard_weaken__71012",
+      "changed_transition_id": "t15364_2",
+      "description": "Weakened guard on transition 't15364_2' to 'true'"
+    }
+  ],
+  "is_higher_order": true,
+  "coupled_to_simple_faults": [
+    "synthetic_15364_3_2__timeout_corruption__70012",
+    "synthetic_15364_3_2__faulty__timeout_corruption__70012__guard_weaken__71012"
+  ],
+  "is_negative_control": false
+}

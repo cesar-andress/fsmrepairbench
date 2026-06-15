@@ -1,0 +1,43 @@
+{
+  "bug_id": "synthetic_2016_3_2__hom__wrong_source__wrong_initial_state__wrong_target__61998",
+  "reference_fsm_id": "synthetic_2016_3_2",
+  "faulty_fsm_id": "synthetic_2016_3_2__faulty__hom__wrong_source__wrong_initial_state__wrong_target__61998",
+  "mutation_operator": "wrong_source,wrong_initial_state,wrong_target",
+  "changed_transition_id": "t2016_hub_1",
+  "description": "Higher-order mutant applying 3 operators: wrong_source, wrong_initial_state, wrong_target",
+  "seed": 61998,
+  "mutation_complexity": null,
+  "mutation_scope": null,
+  "mutation_mode": null,
+  "mutation_order": 3,
+  "component_faults": [
+    {
+      "operator": "wrong_source",
+      "seed": 61998,
+      "bug_id": "synthetic_2016_3_2__wrong_source__61998",
+      "changed_transition_id": "t2016_hub_1",
+      "description": "Changed source of transition 't2016_hub_1' from 's2016_0' to 's2016_2'"
+    },
+    {
+      "operator": "wrong_initial_state",
+      "seed": 62998,
+      "bug_id": "synthetic_2016_3_2__faulty__wrong_source__61998__wrong_initial_state__62998",
+      "changed_transition_id": null,
+      "description": "Changed initial_state from 's2016_0' to 's2016_2'"
+    },
+    {
+      "operator": "wrong_target",
+      "seed": 63998,
+      "bug_id": "synthetic_2016_3_2__faulty__wrong_source__61998__faulty__wrong_initial_state__62998__wrong_target__63998",
+      "changed_transition_id": "t2016_hub_1",
+      "description": "Changed target of transition 't2016_hub_1' from 's2016_1' to 's2016_2'"
+    }
+  ],
+  "is_higher_order": true,
+  "coupled_to_simple_faults": [
+    "synthetic_2016_3_2__wrong_source__61998",
+    "synthetic_2016_3_2__faulty__wrong_source__61998__wrong_initial_state__62998",
+    "synthetic_2016_3_2__faulty__wrong_source__61998__faulty__wrong_initial_state__62998__wrong_target__63998"
+  ],
+  "is_negative_control": false
+}

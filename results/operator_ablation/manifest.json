@@ -1,0 +1,42 @@
+{
+  "experiment": "mutation-operator-ablation-1k",
+  "release_label": "v0.2.0-analysis",
+  "campaign_label": "C1-baseline-repair",
+  "zenodo_doi": "10.5281/zenodo.20602528",
+  "dataset_dir": "/home/cesar/papers/fsmrepairbench/fsmrepairbench/data/fsmrepairbench_1k",
+  "cohort_path": "/home/cesar/papers/fsmrepairbench/fsmrepairbench/data/fsmrepairbench_1k/analysis_cohort_1k.txt",
+  "cohort_sha256": "c03c4d5981259510bccfced987c5175f28058d7bdccc164e7ce2ba22410f04f8",
+  "repair_csv": "/home/cesar/papers/fsmrepairbench/paper1/results/baseline_repair_C1/per_case_results.csv",
+  "repair_tool": "baseline_missing_transition",
+  "baseline": {
+    "remaining_cases": 1000,
+    "detectable_cases": 495,
+    "detection_rate": 0.495,
+    "mean_faulty_bpr": 0.916578,
+    "mean_bpr_delta": 0.083422,
+    "complete_repair_rate": 0.844,
+    "effective_repair_rate": 0.386,
+    "complete_repair_rate_detectable": 0.684848,
+    "effective_repair_rate_detectable": 0.779798,
+    "mean_repair_delta_bpr": 0.052122
+  },
+  "operator_count": 17,
+  "output_files": [
+    "figures/ablation_impact_heatmap.png",
+    "figures/delta_detection_by_ablated_operator.png",
+    "figures/delta_repair_detectable_by_ablated_operator.png",
+    "figures/repair_difficulty_contribution.png",
+    "manifest.json",
+    "operator_ablation_impact.csv",
+    "operator_ablation_summary.csv",
+    "operator_contribution.csv",
+    "report.md",
+    "tables/table_ablation_impact.tex",
+    "tables/table_operator_contribution.tex"
+  ],
+  "regeneration_commands": [
+    "python ../paper1/scripts/generate_operator_ablation_outputs.py"
+  ],
+  "git_commit_hash": "1efae10cfe9dded2dbd4b52258bc98f18a624fa1",
+  "generated_at": "2026-06-15T17:52:59.366236+00:00"
+}

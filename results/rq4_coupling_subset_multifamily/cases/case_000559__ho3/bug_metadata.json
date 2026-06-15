@@ -1,0 +1,43 @@
+{
+  "bug_id": "synthetic_10660_3_2__hom__unreachable_state_intro__wrong_target__guard_flip__27922",
+  "reference_fsm_id": "synthetic_10660_3_2",
+  "faulty_fsm_id": "synthetic_10660_3_2__faulty__hom__unreachable_state_intro__wrong_target__guard_flip__27922",
+  "mutation_operator": "unreachable_state_intro,wrong_target,guard_flip",
+  "changed_transition_id": "t10660_2",
+  "description": "Higher-order mutant applying 3 operators: unreachable_state_intro, wrong_target, guard_flip",
+  "seed": 27922,
+  "mutation_complexity": null,
+  "mutation_scope": null,
+  "mutation_mode": null,
+  "mutation_order": 3,
+  "component_faults": [
+    {
+      "operator": "unreachable_state_intro",
+      "seed": 27922,
+      "bug_id": "synthetic_10660_3_2__unreachable_state_intro__27922",
+      "changed_transition_id": null,
+      "description": "Added unreachable state 'unreachable_27922'"
+    },
+    {
+      "operator": "wrong_target",
+      "seed": 28922,
+      "bug_id": "synthetic_10660_3_2__faulty__unreachable_state_intro__27922__wrong_target__28922",
+      "changed_transition_id": "t10660_1",
+      "description": "Changed target of transition 't10660_1' from 's10660_1' to 's10660_2'"
+    },
+    {
+      "operator": "guard_flip",
+      "seed": 29922,
+      "bug_id": "synthetic_10660_3_2__faulty__unreachable_state_intro__27922__faulty__wrong_target__28922__guard_flip__29922",
+      "changed_transition_id": "t10660_2",
+      "description": "Added guard 'unexpected_guard' to transition 't10660_2'"
+    }
+  ],
+  "is_higher_order": true,
+  "coupled_to_simple_faults": [
+    "synthetic_10660_3_2__unreachable_state_intro__27922",
+    "synthetic_10660_3_2__faulty__unreachable_state_intro__27922__wrong_target__28922",
+    "synthetic_10660_3_2__faulty__unreachable_state_intro__27922__faulty__wrong_target__28922__guard_flip__29922"
+  ],
+  "is_negative_control": false
+}

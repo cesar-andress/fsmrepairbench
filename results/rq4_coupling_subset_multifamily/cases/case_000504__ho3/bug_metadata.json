@@ -1,0 +1,43 @@
+{
+  "bug_id": "synthetic_9624_3_2__hom__wrong_target__wrong_event__wrong_source__32708",
+  "reference_fsm_id": "synthetic_9624_3_2",
+  "faulty_fsm_id": "synthetic_9624_3_2__faulty__hom__wrong_target__wrong_event__wrong_source__32708",
+  "mutation_operator": "wrong_target,wrong_event,wrong_source",
+  "changed_transition_id": "t9624_hub_1",
+  "description": "Higher-order mutant applying 3 operators: wrong_target, wrong_event, wrong_source",
+  "seed": 32708,
+  "mutation_complexity": null,
+  "mutation_scope": null,
+  "mutation_mode": null,
+  "mutation_order": 3,
+  "component_faults": [
+    {
+      "operator": "wrong_target",
+      "seed": 32708,
+      "bug_id": "synthetic_9624_3_2__wrong_target__32708",
+      "changed_transition_id": "t9624_hub_1",
+      "description": "Changed target of transition 't9624_hub_1' from 's9624_1' to 's9624_2'"
+    },
+    {
+      "operator": "wrong_event",
+      "seed": 33708,
+      "bug_id": "synthetic_9624_3_2__faulty__wrong_target__32708__wrong_event__33708",
+      "changed_transition_id": "t9624_hub_1",
+      "description": "Changed event of transition 't9624_hub_1' from 'e9624_1' to 'e9624_0'"
+    },
+    {
+      "operator": "wrong_source",
+      "seed": 34708,
+      "bug_id": "synthetic_9624_3_2__faulty__wrong_target__32708__faulty__wrong_event__33708__wrong_source__34708",
+      "changed_transition_id": "t9624_hub_1",
+      "description": "Changed source of transition 't9624_hub_1' from 's9624_0' to 's9624_1'"
+    }
+  ],
+  "is_higher_order": true,
+  "coupled_to_simple_faults": [
+    "synthetic_9624_3_2__wrong_target__32708",
+    "synthetic_9624_3_2__faulty__wrong_target__32708__wrong_event__33708",
+    "synthetic_9624_3_2__faulty__wrong_target__32708__faulty__wrong_event__33708__wrong_source__34708"
+  ],
+  "is_negative_control": false
+}

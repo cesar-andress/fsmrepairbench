@@ -8,20 +8,29 @@ import random
 import shutil
 import statistics
 import tempfile
-from collections.abc import Sequence
+from collections.abc import Mapping, Sequence
 from dataclasses import dataclass
 from datetime import UTC, datetime
 from pathlib import Path
 from typing import Any
 
+from fsmrepairbench.benchmark_utility import (
+    C1_DETERMINISTIC_TOOL_IDS,
+    C1_SEEDED_TOOL_IDS,
+    C1_TOOL_IDS,
+    TOOL_LABELS,
+)
 from fsmrepairbench.experiments import discover_experiment_cases
 from fsmrepairbench.freeze import get_git_commit, sha256_file
 from fsmrepairbench.statistics import (
     ConfidenceIntervalExportResult,
     append_ci_section_to_report,
     bootstrap_ci as case_bootstrap_ci,
-    compute_c1_confidence_intervals,
+    C1_BASELINE_TOOL_IDS,
+    compute_c1_detectable_confidence_intervals,
+    compute_c1_paired_confidence_intervals,
     write_confidence_interval_exports,
+    write_paired_confidence_interval_exports,
 )
 from fsmrepairbench.tool_runner import (
     ToolRunSummaryRow,
@@ -52,18 +61,28 @@ C1_MANIFEST_REQUIRED_FIELDS: tuple[str, ...] = (
     "number_of_cases",
     "tool_names",
     "tool_config_paths",
+    "engine_config",
+    "seeds",
     "workers",
     "timestamp_utc",
     "git_commit_hash",
     "output_files",
     "regeneration_commands",
 )
-DETERMINISTIC_TOOL_IDS: tuple[str, ...] = (
-    "baseline_missing_transition",
-    "baseline_wrong_target",
-)
+DETERMINISTIC_TOOL_IDS: tuple[str, ...] = C1_DETERMINISTIC_TOOL_IDS
 RANDOM_TOOL_ID = "baseline_random"
+SEEDED_TOOL_IDS: tuple[str, ...] = C1_SEEDED_TOOL_IDS
 DEFAULT_RANDOM_SEEDS: tuple[int, ...] = tuple(range(10))
+ENGINE_MULTISEED_METRICS: tuple[str, ...] = (
+    "detection_rate",
+    "complete_repair_rate",
+    "effective_repair_rate",
+    "mean_delta_bpr",
+)
+ENGINE_PARTITIONS: tuple[str, ...] = ("cohort_wide", "detectable_only")
+ENGINE_MULTISEED_SUMMARY_BASENAME = "multiseed_engine_summary"
+ENGINE_MULTISEED_PER_SEED_BASENAME = "engine_multiseed_per_seed"
+ENGINE_MULTISEED_TEX_BASENAME = "table_engine_multiseed"
 BOOTSTRAP_SEED = 42
 BOOTSTRAP_RESAMPLES = 10_000
 BOOTSTRAP_CI = 0.95
@@ -190,6 +209,9 @@ def write_c1_confidence_interval_exports(
     dataset_dir: Path,
     cohort_file: Path,
     paper_export_dir: Path | None = None,
+    tool_ids: Sequence[str] | None = None,
+    campaign: str = CAMPAIGN_LABEL,
+    include_paired: bool = True,
 ) -> ConfidenceIntervalExportResult | None:
     """Write case-bootstrap CIs for C1 baseline repair metrics."""
     cohort_ids = set(load_cohort_manifest(cohort_file))
@@ -205,20 +227,32 @@ def write_c1_confidence_interval_exports(
         }
     else:
         detectable_ids = _detectable_case_ids(dataset_dir, cohort_ids)
-    ci_rows = compute_c1_confidence_intervals(
+    ci_rows = compute_c1_detectable_confidence_intervals(
         tool_rows,
         detectable_case_ids=detectable_ids,
-        tool_id="baseline_missing_transition",
+        tool_ids=tool_ids or list(C1_BASELINE_TOOL_IDS),
     )
     if not ci_rows:
         return None
 
     result = write_confidence_interval_exports(
         raw_runs_dir,
-        campaign="C1-baseline-repair",
+        campaign=campaign,
         rows=ci_rows,
         paper_export_dir=paper_export_dir,
     )
+    if include_paired:
+        paired_rows = compute_c1_paired_confidence_intervals(
+            tool_rows,
+            detectable_case_ids=detectable_ids,
+        )
+        if paired_rows:
+            write_paired_confidence_interval_exports(
+                raw_runs_dir,
+                campaign=campaign,
+                rows=paired_rows,
+                paper_export_dir=paper_export_dir,
+            )
     append_ci_section_to_report(raw_runs_dir / "report.md", ci_rows)
     if paper_export_dir is not None:
         append_ci_section_to_report(paper_export_dir / "report.md", ci_rows)
@@ -294,16 +328,17 @@ def compute_multi_seed_statistics(
     return stats
 
 
-def run_random_baseline_for_seed(
+def run_seeded_baseline_for_seed(
     dataset_dir: Path,
     tools_dir: Path,
     case_ids: set[str],
+    tool_id: str,
     seed: int,
     *,
     workers: int = 1,
     output_dir: Path | None = None,
 ) -> list[ToolRunSummaryRow]:
-    """Run the random baseline on *case_ids* using *seed*."""
+    """Run one seeded baseline engine on *case_ids* using *seed*."""
     if workers < 1:
         msg = "workers must be at least 1"
         raise BaselineRepairCampaignError(msg)
@@ -316,8 +351,12 @@ def run_random_baseline_for_seed(
         msg = f"Cohort references missing cases: {', '.join(missing[:5])}"
         raise BaselineRepairCampaignError(msg)
 
-    random_config_path = tools_dir / "baseline_random.yaml"
-    tool = load_tool_config(random_config_path)
+    config_path = tools_dir / f"{tool_id}.yaml"
+    if not config_path.is_file():
+        msg = f"Missing tool config for {tool_id}: {config_path}"
+        raise BaselineRepairCampaignError(msg)
+
+    tool = load_tool_config(config_path)
     tool = tool.model_copy(
         update={"environment": {**tool.environment, "baseline_seed": str(seed)}},
     )
@@ -361,6 +400,433 @@ def run_random_baseline_for_seed(
     return rows
 
 
+def run_random_baseline_for_seed(
+    dataset_dir: Path,
+    tools_dir: Path,
+    case_ids: set[str],
+    seed: int,
+    *,
+    workers: int = 1,
+    output_dir: Path | None = None,
+) -> list[ToolRunSummaryRow]:
+    """Run the random baseline on *case_ids* using *seed*."""
+    return run_seeded_baseline_for_seed(
+        dataset_dir,
+        tools_dir,
+        case_ids,
+        RANDOM_TOOL_ID,
+        seed,
+        workers=workers,
+        output_dir=output_dir,
+    )
+
+
+def _oracle_detected(row: ToolRunSummaryRow) -> bool:
+    return row.initial_bpr < 1.0 - 1e-9
+
+
+def _partition_rows(
+    rows: Sequence[ToolRunSummaryRow],
+    partition: str,
+) -> list[ToolRunSummaryRow]:
+    if partition == "detectable_only":
+        return [row for row in rows if _oracle_detected(row)]
+    return list(rows)
+
+
+def summarize_engine_seed_metrics(
+    rows: Sequence[ToolRunSummaryRow],
+    *,
+    seed: int | None = None,
+) -> dict[str, float | int]:
+    """Aggregate cohort-level metrics for one engine seed run."""
+    completed = [row for row in rows if row.status == "completed"]
+    metrics: dict[str, float | int] = {"cases": len(completed)}
+    if seed is not None:
+        metrics["seed"] = seed
+
+    for partition in ENGINE_PARTITIONS:
+        subset = _partition_rows(completed, partition)
+        prefix = f"{partition}_"
+        if not subset:
+            for metric in ENGINE_MULTISEED_METRICS:
+                metrics[f"{prefix}{metric}"] = 0.0
+            metrics[f"{prefix}n_cases"] = 0
+            continue
+
+        metrics[f"{prefix}n_cases"] = len(subset)
+        metrics[f"{prefix}detection_rate"] = round(
+            sum(1 for row in subset if _oracle_detected(row)) / len(subset),
+            6,
+        )
+        metrics[f"{prefix}complete_repair_rate"] = round(
+            sum(1 for row in subset if row.complete_repair) / len(subset),
+            6,
+        )
+        metrics[f"{prefix}effective_repair_rate"] = round(
+            sum(1 for row in subset if row.effective_repair) / len(subset),
+            6,
+        )
+        metrics[f"{prefix}mean_delta_bpr"] = round(
+            statistics.mean(row.delta_bpr for row in subset),
+            6,
+        )
+
+    legacy_completed = completed
+    metrics.update(
+        {
+            "complete_repair_rate": round(
+                sum(1 for row in legacy_completed if row.complete_repair) / len(legacy_completed),
+                6,
+            )
+            if legacy_completed
+            else 0.0,
+            "effective_repair_rate": round(
+                sum(1 for row in legacy_completed if row.effective_repair) / len(legacy_completed),
+                6,
+            )
+            if legacy_completed
+            else 0.0,
+            "mean_delta_bpr": round(
+                statistics.mean(row.delta_bpr for row in legacy_completed),
+                6,
+            )
+            if legacy_completed
+            else 0.0,
+            "regression_rate": round(
+                sum(1 for row in legacy_completed if row.regression) / len(legacy_completed),
+                6,
+            )
+            if legacy_completed
+            else 0.0,
+        }
+    )
+    return metrics
+
+
+def _metric_values_from_seed_rows(
+    per_seed: Sequence[Mapping[str, float | int]],
+    *,
+    partition: str,
+    metric: str,
+) -> list[float]:
+    key = f"{partition}_{metric}"
+    return [float(row[key]) for row in per_seed if key in row]
+
+
+def aggregate_engine_multiseed_statistics(
+    per_seed: Sequence[Mapping[str, float | int]],
+    *,
+    bootstrap_resamples: int = BOOTSTRAP_RESAMPLES,
+    bootstrap_seed: int = BOOTSTRAP_SEED,
+) -> dict[str, dict[str, float]]:
+    """Compute mean/std/min/max and bootstrap 95% CI for each partition metric."""
+    rng = random.Random(bootstrap_seed)
+    stats: dict[str, dict[str, float]] = {}
+    for partition in ENGINE_PARTITIONS:
+        for metric in ENGINE_MULTISEED_METRICS:
+            values = _metric_values_from_seed_rows(
+                per_seed,
+                partition=partition,
+                metric=metric,
+            )
+            if not values:
+                continue
+            low, high = bootstrap_ci(
+                values,
+                n_resamples=bootstrap_resamples,
+                ci=BOOTSTRAP_CI,
+                rng=rng,
+            )
+            key = f"{partition}::{metric}"
+            stats[key] = {
+                "mean": round(statistics.mean(values), 6),
+                "std": round(statistics.pstdev(values), 6) if len(values) > 1 else 0.0,
+                "min": round(min(values), 6),
+                "max": round(max(values), 6),
+                "ci95_low": round(low, 6),
+                "ci95_high": round(high, 6),
+            }
+    return stats
+
+
+def run_multi_seed_engine_analysis(
+    dataset_dir: Path,
+    tools_dir: Path,
+    case_ids: set[str],
+    tool_id: str,
+    seeds: Sequence[int],
+    *,
+    workers: int = 1,
+    multi_seed_dir: Path | None = None,
+) -> tuple[list[dict[str, float | int]], dict[str, dict[str, float]]]:
+    """Run one seeded engine for each seed and return per-seed metrics plus aggregates."""
+    per_seed: list[dict[str, float | int]] = []
+    for seed in seeds:
+        seed_dir = None
+        if multi_seed_dir is not None:
+            seed_dir = multi_seed_dir / tool_id / f"seed_{seed:04d}"
+        rows = run_seeded_baseline_for_seed(
+            dataset_dir,
+            tools_dir,
+            case_ids,
+            tool_id,
+            seed,
+            workers=workers,
+            output_dir=seed_dir,
+        )
+        metrics = summarize_engine_seed_metrics(rows, seed=seed)
+        metrics["tool_id"] = tool_id
+        per_seed.append(metrics)
+    aggregate = aggregate_engine_multiseed_statistics(per_seed)
+    return per_seed, aggregate
+
+
+def deterministic_engine_multiseed_rows(
+    enriched_rows: Sequence[Mapping[str, Any]],
+    *,
+    tool_id: str,
+) -> list[dict[str, str | int | float]]:
+    """Build single-run engine summary rows for deterministic baselines."""
+    tool_rows = [row for row in enriched_rows if str(row.get("tool_id")) == tool_id]
+    rows: list[dict[str, str | int | float]] = []
+    for partition in ENGINE_PARTITIONS:
+        if partition == "detectable_only":
+            subset = [row for row in tool_rows if row.get("oracle_detected")]
+        else:
+            subset = list(tool_rows)
+        if not subset:
+            continue
+        n_cases = len(subset)
+        detection_rate = round(
+            sum(1 for row in subset if row.get("oracle_detected")) / n_cases,
+            6,
+        )
+        complete_rate = round(
+            sum(1 for row in subset if row.get("complete_repair")) / n_cases,
+            6,
+        )
+        effective_rate = round(
+            sum(1 for row in subset if row.get("effective_repair")) / n_cases,
+            6,
+        )
+        mean_delta = round(
+            statistics.mean(float(row["delta_bpr"]) for row in subset),
+            6,
+        )
+        for metric, value in (
+            ("detection_rate", detection_rate),
+            ("complete_repair_rate", complete_rate),
+            ("effective_repair_rate", effective_rate),
+            ("mean_delta_bpr", mean_delta),
+        ):
+            rows.append(
+                {
+                    "tool_id": tool_id,
+                    "tool_label": TOOL_LABELS.get(tool_id, tool_id),
+                    "partition": partition,
+                    "metric": metric,
+                    "n_cases": n_cases,
+                    "mean": value,
+                    "std": 0.0,
+                    "min": value,
+                    "max": value,
+                    "ci95_low": value,
+                    "ci95_high": value,
+                    "ci_method": "single_run",
+                    "seed_count": 1,
+                }
+            )
+    return rows
+
+
+def build_engine_multiseed_summary_rows(
+    *,
+    enriched_rows: Sequence[Mapping[str, Any]] | None,
+    seeded_results: Mapping[str, tuple[list[dict[str, float | int]], dict[str, dict[str, float]]]],
+    seeds: Sequence[int],
+) -> list[dict[str, str | int | float]]:
+    """Combine deterministic single-run and seeded multi-run engine summaries."""
+    summary_rows: list[dict[str, str | int | float]] = []
+    seed_count = len(seeds)
+
+    for tool_id in C1_TOOL_IDS:
+        if tool_id in SEEDED_TOOL_IDS and tool_id in seeded_results:
+            _per_seed, aggregate = seeded_results[tool_id]
+            for key, stats in aggregate.items():
+                partition, metric = key.split("::", 1)
+                n_cases_key = f"{partition}_n_cases"
+                n_cases = int(_per_seed[-1].get(n_cases_key, 0)) if _per_seed else 0
+                summary_rows.append(
+                    {
+                        "tool_id": tool_id,
+                        "tool_label": TOOL_LABELS.get(tool_id, tool_id),
+                        "partition": partition,
+                        "metric": metric,
+                        "n_cases": n_cases,
+                        "mean": stats["mean"],
+                        "std": stats["std"],
+                        "min": stats["min"],
+                        "max": stats["max"],
+                        "ci95_low": stats["ci95_low"],
+                        "ci95_high": stats["ci95_high"],
+                        "ci_method": "seed_bootstrap",
+                        "seed_count": seed_count,
+                    }
+                )
+        elif enriched_rows is not None and tool_id in C1_DETERMINISTIC_TOOL_IDS:
+            summary_rows.extend(
+                deterministic_engine_multiseed_rows(enriched_rows, tool_id=tool_id)
+            )
+    return summary_rows
+
+
+def write_engine_multiseed_exports(
+    *,
+    raw_runs_dir: Path,
+    paper_export_dir: Path,
+    summary_rows: Sequence[Mapping[str, str | int | float]],
+    per_seed_rows: Sequence[Mapping[str, str | int | float]] | None = None,
+) -> Path:
+    """Write multiseed_engine_summary.csv and LaTeX table for all C1 engines."""
+    fieldnames = [
+        "tool_id",
+        "tool_label",
+        "partition",
+        "metric",
+        "n_cases",
+        "mean",
+        "std",
+        "min",
+        "max",
+        "ci95_low",
+        "ci95_high",
+        "ci_method",
+        "seed_count",
+    ]
+    summary_csv = raw_runs_dir / f"{ENGINE_MULTISEED_SUMMARY_BASENAME}.csv"
+    _write_csv(summary_csv, fieldnames, [dict(row) for row in summary_rows])
+
+    if per_seed_rows:
+        per_seed_csv = raw_runs_dir / f"{ENGINE_MULTISEED_PER_SEED_BASENAME}.csv"
+        per_seed_fields = sorted({key for row in per_seed_rows for key in row})
+        _write_csv(per_seed_csv, per_seed_fields, [dict(row) for row in per_seed_rows])
+
+    tex_path = raw_runs_dir / "tables" / f"{ENGINE_MULTISEED_TEX_BASENAME}.tex"
+    tex_path.parent.mkdir(parents=True, exist_ok=True)
+    body: list[list[str]] = []
+    lookup = {
+        (str(row["tool_id"]), str(row["partition"]), str(row["metric"])): row
+        for row in summary_rows
+    }
+    for tool_id in C1_TOOL_IDS:
+        label = TOOL_LABELS.get(tool_id, tool_id)
+        det = lookup.get((tool_id, "detectable_only", "complete_repair_rate"))
+        eff = lookup.get((tool_id, "detectable_only", "effective_repair_rate"))
+        delta = lookup.get((tool_id, "detectable_only", "mean_delta_bpr"))
+        if det is None and eff is None and delta is None:
+            continue
+
+        def _cell(row: Mapping[str, str | int | float] | None) -> str:
+            if row is None:
+                return "---"
+            mean = float(row["mean"])
+            std = float(row["std"])
+            if float(row["seed_count"]) <= 1:
+                return f"{mean:.4f}"
+            return f"{mean:.4f} $\\pm$ {std:.4f}"
+
+        body.append(
+            [
+                label.replace("-", "\\-"),
+                _cell(det),
+                _cell(eff),
+                _cell(delta),
+            ]
+        )
+
+    tex_lines = [
+        "% Auto-generated from fsmrepairbench.baseline_repair_campaign",
+        "\\begin{table}[t]",
+        "\\caption{C1 baseline repair engines: detectable-only complete and effective repair "
+        "and mean $\\Delta$BPR (mean $\\pm$ std across seeds for stochastic engines; "
+        "single-run values for deterministic engines). "
+        "\\textbf{Primary partition: detectable-only} ($n=495$); "
+        "cohort-wide$^\\dagger$ totals appear in \\texttt{leaderboard.csv}.}",
+        f"\\label{{tab:{ENGINE_MULTISEED_TEX_BASENAME}}}",
+        "\\begin{tabular}{@{}lrrr@{}}",
+        "\\toprule",
+        "Engine & Complete (detect.) & Effective (detect.) & Mean $\\Delta$BPR (detect.) \\\\",
+        "\\midrule",
+    ]
+    tex_lines.extend(" & ".join(row) + " \\\\" for row in body)
+    tex_lines.extend(["\\bottomrule", "\\end{tabular}", "\\end{table}", ""])
+    tex_path.write_text("\n".join(tex_lines), encoding="utf-8")
+
+    paper_export_dir.mkdir(parents=True, exist_ok=True)
+    for name in (
+        f"{ENGINE_MULTISEED_SUMMARY_BASENAME}.csv",
+        f"{ENGINE_MULTISEED_PER_SEED_BASENAME}.csv",
+    ):
+        src = raw_runs_dir / name
+        dest = paper_export_dir / name
+        if src.is_file() and src.resolve() != dest.resolve():
+            shutil.copy2(src, dest)
+    dest_tex = paper_export_dir / "tables" / f"{ENGINE_MULTISEED_TEX_BASENAME}.tex"
+    if tex_path.resolve() != dest_tex.resolve():
+        dest_tex.parent.mkdir(parents=True, exist_ok=True)
+        shutil.copy2(tex_path, dest_tex)
+    return summary_csv
+
+
+def run_c1_engine_multiseed_analysis(
+    dataset_dir: Path,
+    cohort_file: Path,
+    tools_dir: Path,
+    raw_runs_dir: Path,
+    paper_export_dir: Path,
+    *,
+    seeds: Sequence[int] = DEFAULT_RANDOM_SEEDS,
+    workers: int = DEFAULT_WORKERS,
+    write_per_seed_json: bool = False,
+    enriched_rows: Sequence[Mapping[str, Any]] | None = None,
+) -> Path:
+    """Run multi-seed analysis for all seeded C1 engines and export summary tables."""
+    case_ids = set(load_cohort_manifest(cohort_file))
+    multi_seed_root = raw_runs_dir / "multi_seed" if write_per_seed_json else None
+    seeded_results: dict[str, tuple[list[dict[str, float | int]], dict[str, dict[str, float]]]] = {}
+    per_seed_rows: list[dict[str, str | int | float]] = []
+
+    for tool_id in SEEDED_TOOL_IDS:
+        tool_seed_dir = multi_seed_root / tool_id if multi_seed_root is not None else None
+        per_seed, aggregate = run_multi_seed_engine_analysis(
+            dataset_dir,
+            tools_dir,
+            case_ids,
+            tool_id,
+            seeds,
+            workers=workers,
+            multi_seed_dir=tool_seed_dir,
+        )
+        seeded_results[tool_id] = (per_seed, aggregate)
+        for row in per_seed:
+            flat = dict(row)
+            flat["tool_label"] = TOOL_LABELS.get(tool_id, tool_id)
+            per_seed_rows.append(flat)
+
+    summary_rows = build_engine_multiseed_summary_rows(
+        enriched_rows=enriched_rows,
+        seeded_results=seeded_results,
+        seeds=seeds,
+    )
+    return write_engine_multiseed_exports(
+        raw_runs_dir=raw_runs_dir,
+        paper_export_dir=paper_export_dir,
+        summary_rows=summary_rows,
+        per_seed_rows=per_seed_rows or None,
+    )
+
+
 def run_multi_seed_random_analysis(
     dataset_dir: Path,
     tools_dir: Path,
@@ -369,9 +835,23 @@ def run_multi_seed_random_analysis(
     *,
     workers: int = 1,
     multi_seed_dir: Path | None = None,
-) -> tuple[list[dict[str, float | int]], dict[str, dict[str, float]]]:
+    collect_subgroups: bool = False,
+) -> tuple[
+    list[dict[str, float | int]],
+    dict[str, dict[str, float]],
+    list[dict[str, dict[str, dict[str, dict[str, float | int]]]]] | None,
+]:
     """Run random baseline for each seed and return per-seed metrics plus aggregates."""
+    from fsmrepairbench.c1_multiseed_variance import (
+        _load_dataset_rows,
+        summarize_seed_subgroups,
+    )
+
+    dataset_rows = _load_dataset_rows(dataset_dir, case_ids) if collect_subgroups else None
     per_seed: list[dict[str, float | int]] = []
+    per_seed_subgroups: list[dict[str, dict[str, dict[str, dict[str, float | int]]]]] | None = (
+        [] if collect_subgroups else None
+    )
     for seed in seeds:
         seed_dir = None
         if multi_seed_dir is not None:
@@ -387,8 +867,28 @@ def run_multi_seed_random_analysis(
         metrics = summarize_random_rows(rows)
         metrics["seed"] = seed
         per_seed.append(metrics)
+        if collect_subgroups and dataset_rows is not None and per_seed_subgroups is not None:
+            per_seed_subgroups.append(summarize_seed_subgroups(rows, dataset_rows))
     aggregate = compute_multi_seed_statistics(per_seed)
-    return per_seed, aggregate
+    return per_seed, aggregate, per_seed_subgroups
+
+
+def _load_engine_config(tools_dir: Path) -> list[dict[str, Any]]:
+    """Load YAML tool configs for manifest engine_config."""
+    configs: list[dict[str, Any]] = []
+    for path in sorted(tools_dir.glob("baseline_*.yaml")):
+        tool = load_tool_config(path)
+        configs.append(
+            {
+                "tool_id": tool.tool_id,
+                "command": tool.command,
+                "timeout_seconds": tool.timeout_seconds,
+                "environment": dict(tool.environment),
+                "iterations": tool.iterations,
+                "temperature": tool.temperature,
+            }
+        )
+    return configs
 
 
 def _write_csv(path: Path, fieldnames: list[str], rows: list[dict[str, Any]]) -> None:
@@ -569,7 +1069,7 @@ def write_random_multiseed_exports(
         single_seed_complete_repair_rate=single_seed_complete_repair_rate,
     )
 
-    tex_path = paper_export_dir / "tables" / f"{MULTISEED_TEX_BASENAME}.tex"
+    tex_path = raw_runs_dir / "tables" / f"{MULTISEED_TEX_BASENAME}.tex"
     _write_multiseed_tex_table(tex_path, flat_summary, seed_count=len(seeds))
 
     paper_report = paper_export_dir / "report.md"
@@ -623,7 +1123,9 @@ def _read_single_seed_random_complete_rate(raw_runs_dir: Path) -> float | None:
         return None
     for row in csv.DictReader(leaderboard.open(encoding="utf-8")):
         if row.get("tool_id") == RANDOM_TOOL_ID:
-            return float(row["complete_repair_rate"])
+            raw = row.get("complete_repair_rate_cohort_wide") or row.get("complete_repair_rate")
+            if raw:
+                return float(raw)
     return None
 
 
@@ -637,17 +1139,23 @@ def run_c1_random_multiseed_analysis(
     random_seeds: Sequence[int] = DEFAULT_RANDOM_SEEDS,
     workers: int = DEFAULT_WORKERS,
     write_per_seed_json: bool = False,
+    enriched_rows: Sequence[dict[str, Any]] | None = None,
+    case_count: int | None = None,
+    detectable_count: int | None = None,
 ) -> C1ExportResult:
     """Run multi-seed random baseline analysis without altering deterministic baselines."""
+    from fsmrepairbench.c1_multiseed_variance import write_c1_multiseed_variance_exports
+
     case_ids = set(load_cohort_manifest(cohort_file))
     multi_seed_dir = raw_runs_dir / "multi_seed" if write_per_seed_json else None
-    per_seed, aggregate = run_multi_seed_random_analysis(
+    per_seed, aggregate, per_seed_subgroups = run_multi_seed_random_analysis(
         dataset_dir,
         tools_dir,
         case_ids,
         random_seeds,
         workers=workers,
         multi_seed_dir=multi_seed_dir,
+        collect_subgroups=enriched_rows is not None,
     )
     single_seed_rate = _read_single_seed_random_complete_rate(raw_runs_dir)
     result = write_random_multiseed_exports(
@@ -658,6 +1166,37 @@ def run_c1_random_multiseed_analysis(
         seeds=random_seeds,
         single_seed_complete_repair_rate=single_seed_rate,
     )
+    if enriched_rows is not None and per_seed_subgroups is not None:
+        resolved_case_count = case_count if case_count is not None else len(case_ids)
+        resolved_detectable = detectable_count
+        if resolved_detectable is None:
+            resolved_detectable = len(
+                {
+                    str(row["case_id"])
+                    for row in enriched_rows
+                    if row.get("oracle_detected")
+                }
+            )
+        write_c1_multiseed_variance_exports(
+            raw_runs_dir=raw_runs_dir,
+            paper_export_dir=paper_export_dir,
+            enriched_rows=enriched_rows,
+            per_seed_subgroups=per_seed_subgroups,
+            seed_count=len(random_seeds),
+            case_count=resolved_case_count,
+            detectable_count=resolved_detectable,
+        )
+    run_c1_engine_multiseed_analysis(
+        dataset_dir,
+        cohort_file,
+        tools_dir,
+        raw_runs_dir,
+        paper_export_dir,
+        seeds=random_seeds,
+        workers=workers,
+        write_per_seed_json=write_per_seed_json,
+        enriched_rows=enriched_rows,
+    )
     publish_c1_manifests(
         dataset_dir=dataset_dir,
         cohort_file=cohort_file,
@@ -666,6 +1205,7 @@ def run_c1_random_multiseed_analysis(
         paper_export_dir=paper_export_dir,
         workers=workers,
         number_of_cases=len(case_ids),
+        seeds=random_seeds,
     )
     write_c1_confidence_interval_exports(
         raw_runs_dir=raw_runs_dir,
@@ -733,6 +1273,12 @@ def list_raw_run_output_files(raw_runs_dir: Path) -> list[str]:
         f"{MULTISEED_SUMMARY_BASENAME}.csv",
         f"{MULTISEED_SUMMARY_BASENAME}.json",
         f"{MULTISEED_PER_SEED_BASENAME}.csv",
+        f"{ENGINE_MULTISEED_PER_SEED_BASENAME}.csv",
+        "multiseed_by_operator.csv",
+        "multiseed_by_operator.json",
+        "multiseed_by_tier.csv",
+        "multiseed_by_tier.json",
+        "multiseed_engine_summary.csv",
         "confidence_intervals.csv",
         "confidence_intervals.json",
         "report.md",
@@ -757,6 +1303,7 @@ def build_c1_manifest(
     output_files: Sequence[str],
     regeneration_commands: Sequence[str] | None = None,
     repo_root: Path | None = None,
+    seeds: Sequence[int] | None = None,
 ) -> dict[str, Any]:
     """Build the C1 campaign manifest payload."""
     cohort_path = Path(cohort_file)
@@ -773,6 +1320,8 @@ def build_c1_manifest(
         "number_of_cases": number_of_cases,
         "tool_names": tool_names,
         "tool_config_paths": _tool_config_paths(tools_dir, repo_root=repo_root),
+        "engine_config": _load_engine_config(tools_dir),
+        "seeds": list(seeds if seeds is not None else DEFAULT_RANDOM_SEEDS),
         "workers": workers,
         "timestamp_utc": datetime.now(UTC).isoformat(),
         "git_commit_hash": get_git_commit(),
@@ -803,6 +1352,7 @@ def publish_c1_manifests(
     number_of_cases: int | None = None,
     regeneration_commands: Sequence[str] | None = None,
     repo_root: Path | None = None,
+    seeds: Sequence[int] | None = None,
 ) -> C1ManifestResult:
     """Write C1 manifest.json to raw runs and copy to the paper export directory."""
     repo_root = repo_root or Path(__file__).resolve().parents[2]
@@ -819,6 +1369,7 @@ def publish_c1_manifests(
         output_files=list_raw_run_output_files(raw_runs_dir),
         regeneration_commands=regeneration_commands,
         repo_root=repo_root,
+        seeds=seeds,
     )
     raw_path = write_c1_manifest(raw_runs_dir / "manifest.json", raw_manifest)
 
@@ -831,6 +1382,7 @@ def publish_c1_manifests(
         output_files=list_output_files(paper_export_dir),
         regeneration_commands=regeneration_commands,
         repo_root=repo_root,
+        seeds=seeds,
     )
     paper_manifest["output_files"] = [
         path for path in paper_manifest["output_files"] if path != "manifest.json"

@@ -1,0 +1,35 @@
+{
+  "bug_id": "synthetic_3069_3_2__hom__wrong_event__wrong_initial_state__10563",
+  "reference_fsm_id": "synthetic_3069_3_2",
+  "faulty_fsm_id": "synthetic_3069_3_2__faulty__hom__wrong_event__wrong_initial_state__10563",
+  "mutation_operator": "wrong_event,wrong_initial_state",
+  "changed_transition_id": null,
+  "description": "Higher-order mutant applying 2 operators: wrong_event, wrong_initial_state",
+  "seed": 10563,
+  "mutation_complexity": null,
+  "mutation_scope": null,
+  "mutation_mode": null,
+  "mutation_order": 2,
+  "component_faults": [
+    {
+      "operator": "wrong_event",
+      "seed": 10563,
+      "bug_id": "synthetic_3069_3_2__wrong_event__10563",
+      "changed_transition_id": "t3069_1",
+      "description": "Changed event of transition 't3069_1' from 'e3069_1' to 'e3069_0'"
+    },
+    {
+      "operator": "wrong_initial_state",
+      "seed": 11563,
+      "bug_id": "synthetic_3069_3_2__faulty__wrong_event__10563__wrong_initial_state__11563",
+      "changed_transition_id": null,
+      "description": "Changed initial_state from 's3069_0' to 's3069_2'"
+    }
+  ],
+  "is_higher_order": true,
+  "coupled_to_simple_faults": [
+    "synthetic_3069_3_2__wrong_event__10563",
+    "synthetic_3069_3_2__faulty__wrong_event__10563__wrong_initial_state__11563"
+  ],
+  "is_negative_control": false
+}

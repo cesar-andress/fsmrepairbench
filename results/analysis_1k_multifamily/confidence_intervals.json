@@ -1,0 +1,41 @@
+{
+  "campaign": "v0.3.0-1k-plan-multifamily",
+  "method": "percentile_case_resample",
+  "unit": "case",
+  "ci": 0.95,
+  "resamples": 10000,
+  "seed": 44,
+  "generated_at_utc": "2026-06-09T18:27:39.875915+00:00",
+  "metrics": [
+    {
+      "metric": "overall_detection_rate",
+      "group": "RQ2",
+      "partition": "cohort_wide",
+      "subgroup": "",
+      "n_cases": 1000,
+      "mean": 0.65,
+      "ci95_low": 0.62,
+      "ci95_high": 0.68
+    },
+    {
+      "metric": "mean_faulty_bpr",
+      "group": "RQ2",
+      "partition": "cohort_wide",
+      "subgroup": "",
+      "n_cases": 1000,
+      "mean": 0.627804,
+      "ci95_low": 0.600917,
+      "ci95_high": 0.654702
+    },
+    {
+      "metric": "mean_bpr_delta",
+      "group": "RQ2",
+      "partition": "cohort_wide",
+      "subgroup": "",
+      "n_cases": 1000,
+      "mean": 0.372196,
+      "ci95_low": 0.345298,
+      "ci95_high": 0.399083
+    }
+  ]
+}

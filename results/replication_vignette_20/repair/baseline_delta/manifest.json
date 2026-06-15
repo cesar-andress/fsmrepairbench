@@ -1,0 +1,58 @@
+{
+  "baseline_pairs": [
+    {
+      "comparison_label": "missing-transition vs wrong-target",
+      "tool_a": "baseline_missing_transition",
+      "tool_a_label": "missing-transition",
+      "tool_b": "baseline_wrong_target",
+      "tool_b_label": "wrong-target"
+    },
+    {
+      "comparison_label": "missing-transition vs random",
+      "tool_a": "baseline_missing_transition",
+      "tool_a_label": "missing-transition",
+      "tool_b": "baseline_random",
+      "tool_b_label": "random"
+    },
+    {
+      "comparison_label": "wrong-target vs random",
+      "tool_a": "baseline_wrong_target",
+      "tool_a_label": "wrong-target",
+      "tool_b": "baseline_random",
+      "tool_b_label": "random"
+    }
+  ],
+  "campaign_label": "C1-baseline-repair",
+  "generated_at": "2026-06-09T16:50:14.642499+00:00",
+  "git_commit_hash": "4bd61aebcf248450fa6ae0311b581a9d4b2ee907",
+  "github_tag": "v0.2.1-stvr-polish-62-g4bd61aeb",
+  "output_files": [
+    "baseline_delta_summary.csv",
+    "baseline_delta_by_operator.csv",
+    "baseline_delta_by_tier.csv",
+    "tables/table_baseline_delta_summary.tex",
+    "tables/table_baseline_delta_by_operator.tex",
+    "tables/table_baseline_delta_by_tier.tex",
+    "figures/delta_complete_repair_by_operator.png",
+    "figures/delta_complete_repair_by_tier.png",
+    "figures/delta_summary_metrics.png",
+    "manifest.json"
+  ],
+  "partitions": [
+    "cohort_wide",
+    "detectable_only"
+  ],
+  "regeneration_commands": [
+    "python ../paper1/scripts/generate_c1_baseline_delta_outputs.py",
+    "python ../paper1/scripts/compile_results_latex.py"
+  ],
+  "release_label": "v0.2.0-analysis",
+  "scopes": [
+    "overall",
+    "by_operator",
+    "by_tier"
+  ],
+  "source_per_case_csv": "/home/cesar/papers/fsmrepairbench/fsmrepairbench/results/replication_vignette_20/repair/per_case_results.csv",
+  "source_per_case_sha256": "b364342d767da486be2c5c8c2ca2866345ef8030ab404fc6cf3d0c3ada8242b9",
+  "zenodo_doi": "10.5281/zenodo.20602528"
+}

@@ -1,0 +1,35 @@
+{
+  "bug_id": "synthetic_8724_3_2__hom__dead_state_intro__wrong_target__31355",
+  "reference_fsm_id": "synthetic_8724_3_2",
+  "faulty_fsm_id": "synthetic_8724_3_2__faulty__hom__dead_state_intro__wrong_target__31355",
+  "mutation_operator": "dead_state_intro,wrong_target",
+  "changed_transition_id": "t8724_1",
+  "description": "Higher-order mutant applying 2 operators: dead_state_intro, wrong_target",
+  "seed": 31355,
+  "mutation_complexity": null,
+  "mutation_scope": null,
+  "mutation_mode": null,
+  "mutation_order": 2,
+  "component_faults": [
+    {
+      "operator": "dead_state_intro",
+      "seed": 31355,
+      "bug_id": "synthetic_8724_3_2__dead_state_intro__31355",
+      "changed_transition_id": null,
+      "description": "Added unreachable state 'dead_31355'"
+    },
+    {
+      "operator": "wrong_target",
+      "seed": 32355,
+      "bug_id": "synthetic_8724_3_2__faulty__dead_state_intro__31355__wrong_target__32355",
+      "changed_transition_id": "t8724_1",
+      "description": "Changed target of transition 't8724_1' from 's8724_0' to 'dead_31355'"
+    }
+  ],
+  "is_higher_order": true,
+  "coupled_to_simple_faults": [
+    "synthetic_8724_3_2__dead_state_intro__31355",
+    "synthetic_8724_3_2__faulty__dead_state_intro__31355__wrong_target__32355"
+  ],
+  "is_negative_control": false
+}

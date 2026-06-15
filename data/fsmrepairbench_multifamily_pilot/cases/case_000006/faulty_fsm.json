@@ -1,0 +1,123 @@
+{
+  "id": "synthetic_653_3_2__faulty__guard_flip__6046",
+  "name": "Synthetic FSM (custom) (faulty: guard_flip)",
+  "description": "Synthetic FSM generated with seed=653, states=3, events=2, branching_factor=2, deterministic=True, allow_dead_states=True",
+  "states": [
+    {
+      "id": "s653_0",
+      "state_output": null,
+      "refusal": false,
+      "quiescence": false
+    },
+    {
+      "id": "s653_1",
+      "state_output": null,
+      "refusal": false,
+      "quiescence": false
+    },
+    {
+      "id": "s653_2",
+      "state_output": null,
+      "refusal": false,
+      "quiescence": false
+    }
+  ],
+  "initial_state": "s653_0",
+  "events": [
+    "e653_0",
+    "e653_1"
+  ],
+  "transitions": [
+    {
+      "id": "t653_1",
+      "source": "s653_0",
+      "event": "e653_0",
+      "target": "s653_1",
+      "guard": "x_653_0 > 0",
+      "action": "act653_1",
+      "output": "out_653_0",
+      "timeout": null,
+      "delay": null,
+      "requirements": [],
+      "probability": null,
+      "is_nondeterministic": false,
+      "refusal": false,
+      "quiescence": false,
+      "discrete_time": null
+    },
+    {
+      "id": "t653_2",
+      "source": "s653_1",
+      "event": "e653_1",
+      "target": "s653_2",
+      "guard": "x_653_1 > 0",
+      "action": "act653_2",
+      "output": "out_653_1",
+      "timeout": null,
+      "delay": null,
+      "requirements": [],
+      "probability": null,
+      "is_nondeterministic": false,
+      "refusal": false,
+      "quiescence": false,
+      "discrete_time": null
+    },
+    {
+      "id": "t653_3",
+      "source": "s653_0",
+      "event": "e653_1",
+      "target": "s653_1",
+      "guard": "x_653_2 > 0",
+      "action": "act653_3",
+      "output": "out_653_2",
+      "timeout": null,
+      "delay": null,
+      "requirements": [],
+      "probability": null,
+      "is_nondeterministic": false,
+      "refusal": false,
+      "quiescence": false,
+      "discrete_time": null
+    },
+    {
+      "id": "t653_4",
+      "source": "s653_1",
+      "event": "e653_1",
+      "target": "s653_1",
+      "guard": "x_653_3 > 0",
+      "action": "act653_4",
+      "output": "out_653_3",
+      "timeout": null,
+      "delay": null,
+      "requirements": [],
+      "probability": null,
+      "is_nondeterministic": false,
+      "refusal": false,
+      "quiescence": false,
+      "discrete_time": null
+    },
+    {
+      "id": "t653_5",
+      "source": "s653_2",
+      "event": "e653_0",
+      "target": "s653_2",
+      "guard": "not_x_653_4 > 0",
+      "action": "act653_5",
+      "output": "out_653_4",
+      "timeout": null,
+      "delay": null,
+      "requirements": [],
+      "probability": null,
+      "is_nondeterministic": false,
+      "refusal": false,
+      "quiescence": false,
+      "discrete_time": null
+    }
+  ],
+  "variables": {},
+  "parent_fsm_id": "synthetic_653_3_2",
+  "reference_fsm_id": "synthetic_653_3_2",
+  "discrete_time_step": null,
+  "semantics_mode": null,
+  "cyclic_metadata": null
+}

@@ -46,13 +46,20 @@ from fsmrepairbench.validators import load_fsm_json
 
 ABLATION_DEPTHS: tuple[DepthLevel, ...] = ("shallow", "medium", "deep")
 DEFAULT_COHORT_SIZE = 200
+ENHANCED_COHORT_SIZE = 500
 DEFAULT_COHORT_SEED = 44
 DEFAULT_V2_OUTPUT = Path("results/oracle_depth_ablation_v2")
 DEFAULT_V2_PAPER_EXPORT = Path("../paper1/results/oracle_depth_ablation_v2")
+DEFAULT_ENHANCED_OUTPUT = Path("results/oracle_depth_ablation")
+DEFAULT_ENHANCED_PAPER_EXPORT = Path("../paper1/results/oracle_depth_ablation")
 SCENARIO_POLICIES: tuple[ScenarioPolicy, ...] = ("shortest-path", "depth-forced")
 V2_EXPERIMENT = "C3-oracle-depth-ablation-v2"
+ENHANCED_EXPERIMENT = "C3-oracle-depth-ablation-enhanced"
 RELEASE_LABEL = "C3-oracle-depth-ablation-200"
+ENHANCED_RELEASE_LABEL = "C3-oracle-depth-ablation-500"
 V2_RELEASE_LABEL = "C3-oracle-depth-ablation-v2"
+COHORT_FILENAME_500 = "oracle_depth_ablation_500.txt"
+COHORT_JSON_FILENAME_500 = "oracle_depth_ablation_500.json"
 ZENODO_DOI = "10.5281/zenodo.20602528"
 COHORT_FILENAME = "oracle_depth_ablation_200.txt"
 COHORT_JSON_FILENAME = "oracle_depth_ablation_200.json"
@@ -380,21 +387,27 @@ def write_ablation_cohort_manifest(
     case_ids: list[str],
     *,
     source_manifest: Path | None = None,
+    txt_name: str = COHORT_FILENAME,
+    json_name: str = COHORT_JSON_FILENAME,
+    release_label: str = RELEASE_LABEL,
+    experiment: str = "C3-oracle-depth-ablation",
 ) -> tuple[Path, Path]:
     """Write pinned ablation cohort list and JSON manifest under *dataset_dir*."""
-    txt_path = dataset_dir / COHORT_FILENAME
-    json_path = dataset_dir / COHORT_JSON_FILENAME
+    txt_path = dataset_dir / txt_name
+    json_path = dataset_dir / json_name
     txt_path.write_text("\n".join(case_ids) + "\n", encoding="utf-8")
     digest = hashlib.sha256(txt_path.read_bytes()).hexdigest()
     payload = {
         "dataset": dataset_dir.name,
-        "experiment": "C3-oracle-depth-ablation",
+        "experiment": experiment,
+        "release_label": release_label,
         "cohort_size": len(case_ids),
         "case_ids": case_ids,
         "source_manifest": str((source_manifest or dataset_dir / "analysis_cohort_1k.txt").name),
         "depth_presets": {
             depth: DEPTH_MAX_STEPS[depth] for depth in ABLATION_DEPTHS
         },
+        "scenario_policy": "depth-forced",
         "sha256": digest,
         "generated_at": datetime.now(UTC).isoformat(),
     }
@@ -1114,16 +1127,144 @@ def _list_output_files(out: Path) -> list[str]:
     return files
 
 
-def _default_regeneration_commands(*, out: Path, cohort_path: Path) -> list[str]:
+def _default_regeneration_commands(
+    *,
+    out: Path,
+    cohort_path: Path,
+    scenario_policy: ScenarioPolicy = "shortest-path",
+) -> list[str]:
+    policy_flag = (
+        "  --scenario-policy depth-forced \\\n"
+        if scenario_policy == "depth-forced"
+        else ""
+    )
+    paper_script = (
+        "python ../paper1/scripts/generate_oracle_depth_ablation_v2_outputs.py"
+        if scenario_policy == "depth-forced"
+        else "python ../paper1/scripts/generate_oracle_depth_ablation_outputs.py"
+    )
     return [
         (
-            "fsmrepairbench run-oracle-depth-ablation data/fsmrepairbench_1k "
-            f"--out {out} "
-            f"--cohort-file {cohort_path} "
-            "--no-write-cohort"
+            "fsmrepairbench run-oracle-depth-ablation data/fsmrepairbench_1k \\\n"
+            f"  --out {out} \\\n"
+            f"  --cohort-file {cohort_path} \\\n"
+            f"{policy_flag}"
+            "  --no-write-cohort"
         ),
-        "python ../paper1/scripts/generate_oracle_depth_ablation_outputs.py",
+        paper_script,
     ]
+
+
+CONSTRUCT_VALIDITY_COLUMNS: tuple[str, ...] = (
+    "oracle_depth",
+    "declared_max_steps",
+    "v1_scenario_policy",
+    "v1_mean_max_path_length",
+    "v1_overall_detection_rate",
+    "v1_mean_faulty_bpr",
+    "v1_mean_bpr_delta",
+    "v2_scenario_policy",
+    "v2_mean_scenario_length",
+    "v2_mean_max_path_length",
+    "v2_overall_detection_rate",
+    "v2_mean_faulty_bpr",
+    "v2_mean_bpr_delta",
+    "v2_detection_gains_vs_shallow",
+    "v2_detection_losses_vs_shallow",
+    "path_length_increase_v2_over_v1",
+)
+
+
+def load_depth_summary_rows(path: Path) -> list[dict[str, str]]:
+    """Load ``depth_summary.csv`` rows keyed by ``oracle_depth``."""
+    if not path.is_file():
+        msg = f"Depth summary not found: {path}"
+        raise OracleDepthAblationError(msg)
+    rows = list(csv.DictReader(path.open(encoding="utf-8")))
+    if not rows:
+        msg = f"Depth summary is empty: {path}"
+        raise OracleDepthAblationError(msg)
+    return rows
+
+
+def build_construct_validity_comparison(
+    shortest_path_summary: Path,
+    depth_forced_summary: Path,
+) -> list[dict[str, str | float | int]]:
+    """Compare v0.2 shortest-path vs depth-forced depth summaries per preset."""
+    v1_by_depth = {row["oracle_depth"]: row for row in load_depth_summary_rows(shortest_path_summary)}
+    v2_by_depth = {row["oracle_depth"]: row for row in load_depth_summary_rows(depth_forced_summary)}
+    comparison: list[dict[str, str | float | int]] = []
+    for depth in ABLATION_DEPTHS:
+        v1 = v1_by_depth.get(depth)
+        v2 = v2_by_depth.get(depth)
+        if v1 is None or v2 is None:
+            continue
+        v1_path = float(v1.get("mean_max_path_length", v1.get("mean_scenario_length", 0)))
+        v2_path = float(v2.get("mean_max_path_length", v2.get("mean_scenario_length", 0)))
+        comparison.append(
+            {
+                "oracle_depth": depth,
+                "declared_max_steps": int(float(v1["declared_max_steps"])),
+                "v1_scenario_policy": v1.get("scenario_policy", "shortest-path"),
+                "v1_mean_max_path_length": round(v1_path, 3),
+                "v1_overall_detection_rate": float(v1["overall_detection_rate"]),
+                "v1_mean_faulty_bpr": float(v1["mean_faulty_bpr"]),
+                "v1_mean_bpr_delta": float(v1["mean_bpr_delta"]),
+                "v2_scenario_policy": v2.get("scenario_policy", "depth-forced"),
+                "v2_mean_scenario_length": float(v2.get("mean_scenario_length", v2_path)),
+                "v2_mean_max_path_length": round(v2_path, 3),
+                "v2_overall_detection_rate": float(v2["overall_detection_rate"]),
+                "v2_mean_faulty_bpr": float(v2["mean_faulty_bpr"]),
+                "v2_mean_bpr_delta": float(v2["mean_bpr_delta"]),
+                "v2_detection_gains_vs_shallow": int(float(v2.get("detection_gains_vs_shallow", 0))),
+                "v2_detection_losses_vs_shallow": int(float(v2.get("detection_losses_vs_shallow", 0))),
+                "path_length_increase_v2_over_v1": round(v2_path - v1_path, 3),
+            }
+        )
+    if not comparison:
+        msg = "No overlapping depth presets between shortest-path and depth-forced summaries"
+        raise OracleDepthAblationError(msg)
+    return comparison
+
+
+def write_construct_validity_comparison_exports(
+    output_dir: Path,
+    *,
+    shortest_path_summary: Path,
+    depth_forced_summary: Path,
+) -> Path:
+    """Write CSV and LaTeX comparing v1 inert ceilings vs v2 depth-forced walks."""
+    output_dir.mkdir(parents=True, exist_ok=True)
+    rows = build_construct_validity_comparison(shortest_path_summary, depth_forced_summary)
+    csv_path = output_dir / "depth_construct_validity_comparison.csv"
+    _write_csv(csv_path, list(CONSTRUCT_VALIDITY_COLUMNS), rows)
+
+    lines = [
+        "% Auto-generated by write_construct_validity_comparison_exports",
+        "\\begin{tabular}{@{}lrrrrrrrr@{}}",
+        "\\toprule",
+        "Depth & v1 path & v2 path & v2 mean len. & v1 det. & v2 det. & v1 $\\Delta$BPR & v2 $\\Delta$BPR & v2 gains \\\\",
+        "\\midrule",
+    ]
+    for row in rows:
+        depth = row["oracle_depth"]
+        max_steps = row["declared_max_steps"]
+        lines.append(
+            f"\\texttt{{{depth}}} ({max_steps}) & "
+            f"{float(row['v1_mean_max_path_length']):.2f} & "
+            f"{float(row['v2_mean_max_path_length']):.2f} & "
+            f"{float(row['v2_mean_scenario_length']):.1f} & "
+            f"{100 * float(row['v1_overall_detection_rate']):.1f}\\% & "
+            f"{100 * float(row['v2_overall_detection_rate']):.1f}\\% & "
+            f"{float(row['v1_mean_bpr_delta']):.3f} & "
+            f"{float(row['v2_mean_bpr_delta']):.3f} & "
+            f"{int(row['v2_detection_gains_vs_shallow'])} \\\\"
+        )
+    lines.extend(["\\bottomrule", "\\end{tabular}", ""])
+    tex_path = output_dir / "table_depth_construct_validity_comparison.tex"
+    tex_path.write_text("\n".join(lines), encoding="utf-8")
+    return csv_path
 
 
 def _build_frozen_manifest(
@@ -1152,7 +1293,11 @@ def _build_frozen_manifest(
         "case_count": case_count,
         "oracle_depths": list(ABLATION_DEPTHS),
         "timestamp_utc": timestamp_utc,
-        "regeneration_commands": _default_regeneration_commands(out=out, cohort_path=cohort_path),
+        "regeneration_commands": _default_regeneration_commands(
+            out=out,
+            cohort_path=cohort_path,
+            scenario_policy=scenario_policy,
+        ),
         "experiment": V2_EXPERIMENT if scenario_policy == "depth-forced" else "C3-oracle-depth-ablation",
         "dataset_dir": str(dataset_dir),
         "output_dir": str(out),
@@ -1170,6 +1315,9 @@ def _build_frozen_manifest(
     }
     if git_commit_hash:
         manifest["git_commit_hash"] = git_commit_hash
+    depth_summary_path = out / "depth_summary.csv"
+    if depth_summary_path.is_file():
+        manifest["depth_summary_sha256"] = sha256_file(depth_summary_path)
     return manifest
 
 

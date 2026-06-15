@@ -1,0 +1,92 @@
+{
+  "id": "synthetic_11592_3_2_oracles",
+  "fsm_id": "synthetic_11592_3_2",
+  "scenarios": [
+    {
+      "id": "cover_transition_t11592_1",
+      "description": "Covers transition 't11592_1' (s11592_0 --e11592_1--> s11592_1).",
+      "steps": [
+        {
+          "event": "e11592_1",
+          "expected_state": "s11592_1",
+          "guard": "x_11592_0 > 0 and y_11592_0 < 10",
+          "accepting_states": [],
+          "probability_threshold": null,
+          "refusal_expected": false,
+          "quiescence_expected": false,
+          "discrete_time": null
+        }
+      ]
+    },
+    {
+      "id": "cover_transition_t11592_2",
+      "description": "Covers transition 't11592_2' (s11592_0 --e11592_1--> s11592_2).",
+      "steps": [
+        {
+          "event": "e11592_1",
+          "expected_state": "s11592_2",
+          "guard": "x_11592_1 > 0 and y_11592_1 < 10",
+          "accepting_states": [],
+          "probability_threshold": null,
+          "refusal_expected": false,
+          "quiescence_expected": false,
+          "discrete_time": null
+        }
+      ]
+    },
+    {
+      "id": "cover_transition_t11592_3",
+      "description": "Covers transition 't11592_3' (s11592_1 --e11592_1--> s11592_2).",
+      "steps": [
+        {
+          "event": "e11592_1",
+          "expected_state": "s11592_1",
+          "guard": "x_11592_0 > 0 and y_11592_0 < 10",
+          "accepting_states": [],
+          "probability_threshold": null,
+          "refusal_expected": false,
+          "quiescence_expected": false,
+          "discrete_time": null
+        },
+        {
+          "event": "e11592_1",
+          "expected_state": "s11592_2",
+          "guard": "x_11592_2 > 0 and y_11592_2 < 10",
+          "accepting_states": [],
+          "probability_threshold": null,
+          "refusal_expected": false,
+          "quiescence_expected": false,
+          "discrete_time": null
+        }
+      ]
+    },
+    {
+      "id": "cover_transition_t11592_4",
+      "description": "Covers transition 't11592_4' (s11592_2 --e11592_0--> s11592_2).",
+      "steps": [
+        {
+          "event": "e11592_1",
+          "expected_state": "s11592_2",
+          "guard": "x_11592_1 > 0 and y_11592_1 < 10",
+          "accepting_states": [],
+          "probability_threshold": null,
+          "refusal_expected": false,
+          "quiescence_expected": false,
+          "discrete_time": null
+        },
+        {
+          "event": "e11592_0",
+          "expected_state": "s11592_2",
+          "guard": "x_11592_3 > 0 and y_11592_3 < 10",
+          "accepting_states": [],
+          "probability_threshold": null,
+          "refusal_expected": false,
+          "quiescence_expected": false,
+          "discrete_time": null
+        }
+      ]
+    }
+  ],
+  "semantics_mode": null,
+  "probability_threshold": null
+}

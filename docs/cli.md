@@ -28,6 +28,7 @@ fsmrepairbench analyze-benchmark DATASET_DIR
 |-----------|------|-------|---------|-------------|
 | `dataset_dir` | `Path` | positional | required |  |
 | `out` | `Path` | `--out` | results/analysis | Directory for analysis CSVs, figures, and Markdown report. |
+| `cohort_file` | `Path | None` | `--cohort-file` | None | Optional pinned cohort manifest (.txt) restricting analyzed cases. |
 | `max_cases` | `int | None` | `--max-cases` | None | Analyze at most this many cases from the dataset (in index order). |
 
 ### `analyze-error-propagation`
@@ -380,6 +381,26 @@ fsmrepairbench export-c1-baseline-repair DATASET_DIR
 | `workers` | `int` | `--workers` | 4 |  |
 | `skip_multi_seed` | `bool` | `--skip-multi-seed` | False | Skip multi-seed random baseline analysis. |
 | `no_per_seed_runs` | `bool` | `--no-per-seed-runs` | False | Skip writing per-seed JSON outputs under multi_seed/. |
+| `quiet` | `bool` | `--quiet` | False | Print a short summary only. |
+
+### `export-c1-extended-baseline-repair`
+
+Export extended baseline CSV artefacts and manifest from existing run-tools output.
+
+**Usage**
+
+```bash
+fsmrepairbench export-c1-extended-baseline-repair DATASET_DIR
+```
+
+| Parameter | Type | Flags | Default | Description |
+|-----------|------|-------|---------|-------------|
+| `dataset_dir` | `Path` | positional | required |  |
+| `out` | `Path` | `--out` | results/baseline_repair_C1_extended | Directory containing extended run-tools output. |
+| `cohort_file` | `Path | None` | `--cohort-file` | None | Pinned cohort manifest (default: analysis_cohort_1k.txt under dataset). |
+| `tools_dir` | `Path` | `--tools-dir` | tools/baselines_c1_extended | Directory containing extended baseline tool YAML configs. |
+| `paper_export_dir` | `Path | None` | `--paper-export-dir` | None | Optional separate paper export directory. |
+| `workers` | `int` | `--workers` | 4 |  |
 | `quiet` | `bool` | `--quiet` | False | Print a short summary only. |
 
 ### `export-hf`
@@ -1039,6 +1060,28 @@ fsmrepairbench run-c1-baseline-repair DATASET_DIR
 | `no_per_seed_runs` | `bool` | `--no-per-seed-runs` | False | Skip writing per-seed JSON outputs under multi_seed/. |
 | `quiet` | `bool` | `--quiet` | False | Print a short summary only. |
 
+### `run-c1-extended-baseline-repair`
+
+Run search/composite/LLM-template extended baselines on the pinned cohort.
+
+**Usage**
+
+```bash
+fsmrepairbench run-c1-extended-baseline-repair DATASET_DIR
+```
+
+| Parameter | Type | Flags | Default | Description |
+|-----------|------|-------|---------|-------------|
+| `dataset_dir` | `Path` | positional | required |  |
+| `out` | `Path` | `--out` | results/baseline_repair_C1_extended | Write extended baseline run-tools output and frozen exports. |
+| `cohort_file` | `Path | None` | `--cohort-file` | None | Pinned cohort manifest (default: analysis_cohort_1k.txt under dataset). |
+| `tools_dir` | `Path` | `--tools-dir` | tools/baselines_c1_extended | Directory containing extended baseline tool YAML configs. |
+| `paper_export_dir` | `Path | None` | `--paper-export-dir` | None | Optional separate paper export directory. |
+| `workers` | `int` | `--workers` | 4 |  |
+| `resume` | `bool` | `--resume/--no-resume` | True |  |
+| `skip_tool_runs` | `bool` | `--skip-tool-runs` | False | Export only from existing run-tools output under --out. |
+| `quiet` | `bool` | `--quiet` | False | Print a short summary only. |
+
 ### `run-coupling-campaign`
 
 Run RQ4 higher-order coupling campaign on a pinned cohort.
@@ -1161,6 +1204,48 @@ fsmrepairbench run-oracle-depth-ablation DATASET_DIR
 | `no_write_cohort` | `bool` | `--no-write-cohort` | False | Do not write oracle_depth_ablation_200.txt under the dataset. |
 | `scenario_policy` | `str` | `--scenario-policy` | 'shortest-path' | Scenario generation policy: shortest-path (default) or depth-forced. |
 | `paper_export_dir` | `Path | None` | `--paper-export-dir` | None | Paper export directory for depth-forced ablation outputs. |
+
+### `run-oracle-depth-ablation-enhanced`
+
+Run enhanced 500-case depth-forced ablation with detection, repair, and ΔBPR.
+
+**Usage**
+
+```bash
+fsmrepairbench run-oracle-depth-ablation-enhanced DATASET_DIR
+```
+
+| Parameter | Type | Flags | Default | Description |
+|-----------|------|-------|---------|-------------|
+| `dataset_dir` | `Path` | positional | required |  |
+| `out` | `Path` | `--out` | results/oracle_depth_ablation | Directory for enhanced ablation CSVs, figures, tables, and report. |
+| `cohort_file` | `Path | None` | `--cohort-file` | None | Use an existing pinned cohort manifest (default: oracle_depth_ablation_500.txt). |
+| `cohort_manifest` | `Path | None` | `--cohort-manifest` | None | Source cohort for selection (default: analysis_cohort_1k.txt). |
+| `cohort_size` | `int` | `--cohort-size` | 500 | Number of stratified cases when no cohort file is supplied. |
+| `no_write_cohort` | `bool` | `--no-write-cohort` | False | Do not write oracle_depth_ablation_500.txt under the dataset. |
+| `repair_engine` | `str` | `--repair-engine` | 'missing-transition' | Baseline repair engine evaluated at each depth preset. |
+| `paper_export_dir` | `Path | None` | `--paper-export-dir` | None | Paper export directory (default: ../paper1/results/oracle_depth_ablation). |
+
+### `run-oracle-depth-ablation-extended`
+
+Run extended oracle depth ablation with detection, ΔBPR, and repair metrics.
+
+**Usage**
+
+```bash
+fsmrepairbench run-oracle-depth-ablation-extended DATASET_DIR
+```
+
+| Parameter | Type | Flags | Default | Description |
+|-----------|------|-------|---------|-------------|
+| `dataset_dir` | `Path` | positional | required |  |
+| `out` | `Path` | `--out` | results/oracle_depth_ablation_extended | Directory for extended ablation CSVs, figures, tables, and report. |
+| `cohort_file` | `Path | None` | `--cohort-file` | None | Use an existing pinned cohort manifest (one case ID per line). |
+| `cohort_manifest` | `Path | None` | `--cohort-manifest` | None | Source cohort for selection (default: analysis_cohort_1k.txt). |
+| `cohort_size` | `int` | `--cohort-size` | 200 | Number of stratified cases when no cohort file is supplied. |
+| `no_write_cohort` | `bool` | `--no-write-cohort` | False | Do not write oracle_depth_ablation_200.txt under the dataset. |
+| `repair_engine` | `str` | `--repair-engine` | 'missing-transition' | Baseline repair engine evaluated at each depth preset. |
+| `paper_export_dir` | `Path | None` | `--paper-export-dir` | None | Paper export directory for extended ablation outputs. |
 
 ### `run-smoke-test`
 
@@ -1363,6 +1448,24 @@ fsmrepairbench validate-fsm tests/fixtures/valid_fsm.json
 | Parameter | Type | Flags | Default | Description |
 |-----------|------|-------|---------|-------------|
 | `path` | `Path` | positional | required |  |
+
+### `validate-multifamily-cohort`
+
+Validate multi-family cohort completeness, 10D stratification, and manifest SHA-256.
+
+**Usage**
+
+```bash
+fsmrepairbench validate-multifamily-cohort DATASET_DIR
+```
+
+| Parameter | Type | Flags | Default | Description |
+|-----------|------|-------|---------|-------------|
+| `dataset_dir` | `Path` | positional | data/fsmrepairbench_1k_multifamily |  |
+| `plan_path` | `Path | None` | `--plan` | None | Stratification plan YAML (default: dataset_plan.json or v0.1 1k plan). |
+| `release_label` | `str` | `--release-label` | 'v0.3.0-1k-plan-multifamily' | Expected release label recorded in cohort JSON manifests. |
+| `cases_per_family` | `int | None` | `--cases-per-family` | 200 | Expected completed cases per machine family (None to skip quota check). |
+| `write_manifest` | `bool` | `--write-manifest/--no-write-manifest` | True | Write or refresh dataset_manifest.json with SHA-256 checksums. |
 
 ### `validate-oracle`
 

@@ -1,0 +1,35 @@
+{
+  "bug_id": "synthetic_15466_3_2__hom__timeout_corruption__wrong_initial_state__277",
+  "reference_fsm_id": "synthetic_15466_3_2",
+  "faulty_fsm_id": "synthetic_15466_3_2__faulty__hom__timeout_corruption__wrong_initial_state__277",
+  "mutation_operator": "timeout_corruption,wrong_initial_state",
+  "changed_transition_id": null,
+  "description": "Higher-order mutant applying 2 operators: timeout_corruption, wrong_initial_state",
+  "seed": 277,
+  "mutation_complexity": null,
+  "mutation_scope": null,
+  "mutation_mode": null,
+  "mutation_order": 2,
+  "component_faults": [
+    {
+      "operator": "timeout_corruption",
+      "seed": 277,
+      "bug_id": "synthetic_15466_3_2__timeout_corruption__277",
+      "changed_transition_id": "t15466_1",
+      "description": "Corrupted timeout on transition 't15466_1' to 2.0"
+    },
+    {
+      "operator": "wrong_initial_state",
+      "seed": 1277,
+      "bug_id": "synthetic_15466_3_2__faulty__timeout_corruption__277__wrong_initial_state__1277",
+      "changed_transition_id": null,
+      "description": "Changed initial_state from 's15466_0' to 's15466_1'"
+    }
+  ],
+  "is_higher_order": true,
+  "coupled_to_simple_faults": [
+    "synthetic_15466_3_2__timeout_corruption__277",
+    "synthetic_15466_3_2__faulty__timeout_corruption__277__wrong_initial_state__1277"
+  ],
+  "is_negative_control": false
+}

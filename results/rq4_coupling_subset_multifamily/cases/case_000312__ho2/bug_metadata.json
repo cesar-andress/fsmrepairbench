@@ -1,0 +1,35 @@
+{
+  "bug_id": "synthetic_5956_3_2__hom__duplicate_transition__guard_flip__28394",
+  "reference_fsm_id": "synthetic_5956_3_2",
+  "faulty_fsm_id": "synthetic_5956_3_2__faulty__hom__duplicate_transition__guard_flip__28394",
+  "mutation_operator": "duplicate_transition,guard_flip",
+  "changed_transition_id": "t5956_6",
+  "description": "Higher-order mutant applying 2 operators: duplicate_transition, guard_flip",
+  "seed": 28394,
+  "mutation_complexity": null,
+  "mutation_scope": null,
+  "mutation_mode": null,
+  "mutation_order": 2,
+  "component_faults": [
+    {
+      "operator": "duplicate_transition",
+      "seed": 28394,
+      "bug_id": "synthetic_5956_3_2__duplicate_transition__28394",
+      "changed_transition_id": "t5956_6",
+      "description": "Duplicated transition 't5956_6' as 't5956_6__dup__28394'"
+    },
+    {
+      "operator": "guard_flip",
+      "seed": 29394,
+      "bug_id": "synthetic_5956_3_2__faulty__duplicate_transition__28394__guard_flip__29394",
+      "changed_transition_id": "t5956_6",
+      "description": "Changed guard of transition 't5956_6' from 'x_5956_5 > 0' to 'not_x_5956_5 > 0'"
+    }
+  ],
+  "is_higher_order": true,
+  "coupled_to_simple_faults": [
+    "synthetic_5956_3_2__duplicate_transition__28394",
+    "synthetic_5956_3_2__faulty__duplicate_transition__28394__guard_flip__29394"
+  ],
+  "is_negative_control": false
+}

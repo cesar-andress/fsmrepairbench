@@ -1,0 +1,35 @@
+{
+  "bug_id": "synthetic_9760_3_2__hom__wrong_target__wrong_source__9189",
+  "reference_fsm_id": "synthetic_9760_3_2",
+  "faulty_fsm_id": "synthetic_9760_3_2__faulty__hom__wrong_target__wrong_source__9189",
+  "mutation_operator": "wrong_target,wrong_source",
+  "changed_transition_id": "t9760_hub_2",
+  "description": "Higher-order mutant applying 2 operators: wrong_target, wrong_source",
+  "seed": 9189,
+  "mutation_complexity": null,
+  "mutation_scope": null,
+  "mutation_mode": null,
+  "mutation_order": 2,
+  "component_faults": [
+    {
+      "operator": "wrong_target",
+      "seed": 9189,
+      "bug_id": "synthetic_9760_3_2__wrong_target__9189",
+      "changed_transition_id": "t9760_hub_2",
+      "description": "Changed target of transition 't9760_hub_2' from 's9760_2' to 's9760_0'"
+    },
+    {
+      "operator": "wrong_source",
+      "seed": 10189,
+      "bug_id": "synthetic_9760_3_2__faulty__wrong_target__9189__wrong_source__10189",
+      "changed_transition_id": "t9760_hub_2",
+      "description": "Changed source of transition 't9760_hub_2' from 's9760_0' to 's9760_1'"
+    }
+  ],
+  "is_higher_order": true,
+  "coupled_to_simple_faults": [
+    "synthetic_9760_3_2__wrong_target__9189",
+    "synthetic_9760_3_2__faulty__wrong_target__9189__wrong_source__10189"
+  ],
+  "is_negative_control": false
+}

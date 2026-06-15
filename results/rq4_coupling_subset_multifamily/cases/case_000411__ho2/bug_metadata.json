@@ -1,0 +1,35 @@
+{
+  "bug_id": "synthetic_7841_3_2__hom__wrong_initial_state__wrong_event__69552",
+  "reference_fsm_id": "synthetic_7841_3_2",
+  "faulty_fsm_id": "synthetic_7841_3_2__faulty__hom__wrong_initial_state__wrong_event__69552",
+  "mutation_operator": "wrong_initial_state,wrong_event",
+  "changed_transition_id": "t7841_1",
+  "description": "Higher-order mutant applying 2 operators: wrong_initial_state, wrong_event",
+  "seed": 69552,
+  "mutation_complexity": null,
+  "mutation_scope": null,
+  "mutation_mode": null,
+  "mutation_order": 2,
+  "component_faults": [
+    {
+      "operator": "wrong_initial_state",
+      "seed": 69552,
+      "bug_id": "synthetic_7841_3_2__wrong_initial_state__69552",
+      "changed_transition_id": null,
+      "description": "Changed initial_state from 's7841_0' to 's7841_2'"
+    },
+    {
+      "operator": "wrong_event",
+      "seed": 70552,
+      "bug_id": "synthetic_7841_3_2__faulty__wrong_initial_state__69552__wrong_event__70552",
+      "changed_transition_id": "t7841_1",
+      "description": "Changed event of transition 't7841_1' from 'e7841_0' to 'e7841_1'"
+    }
+  ],
+  "is_higher_order": true,
+  "coupled_to_simple_faults": [
+    "synthetic_7841_3_2__wrong_initial_state__69552",
+    "synthetic_7841_3_2__faulty__wrong_initial_state__69552__wrong_event__70552"
+  ],
+  "is_negative_control": false
+}

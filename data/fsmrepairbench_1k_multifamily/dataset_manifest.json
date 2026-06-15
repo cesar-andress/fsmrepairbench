@@ -1,0 +1,56 @@
+{
+  "case_count": 1000,
+  "cohort_manifests": {
+    "analysis_cohort_1k.txt": {
+      "case_count": 1000,
+      "sha256": "2b278fba190830b1e710a1572fe2a59349422888934d94bad9c4b8c614847720"
+    },
+    "coupling_campaign_250.txt": {
+      "case_count": 250,
+      "sha256": "b4c652f50a0c0549614e4e29f68b9b0ae195007e6581b3798c8a624d5ac7fc50"
+    },
+    "localization_cohort_1k.txt": {
+      "case_count": 1000,
+      "sha256": "2b278fba190830b1e710a1572fe2a59349422888934d94bad9c4b8c614847720"
+    },
+    "oracle_depth_ablation_200.txt": {
+      "case_count": 200,
+      "sha256": "b720e5cfca63f5bd90aa64ffaa7bf4931f4369148ec1678997ab0e99769e8bcb"
+    }
+  },
+  "dataset_dir": "fsmrepairbench_1k_multifamily",
+  "file_checksums": {
+    "case_index.csv": "049a717a0d76e1e51c4df3977c189c92678562dcf347c6f4d0e5b278cc2e162b",
+    "dataset_plan.json": "a80a25d5471276f7b852c321e8541ff084884458e48f1d269e384b9baaf0f0c8",
+    "feature_matrix.csv": "bd463c024514da610b626a6d17968d1f5386e130718622fac4d4ab2c61dbc27d"
+  },
+  "generated_at": "2026-06-09T19:48:50.465088+00:00",
+  "git_commit_hash": "238b4126bfd4a8dd7c7af509dd2a6ee2e00ee39d",
+  "github_repo": "https://github.com/cesar-andress/fsmrepairbench",
+  "github_tag": "v0.2.1-stvr-polish",
+  "machine_families": [
+    "plain_fsm",
+    "mealy",
+    "moore",
+    "efsm",
+    "timed_fsm"
+  ],
+  "machine_type_counts": {
+    "efsm": 200,
+    "mealy": 200,
+    "moore": 200,
+    "plain_fsm": 200,
+    "timed_fsm": 200
+  },
+  "plan_path": "/home/cesar/papers/fsmrepairbench/fsmrepairbench/plans/fsmrepairbench_v0_1k_plan.yaml",
+  "plan_sha256": "f566a5febcfd42dd551a0951d13be970fb9336a92c3c523ea5056240f4686138",
+  "regeneration_commands": [
+    "fsmrepairbench build-stratified-dataset plans/fsmrepairbench_v0_1k_plan.yaml data/fsmrepairbench_1k_multifamily",
+    "python ../paper1/scripts/pin_v0_1k_multifamily_cohorts.py",
+    "python ../paper1/scripts/verify_multifamily_cohort_completeness.py"
+  ],
+  "release_label": "v0.3.0-1k-plan-multifamily",
+  "stratification_dimensions": 10,
+  "zenodo_doi": "10.5281/zenodo.20602528",
+  "zenodo_url": "https://doi.org/10.5281/zenodo.20602528"
+}

@@ -1,0 +1,51 @@
+{
+  "campaign": "RQ3-localization",
+  "method": "percentile_case_resample",
+  "unit": "case",
+  "ci": 0.95,
+  "resamples": 10000,
+  "seed": 44,
+  "generated_at_utc": "2026-06-09T15:46:01.705645+00:00",
+  "metrics": [
+    {
+      "metric": "top_1_hit_rate",
+      "group": "RQ3",
+      "partition": "localized_cases",
+      "subgroup": "",
+      "n_cases": 648,
+      "mean": 0.401235,
+      "ci95_low": 0.364198,
+      "ci95_high": 0.439815
+    },
+    {
+      "metric": "top_3_hit_rate",
+      "group": "RQ3",
+      "partition": "localized_cases",
+      "subgroup": "",
+      "n_cases": 648,
+      "mean": 0.515432,
+      "ci95_low": 0.478395,
+      "ci95_high": 0.554012
+    },
+    {
+      "metric": "top_5_hit_rate",
+      "group": "RQ3",
+      "partition": "localized_cases",
+      "subgroup": "",
+      "n_cases": 648,
+      "mean": 0.572531,
+      "ci95_low": 0.535494,
+      "ci95_high": 0.609568
+    },
+    {
+      "metric": "mrr",
+      "group": "RQ3",
+      "partition": "localized_cases",
+      "subgroup": "",
+      "n_cases": 648,
+      "mean": 0.467652,
+      "ci95_low": 0.433021,
+      "ci95_high": 0.502831
+    }
+  ]
+}

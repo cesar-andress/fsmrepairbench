@@ -1,0 +1,35 @@
+{
+  "bug_id": "synthetic_5973_3_2__hom__duplicate_transition__wrong_source__41548",
+  "reference_fsm_id": "synthetic_5973_3_2",
+  "faulty_fsm_id": "synthetic_5973_3_2__faulty__hom__duplicate_transition__wrong_source__41548",
+  "mutation_operator": "duplicate_transition,wrong_source",
+  "changed_transition_id": "t5973_6",
+  "description": "Higher-order mutant applying 2 operators: duplicate_transition, wrong_source",
+  "seed": 41548,
+  "mutation_complexity": null,
+  "mutation_scope": null,
+  "mutation_mode": null,
+  "mutation_order": 2,
+  "component_faults": [
+    {
+      "operator": "duplicate_transition",
+      "seed": 41548,
+      "bug_id": "synthetic_5973_3_2__duplicate_transition__41548",
+      "changed_transition_id": "t5973_11",
+      "description": "Duplicated transition 't5973_11' as 't5973_11__dup__41548'"
+    },
+    {
+      "operator": "wrong_source",
+      "seed": 42548,
+      "bug_id": "synthetic_5973_3_2__faulty__duplicate_transition__41548__wrong_source__42548",
+      "changed_transition_id": "t5973_6",
+      "description": "Changed source of transition 't5973_6' from 's5973_1' to 's5973_2'"
+    }
+  ],
+  "is_higher_order": true,
+  "coupled_to_simple_faults": [
+    "synthetic_5973_3_2__duplicate_transition__41548",
+    "synthetic_5973_3_2__faulty__duplicate_transition__41548__wrong_source__42548"
+  ],
+  "is_negative_control": false
+}

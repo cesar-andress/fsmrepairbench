@@ -1,0 +1,43 @@
+{
+  "bug_id": "synthetic_1031_3_2__hom__nondeterminism_intro__wrong_initial_state__wrong_target__65696",
+  "reference_fsm_id": "synthetic_1031_3_2",
+  "faulty_fsm_id": "synthetic_1031_3_2__faulty__hom__nondeterminism_intro__wrong_initial_state__wrong_target__65696",
+  "mutation_operator": "nondeterminism_intro,wrong_initial_state,wrong_target",
+  "changed_transition_id": "t1031_2",
+  "description": "Higher-order mutant applying 3 operators: nondeterminism_intro, wrong_initial_state, wrong_target",
+  "seed": 65696,
+  "mutation_complexity": null,
+  "mutation_scope": null,
+  "mutation_mode": null,
+  "mutation_order": 3,
+  "component_faults": [
+    {
+      "operator": "nondeterminism_intro",
+      "seed": 65696,
+      "bug_id": "synthetic_1031_3_2__nondeterminism_intro__65696",
+      "changed_transition_id": "t1031_2",
+      "description": "Added nondeterministic duplicate for event 'e1031_1' from 's1031_1'"
+    },
+    {
+      "operator": "wrong_initial_state",
+      "seed": 66696,
+      "bug_id": "synthetic_1031_3_2__faulty__nondeterminism_intro__65696__wrong_initial_state__66696",
+      "changed_transition_id": null,
+      "description": "Changed initial_state from 's1031_0' to 's1031_2'"
+    },
+    {
+      "operator": "wrong_target",
+      "seed": 67696,
+      "bug_id": "synthetic_1031_3_2__faulty__nondeterminism_intro__65696__faulty__wrong_initial_state__66696__wrong_target__67696",
+      "changed_transition_id": "t1031_2",
+      "description": "Changed target of transition 't1031_2' from 's1031_2' to 's1031_0'"
+    }
+  ],
+  "is_higher_order": true,
+  "coupled_to_simple_faults": [
+    "synthetic_1031_3_2__nondeterminism_intro__65696",
+    "synthetic_1031_3_2__faulty__nondeterminism_intro__65696__wrong_initial_state__66696",
+    "synthetic_1031_3_2__faulty__nondeterminism_intro__65696__faulty__wrong_initial_state__66696__wrong_target__67696"
+  ],
+  "is_negative_control": false
+}

@@ -1,0 +1,43 @@
+{
+  "bug_id": "synthetic_13411_3_2__hom__guard_flip__wrong_source__guard_weaken__20680",
+  "reference_fsm_id": "synthetic_13411_3_2",
+  "faulty_fsm_id": "synthetic_13411_3_2__faulty__hom__guard_flip__wrong_source__guard_weaken__20680",
+  "mutation_operator": "guard_flip,wrong_source,guard_weaken",
+  "changed_transition_id": "t13411_4",
+  "description": "Higher-order mutant applying 3 operators: guard_flip, wrong_source, guard_weaken",
+  "seed": 20680,
+  "mutation_complexity": null,
+  "mutation_scope": null,
+  "mutation_mode": null,
+  "mutation_order": 3,
+  "component_faults": [
+    {
+      "operator": "guard_flip",
+      "seed": 20680,
+      "bug_id": "synthetic_13411_3_2__guard_flip__20680",
+      "changed_transition_id": "t13411_10",
+      "description": "Changed guard of transition 't13411_10' from 'x_13411_9 > 0 and y_13411_9 < 10' to 'not_x_13411_9 > 0 and y_13411_9 < 10'"
+    },
+    {
+      "operator": "wrong_source",
+      "seed": 21680,
+      "bug_id": "synthetic_13411_3_2__faulty__guard_flip__20680__wrong_source__21680",
+      "changed_transition_id": "t13411_1",
+      "description": "Changed source of transition 't13411_1' from 's13411_0' to 's13411_2'"
+    },
+    {
+      "operator": "guard_weaken",
+      "seed": 22680,
+      "bug_id": "synthetic_13411_3_2__faulty__guard_flip__20680__faulty__wrong_source__21680__guard_weaken__22680",
+      "changed_transition_id": "t13411_4",
+      "description": "Weakened guard on transition 't13411_4' to 'true'"
+    }
+  ],
+  "is_higher_order": true,
+  "coupled_to_simple_faults": [
+    "synthetic_13411_3_2__guard_flip__20680",
+    "synthetic_13411_3_2__faulty__guard_flip__20680__wrong_source__21680",
+    "synthetic_13411_3_2__faulty__guard_flip__20680__faulty__wrong_source__21680__guard_weaken__22680"
+  ],
+  "is_negative_control": false
+}

@@ -1,0 +1,54 @@
+name: Golden exports
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - "fsmrepairbench/src/**"
+      - "fsmrepairbench/tests/**"
+      - "paper1/results/**"
+      - "paper1/scripts/generate_*"
+      - "paper1/scripts/update_golden_campaign_manifests.py"
+      - "paper1/scripts/verify_paper_golden_exports.py"
+      - ".github/workflows/golden-exports.yml"
+  pull_request:
+    paths:
+      - "fsmrepairbench/src/**"
+      - "fsmrepairbench/tests/**"
+      - "paper1/results/**"
+      - "paper1/scripts/generate_*"
+      - "paper1/scripts/update_golden_campaign_manifests.py"
+      - "paper1/scripts/verify_paper_golden_exports.py"
+      - ".github/workflows/golden-exports.yml"
+  workflow_dispatch:
+
+jobs:
+  golden-exports:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: fsmrepairbench
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Install package
+        run: pip install -e ".[dev,analytics]"
+
+      - name: Verify frozen paper exports (pytest)
+        env:
+          FSMREPAIRBENCH_GOLDEN_RESULTS_DIR: ${{ github.workspace }}/paper1/results
+        run: |
+          pytest tests/test_golden_campaign_exports.py \
+            tests/test_golden_paper_artifacts.py \
+            tests/test_golden_exports.py \
+            -m golden -v --tb=short
+
+      - name: Verify frozen paper exports (standalone CLI)
+        run: python ../paper1/scripts/verify_paper_golden_exports.py --verify-cohort-manifests

@@ -1,0 +1,43 @@
+{
+  "bug_id": "synthetic_13445_3_2__hom__guard_flip__wrong_event__wrong_source__51847",
+  "reference_fsm_id": "synthetic_13445_3_2",
+  "faulty_fsm_id": "synthetic_13445_3_2__faulty__hom__guard_flip__wrong_event__wrong_source__51847",
+  "mutation_operator": "guard_flip,wrong_event,wrong_source",
+  "changed_transition_id": "t13445_8",
+  "description": "Higher-order mutant applying 3 operators: guard_flip, wrong_event, wrong_source",
+  "seed": 51847,
+  "mutation_complexity": null,
+  "mutation_scope": null,
+  "mutation_mode": null,
+  "mutation_order": 3,
+  "component_faults": [
+    {
+      "operator": "guard_flip",
+      "seed": 51847,
+      "bug_id": "synthetic_13445_3_2__guard_flip__51847",
+      "changed_transition_id": "t13445_1",
+      "description": "Changed guard of transition 't13445_1' from 'x_13445_0 > 0 and y_13445_0 < 10' to 'not_x_13445_0 > 0 and y_13445_0 < 10'"
+    },
+    {
+      "operator": "wrong_event",
+      "seed": 52847,
+      "bug_id": "synthetic_13445_3_2__faulty__guard_flip__51847__wrong_event__52847",
+      "changed_transition_id": "t13445_9",
+      "description": "Changed event of transition 't13445_9' from 'e13445_1' to 'e13445_0'"
+    },
+    {
+      "operator": "wrong_source",
+      "seed": 53847,
+      "bug_id": "synthetic_13445_3_2__faulty__guard_flip__51847__faulty__wrong_event__52847__wrong_source__53847",
+      "changed_transition_id": "t13445_8",
+      "description": "Changed source of transition 't13445_8' from 's13445_1' to 's13445_0'"
+    }
+  ],
+  "is_higher_order": true,
+  "coupled_to_simple_faults": [
+    "synthetic_13445_3_2__guard_flip__51847",
+    "synthetic_13445_3_2__faulty__guard_flip__51847__wrong_event__52847",
+    "synthetic_13445_3_2__faulty__guard_flip__51847__faulty__wrong_event__52847__wrong_source__53847"
+  ],
+  "is_negative_control": false
+}

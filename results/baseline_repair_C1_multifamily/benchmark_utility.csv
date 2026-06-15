@@ -1,0 +1,13 @@
+metric,partition,tool_a,tool_b,rate_a,rate_b,cohens_h,abs_cohens_h,mcnemar_statistic,mcnemar_p_value,statistically_distinguishable,case_disagreement_rate,n_cases,n_success_a,n_success_b
+complete_repair,detectable_only,baseline_missing_transition,baseline_wrong_target,0.768519,0.459877,0.647254,0.647254,500,0.0,True,0.771605,648,498,298
+complete_repair,detectable_only,baseline_missing_transition,baseline_random,0.768519,0.228395,1.141176,1.141176,350,0.0,True,0.540123,648,498,148
+complete_repair,detectable_only,baseline_wrong_target,baseline_random,0.459877,0.228395,0.493922,0.493922,150,0.0,True,0.231481,648,298,148
+complete_repair,cohort_wide,baseline_missing_transition,baseline_wrong_target,0.822,0.503,0.693715,0.693715,671,0.0,True,0.671,1000,822,503
+complete_repair,cohort_wide,baseline_missing_transition,baseline_random,0.822,0.329,1.04876,1.04876,493,0.0,True,0.493,1000,822,329
+complete_repair,cohort_wide,baseline_wrong_target,baseline_random,0.503,0.329,0.355044,0.355044,178,0.0,True,0.178,1000,503,329
+effective_repair,detectable_only,baseline_missing_transition,baseline_wrong_target,0.540123,0.231481,0.647254,0.647254,500,0.0,True,0.771605,648,350,150
+effective_repair,detectable_only,baseline_missing_transition,baseline_random,0.540123,0.0,1.65113,1.65113,350,0.0,True,0.540123,648,350,0
+effective_repair,detectable_only,baseline_wrong_target,baseline_random,0.231481,0.0,1.003876,1.003876,150,0.0,True,0.231481,648,150,0
+effective_repair,cohort_wide,baseline_missing_transition,baseline_wrong_target,0.495,0.177,0.692332,0.692332,672,0.0,True,0.672,1000,495,177
+effective_repair,cohort_wide,baseline_missing_transition,baseline_random,0.495,0.002,1.471324,1.471324,493,0.0,True,0.493,1000,495,2
+effective_repair,cohort_wide,baseline_wrong_target,baseline_random,0.177,0.002,0.778991,0.778991,179,0.0,True,0.179,1000,177,2

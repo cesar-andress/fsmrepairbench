@@ -1,0 +1,150 @@
+{
+  "case_id": "case_000215",
+  "tool_id": "baseline_wrong_target",
+  "tool_type": "baseline",
+  "model": "baseline_wrong_target",
+  "mutation_operator": "wrong_initial_state",
+  "status": "completed",
+  "failure_class": "complete_repair",
+  "input_format": "fsmrepairbench_case_v1",
+  "output_format": "fsmrepairbench_repair_result_v1",
+  "initial_bpr": 0.0,
+  "final_bpr": 1.0,
+  "delta_bpr": 1.0,
+  "complete_repair": true,
+  "effective_repair": true,
+  "regression": false,
+  "patch_parse_failures": 0,
+  "patch_validation_failures": 0,
+  "patch_application_failures": 0,
+  "iterations_completed": 1,
+  "runtime_seconds": 0.0002,
+  "repair_result": {
+    "bug_id": "synthetic_4509_3_2__faulty__wrong_initial_state__215046",
+    "passed": true,
+    "score": 1.0,
+    "details": {
+      "model": "baseline_wrong_target",
+      "backend": "baseline",
+      "baseline_engine": "wrong-target",
+      "baseline_seed": 0,
+      "temperature": 0.0,
+      "max_iterations": 1,
+      "runtime_seconds": 0.0002,
+      "iterations": [
+        {
+          "iteration": 1,
+          "bpr_before": 0.0,
+          "patch_valid": true,
+          "patch_applied": true,
+          "patch": {
+            "patch_id": "baseline_wrong_target_synthetic_4509_3_2__faulty__wrong_initial_state__215046",
+            "target_fsm_id": "synthetic_4509_3_2__faulty__wrong_initial_state__215046",
+            "operations": [
+              {
+                "op": "replace_transition_target",
+                "transition_id": "t4509_4",
+                "target": "s4509_1"
+              }
+            ]
+          },
+          "validation_errors": [],
+          "bpr_after": 1.0
+        }
+      ],
+      "final_fsm": {
+        "id": "synthetic_4509_3_2__faulty__wrong_initial_state__215046",
+        "name": "Synthetic FSM (custom) (faulty: wrong_initial_state)",
+        "description": "Synthetic FSM generated with seed=4509, states=3, events=2, branching_factor=1, deterministic=True, allow_dead_states=True",
+        "states": [
+          {
+            "id": "s4509_0",
+            "state_output": "out_4509_0",
+            "refusal": false,
+            "quiescence": false
+          },
+          {
+            "id": "s4509_1",
+            "state_output": "out_4509_1",
+            "refusal": false,
+            "quiescence": false
+          },
+          {
+            "id": "s4509_2",
+            "state_output": "out_4509_2",
+            "refusal": false,
+            "quiescence": false
+          }
+        ],
+        "initial_state": "s4509_2",
+        "events": [
+          "e4509_0",
+          "e4509_1"
+        ],
+        "transitions": [
+          {
+            "id": "t4509_1",
+            "source": "s4509_0",
+            "event": "e4509_1",
+            "target": "s4509_1",
+            "guard": null,
+            "action": "act4509_1",
+            "output": null,
+            "timeout": null,
+            "delay": null,
+            "requirements": [],
+            "probability": null,
+            "is_nondeterministic": false,
+            "refusal": false,
+            "quiescence": false,
+            "discrete_time": null
+          },
+          {
+            "id": "t4509_3",
+            "source": "s4509_1",
+            "event": "e4509_0",
+            "target": "s4509_1",
+            "guard": null,
+            "action": "act4509_3",
+            "output": null,
+            "timeout": null,
+            "delay": null,
+            "requirements": [],
+            "probability": null,
+            "is_nondeterministic": false,
+            "refusal": false,
+            "quiescence": false,
+            "discrete_time": null
+          },
+          {
+            "id": "t4509_4",
+            "source": "s4509_2",
+            "event": "e4509_1",
+            "target": "s4509_1",
+            "guard": null,
+            "action": "act4509_4",
+            "output": null,
+            "timeout": null,
+            "delay": null,
+            "requirements": [],
+            "probability": null,
+            "is_nondeterministic": false,
+            "refusal": false,
+            "quiescence": false,
+            "discrete_time": null
+          }
+        ],
+        "variables": {},
+        "parent_fsm_id": "synthetic_4509_3_2",
+        "reference_fsm_id": "synthetic_4509_3_2",
+        "discrete_time_step": null,
+        "semantics_mode": null,
+        "cyclic_metadata": null
+      },
+      "passed_steps": 3,
+      "total_steps": 3,
+      "passed_scenarios": 2,
+      "total_scenarios": 2
+    }
+  }
+}

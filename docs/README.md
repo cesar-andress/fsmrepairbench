@@ -35,6 +35,18 @@ All reproduction commands below use dataset **`data/fsmrepairbench_1k`**.
 
 Dataset and cohort pins: [../data/fsmrepairbench_1k/README.md](../data/fsmrepairbench_1k/README.md)
 
+## Multi-family extension cohorts (v0.3.x)
+
+Five machine families (`plain_fsm`, `mealy`, `moore`, `efsm`, `timed_fsm`) on ten-dimensional
+stratification plans. **Not part of the Zenodo `v0.2.0-analysis` deposit.**
+
+| Track | Doc | Build CLI | Dataset |
+|-------|-----|-----------|---------|
+| 1k-plan multi-family | [multifamily_cohorts.md](multifamily_cohorts.md) | `build-stratified-dataset` + `validate-multifamily-cohort` | `data/fsmrepairbench_1k_multifamily/` |
+| v0.3 external-validity | [multifamily_cohorts.md](multifamily_cohorts.md) · [multifamily_pilot.md](multifamily_pilot.md) | `analyze-multifamily-cohort` | `data/fsmrepairbench_multifamily_v0_3/` |
+
+Monorepo guide: [`../../docs/multifamily_cohorts.md`](../../docs/multifamily_cohorts.md)
+
 ## Release audit (maintainers)
 
 | Document | Purpose |

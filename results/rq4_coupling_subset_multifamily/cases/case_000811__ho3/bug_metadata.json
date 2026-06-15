@@ -1,0 +1,43 @@
+{
+  "bug_id": "synthetic_15449_3_2__hom__timeout_corruption__wrong_initial_state__wrong_target__1819",
+  "reference_fsm_id": "synthetic_15449_3_2",
+  "faulty_fsm_id": "synthetic_15449_3_2__faulty__hom__timeout_corruption__wrong_initial_state__wrong_target__1819",
+  "mutation_operator": "timeout_corruption,wrong_initial_state,wrong_target",
+  "changed_transition_id": "t15449_2",
+  "description": "Higher-order mutant applying 3 operators: timeout_corruption, wrong_initial_state, wrong_target",
+  "seed": 1819,
+  "mutation_complexity": null,
+  "mutation_scope": null,
+  "mutation_mode": null,
+  "mutation_order": 3,
+  "component_faults": [
+    {
+      "operator": "timeout_corruption",
+      "seed": 1819,
+      "bug_id": "synthetic_15449_3_2__timeout_corruption__1819",
+      "changed_transition_id": "t15449_2",
+      "description": "Corrupted timeout on transition 't15449_2' to 4.0"
+    },
+    {
+      "operator": "wrong_initial_state",
+      "seed": 2819,
+      "bug_id": "synthetic_15449_3_2__faulty__timeout_corruption__1819__wrong_initial_state__2819",
+      "changed_transition_id": null,
+      "description": "Changed initial_state from 's15449_0' to 's15449_1'"
+    },
+    {
+      "operator": "wrong_target",
+      "seed": 3819,
+      "bug_id": "synthetic_15449_3_2__faulty__timeout_corruption__1819__faulty__wrong_initial_state__2819__wrong_target__3819",
+      "changed_transition_id": "t15449_2",
+      "description": "Changed target of transition 't15449_2' from 's15449_2' to 's15449_0'"
+    }
+  ],
+  "is_higher_order": true,
+  "coupled_to_simple_faults": [
+    "synthetic_15449_3_2__timeout_corruption__1819",
+    "synthetic_15449_3_2__faulty__timeout_corruption__1819__wrong_initial_state__2819",
+    "synthetic_15449_3_2__faulty__timeout_corruption__1819__faulty__wrong_initial_state__2819__wrong_target__3819"
+  ],
+  "is_negative_control": false
+}

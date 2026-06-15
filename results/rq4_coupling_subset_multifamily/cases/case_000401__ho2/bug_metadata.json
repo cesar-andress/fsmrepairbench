@@ -1,0 +1,35 @@
+{
+  "bug_id": "synthetic_7671_3_2__hom__wrong_initial_state__guard_flip__32403",
+  "reference_fsm_id": "synthetic_7671_3_2",
+  "faulty_fsm_id": "synthetic_7671_3_2__faulty__hom__wrong_initial_state__guard_flip__32403",
+  "mutation_operator": "wrong_initial_state,guard_flip",
+  "changed_transition_id": "t7671_1",
+  "description": "Higher-order mutant applying 2 operators: wrong_initial_state, guard_flip",
+  "seed": 32403,
+  "mutation_complexity": null,
+  "mutation_scope": null,
+  "mutation_mode": null,
+  "mutation_order": 2,
+  "component_faults": [
+    {
+      "operator": "wrong_initial_state",
+      "seed": 32403,
+      "bug_id": "synthetic_7671_3_2__wrong_initial_state__32403",
+      "changed_transition_id": null,
+      "description": "Changed initial_state from 's7671_0' to 's7671_2'"
+    },
+    {
+      "operator": "guard_flip",
+      "seed": 33403,
+      "bug_id": "synthetic_7671_3_2__faulty__wrong_initial_state__32403__guard_flip__33403",
+      "changed_transition_id": "t7671_1",
+      "description": "Added guard 'unexpected_guard' to transition 't7671_1'"
+    }
+  ],
+  "is_higher_order": true,
+  "coupled_to_simple_faults": [
+    "synthetic_7671_3_2__wrong_initial_state__32403",
+    "synthetic_7671_3_2__faulty__wrong_initial_state__32403__guard_flip__33403"
+  ],
+  "is_negative_control": false
+}

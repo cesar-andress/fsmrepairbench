@@ -1,0 +1,43 @@
+{
+  "bug_id": "synthetic_15415_3_2__hom__timeout_corruption__guard_strengthen__wrong_initial_state__38565",
+  "reference_fsm_id": "synthetic_15415_3_2",
+  "faulty_fsm_id": "synthetic_15415_3_2__faulty__hom__timeout_corruption__guard_strengthen__wrong_initial_state__38565",
+  "mutation_operator": "timeout_corruption,guard_strengthen,wrong_initial_state",
+  "changed_transition_id": null,
+  "description": "Higher-order mutant applying 3 operators: timeout_corruption, guard_strengthen, wrong_initial_state",
+  "seed": 38565,
+  "mutation_complexity": null,
+  "mutation_scope": null,
+  "mutation_mode": null,
+  "mutation_order": 3,
+  "component_faults": [
+    {
+      "operator": "timeout_corruption",
+      "seed": 38565,
+      "bug_id": "synthetic_15415_3_2__timeout_corruption__38565",
+      "changed_transition_id": "t15415_2",
+      "description": "Corrupted timeout on transition 't15415_2' to 4.0"
+    },
+    {
+      "operator": "guard_strengthen",
+      "seed": 39565,
+      "bug_id": "synthetic_15415_3_2__faulty__timeout_corruption__38565__guard_strengthen__39565",
+      "changed_transition_id": "t15415_2",
+      "description": "Strengthened guard on transition 't15415_2'"
+    },
+    {
+      "operator": "wrong_initial_state",
+      "seed": 40565,
+      "bug_id": "synthetic_15415_3_2__faulty__timeout_corruption__38565__faulty__guard_strengthen__39565__wrong_initial_state__40565",
+      "changed_transition_id": null,
+      "description": "Changed initial_state from 's15415_0' to 's15415_1'"
+    }
+  ],
+  "is_higher_order": true,
+  "coupled_to_simple_faults": [
+    "synthetic_15415_3_2__timeout_corruption__38565",
+    "synthetic_15415_3_2__faulty__timeout_corruption__38565__guard_strengthen__39565",
+    "synthetic_15415_3_2__faulty__timeout_corruption__38565__faulty__guard_strengthen__39565__wrong_initial_state__40565"
+  ],
+  "is_negative_control": false
+}

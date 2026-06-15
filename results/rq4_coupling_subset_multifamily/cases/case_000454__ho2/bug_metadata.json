@@ -1,0 +1,35 @@
+{
+  "bug_id": "synthetic_8673_3_2__hom__dead_state_intro__guard_strengthen__98424",
+  "reference_fsm_id": "synthetic_8673_3_2",
+  "faulty_fsm_id": "synthetic_8673_3_2__faulty__hom__dead_state_intro__guard_strengthen__98424",
+  "mutation_operator": "dead_state_intro,guard_strengthen",
+  "changed_transition_id": "t8673_2",
+  "description": "Higher-order mutant applying 2 operators: dead_state_intro, guard_strengthen",
+  "seed": 98424,
+  "mutation_complexity": null,
+  "mutation_scope": null,
+  "mutation_mode": null,
+  "mutation_order": 2,
+  "component_faults": [
+    {
+      "operator": "dead_state_intro",
+      "seed": 98424,
+      "bug_id": "synthetic_8673_3_2__dead_state_intro__98424",
+      "changed_transition_id": null,
+      "description": "Added unreachable state 'dead_98424'"
+    },
+    {
+      "operator": "guard_strengthen",
+      "seed": 99424,
+      "bug_id": "synthetic_8673_3_2__faulty__dead_state_intro__98424__guard_strengthen__99424",
+      "changed_transition_id": "t8673_2",
+      "description": "Strengthened guard on transition 't8673_2'"
+    }
+  ],
+  "is_higher_order": true,
+  "coupled_to_simple_faults": [
+    "synthetic_8673_3_2__dead_state_intro__98424",
+    "synthetic_8673_3_2__faulty__dead_state_intro__98424__guard_strengthen__99424"
+  ],
+  "is_negative_control": false
+}

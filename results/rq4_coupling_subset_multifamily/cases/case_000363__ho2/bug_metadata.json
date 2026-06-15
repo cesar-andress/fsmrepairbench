@@ -1,0 +1,35 @@
+{
+  "bug_id": "synthetic_6924_3_2__hom__wrong_target__wrong_event__86133",
+  "reference_fsm_id": "synthetic_6924_3_2",
+  "faulty_fsm_id": "synthetic_6924_3_2__faulty__hom__wrong_target__wrong_event__86133",
+  "mutation_operator": "wrong_target,wrong_event",
+  "changed_transition_id": "t6924_4",
+  "description": "Higher-order mutant applying 2 operators: wrong_target, wrong_event",
+  "seed": 86133,
+  "mutation_complexity": null,
+  "mutation_scope": null,
+  "mutation_mode": null,
+  "mutation_order": 2,
+  "component_faults": [
+    {
+      "operator": "wrong_target",
+      "seed": 86133,
+      "bug_id": "synthetic_6924_3_2__wrong_target__86133",
+      "changed_transition_id": "t6924_6",
+      "description": "Changed target of transition 't6924_6' from 's6924_2' to 's6924_0'"
+    },
+    {
+      "operator": "wrong_event",
+      "seed": 87133,
+      "bug_id": "synthetic_6924_3_2__faulty__wrong_target__86133__wrong_event__87133",
+      "changed_transition_id": "t6924_4",
+      "description": "Changed event of transition 't6924_4' from 'e6924_1' to 'e6924_0'"
+    }
+  ],
+  "is_higher_order": true,
+  "coupled_to_simple_faults": [
+    "synthetic_6924_3_2__wrong_target__86133",
+    "synthetic_6924_3_2__faulty__wrong_target__86133__wrong_event__87133"
+  ],
+  "is_negative_control": false
+}

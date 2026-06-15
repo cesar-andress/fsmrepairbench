@@ -1,0 +1,55 @@
+{
+  "id": "synthetic_7688_3_2__faulty__hom__wrong_initial_state__wrong_event__wrong_source__41453",
+  "name": "Synthetic FSM (custom) (higher-order: wrong_initial_state, wrong_event, wrong_source)",
+  "description": "Synthetic FSM generated with seed=7688, states=3, events=2, branching_factor=1, deterministic=True, allow_dead_states=True",
+  "states": [
+    {
+      "id": "s7688_0",
+      "state_output": "out_7688_0",
+      "refusal": false,
+      "quiescence": false
+    },
+    {
+      "id": "s7688_1",
+      "state_output": "out_7688_1",
+      "refusal": false,
+      "quiescence": false
+    },
+    {
+      "id": "s7688_2",
+      "state_output": "out_7688_2",
+      "refusal": false,
+      "quiescence": false
+    }
+  ],
+  "initial_state": "s7688_1",
+  "events": [
+    "e7688_0",
+    "e7688_1"
+  ],
+  "transitions": [
+    {
+      "id": "t7688_1",
+      "source": "s7688_1",
+      "event": "e7688_1",
+      "target": "s7688_0",
+      "guard": null,
+      "action": "act7688_1",
+      "output": null,
+      "timeout": null,
+      "delay": null,
+      "requirements": [],
+      "probability": null,
+      "is_nondeterministic": false,
+      "refusal": false,
+      "quiescence": false,
+      "discrete_time": null
+    }
+  ],
+  "variables": {},
+  "parent_fsm_id": "synthetic_7688_3_2",
+  "reference_fsm_id": "synthetic_7688_3_2",
+  "discrete_time_step": null,
+  "semantics_mode": null,
+  "cyclic_metadata": null
+}

@@ -1,0 +1,11 @@
+rank,case_count,cohort_fraction,machine_type,determinism,completeness,arity_class,size_class,guard_complexity,time_features,graph_structure,oracle_depth,bug_type
+1,1,0.05,plain_fsm,deterministic,partial,low,tiny,none,none,acyclic|sparse|layered,shallow,missing_transition
+2,1,0.05,plain_fsm,deterministic,partial,low,tiny,none,none,acyclic|sparse|layered,shallow,nondeterminism_intro
+3,1,0.05,plain_fsm,deterministic,partial,low,tiny,none,none,acyclic|sparse|layered,shallow,wrong_source
+4,1,0.05,plain_fsm,deterministic,partial,low,tiny,none,none,acyclic|sparse|layered,shallow,wrong_event
+5,1,0.05,mealy,deterministic,partial,low,tiny,simple,none,cyclic|sparse|layered,shallow,action_corruption
+6,1,0.05,mealy,deterministic,partial,medium,tiny,simple,none,cyclic|hub_and_spoke|layered,shallow,guard_flip
+7,1,0.05,mealy,deterministic,complete,high,tiny,simple,none,cyclic|dense|hub_and_spoke|layered,shallow,duplicate_transition
+8,1,0.05,mealy,deterministic,partial,medium,tiny,simple,none,cyclic|hub_and_spoke|layered,shallow,wrong_target
+9,1,0.05,moore,deterministic,partial,low,tiny,none,none,cyclic|sparse|layered,shallow,wrong_initial_state
+10,1,0.05,moore,deterministic,partial,low,tiny,none,none,cyclic|sparse|layered,shallow,dead_state_intro

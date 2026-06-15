@@ -1,0 +1,30 @@
+% Auto-generated from fsmrepairbench.c1_baseline_repair_exports
+\begin{table}[t]
+\caption{Oracle mutation detection rate and mean faulty behavioural pass rate (BPR) by operator ($n=20$ cohort-wide). Operators with 0\% detection are oracle-saturated (\textbf{505/1{,}000} cohort-wide); detectable-only partitions use $n=10$.
+Takeaway: eight operator families register 0\% detection under shallow suites.}
+\label{tab:baseline-mutation-detection}
+\begin{tabular}{@{}lrrr@{}}
+\toprule
+Operator & Cases & Detection rate & Mean faulty BPR \\
+\midrule
+action\_corruption & 2 & --- & 1.0000 \\
+action\_full\_mutation & 1 & --- & 1.0000 \\
+dead\_state\_intro & 1 & --- & 1.0000 \\
+delay\_corruption & 1 & --- & 1.0000 \\
+duplicate\_transition & 1 & --- & 1.0000 \\
+guard\_flip & 2 & --- & 0.7665 \\
+guard\_inter\_class & 2 & --- & 0.9944 \\
+guard\_strengthen & 1 & --- & 0.9136 \\
+guard\_weaken & 1 & --- & 0.7917 \\
+missing\_transition & 1 & --- & 0.9545 \\
+nondeterminism\_intro & 1 & --- & 1.0000 \\
+timeout\_corruption & 1 & --- & 1.0000 \\
+unreachable\_state\_intro & 1 & --- & 1.0000 \\
+wrong\_event & 1 & --- & 0.9988 \\
+wrong\_initial\_state & 1 & --- & 0.0000 \\
+wrong\_source & 1 & --- & 0.9959 \\
+wrong\_target & 1 & --- & 0.9868 \\
+\bottomrule
+\end{tabular}
+\par\footnotesize Cohort-wide complete/effective repair includes 505 oracle-saturated cases (faulty BPR $= 1.0$). Rows with detection $= 0\%$ and mean $\Delta$BPR $= 0$ but cohort-wide complete repair $= 100\%$ reflect oracle saturation, not structural repair. Source: cohort digest prefix \texttt{06a4d9f477a6da71...} in \texttt{manifest.json}.
+\end{table}

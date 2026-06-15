@@ -1,0 +1,35 @@
+{
+  "bug_id": "synthetic_10524_3_2__hom__unreachable_state_intro__wrong_event__23778",
+  "reference_fsm_id": "synthetic_10524_3_2",
+  "faulty_fsm_id": "synthetic_10524_3_2__faulty__hom__unreachable_state_intro__wrong_event__23778",
+  "mutation_operator": "unreachable_state_intro,wrong_event",
+  "changed_transition_id": "t10524_2",
+  "description": "Higher-order mutant applying 2 operators: unreachable_state_intro, wrong_event",
+  "seed": 23778,
+  "mutation_complexity": null,
+  "mutation_scope": null,
+  "mutation_mode": null,
+  "mutation_order": 2,
+  "component_faults": [
+    {
+      "operator": "unreachable_state_intro",
+      "seed": 23778,
+      "bug_id": "synthetic_10524_3_2__unreachable_state_intro__23778",
+      "changed_transition_id": null,
+      "description": "Added unreachable state 'unreachable_23778'"
+    },
+    {
+      "operator": "wrong_event",
+      "seed": 24778,
+      "bug_id": "synthetic_10524_3_2__faulty__unreachable_state_intro__23778__wrong_event__24778",
+      "changed_transition_id": "t10524_2",
+      "description": "Changed event of transition 't10524_2' from 'e10524_1' to 'e10524_0'"
+    }
+  ],
+  "is_higher_order": true,
+  "coupled_to_simple_faults": [
+    "synthetic_10524_3_2__unreachable_state_intro__23778",
+    "synthetic_10524_3_2__faulty__unreachable_state_intro__23778__wrong_event__24778"
+  ],
+  "is_negative_control": false
+}

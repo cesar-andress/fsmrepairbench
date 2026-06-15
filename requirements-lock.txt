@@ -1,0 +1,16 @@
+# Pinned runtime for reproducible FSMRepairBench analysis (Python 3.12).
+# Regenerate: pip install -e ".[dev,analytics]" && pip freeze | grep -E '^(pydantic|pyyaml|typer|rich|matplotlib|kiwisolver|scipy|pytest|ruff|mypy|types-PyYAML)==' > requirements-lock.txt
+#
+# Install: pip install -r requirements-lock.txt && pip install -e ".[dev,analytics]"
+
+pydantic==2.11.5
+pyyaml==6.0.2
+typer==0.16.0
+rich==13.9.4
+matplotlib==3.10.3
+kiwisolver==1.4.8
+scipy==1.15.3
+pytest==8.4.0
+ruff==0.11.12
+mypy==1.16.0
+types-PyYAML==6.0.12.20250516

@@ -7,6 +7,8 @@ This directory contains stratified dataset generation plans for FSMRepairBench. 
 | File | Cases | Seed | Purpose |
 |------|------:|-----:|---------|
 | `fsmrepairbench_v0_smoke_plan.yaml` | 100 | 42 | Fast smoke-test stratified build for CI and local validation |
+| `fsmrepairbench_v0_1k_plan.yaml` | 1,000 | 44 | **10D multi-family plan** (200/family × 5 families; track `fsmrepairbench_1k_multifamily`) |
+| `fsmrepairbench_multifamily_v0_3_plan.yaml` | 1,000 | 46 | v0.3.0 external-validity cohort (`fsmrepairbench_multifamily_v0_3`) |
 | `fsmrepairbench_multifamily_v0_3_smoke_plan.yaml` | 500 | 46 | v0.3.0 external-validity pilot (100 cases × 5 families) |
 | `fsmrepairbench_v0_10k_plan.yaml` | 10,000 | 42 | Balanced v0 benchmark across machine families, guards, timing, graph topology, and bug types |
 

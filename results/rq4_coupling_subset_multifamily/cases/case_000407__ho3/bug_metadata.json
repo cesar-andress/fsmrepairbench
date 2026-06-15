@@ -1,0 +1,43 @@
+{
+  "bug_id": "synthetic_7773_3_2__hom__wrong_initial_state__wrong_source__guard_weaken__74993",
+  "reference_fsm_id": "synthetic_7773_3_2",
+  "faulty_fsm_id": "synthetic_7773_3_2__faulty__hom__wrong_initial_state__wrong_source__guard_weaken__74993",
+  "mutation_operator": "wrong_initial_state,wrong_source,guard_weaken",
+  "changed_transition_id": "t7773_1",
+  "description": "Higher-order mutant applying 3 operators: wrong_initial_state, wrong_source, guard_weaken",
+  "seed": 74993,
+  "mutation_complexity": null,
+  "mutation_scope": null,
+  "mutation_mode": null,
+  "mutation_order": 3,
+  "component_faults": [
+    {
+      "operator": "wrong_initial_state",
+      "seed": 74993,
+      "bug_id": "synthetic_7773_3_2__wrong_initial_state__74993",
+      "changed_transition_id": null,
+      "description": "Changed initial_state from 's7773_0' to 's7773_2'"
+    },
+    {
+      "operator": "wrong_source",
+      "seed": 75993,
+      "bug_id": "synthetic_7773_3_2__faulty__wrong_initial_state__74993__wrong_source__75993",
+      "changed_transition_id": "t7773_1",
+      "description": "Changed source of transition 't7773_1' from 's7773_0' to 's7773_2'"
+    },
+    {
+      "operator": "guard_weaken",
+      "seed": 76993,
+      "bug_id": "synthetic_7773_3_2__faulty__wrong_initial_state__74993__faulty__wrong_source__75993__guard_weaken__76993",
+      "changed_transition_id": "t7773_1",
+      "description": "Weakened guard on transition 't7773_1' to 'true'"
+    }
+  ],
+  "is_higher_order": true,
+  "coupled_to_simple_faults": [
+    "synthetic_7773_3_2__wrong_initial_state__74993",
+    "synthetic_7773_3_2__faulty__wrong_initial_state__74993__wrong_source__75993",
+    "synthetic_7773_3_2__faulty__wrong_initial_state__74993__faulty__wrong_source__75993__guard_weaken__76993"
+  ],
+  "is_negative_control": false
+}

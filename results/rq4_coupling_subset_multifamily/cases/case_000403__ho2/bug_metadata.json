@@ -1,0 +1,35 @@
+{
+  "bug_id": "synthetic_7705_3_2__hom__wrong_initial_state__guard_flip__11174",
+  "reference_fsm_id": "synthetic_7705_3_2",
+  "faulty_fsm_id": "synthetic_7705_3_2__faulty__hom__wrong_initial_state__guard_flip__11174",
+  "mutation_operator": "wrong_initial_state,guard_flip",
+  "changed_transition_id": "t7705_1",
+  "description": "Higher-order mutant applying 2 operators: wrong_initial_state, guard_flip",
+  "seed": 11174,
+  "mutation_complexity": null,
+  "mutation_scope": null,
+  "mutation_mode": null,
+  "mutation_order": 2,
+  "component_faults": [
+    {
+      "operator": "wrong_initial_state",
+      "seed": 11174,
+      "bug_id": "synthetic_7705_3_2__wrong_initial_state__11174",
+      "changed_transition_id": null,
+      "description": "Changed initial_state from 's7705_0' to 's7705_2'"
+    },
+    {
+      "operator": "guard_flip",
+      "seed": 12174,
+      "bug_id": "synthetic_7705_3_2__faulty__wrong_initial_state__11174__guard_flip__12174",
+      "changed_transition_id": "t7705_1",
+      "description": "Added guard 'unexpected_guard' to transition 't7705_1'"
+    }
+  ],
+  "is_higher_order": true,
+  "coupled_to_simple_faults": [
+    "synthetic_7705_3_2__wrong_initial_state__11174",
+    "synthetic_7705_3_2__faulty__wrong_initial_state__11174__guard_flip__12174"
+  ],
+  "is_negative_control": false
+}

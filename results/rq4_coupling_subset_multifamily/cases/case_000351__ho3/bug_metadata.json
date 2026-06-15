@@ -1,0 +1,43 @@
+{
+  "bug_id": "synthetic_6720_3_2__hom__wrong_target__wrong_event__wrong_source__55968",
+  "reference_fsm_id": "synthetic_6720_3_2",
+  "faulty_fsm_id": "synthetic_6720_3_2__faulty__hom__wrong_target__wrong_event__wrong_source__55968",
+  "mutation_operator": "wrong_target,wrong_event,wrong_source",
+  "changed_transition_id": "t6720_5",
+  "description": "Higher-order mutant applying 3 operators: wrong_target, wrong_event, wrong_source",
+  "seed": 55968,
+  "mutation_complexity": null,
+  "mutation_scope": null,
+  "mutation_mode": null,
+  "mutation_order": 3,
+  "component_faults": [
+    {
+      "operator": "wrong_target",
+      "seed": 55968,
+      "bug_id": "synthetic_6720_3_2__wrong_target__55968",
+      "changed_transition_id": "t6720_1",
+      "description": "Changed target of transition 't6720_1' from 's6720_1' to 's6720_0'"
+    },
+    {
+      "operator": "wrong_event",
+      "seed": 56968,
+      "bug_id": "synthetic_6720_3_2__faulty__wrong_target__55968__wrong_event__56968",
+      "changed_transition_id": "t6720_1",
+      "description": "Changed event of transition 't6720_1' from 'e6720_1' to 'e6720_0'"
+    },
+    {
+      "operator": "wrong_source",
+      "seed": 57968,
+      "bug_id": "synthetic_6720_3_2__faulty__wrong_target__55968__faulty__wrong_event__56968__wrong_source__57968",
+      "changed_transition_id": "t6720_5",
+      "description": "Changed source of transition 't6720_5' from 's6720_2' to 's6720_1'"
+    }
+  ],
+  "is_higher_order": true,
+  "coupled_to_simple_faults": [
+    "synthetic_6720_3_2__wrong_target__55968",
+    "synthetic_6720_3_2__faulty__wrong_target__55968__wrong_event__56968",
+    "synthetic_6720_3_2__faulty__wrong_target__55968__faulty__wrong_event__56968__wrong_source__57968"
+  ],
+  "is_negative_control": false
+}

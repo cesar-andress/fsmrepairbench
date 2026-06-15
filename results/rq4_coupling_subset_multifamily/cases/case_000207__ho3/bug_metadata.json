@@ -1,0 +1,43 @@
+{
+  "bug_id": "synthetic_3969_3_2__hom__action_corruption__guard_strengthen__wrong_initial_state__13422",
+  "reference_fsm_id": "synthetic_3969_3_2",
+  "faulty_fsm_id": "synthetic_3969_3_2__faulty__hom__action_corruption__guard_strengthen__wrong_initial_state__13422",
+  "mutation_operator": "action_corruption,guard_strengthen,wrong_initial_state",
+  "changed_transition_id": null,
+  "description": "Higher-order mutant applying 3 operators: action_corruption, guard_strengthen, wrong_initial_state",
+  "seed": 13422,
+  "mutation_complexity": null,
+  "mutation_scope": null,
+  "mutation_mode": null,
+  "mutation_order": 3,
+  "component_faults": [
+    {
+      "operator": "action_corruption",
+      "seed": 13422,
+      "bug_id": "synthetic_3969_3_2__action_corruption__13422",
+      "changed_transition_id": "t3969_2",
+      "description": "Changed action of transition 't3969_2' from 'act3969_2' to 'wrong_act3969_2'"
+    },
+    {
+      "operator": "guard_strengthen",
+      "seed": 14422,
+      "bug_id": "synthetic_3969_3_2__faulty__action_corruption__13422__guard_strengthen__14422",
+      "changed_transition_id": "t3969_3",
+      "description": "Strengthened guard on transition 't3969_3'"
+    },
+    {
+      "operator": "wrong_initial_state",
+      "seed": 15422,
+      "bug_id": "synthetic_3969_3_2__faulty__action_corruption__13422__faulty__guard_strengthen__14422__wrong_initial_state__15422",
+      "changed_transition_id": null,
+      "description": "Changed initial_state from 's3969_0' to 's3969_2'"
+    }
+  ],
+  "is_higher_order": true,
+  "coupled_to_simple_faults": [
+    "synthetic_3969_3_2__action_corruption__13422",
+    "synthetic_3969_3_2__faulty__action_corruption__13422__guard_strengthen__14422",
+    "synthetic_3969_3_2__faulty__action_corruption__13422__faulty__guard_strengthen__14422__wrong_initial_state__15422"
+  ],
+  "is_negative_control": false
+}

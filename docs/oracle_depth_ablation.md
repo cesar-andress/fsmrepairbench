@@ -1,5 +1,53 @@
 # Oracle Depth Ablation (C3)
 
+## Enhanced ablation (500 cases, depth-forced, repair metrics)
+
+Release label: **`C3-oracle-depth-ablation-500`**
+
+The enhanced experiment uses **depth-forced** scenario generation so executed walk lengths
+actually increase across presets (unlike the legacy shortest-path 200-case run, where all
+presets stayed near ~4 steps). It reports detection, complete/effective repair, and ΔBPR
+with the `missing-transition` baseline on a **500-case** stratified pin.
+
+| Preset | Max steps | Mean scenario length (500-case run) |
+|--------|----------:|------------------------------------:|
+| shallow | 5 | ~4.1 |
+| medium | 12 | ~9.3 |
+| deep | 25 | ~18.5 |
+
+### Cohort (500 cases)
+
+| File | Role |
+|------|------|
+| `data/fsmrepairbench_1k/oracle_depth_ablation_500.txt` | Pinned 500-case ablation sample |
+| `data/fsmrepairbench_1k/oracle_depth_ablation_500.json` | Manifest (SHA-256, release label) |
+
+### Run
+
+```bash
+python ../paper1/scripts/pin_oracle_depth_ablation_500_cohort.py
+python ../paper1/scripts/run_oracle_depth_ablation_enhanced.py \
+  --cohort-file data/fsmrepairbench_1k/oracle_depth_ablation_500.txt \
+  --no-write-cohort
+python ../paper1/scripts/generate_oracle_depth_ablation_outputs.py
+```
+
+Or via CLI:
+
+```bash
+fsmrepairbench run-oracle-depth-ablation-enhanced data/fsmrepairbench_1k \
+  --cohort-file data/fsmrepairbench_1k/oracle_depth_ablation_500.txt \
+  --no-write-cohort \
+  --out results/oracle_depth_ablation
+```
+
+Frozen paper export: `paper1/results/oracle_depth_ablation/` (includes `manifest.json`
+with `release_label`, `zenodo_doi`, `git_commit_hash`, and `depth_summary_sha256`).
+
+---
+
+## Legacy ablation (200 cases, shortest-path)
+
 Construct-validity experiment measuring how sensitive mutation detection, behavioural
 pass rate (BPR), and oracle coverage are to the **depth preset** used when generating
 behavioural oracle suites.
@@ -85,9 +133,15 @@ Directory: `results/oracle_depth_ablation/`
 | medium | 12 | 48.5% | 0.082 | 4.0 | (per run) |
 | deep | 25 | 48.5% | 0.082 | 4.0 | (per run) |
 
-**Answer:** On this cohort, benchmark detection conclusions are **insensitive** to oracle
-depth within the shallow/medium/deep presets. Regenerated suites are identical because
-shortest-path scenario walks already fit within the shallow step cap (mean max steps ≈ 4).
+**Answer (v1, shortest-path):** On this cohort, benchmark detection conclusions are **insensitive** to oracle
+depth within the shallow/medium/deep presets because the shipped shortest-path generator never lengthened
+executed walks (mean max steps ≈ 4 at every preset).
+
+**Answer (v2, depth-forced):** With `--scenario-policy depth-forced`, mean scenario length rises to
+4.1 / 9.3 / 18.5 steps and mean ΔBPR rises to 0.093 / 0.126 / 0.165, but detection stays 48.5%
+with zero paired gains or losses vs shallow. The v1 null reflects **preset inoperability**, not general
+depth insensitivity; v2 shows BPR metrics respond when walks lengthen even though the detectable
+partition is unchanged on this pin.
 
 Implications for §10 Threats to Validity:
 
@@ -164,3 +218,29 @@ Outputs under `results/oracle_depth_ablation_v2/`:
 | `figures/`, `tables/` | Publication assets |
 
 Paper export: `../paper1/results/oracle_depth_ablation_v2/tables/`
+
+## Extended depth ladder (C3 extended)
+
+The v2 campaign still capped analysis at `deep` (25 declared steps). The
+**extended** follow-up adds `exhaustive_like` (40), `extended_50`, and
+`extended_60` presets under `--scenario-policy depth-forced`, and evaluates
+`missing-transition` repair at every depth on the same 200-case pin.
+
+```bash
+fsmrepairbench run-oracle-depth-ablation-extended data/fsmrepairbench_1k \
+  --out results/oracle_depth_ablation_extended \
+  --cohort-file data/fsmrepairbench_1k/oracle_depth_ablation_200.txt \
+  --no-write-cohort
+
+python ../paper1/scripts/generate_oracle_depth_ablation_extended_outputs.py
+```
+
+| File | Description |
+|------|-------------|
+| `per_case_results.csv` | Case×depth detection, ΔBPR, and repair metrics |
+| `depth_summary.csv` | Aggregate detection, ΔBPR, repair, scenario length |
+| `paired_detection_changes.csv` | Paired detection vs shallow for all higher presets |
+| `report.md` | Documents prior depth ceiling and extended sensitivity insights |
+| `figures/`, `tables/` | Detection, ΔBPR, repair, and path-length plots |
+
+Paper export: `../paper1/results/oracle_depth_ablation_extended/`

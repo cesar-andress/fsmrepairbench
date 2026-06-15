@@ -1,0 +1,89 @@
+{
+  "id": "synthetic_3884_3_2__faulty__hom__action_corruption__wrong_event__71087",
+  "name": "Synthetic FSM (custom) (higher-order: action_corruption, wrong_event)",
+  "description": "Synthetic FSM generated with seed=3884, states=3, events=2, branching_factor=1, deterministic=True, allow_dead_states=False",
+  "states": [
+    {
+      "id": "s3884_0",
+      "state_output": null,
+      "refusal": false,
+      "quiescence": false
+    },
+    {
+      "id": "s3884_1",
+      "state_output": null,
+      "refusal": false,
+      "quiescence": false
+    },
+    {
+      "id": "s3884_2",
+      "state_output": null,
+      "refusal": false,
+      "quiescence": false
+    }
+  ],
+  "initial_state": "s3884_0",
+  "events": [
+    "e3884_0",
+    "e3884_1"
+  ],
+  "transitions": [
+    {
+      "id": "t3884_1",
+      "source": "s3884_0",
+      "event": "e3884_1",
+      "target": "s3884_1",
+      "guard": "x_3884_0 > 0",
+      "action": "act3884_1",
+      "output": "out_3884_0",
+      "timeout": null,
+      "delay": null,
+      "requirements": [],
+      "probability": null,
+      "is_nondeterministic": false,
+      "refusal": false,
+      "quiescence": false,
+      "discrete_time": null
+    },
+    {
+      "id": "t3884_2",
+      "source": "s3884_1",
+      "event": "e3884_0",
+      "target": "s3884_2",
+      "guard": "x_3884_1 > 0",
+      "action": "act3884_2",
+      "output": "out_3884_1",
+      "timeout": null,
+      "delay": null,
+      "requirements": [],
+      "probability": null,
+      "is_nondeterministic": false,
+      "refusal": false,
+      "quiescence": false,
+      "discrete_time": null
+    },
+    {
+      "id": "t3884_3",
+      "source": "s3884_2",
+      "event": "e3884_1",
+      "target": "s3884_2",
+      "guard": "x_3884_2 > 0",
+      "action": "wrong_act3884_3",
+      "output": "out_3884_2",
+      "timeout": null,
+      "delay": null,
+      "requirements": [],
+      "probability": null,
+      "is_nondeterministic": false,
+      "refusal": false,
+      "quiescence": false,
+      "discrete_time": null
+    }
+  ],
+  "variables": {},
+  "parent_fsm_id": "synthetic_3884_3_2",
+  "reference_fsm_id": "synthetic_3884_3_2",
+  "discrete_time_step": null,
+  "semantics_mode": null,
+  "cyclic_metadata": null
+}

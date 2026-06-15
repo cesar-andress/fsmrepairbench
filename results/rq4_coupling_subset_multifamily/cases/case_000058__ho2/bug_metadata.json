@@ -1,0 +1,35 @@
+{
+  "bug_id": "synthetic_1133_3_2__hom__nondeterminism_intro__wrong_initial_state__3717",
+  "reference_fsm_id": "synthetic_1133_3_2",
+  "faulty_fsm_id": "synthetic_1133_3_2__faulty__hom__nondeterminism_intro__wrong_initial_state__3717",
+  "mutation_operator": "nondeterminism_intro,wrong_initial_state",
+  "changed_transition_id": null,
+  "description": "Higher-order mutant applying 2 operators: nondeterminism_intro, wrong_initial_state",
+  "seed": 3717,
+  "mutation_complexity": null,
+  "mutation_scope": null,
+  "mutation_mode": null,
+  "mutation_order": 2,
+  "component_faults": [
+    {
+      "operator": "nondeterminism_intro",
+      "seed": 3717,
+      "bug_id": "synthetic_1133_3_2__nondeterminism_intro__3717",
+      "changed_transition_id": "t1133_1",
+      "description": "Added nondeterministic duplicate for event 'e1133_1' from 's1133_0'"
+    },
+    {
+      "operator": "wrong_initial_state",
+      "seed": 4717,
+      "bug_id": "synthetic_1133_3_2__faulty__nondeterminism_intro__3717__wrong_initial_state__4717",
+      "changed_transition_id": null,
+      "description": "Changed initial_state from 's1133_0' to 's1133_2'"
+    }
+  ],
+  "is_higher_order": true,
+  "coupled_to_simple_faults": [
+    "synthetic_1133_3_2__nondeterminism_intro__3717",
+    "synthetic_1133_3_2__faulty__nondeterminism_intro__3717__wrong_initial_state__4717"
+  ],
+  "is_negative_control": false
+}

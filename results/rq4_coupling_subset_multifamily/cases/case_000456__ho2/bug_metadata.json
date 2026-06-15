@@ -1,0 +1,35 @@
+{
+  "bug_id": "synthetic_8707_3_2__hom__dead_state_intro__guard_weaken__34109",
+  "reference_fsm_id": "synthetic_8707_3_2",
+  "faulty_fsm_id": "synthetic_8707_3_2__faulty__hom__dead_state_intro__guard_weaken__34109",
+  "mutation_operator": "dead_state_intro,guard_weaken",
+  "changed_transition_id": "t8707_1",
+  "description": "Higher-order mutant applying 2 operators: dead_state_intro, guard_weaken",
+  "seed": 34109,
+  "mutation_complexity": null,
+  "mutation_scope": null,
+  "mutation_mode": null,
+  "mutation_order": 2,
+  "component_faults": [
+    {
+      "operator": "dead_state_intro",
+      "seed": 34109,
+      "bug_id": "synthetic_8707_3_2__dead_state_intro__34109",
+      "changed_transition_id": null,
+      "description": "Added unreachable state 'dead_34109'"
+    },
+    {
+      "operator": "guard_weaken",
+      "seed": 35109,
+      "bug_id": "synthetic_8707_3_2__faulty__dead_state_intro__34109__guard_weaken__35109",
+      "changed_transition_id": "t8707_1",
+      "description": "Weakened guard on transition 't8707_1' to 'true'"
+    }
+  ],
+  "is_higher_order": true,
+  "coupled_to_simple_faults": [
+    "synthetic_8707_3_2__dead_state_intro__34109",
+    "synthetic_8707_3_2__faulty__dead_state_intro__34109__guard_weaken__35109"
+  ],
+  "is_negative_control": false
+}

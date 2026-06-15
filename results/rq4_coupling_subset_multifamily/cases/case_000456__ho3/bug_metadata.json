@@ -1,0 +1,43 @@
+{
+  "bug_id": "synthetic_8707_3_2__hom__dead_state_intro__wrong_event__wrong_source__37184",
+  "reference_fsm_id": "synthetic_8707_3_2",
+  "faulty_fsm_id": "synthetic_8707_3_2__faulty__hom__dead_state_intro__wrong_event__wrong_source__37184",
+  "mutation_operator": "dead_state_intro,wrong_event,wrong_source",
+  "changed_transition_id": "t8707_1",
+  "description": "Higher-order mutant applying 3 operators: dead_state_intro, wrong_event, wrong_source",
+  "seed": 37184,
+  "mutation_complexity": null,
+  "mutation_scope": null,
+  "mutation_mode": null,
+  "mutation_order": 3,
+  "component_faults": [
+    {
+      "operator": "dead_state_intro",
+      "seed": 37184,
+      "bug_id": "synthetic_8707_3_2__dead_state_intro__37184",
+      "changed_transition_id": null,
+      "description": "Added unreachable state 'dead_37184'"
+    },
+    {
+      "operator": "wrong_event",
+      "seed": 38184,
+      "bug_id": "synthetic_8707_3_2__faulty__dead_state_intro__37184__wrong_event__38184",
+      "changed_transition_id": "t8707_1",
+      "description": "Changed event of transition 't8707_1' from 'e8707_1' to 'e8707_0'"
+    },
+    {
+      "operator": "wrong_source",
+      "seed": 39184,
+      "bug_id": "synthetic_8707_3_2__faulty__dead_state_intro__37184__faulty__wrong_event__38184__wrong_source__39184",
+      "changed_transition_id": "t8707_1",
+      "description": "Changed source of transition 't8707_1' from 's8707_0' to 's8707_1'"
+    }
+  ],
+  "is_higher_order": true,
+  "coupled_to_simple_faults": [
+    "synthetic_8707_3_2__dead_state_intro__37184",
+    "synthetic_8707_3_2__faulty__dead_state_intro__37184__wrong_event__38184",
+    "synthetic_8707_3_2__faulty__dead_state_intro__37184__faulty__wrong_event__38184__wrong_source__39184"
+  ],
+  "is_negative_control": false
+}

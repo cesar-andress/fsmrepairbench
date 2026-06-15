@@ -1,0 +1,43 @@
+{
+  "bug_id": "synthetic_7688_3_2__hom__wrong_initial_state__wrong_event__wrong_source__41453",
+  "reference_fsm_id": "synthetic_7688_3_2",
+  "faulty_fsm_id": "synthetic_7688_3_2__faulty__hom__wrong_initial_state__wrong_event__wrong_source__41453",
+  "mutation_operator": "wrong_initial_state,wrong_event,wrong_source",
+  "changed_transition_id": "t7688_1",
+  "description": "Higher-order mutant applying 3 operators: wrong_initial_state, wrong_event, wrong_source",
+  "seed": 41453,
+  "mutation_complexity": null,
+  "mutation_scope": null,
+  "mutation_mode": null,
+  "mutation_order": 3,
+  "component_faults": [
+    {
+      "operator": "wrong_initial_state",
+      "seed": 41453,
+      "bug_id": "synthetic_7688_3_2__wrong_initial_state__41453",
+      "changed_transition_id": null,
+      "description": "Changed initial_state from 's7688_0' to 's7688_1'"
+    },
+    {
+      "operator": "wrong_event",
+      "seed": 42453,
+      "bug_id": "synthetic_7688_3_2__faulty__wrong_initial_state__41453__wrong_event__42453",
+      "changed_transition_id": "t7688_1",
+      "description": "Changed event of transition 't7688_1' from 'e7688_0' to 'e7688_1'"
+    },
+    {
+      "operator": "wrong_source",
+      "seed": 43453,
+      "bug_id": "synthetic_7688_3_2__faulty__wrong_initial_state__41453__faulty__wrong_event__42453__wrong_source__43453",
+      "changed_transition_id": "t7688_1",
+      "description": "Changed source of transition 't7688_1' from 's7688_0' to 's7688_1'"
+    }
+  ],
+  "is_higher_order": true,
+  "coupled_to_simple_faults": [
+    "synthetic_7688_3_2__wrong_initial_state__41453",
+    "synthetic_7688_3_2__faulty__wrong_initial_state__41453__wrong_event__42453",
+    "synthetic_7688_3_2__faulty__wrong_initial_state__41453__faulty__wrong_event__42453__wrong_source__43453"
+  ],
+  "is_negative_control": false
+}

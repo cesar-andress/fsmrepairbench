@@ -23,6 +23,7 @@ from fsmrepairbench.stratified_builder import build_stratified_dataset
 
 runner = CliRunner()
 PLAN_PATH = Path(__file__).resolve().parents[1] / "plans" / "fsmrepairbench_multifamily_v0_3_smoke_plan.yaml"
+PILOT_PLAN_PATH = Path(__file__).resolve().parents[1] / "plans" / "fsmrepairbench_multifamily_pilot_plan.yaml"
 
 
 def _smoke_build_plan_yaml() -> str:
@@ -89,6 +90,17 @@ def _smoke_build_plan_yaml() -> str:
             count: 1
         """
     ).strip()
+
+
+def test_multifamily_pilot_plan_loads_and_balances_families() -> None:
+    plan = load_dataset_plan(PILOT_PLAN_PATH)
+    assert plan.name == "fsmrepairbench_multifamily_pilot"
+    assert plan.version == "0.3.0-pilot"
+    assert plan.seed == 46
+    assert total_planned_cases(plan) == 20
+    by_family = planned_counts_by_family(plan)
+    assert set(by_family) == set(MULTIFAMILY_TARGET_FAMILIES)
+    assert all(count == 4 for count in by_family.values())
 
 
 def test_multifamily_v0_3_smoke_plan_loads_and_balances_families() -> None:
@@ -162,6 +174,35 @@ def test_analyze_multifamily_cohort_export_schema(tmp_path: Path) -> None:
     manifest = json.loads(result.manifest_path.read_text(encoding="utf-8"))
     assert manifest["replaces_v0_2_analysis"] is False
     assert manifest["release_label"] == "v0.3.0-external-validity-pilot"
+    assert "output_sha256" not in manifest or isinstance(manifest.get("output_sha256"), dict)
+
+
+def test_analyze_multifamily_pilot_exports_coverage_and_manifest_hashes(tmp_path: Path) -> None:
+    plan_path = tmp_path / "pilot_plan.yaml"
+    plan_path.write_text(_smoke_build_plan_yaml().replace("multifamily-smoke-test", "fsmrepairbench_multifamily_pilot") + "\n", encoding="utf-8")
+    dataset_dir = tmp_path / "dataset"
+    build_stratified_dataset(plan_path, dataset_dir)
+
+    out = tmp_path / "results"
+    result = analyze_multifamily_cohort(
+        dataset_dir,
+        plan_path=plan_path,
+        output_dir=out,
+        paper_export_dir=tmp_path / "paper",
+    )
+
+    assert result.coverage_dir is not None
+    assert (result.coverage_dir / "dimension_summary.csv").is_file()
+    assert (result.coverage_dir / "coverage_by_mutation_operator.csv").is_file()
+    assert (result.coverage_dir / "coverage_by_complexity_tier.csv").is_file()
+    assert (result.coverage_dir / "coverage_by_fsm_family.csv").is_file()
+
+    manifest = json.loads(result.manifest_path.read_text(encoding="utf-8"))
+    assert manifest["release_label"] == "v0.3.0-multifamily-pilot"
+    assert manifest["frozen_v0_2_reference"]["zenodo_doi"] == "10.5281/zenodo.20602528"
+    assert isinstance(manifest["output_sha256"], dict)
+    assert manifest["output_sha256"]["family_summary.csv"]
+    assert manifest["regeneration_commands"]
 
 
 def test_analyze_multifamily_cohort_cli(tmp_path: Path) -> None:

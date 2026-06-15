@@ -1,0 +1,112 @@
+{
+  "artifacts": [
+    {
+      "media_type": "csv",
+      "relative_path": "localization_metrics.csv",
+      "sha256": "695fbce9fef14e040d87b40a506016c3e9421f41ca2dca0e9b5e8f81ab5c625c"
+    },
+    {
+      "media_type": "csv",
+      "relative_path": "per_case_results.csv",
+      "sha256": "263b64d7c06d9edc9d77a50e696e8736de98888e7d957dd84949a0c9b0a2763f"
+    },
+    {
+      "media_type": "csv",
+      "relative_path": "summary.csv",
+      "sha256": "00b698ef02461e5800db39da5c2a2a754b2fab3398a66cbd165469d63bcb427b"
+    },
+    {
+      "media_type": "csv",
+      "relative_path": "leaderboard.csv",
+      "sha256": "c19b3bc993bee3bb37b04483144650fe808c1392cd1b56fb2b5909b54dc66961"
+    },
+    {
+      "media_type": "csv",
+      "relative_path": "localizability_audit.csv",
+      "sha256": "7bf8f5f27086c801bffe733297f4ea915448ce9c3059699381655a123069e0a8"
+    },
+    {
+      "media_type": "csv",
+      "relative_path": "localization_metrics_by_operator.csv",
+      "sha256": "62693ecc0c8b0715827548e85c3990dc0296b44c7e895957cd27890f262a4b98"
+    },
+    {
+      "media_type": "csv",
+      "relative_path": "rank_distribution_by_operator.csv",
+      "sha256": "772a7121c9b8336dba17f21c30942811e22df10cb56e5eb5f1262f691616e260"
+    },
+    {
+      "media_type": "csv",
+      "relative_path": "not_ranked_by_operator.csv",
+      "sha256": "ba5fc1c28cad9f0083d7818f7c828b3b21a4c1090ef93ce1fb11eedd53d75153"
+    },
+    {
+      "media_type": "tex",
+      "relative_path": "tables/table_localization_summary.tex",
+      "sha256": "03ac5f58f32a1722e75b44419593fcb6b1c0b8bb3355c88e348dfe4e322178b0"
+    },
+    {
+      "media_type": "tex",
+      "relative_path": "tables/table_localization_metrics_by_operator.tex",
+      "sha256": "033d962a77944d5e8ffb26f82c50eb5cc80c26b07582ea1ada0eccf78231b0be"
+    },
+    {
+      "media_type": "tex",
+      "relative_path": "tables/table_rank_distribution.tex",
+      "sha256": "7d737f017a023af09f5b42e41e413ebf15563d368f6f29210a915cd327b6cb19"
+    },
+    {
+      "media_type": "tex",
+      "relative_path": "tables/table_localization_by_operator.tex",
+      "sha256": "03e63a16a76b8af339aef71cf0d2f9961a4f8d974b078c97167e4db2d733c5fb"
+    },
+    {
+      "media_type": "png",
+      "relative_path": "figures/topk_hit_rates.png",
+      "sha256": "78999865d8f18e02d321b0bf920326adf8b2b252288c8779795e6b2d2749b9d8"
+    },
+    {
+      "media_type": "png",
+      "relative_path": "figures/rank_distribution.png",
+      "sha256": "503a88384def0b8fe4ac135350194e5c232894d05b82d7c0a4d95e9519d71a85"
+    },
+    {
+      "media_type": "png",
+      "relative_path": "figures/rank_distribution_by_operator.png",
+      "sha256": "c11a8b51c13f69b2179d681795f33de592a29feb38df6831b24490085049266b"
+    },
+    {
+      "media_type": "png",
+      "relative_path": "figures/rank_distribution_cohort.png",
+      "sha256": "ca455b7cfd4d76c542ebf95ab7600bb34f74b39a3c3dced0bee5ec9ff26c9023"
+    }
+  ],
+  "campaign_id": "rq3",
+  "campaign_label": "RQ3 localization",
+  "metrics": [
+    {
+      "description": "top-1 hit rate",
+      "expected": 0.149495,
+      "file": "localization_metrics.csv",
+      "metric": "top1_hit_rate"
+    },
+    {
+      "description": "MRR",
+      "expected": 0.201018,
+      "file": "localization_metrics.csv",
+      "metric": "mrr"
+    },
+    {
+      "description": "localized cases",
+      "expected": 495.0,
+      "file": "localization_metrics.csv",
+      "metric": "localized_cases"
+    }
+  ],
+  "regeneration_commands": [
+    "python ../paper1/scripts/generate_rq3_localization_outputs.py"
+  ],
+  "release_label": "v0.2.0-analysis",
+  "results_subdir": "rq3_localization_1k",
+  "zenodo_doi": "10.5281/zenodo.20602528"
+}

@@ -1,0 +1,15 @@
+% Auto-generated from fsmrepairbench.c1_baseline_repair_exports
+\begin{table}[t]
+\caption{C1 baseline repair leaderboard ($n=1{,}000$). \textbf{Detectable-only primary} ($n=10$); cohort-wide$^\dagger$ columns include 10/1{,}000 oracle-saturated cases (faulty BPR $= 1.0$).}
+\label{tab:baseline-leaderboard}
+\begin{tabular}{@{}lrrrrrr@{}}
+\toprule
+Tool & Cases & Complete (detectable-only) & Complete (cohort-wide$^\dagger$) & Effective (detectable-only) & Effective (cohort-wide$^\dagger$) & Mean $\Delta$BPR \\
+\midrule
+baseline\_missing\_transition & 20 & 50.0\% & 75.0\% & 50.0\% & 25.0\% & 0.0404 \\
+baseline\_wrong\_target & 20 & 10.0\% & 55.0\% & 20.0\% & 10.0\% & 0.0370 \\
+baseline\_random & 20 & 0.0\% & 50.0\% & 0.0\% & 0.0\% & -0.0135 \\
+\bottomrule
+\end{tabular}
+\par\footnotesize Cohort-wide complete/effective repair includes 505 oracle-saturated cases (faulty BPR $= 1.0$). Source: cohort digest prefix \texttt{06a4d9f477a6da71...} in \texttt{manifest.json}.
+\end{table}

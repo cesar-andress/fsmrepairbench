@@ -1,0 +1,35 @@
+{
+  "bug_id": "synthetic_1116_3_2__hom__nondeterminism_intro__missing_transition__26945",
+  "reference_fsm_id": "synthetic_1116_3_2",
+  "faulty_fsm_id": "synthetic_1116_3_2__faulty__hom__nondeterminism_intro__missing_transition__26945",
+  "mutation_operator": "nondeterminism_intro,missing_transition",
+  "changed_transition_id": "t1116_1",
+  "description": "Higher-order mutant applying 2 operators: nondeterminism_intro, missing_transition",
+  "seed": 26945,
+  "mutation_complexity": null,
+  "mutation_scope": null,
+  "mutation_mode": null,
+  "mutation_order": 2,
+  "component_faults": [
+    {
+      "operator": "nondeterminism_intro",
+      "seed": 26945,
+      "bug_id": "synthetic_1116_3_2__nondeterminism_intro__26945",
+      "changed_transition_id": "t1116_2",
+      "description": "Added nondeterministic duplicate for event 'e1116_0' from 's1116_0'"
+    },
+    {
+      "operator": "missing_transition",
+      "seed": 27945,
+      "bug_id": "synthetic_1116_3_2__faulty__nondeterminism_intro__26945__missing_transition__27945",
+      "changed_transition_id": "t1116_1",
+      "description": "Removed transition 't1116_1'"
+    }
+  ],
+  "is_higher_order": true,
+  "coupled_to_simple_faults": [
+    "synthetic_1116_3_2__nondeterminism_intro__26945",
+    "synthetic_1116_3_2__faulty__nondeterminism_intro__26945__missing_transition__27945"
+  ],
+  "is_negative_control": false
+}

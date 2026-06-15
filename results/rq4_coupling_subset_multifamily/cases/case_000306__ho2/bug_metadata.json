@@ -1,0 +1,35 @@
+{
+  "bug_id": "synthetic_5854_3_2__hom__duplicate_transition__wrong_event__93715",
+  "reference_fsm_id": "synthetic_5854_3_2",
+  "faulty_fsm_id": "synthetic_5854_3_2__faulty__hom__duplicate_transition__wrong_event__93715",
+  "mutation_operator": "duplicate_transition,wrong_event",
+  "changed_transition_id": "t5854_6",
+  "description": "Higher-order mutant applying 2 operators: duplicate_transition, wrong_event",
+  "seed": 93715,
+  "mutation_complexity": null,
+  "mutation_scope": null,
+  "mutation_mode": null,
+  "mutation_order": 2,
+  "component_faults": [
+    {
+      "operator": "duplicate_transition",
+      "seed": 93715,
+      "bug_id": "synthetic_5854_3_2__duplicate_transition__93715",
+      "changed_transition_id": "t5854_4",
+      "description": "Duplicated transition 't5854_4' as 't5854_4__dup__93715'"
+    },
+    {
+      "operator": "wrong_event",
+      "seed": 94715,
+      "bug_id": "synthetic_5854_3_2__faulty__duplicate_transition__93715__wrong_event__94715",
+      "changed_transition_id": "t5854_6",
+      "description": "Changed event of transition 't5854_6' from 'e5854_0' to 'e5854_1'"
+    }
+  ],
+  "is_higher_order": true,
+  "coupled_to_simple_faults": [
+    "synthetic_5854_3_2__duplicate_transition__93715",
+    "synthetic_5854_3_2__faulty__duplicate_transition__93715__wrong_event__94715"
+  ],
+  "is_negative_control": false
+}

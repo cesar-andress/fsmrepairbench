@@ -1,0 +1,43 @@
+{
+  "bug_id": "synthetic_6788_3_2__hom__wrong_target__wrong_event__wrong_source__29370",
+  "reference_fsm_id": "synthetic_6788_3_2",
+  "faulty_fsm_id": "synthetic_6788_3_2__faulty__hom__wrong_target__wrong_event__wrong_source__29370",
+  "mutation_operator": "wrong_target,wrong_event,wrong_source",
+  "changed_transition_id": "t6788_4",
+  "description": "Higher-order mutant applying 3 operators: wrong_target, wrong_event, wrong_source",
+  "seed": 29370,
+  "mutation_complexity": null,
+  "mutation_scope": null,
+  "mutation_mode": null,
+  "mutation_order": 3,
+  "component_faults": [
+    {
+      "operator": "wrong_target",
+      "seed": 29370,
+      "bug_id": "synthetic_6788_3_2__wrong_target__29370",
+      "changed_transition_id": "t6788_5",
+      "description": "Changed target of transition 't6788_5' from 's6788_2' to 's6788_0'"
+    },
+    {
+      "operator": "wrong_event",
+      "seed": 30370,
+      "bug_id": "synthetic_6788_3_2__faulty__wrong_target__29370__wrong_event__30370",
+      "changed_transition_id": "t6788_3",
+      "description": "Changed event of transition 't6788_3' from 'e6788_0' to 'e6788_1'"
+    },
+    {
+      "operator": "wrong_source",
+      "seed": 31370,
+      "bug_id": "synthetic_6788_3_2__faulty__wrong_target__29370__faulty__wrong_event__30370__wrong_source__31370",
+      "changed_transition_id": "t6788_4",
+      "description": "Changed source of transition 't6788_4' from 's6788_1' to 's6788_2'"
+    }
+  ],
+  "is_higher_order": true,
+  "coupled_to_simple_faults": [
+    "synthetic_6788_3_2__wrong_target__29370",
+    "synthetic_6788_3_2__faulty__wrong_target__29370__wrong_event__30370",
+    "synthetic_6788_3_2__faulty__wrong_target__29370__faulty__wrong_event__30370__wrong_source__31370"
+  ],
+  "is_negative_control": false
+}

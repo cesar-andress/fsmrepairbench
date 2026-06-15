@@ -1,0 +1,75 @@
+{
+  "id": "synthetic_12443_3_2__faulty__hom__guard_strengthen__missing_transition__wrong_event__15327",
+  "name": "Synthetic FSM (custom) (higher-order: guard_strengthen, missing_transition, wrong_event)",
+  "description": "Synthetic FSM generated with seed=12443, states=3, events=2, branching_factor=2, deterministic=True, allow_dead_states=True",
+  "states": [
+    {
+      "id": "s12443_0",
+      "state_output": null,
+      "refusal": false,
+      "quiescence": false
+    },
+    {
+      "id": "s12443_1",
+      "state_output": null,
+      "refusal": false,
+      "quiescence": false
+    },
+    {
+      "id": "s12443_2",
+      "state_output": null,
+      "refusal": false,
+      "quiescence": false
+    }
+  ],
+  "initial_state": "s12443_0",
+  "events": [
+    "e12443_0",
+    "e12443_1"
+  ],
+  "transitions": [
+    {
+      "id": "t12443_1",
+      "source": "s12443_0",
+      "event": "e12443_1",
+      "target": "s12443_1",
+      "guard": "x_12443_0 > 0 and y_12443_0 < 10",
+      "action": "act12443_1",
+      "output": null,
+      "timeout": null,
+      "delay": null,
+      "requirements": [],
+      "probability": null,
+      "is_nondeterministic": false,
+      "refusal": false,
+      "quiescence": false,
+      "discrete_time": null
+    },
+    {
+      "id": "t12443_3",
+      "source": "s12443_1",
+      "event": "e12443_1",
+      "target": "s12443_2",
+      "guard": "(x_12443_2 > 0 and y_12443_2 < 10) and strict_check",
+      "action": "act12443_3",
+      "output": null,
+      "timeout": null,
+      "delay": null,
+      "requirements": [],
+      "probability": null,
+      "is_nondeterministic": false,
+      "refusal": false,
+      "quiescence": false,
+      "discrete_time": null
+    }
+  ],
+  "variables": {
+    "x": "int",
+    "y": "int"
+  },
+  "parent_fsm_id": "synthetic_12443_3_2",
+  "reference_fsm_id": "synthetic_12443_3_2",
+  "discrete_time_step": null,
+  "semantics_mode": null,
+  "cyclic_metadata": null
+}

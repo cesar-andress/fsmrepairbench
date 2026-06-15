@@ -1,0 +1,43 @@
+{
+  "bug_id": "synthetic_1116_3_2__hom__nondeterminism_intro__wrong_source__guard_weaken__79164",
+  "reference_fsm_id": "synthetic_1116_3_2",
+  "faulty_fsm_id": "synthetic_1116_3_2__faulty__hom__nondeterminism_intro__wrong_source__guard_weaken__79164",
+  "mutation_operator": "nondeterminism_intro,wrong_source,guard_weaken",
+  "changed_transition_id": "t1116_3",
+  "description": "Higher-order mutant applying 3 operators: nondeterminism_intro, wrong_source, guard_weaken",
+  "seed": 79164,
+  "mutation_complexity": null,
+  "mutation_scope": null,
+  "mutation_mode": null,
+  "mutation_order": 3,
+  "component_faults": [
+    {
+      "operator": "nondeterminism_intro",
+      "seed": 79164,
+      "bug_id": "synthetic_1116_3_2__nondeterminism_intro__79164",
+      "changed_transition_id": "t1116_1",
+      "description": "Added nondeterministic duplicate for event 'e1116_1' from 's1116_0'"
+    },
+    {
+      "operator": "wrong_source",
+      "seed": 80164,
+      "bug_id": "synthetic_1116_3_2__faulty__nondeterminism_intro__79164__wrong_source__80164",
+      "changed_transition_id": "t1116_3",
+      "description": "Changed source of transition 't1116_3' from 's1116_1' to 's1116_2'"
+    },
+    {
+      "operator": "guard_weaken",
+      "seed": 81164,
+      "bug_id": "synthetic_1116_3_2__faulty__nondeterminism_intro__79164__faulty__wrong_source__80164__guard_weaken__81164",
+      "changed_transition_id": "t1116_3",
+      "description": "Weakened guard on transition 't1116_3' to 'true'"
+    }
+  ],
+  "is_higher_order": true,
+  "coupled_to_simple_faults": [
+    "synthetic_1116_3_2__nondeterminism_intro__79164",
+    "synthetic_1116_3_2__faulty__nondeterminism_intro__79164__wrong_source__80164",
+    "synthetic_1116_3_2__faulty__nondeterminism_intro__79164__faulty__wrong_source__80164__guard_weaken__81164"
+  ],
+  "is_negative_control": false
+}

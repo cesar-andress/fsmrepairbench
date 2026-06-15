@@ -54,6 +54,13 @@ from fsmrepairbench.c1_baseline_repair_exports import (
     generate_c1_baseline_repair_exports,
     run_c1_baseline_repair_experiment,
 )
+from fsmrepairbench.c1_extended_baseline_repair import (
+    DEFAULT_EXTENDED_RAW_RUNS_DIR,
+    DEFAULT_EXTENDED_TOOLS_DIR,
+    EXTENDED_CAMPAIGN_LABEL,
+    generate_c1_extended_baseline_exports,
+    run_c1_extended_baseline_experiment,
+)
 from fsmrepairbench.tool_runner import ToolRunnerError, load_tool_configs, run_tools
 from fsmrepairbench.baseline_repair_campaign import (
     BaselineRepairCampaignError,
@@ -2166,6 +2173,120 @@ def export_c1_baseline_repair_cmd(
     raise typer.Exit(code=0)
 
 
+@app.command("run-c1-extended-baseline-repair")
+def run_c1_extended_baseline_repair_cmd(
+    dataset_dir: Path,
+    out: Path = typer.Option(
+        Path(DEFAULT_EXTENDED_RAW_RUNS_DIR),
+        "--out",
+        help="Write extended baseline run-tools output and frozen exports.",
+    ),
+    cohort_file: Path | None = typer.Option(
+        None,
+        "--cohort-file",
+        help="Pinned cohort manifest (default: analysis_cohort_1k.txt under dataset).",
+    ),
+    tools_dir: Path = typer.Option(
+        Path(DEFAULT_EXTENDED_TOOLS_DIR),
+        "--tools-dir",
+        help="Directory containing extended baseline tool YAML configs.",
+    ),
+    paper_export_dir: Path | None = typer.Option(
+        None,
+        "--paper-export-dir",
+        help="Optional separate paper export directory.",
+    ),
+    workers: int = typer.Option(4, "--workers", min=1),
+    resume: bool = typer.Option(True, "--resume/--no-resume"),
+    skip_tool_runs: bool = typer.Option(
+        False,
+        "--skip-tool-runs",
+        help="Export only from existing run-tools output under --out.",
+    ),
+    quiet: bool = typer.Option(False, "--quiet", help="Print a short summary only."),
+) -> None:
+    """Run search/composite/LLM-template extended baselines on the pinned cohort."""
+    cohort = cohort_file or (dataset_dir / DEFAULT_COHORT_FILE)
+    try:
+        result = run_c1_extended_baseline_experiment(
+            dataset_dir,
+            out_dir=out,
+            cohort_file=cohort,
+            tools_dir=tools_dir,
+            paper_export_dir=paper_export_dir,
+            workers=workers,
+            resume=resume,
+            skip_tool_runs=skip_tool_runs,
+        )
+    except (BaselineRepairCampaignError, C1BaselineRepairExportError, ToolRunnerError) as exc:
+        console.print(f"[red]ERROR[/red] {exc}")
+        raise typer.Exit(code=1) from exc
+
+    if quiet:
+        console.print(f"[green]OK[/green] {EXTENDED_CAMPAIGN_LABEL} out={out.name}")
+    else:
+        console.print(f"[green]OK[/green] Completed {EXTENDED_CAMPAIGN_LABEL} on '{dataset_dir}'")
+        console.print(f"Cohort: {cohort}")
+        console.print(f"Output: {result.output_dir}")
+        console.print(f"Leaderboard: {result.leaderboard_path}")
+        console.print(f"Localization coupling: {result.localization_coupling_path}")
+        console.print(f"Manifest: {result.manifest_path}")
+
+    raise typer.Exit(code=0)
+
+
+@app.command("export-c1-extended-baseline-repair")
+def export_c1_extended_baseline_repair_cmd(
+    dataset_dir: Path,
+    out: Path = typer.Option(
+        Path(DEFAULT_EXTENDED_RAW_RUNS_DIR),
+        "--out",
+        help="Directory containing extended run-tools output.",
+    ),
+    cohort_file: Path | None = typer.Option(
+        None,
+        "--cohort-file",
+        help="Pinned cohort manifest (default: analysis_cohort_1k.txt under dataset).",
+    ),
+    tools_dir: Path = typer.Option(
+        Path(DEFAULT_EXTENDED_TOOLS_DIR),
+        "--tools-dir",
+        help="Directory containing extended baseline tool YAML configs.",
+    ),
+    paper_export_dir: Path | None = typer.Option(
+        None,
+        "--paper-export-dir",
+        help="Optional separate paper export directory.",
+    ),
+    workers: int = typer.Option(4, "--workers", min=1),
+    quiet: bool = typer.Option(False, "--quiet", help="Print a short summary only."),
+) -> None:
+    """Export extended baseline CSV artefacts and manifest from existing run-tools output."""
+    cohort = cohort_file or (dataset_dir / DEFAULT_COHORT_FILE)
+    try:
+        result = generate_c1_extended_baseline_exports(
+            dataset_dir,
+            out_dir=out,
+            cohort_file=cohort,
+            tools_dir=tools_dir,
+            paper_export_dir=paper_export_dir,
+            workers=workers,
+        )
+    except (BaselineRepairCampaignError, C1BaselineRepairExportError) as exc:
+        console.print(f"[red]ERROR[/red] {exc}")
+        raise typer.Exit(code=1) from exc
+
+    if quiet:
+        console.print(f"[green]OK[/green] {EXTENDED_CAMPAIGN_LABEL} leaderboard={result.leaderboard_path.name}")
+    else:
+        console.print(f"[green]OK[/green] Exported {EXTENDED_CAMPAIGN_LABEL} artefacts to '{out}'")
+        console.print(f"Leaderboard: {result.leaderboard_path}")
+        console.print(f"Localization coupling: {result.localization_coupling_path}")
+        console.print(f"Manifest: {result.manifest_path}")
+
+    raise typer.Exit(code=0)
+
+
 @app.command("write-c1-manifest")
 def write_c1_manifest_cmd(
     dataset_dir: Path = typer.Option(
@@ -3081,6 +3202,11 @@ def analyze_benchmark_cmd(
         "--out",
         help="Directory for analysis CSVs, figures, and Markdown report.",
     ),
+    cohort_file: Path | None = typer.Option(
+        None,
+        "--cohort-file",
+        help="Optional pinned cohort manifest (.txt) restricting analyzed cases.",
+    ),
     max_cases: int | None = typer.Option(
         None,
         "--max-cases",
@@ -3092,7 +3218,12 @@ def analyze_benchmark_cmd(
     from fsmrepairbench.analytics import AnalyticsError, generate_analysis_report
 
     try:
-        result = generate_analysis_report(dataset_dir, output_dir=out, max_cases=max_cases)
+        result = generate_analysis_report(
+            dataset_dir,
+            output_dir=out,
+            max_cases=max_cases,
+            cohort_path=cohort_file,
+        )
     except AnalyticsError as exc:
         console.print(f"[red]ERROR[/red] {exc}")
         raise typer.Exit(code=1) from exc
@@ -3153,6 +3284,103 @@ def analyze_multifamily_cohort_cmd(
     console.print(f"Detection by family: {result.detection_by_family_path}")
     console.print(f"Report: {result.report_path}")
     console.print(f"Paper export: {result.paper_export_dir}")
+    raise typer.Exit(code=0)
+
+
+@app.command("validate-multifamily-cohort")
+def validate_multifamily_cohort_cmd(
+    dataset_dir: Path = typer.Argument(Path("data/fsmrepairbench_1k_multifamily")),
+    plan_path: Path | None = typer.Option(
+        None,
+        "--plan",
+        help="Stratification plan YAML (default: dataset_plan.json or v0.1 1k plan).",
+    ),
+    release_label: str = typer.Option(
+        "v0.3.0-1k-plan-multifamily",
+        "--release-label",
+        help="Expected release label recorded in cohort JSON manifests.",
+    ),
+    cases_per_family: int | None = typer.Option(
+        200,
+        "--cases-per-family",
+        help="Expected completed cases per machine family (None to skip quota check).",
+    ),
+    write_manifest: bool = typer.Option(
+        True,
+        "--write-manifest/--no-write-manifest",
+        help="Write or refresh dataset_manifest.json with SHA-256 checksums.",
+    ),
+) -> None:
+    """Validate multi-family cohort completeness, 10D stratification, and manifest SHA-256."""
+    from fsmrepairbench.multifamily_cohort_validation import (
+        MultifamilyValidationError,
+        export_dataset_manifest,
+        validate_multifamily_dataset,
+    )
+
+    cohort_specs = (
+        ("analysis_cohort_1k.txt", "analysis_cohort_1k.json", 1000),
+        ("localization_cohort_1k.txt", "localization_cohort_1k.json", 1000),
+        ("coupling_campaign_250.txt", "coupling_campaign_250.json", 250),
+        ("oracle_depth_ablation_200.txt", "oracle_depth_ablation_200.json", 200),
+    )
+    if "multifamily" in dataset_dir.name and "1k_multifamily" not in dataset_dir.name:
+        from fsmrepairbench.multifamily_cohort import (
+            ANALYSIS_COHORT_JSON,
+            ANALYSIS_COHORT_TXT,
+            COUPLING_COHORT_JSON,
+            COUPLING_COHORT_TXT,
+            LOCALIZATION_COHORT_JSON,
+            LOCALIZATION_COHORT_TXT,
+            ORACLE_DEPTH_COHORT_JSON,
+            ORACLE_DEPTH_COHORT_TXT,
+        )
+
+        cohort_specs = (
+            (ANALYSIS_COHORT_TXT, ANALYSIS_COHORT_JSON, 1000),
+            (LOCALIZATION_COHORT_TXT, LOCALIZATION_COHORT_JSON, 1000),
+            (COUPLING_COHORT_TXT, COUPLING_COHORT_JSON, 250),
+            (ORACLE_DEPTH_COHORT_TXT, ORACLE_DEPTH_COHORT_JSON, 200),
+        )
+        if release_label == "v0.3.0-1k-plan-multifamily":
+            release_label = "v0.3.0-multifamily-cohort"
+
+    try:
+        result = validate_multifamily_dataset(
+            dataset_dir,
+            plan_path=plan_path,
+            release_label=release_label,
+            cases_per_family=cases_per_family,
+            cohort_specs=cohort_specs,
+        )
+    except MultifamilyValidationError as exc:
+        console.print(f"[red]ERROR[/red] {exc}")
+        raise typer.Exit(code=1) from exc
+
+    if result.errors:
+        for error in result.errors:
+            console.print(f"[red]FAIL[/red] {error}")
+        raise typer.Exit(code=1)
+
+    for warning in result.warnings:
+        console.print(f"[yellow]WARN[/yellow] {warning}")
+
+    manifest_path = None
+    if write_manifest:
+        manifest_path = export_dataset_manifest(
+            dataset_dir,
+            release_label=release_label,
+            plan_path=plan_path,
+        )
+
+    console.print(
+        f"[green]OK[/green] Validated {result.case_count} cases across "
+        f"{len(result.machine_type_counts)} machine families "
+        f"(plan cell coverage {result.plan_cell_coverage:.1%})"
+    )
+    console.print(f"Cohort manifests verified: {result.cohort_manifests_verified}")
+    if manifest_path is not None:
+        console.print(f"Dataset manifest: {manifest_path}")
     raise typer.Exit(code=0)
 
 
@@ -3333,6 +3561,156 @@ def run_oracle_depth_ablation_cmd(
     console.print(f"Figures: {result.figures_dir}")
     console.print(f"Tables: {result.tables_dir}")
     console.print(f"Report: {result.report_path}")
+    raise typer.Exit(code=0)
+
+
+@app.command("run-oracle-depth-ablation-extended")
+def run_oracle_depth_ablation_extended_cmd(
+    dataset_dir: Path,
+    out: Path = typer.Option(
+        Path("results/oracle_depth_ablation_extended"),
+        "--out",
+        help="Directory for extended ablation CSVs, figures, tables, and report.",
+    ),
+    cohort_file: Path | None = typer.Option(
+        None,
+        "--cohort-file",
+        help="Use an existing pinned cohort manifest (one case ID per line).",
+    ),
+    cohort_manifest: Path | None = typer.Option(
+        None,
+        "--cohort-manifest",
+        help="Source cohort for selection (default: analysis_cohort_1k.txt).",
+    ),
+    cohort_size: int = typer.Option(
+        200,
+        "--cohort-size",
+        min=1,
+        help="Number of stratified cases when no cohort file is supplied.",
+    ),
+    no_write_cohort: bool = typer.Option(
+        False,
+        "--no-write-cohort",
+        help="Do not write oracle_depth_ablation_200.txt under the dataset.",
+    ),
+    repair_engine: str = typer.Option(
+        "missing-transition",
+        "--repair-engine",
+        help="Baseline repair engine evaluated at each depth preset.",
+    ),
+    paper_export_dir: Path | None = typer.Option(
+        None,
+        "--paper-export-dir",
+        help="Paper export directory for extended ablation outputs.",
+    ),
+) -> None:
+    """Run extended oracle depth ablation with detection, ΔBPR, and repair metrics."""
+    from fsmrepairbench.oracle_depth_ablation import OracleDepthAblationError
+    from fsmrepairbench.oracle_depth_ablation_extended import (
+        DEFAULT_EXTENDED_PAPER_EXPORT,
+        run_oracle_depth_ablation_extended,
+    )
+
+    try:
+        result = run_oracle_depth_ablation_extended(
+            dataset_dir,
+            output_dir=out,
+            cohort_path=cohort_file,
+            cohort_manifest=cohort_manifest,
+            cohort_size=cohort_size,
+            write_cohort=not no_write_cohort,
+            repair_engine=repair_engine,
+            paper_export_dir=paper_export_dir or DEFAULT_EXTENDED_PAPER_EXPORT,
+        )
+    except OracleDepthAblationError as exc:
+        console.print(f"[red]ERROR[/red] {exc}")
+        raise typer.Exit(code=1) from exc
+
+    console.print(
+        f"[green]OK[/green] Extended oracle depth ablation on {result.case_count} cases "
+        f"from {dataset_dir}"
+    )
+    console.print(f"Cohort: {result.cohort_path}")
+    console.print(f"Per-case: {result.per_case_path}")
+    console.print(f"Depth summary: {result.depth_summary_path}")
+    console.print(f"Paired detection: {result.paired_detection_path}")
+    console.print(f"Figures: {result.figures_dir}")
+    console.print(f"Tables: {result.tables_dir}")
+    console.print(f"Report: {result.report_path}")
+    console.print(f"Paper export: {result.paper_export_dir}")
+    raise typer.Exit(code=0)
+
+
+@app.command("run-oracle-depth-ablation-enhanced")
+def run_oracle_depth_ablation_enhanced_cmd(
+    dataset_dir: Path,
+    out: Path = typer.Option(
+        Path("results/oracle_depth_ablation"),
+        "--out",
+        help="Directory for enhanced ablation CSVs, figures, tables, and report.",
+    ),
+    cohort_file: Path | None = typer.Option(
+        None,
+        "--cohort-file",
+        help="Use an existing pinned cohort manifest (default: oracle_depth_ablation_500.txt).",
+    ),
+    cohort_manifest: Path | None = typer.Option(
+        None,
+        "--cohort-manifest",
+        help="Source cohort for selection (default: analysis_cohort_1k.txt).",
+    ),
+    cohort_size: int = typer.Option(
+        500,
+        "--cohort-size",
+        min=1,
+        help="Number of stratified cases when no cohort file is supplied.",
+    ),
+    no_write_cohort: bool = typer.Option(
+        False,
+        "--no-write-cohort",
+        help="Do not write oracle_depth_ablation_500.txt under the dataset.",
+    ),
+    repair_engine: str = typer.Option(
+        "missing-transition",
+        "--repair-engine",
+        help="Baseline repair engine evaluated at each depth preset.",
+    ),
+    paper_export_dir: Path | None = typer.Option(
+        None,
+        "--paper-export-dir",
+        help="Paper export directory (default: ../paper1/results/oracle_depth_ablation).",
+    ),
+) -> None:
+    """Run enhanced 500-case depth-forced ablation with detection, repair, and ΔBPR."""
+    from fsmrepairbench.oracle_depth_ablation import OracleDepthAblationError
+    from fsmrepairbench.oracle_depth_ablation_enhanced import (
+        DEFAULT_ENHANCED_PAPER_EXPORT,
+        run_oracle_depth_ablation_enhanced,
+    )
+
+    try:
+        result = run_oracle_depth_ablation_enhanced(
+            dataset_dir,
+            output_dir=out,
+            cohort_path=cohort_file,
+            cohort_manifest=cohort_manifest,
+            cohort_size=cohort_size,
+            write_cohort=not no_write_cohort,
+            repair_engine=repair_engine,
+            paper_export_dir=paper_export_dir or DEFAULT_ENHANCED_PAPER_EXPORT,
+        )
+    except OracleDepthAblationError as exc:
+        console.print(f"[red]ERROR[/red] {exc}")
+        raise typer.Exit(code=1) from exc
+
+    console.print(
+        f"[green]OK[/green] Enhanced oracle depth ablation on {result.case_count} cases "
+        f"from {dataset_dir}"
+    )
+    console.print(f"Cohort: {result.cohort_path}")
+    console.print(f"Depth summary: {result.depth_summary_path}")
+    console.print(f"Manifest: {result.manifest_path}")
+    console.print(f"Paper export: {result.paper_export_dir}")
     raise typer.Exit(code=0)
 
 

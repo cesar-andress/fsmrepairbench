@@ -1,0 +1,35 @@
+{
+  "bug_id": "synthetic_2067_3_2__hom__wrong_source__guard_weaken__65648",
+  "reference_fsm_id": "synthetic_2067_3_2",
+  "faulty_fsm_id": "synthetic_2067_3_2__faulty__hom__wrong_source__guard_weaken__65648",
+  "mutation_operator": "wrong_source,guard_weaken",
+  "changed_transition_id": "t2067_hub_2",
+  "description": "Higher-order mutant applying 2 operators: wrong_source, guard_weaken",
+  "seed": 65648,
+  "mutation_complexity": null,
+  "mutation_scope": null,
+  "mutation_mode": null,
+  "mutation_order": 2,
+  "component_faults": [
+    {
+      "operator": "wrong_source",
+      "seed": 65648,
+      "bug_id": "synthetic_2067_3_2__wrong_source__65648",
+      "changed_transition_id": "t2067_hub_2",
+      "description": "Changed source of transition 't2067_hub_2' from 's2067_0' to 's2067_1'"
+    },
+    {
+      "operator": "guard_weaken",
+      "seed": 66648,
+      "bug_id": "synthetic_2067_3_2__faulty__wrong_source__65648__guard_weaken__66648",
+      "changed_transition_id": "t2067_hub_2",
+      "description": "Weakened guard on transition 't2067_hub_2' to 'true'"
+    }
+  ],
+  "is_higher_order": true,
+  "coupled_to_simple_faults": [
+    "synthetic_2067_3_2__wrong_source__65648",
+    "synthetic_2067_3_2__faulty__wrong_source__65648__guard_weaken__66648"
+  ],
+  "is_negative_control": false
+}

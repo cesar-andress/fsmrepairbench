@@ -1,0 +1,43 @@
+{
+  "bug_id": "synthetic_11492_3_2__hom__guard_weaken__guard_strengthen__wrong_initial_state__14280",
+  "reference_fsm_id": "synthetic_11492_3_2",
+  "faulty_fsm_id": "synthetic_11492_3_2__faulty__hom__guard_weaken__guard_strengthen__wrong_initial_state__14280",
+  "mutation_operator": "guard_weaken,guard_strengthen,wrong_initial_state",
+  "changed_transition_id": null,
+  "description": "Higher-order mutant applying 3 operators: guard_weaken, guard_strengthen, wrong_initial_state",
+  "seed": 14280,
+  "mutation_complexity": null,
+  "mutation_scope": null,
+  "mutation_mode": null,
+  "mutation_order": 3,
+  "component_faults": [
+    {
+      "operator": "guard_weaken",
+      "seed": 14280,
+      "bug_id": "synthetic_11492_3_2__guard_weaken__14280",
+      "changed_transition_id": "t11492_4",
+      "description": "Weakened guard on transition 't11492_4' to 'true'"
+    },
+    {
+      "operator": "guard_strengthen",
+      "seed": 15280,
+      "bug_id": "synthetic_11492_3_2__faulty__guard_weaken__14280__guard_strengthen__15280",
+      "changed_transition_id": "t11492_3",
+      "description": "Strengthened guard on transition 't11492_3'"
+    },
+    {
+      "operator": "wrong_initial_state",
+      "seed": 16280,
+      "bug_id": "synthetic_11492_3_2__faulty__guard_weaken__14280__faulty__guard_strengthen__15280__wrong_initial_state__16280",
+      "changed_transition_id": null,
+      "description": "Changed initial_state from 's11492_0' to 's11492_1'"
+    }
+  ],
+  "is_higher_order": true,
+  "coupled_to_simple_faults": [
+    "synthetic_11492_3_2__guard_weaken__14280",
+    "synthetic_11492_3_2__faulty__guard_weaken__14280__guard_strengthen__15280",
+    "synthetic_11492_3_2__faulty__guard_weaken__14280__faulty__guard_strengthen__15280__wrong_initial_state__16280"
+  ],
+  "is_negative_control": false
+}

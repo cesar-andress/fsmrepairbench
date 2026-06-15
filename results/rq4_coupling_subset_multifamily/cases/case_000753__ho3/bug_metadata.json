@@ -1,0 +1,43 @@
+{
+  "bug_id": "synthetic_14362_3_2__hom__missing_transition__wrong_source__guard_weaken__79583",
+  "reference_fsm_id": "synthetic_14362_3_2",
+  "faulty_fsm_id": "synthetic_14362_3_2__faulty__hom__missing_transition__wrong_source__guard_weaken__79583",
+  "mutation_operator": "missing_transition,wrong_source,guard_weaken",
+  "changed_transition_id": "t14362_2",
+  "description": "Higher-order mutant applying 3 operators: missing_transition, wrong_source, guard_weaken",
+  "seed": 79583,
+  "mutation_complexity": null,
+  "mutation_scope": null,
+  "mutation_mode": null,
+  "mutation_order": 3,
+  "component_faults": [
+    {
+      "operator": "missing_transition",
+      "seed": 79583,
+      "bug_id": "synthetic_14362_3_2__missing_transition__79583",
+      "changed_transition_id": "t14362_3",
+      "description": "Removed transition 't14362_3'"
+    },
+    {
+      "operator": "wrong_source",
+      "seed": 80583,
+      "bug_id": "synthetic_14362_3_2__faulty__missing_transition__79583__wrong_source__80583",
+      "changed_transition_id": "t14362_5",
+      "description": "Changed source of transition 't14362_5' from 's14362_2' to 's14362_0'"
+    },
+    {
+      "operator": "guard_weaken",
+      "seed": 81583,
+      "bug_id": "synthetic_14362_3_2__faulty__missing_transition__79583__faulty__wrong_source__80583__guard_weaken__81583",
+      "changed_transition_id": "t14362_2",
+      "description": "Weakened guard on transition 't14362_2' to 'true'"
+    }
+  ],
+  "is_higher_order": true,
+  "coupled_to_simple_faults": [
+    "synthetic_14362_3_2__missing_transition__79583",
+    "synthetic_14362_3_2__faulty__missing_transition__79583__wrong_source__80583",
+    "synthetic_14362_3_2__faulty__missing_transition__79583__faulty__wrong_source__80583__guard_weaken__81583"
+  ],
+  "is_negative_control": false
+}

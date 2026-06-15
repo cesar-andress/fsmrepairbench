@@ -1,0 +1,43 @@
+{
+  "bug_id": "synthetic_10728_3_2__hom__unreachable_state_intro__wrong_event__wrong_source__51319",
+  "reference_fsm_id": "synthetic_10728_3_2",
+  "faulty_fsm_id": "synthetic_10728_3_2__faulty__hom__unreachable_state_intro__wrong_event__wrong_source__51319",
+  "mutation_operator": "unreachable_state_intro,wrong_event,wrong_source",
+  "changed_transition_id": "t10728_2",
+  "description": "Higher-order mutant applying 3 operators: unreachable_state_intro, wrong_event, wrong_source",
+  "seed": 51319,
+  "mutation_complexity": null,
+  "mutation_scope": null,
+  "mutation_mode": null,
+  "mutation_order": 3,
+  "component_faults": [
+    {
+      "operator": "unreachable_state_intro",
+      "seed": 51319,
+      "bug_id": "synthetic_10728_3_2__unreachable_state_intro__51319",
+      "changed_transition_id": null,
+      "description": "Added unreachable state 'unreachable_51319'"
+    },
+    {
+      "operator": "wrong_event",
+      "seed": 52319,
+      "bug_id": "synthetic_10728_3_2__faulty__unreachable_state_intro__51319__wrong_event__52319",
+      "changed_transition_id": "t10728_3",
+      "description": "Changed event of transition 't10728_3' from 'e10728_1' to 'e10728_0'"
+    },
+    {
+      "operator": "wrong_source",
+      "seed": 53319,
+      "bug_id": "synthetic_10728_3_2__faulty__unreachable_state_intro__51319__faulty__wrong_event__52319__wrong_source__53319",
+      "changed_transition_id": "t10728_2",
+      "description": "Changed source of transition 't10728_2' from 's10728_0' to 's10728_2'"
+    }
+  ],
+  "is_higher_order": true,
+  "coupled_to_simple_faults": [
+    "synthetic_10728_3_2__unreachable_state_intro__51319",
+    "synthetic_10728_3_2__faulty__unreachable_state_intro__51319__wrong_event__52319",
+    "synthetic_10728_3_2__faulty__unreachable_state_intro__51319__faulty__wrong_event__52319__wrong_source__53319"
+  ],
+  "is_negative_control": false
+}

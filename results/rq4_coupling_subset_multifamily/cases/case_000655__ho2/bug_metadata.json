@@ -1,0 +1,35 @@
+{
+  "bug_id": "synthetic_12494_3_2__hom__guard_strengthen__guard_weaken__20443",
+  "reference_fsm_id": "synthetic_12494_3_2",
+  "faulty_fsm_id": "synthetic_12494_3_2__faulty__hom__guard_strengthen__guard_weaken__20443",
+  "mutation_operator": "guard_strengthen,guard_weaken",
+  "changed_transition_id": "t12494_1",
+  "description": "Higher-order mutant applying 2 operators: guard_strengthen, guard_weaken",
+  "seed": 20443,
+  "mutation_complexity": null,
+  "mutation_scope": null,
+  "mutation_mode": null,
+  "mutation_order": 2,
+  "component_faults": [
+    {
+      "operator": "guard_strengthen",
+      "seed": 20443,
+      "bug_id": "synthetic_12494_3_2__guard_strengthen__20443",
+      "changed_transition_id": "t12494_1",
+      "description": "Strengthened guard on transition 't12494_1'"
+    },
+    {
+      "operator": "guard_weaken",
+      "seed": 21443,
+      "bug_id": "synthetic_12494_3_2__faulty__guard_strengthen__20443__guard_weaken__21443",
+      "changed_transition_id": "t12494_1",
+      "description": "Weakened guard on transition 't12494_1' to 'true'"
+    }
+  ],
+  "is_higher_order": true,
+  "coupled_to_simple_faults": [
+    "synthetic_12494_3_2__guard_strengthen__20443",
+    "synthetic_12494_3_2__faulty__guard_strengthen__20443__guard_weaken__21443"
+  ],
+  "is_negative_control": false
+}

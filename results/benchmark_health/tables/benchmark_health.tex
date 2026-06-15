@@ -1,0 +1,29 @@
+\begin{table}[t]
+\caption{Benchmark health scorecard for the \texttt{v0.2.0-analysis} 1{,}000-case \texttt{plain\_fsm}/shallow-oracle release. Composite score $=0.589$ (fair). Takeaway: tier and operator \emph{counts} are balanced, but oracle saturation and partial taxonomy realisation limit overall health.}
+\label{tab:benchmark-health}
+\small
+\begin{tabular}{@{}p{0.28\linewidth}rp{0.48\linewidth}@{}}
+\toprule
+Pillar & Score & Key evidence \\
+\midrule
+Operator balance & 0.897 & 17/19 operators; CV=0.026 \\
+Complexity tier balance & 0.970 & 4/4 tiers; counts 246--252 \\
+Oracle health & 0.495 & 505/1{,}000 saturated; detection 49.5\% \\
+Localization coverage & 0.376 & 376/1{,}000 localizable GT; 495 detectable \\
+Coupling coverage & 0.250 & 250/1{,}000 pinned HO subset \\
+Taxonomy coverage & 0.548 & mean dimension coverage 54.8\%; 200 unique cells \\
+\midrule
+\textbf{Composite health} & \textbf{0.589} & Grade: \textbf{fair} (mean of six pillars) \\
+\bottomrule
+\end{tabular}
+\par\footnotesize Regenerate with \texttt{paper1/scripts/generate\_benchmark\_health\_outputs.py}.
+\end{table}
+
+\paragraph{Health recommendations (v0.3+).}
+\begin{itemize}[leftmargin=*]
+\item Close operator build gaps for timed\_selective\_mutation, variable\_intra\_class and rebalance quotas so every declared operator reaches the stratification plan minimum.
+\item Ship oracle variants that observe actions, timing, guards, and reachability fields; target saturation below 30% on the main cohort so detectability and repair partitions are not dominated by oracle-invisible faults.
+\item Expand transition-localizable ground truth and shallow-oracle spectra beyond 376/1000 cases; publish operator-specific localization eligibility and richer scenario fields in v0.3.
+\item Scale HO coupling campaigns from the pinned 250-case subset to a stratified 500-1000-case pin and document alternative chaining policies so coupling claims generalise beyond seed 44.
+\item Realise under-filled taxonomy cells (mean dimension coverage 54.8%) and add Mealy, Moore, EFSM, and timed machine strata beyond \texttt{plain\_fsm}.
+\end{itemize}

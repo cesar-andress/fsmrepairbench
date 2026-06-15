@@ -1,0 +1,43 @@
+{
+  "bug_id": "synthetic_1201_3_2__hom__nondeterminism_intro__missing_transition__wrong_event__58301",
+  "reference_fsm_id": "synthetic_1201_3_2",
+  "faulty_fsm_id": "synthetic_1201_3_2__faulty__hom__nondeterminism_intro__missing_transition__wrong_event__58301",
+  "mutation_operator": "nondeterminism_intro,missing_transition,wrong_event",
+  "changed_transition_id": "t1201_1__nd__58301",
+  "description": "Higher-order mutant applying 3 operators: nondeterminism_intro, missing_transition, wrong_event",
+  "seed": 58301,
+  "mutation_complexity": null,
+  "mutation_scope": null,
+  "mutation_mode": null,
+  "mutation_order": 3,
+  "component_faults": [
+    {
+      "operator": "nondeterminism_intro",
+      "seed": 58301,
+      "bug_id": "synthetic_1201_3_2__nondeterminism_intro__58301",
+      "changed_transition_id": "t1201_1",
+      "description": "Added nondeterministic duplicate for event 'e1201_1' from 's1201_0'"
+    },
+    {
+      "operator": "missing_transition",
+      "seed": 59301,
+      "bug_id": "synthetic_1201_3_2__faulty__nondeterminism_intro__58301__missing_transition__59301",
+      "changed_transition_id": "t1201_1",
+      "description": "Removed transition 't1201_1'"
+    },
+    {
+      "operator": "wrong_event",
+      "seed": 60301,
+      "bug_id": "synthetic_1201_3_2__faulty__nondeterminism_intro__58301__faulty__missing_transition__59301__wrong_event__60301",
+      "changed_transition_id": "t1201_1__nd__58301",
+      "description": "Changed event of transition 't1201_1__nd__58301' from 'e1201_1' to 'e1201_0'"
+    }
+  ],
+  "is_higher_order": true,
+  "coupled_to_simple_faults": [
+    "synthetic_1201_3_2__nondeterminism_intro__58301",
+    "synthetic_1201_3_2__faulty__nondeterminism_intro__58301__missing_transition__59301",
+    "synthetic_1201_3_2__faulty__nondeterminism_intro__58301__faulty__missing_transition__59301__wrong_event__60301"
+  ],
+  "is_negative_control": false
+}

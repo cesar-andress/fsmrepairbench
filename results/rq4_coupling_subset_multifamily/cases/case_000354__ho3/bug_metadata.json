@@ -1,0 +1,43 @@
+{
+  "bug_id": "synthetic_6771_3_2__hom__wrong_target__guard_weaken__guard_strengthen__96668",
+  "reference_fsm_id": "synthetic_6771_3_2",
+  "faulty_fsm_id": "synthetic_6771_3_2__faulty__hom__wrong_target__guard_weaken__guard_strengthen__96668",
+  "mutation_operator": "wrong_target,guard_weaken,guard_strengthen",
+  "changed_transition_id": "t6771_3",
+  "description": "Higher-order mutant applying 3 operators: wrong_target, guard_weaken, guard_strengthen",
+  "seed": 96668,
+  "mutation_complexity": null,
+  "mutation_scope": null,
+  "mutation_mode": null,
+  "mutation_order": 3,
+  "component_faults": [
+    {
+      "operator": "wrong_target",
+      "seed": 96668,
+      "bug_id": "synthetic_6771_3_2__wrong_target__96668",
+      "changed_transition_id": "t6771_1",
+      "description": "Changed target of transition 't6771_1' from 's6771_1' to 's6771_0'"
+    },
+    {
+      "operator": "guard_weaken",
+      "seed": 97668,
+      "bug_id": "synthetic_6771_3_2__faulty__wrong_target__96668__guard_weaken__97668",
+      "changed_transition_id": "t6771_1",
+      "description": "Weakened guard on transition 't6771_1' to 'true'"
+    },
+    {
+      "operator": "guard_strengthen",
+      "seed": 98668,
+      "bug_id": "synthetic_6771_3_2__faulty__wrong_target__96668__faulty__guard_weaken__97668__guard_strengthen__98668",
+      "changed_transition_id": "t6771_3",
+      "description": "Strengthened guard on transition 't6771_3'"
+    }
+  ],
+  "is_higher_order": true,
+  "coupled_to_simple_faults": [
+    "synthetic_6771_3_2__wrong_target__96668",
+    "synthetic_6771_3_2__faulty__wrong_target__96668__guard_weaken__97668",
+    "synthetic_6771_3_2__faulty__wrong_target__96668__faulty__guard_weaken__97668__guard_strengthen__98668"
+  ],
+  "is_negative_control": false
+}

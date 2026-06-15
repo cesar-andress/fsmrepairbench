@@ -14,6 +14,7 @@ from fsmrepairbench.coupling_campaign import (
     CouplingCampaignError,
     build_operator_chain,
     case_ho_seed,
+    load_cohort_manifest,
     run_coupling_campaign,
 )
 
@@ -105,3 +106,38 @@ def test_run_coupling_campaign_cli(tmp_path: Path) -> None:
 def test_run_coupling_campaign_requires_dataset(tmp_path: Path) -> None:
     with pytest.raises(CouplingCampaignError):
         run_coupling_campaign(tmp_path / "missing")
+
+
+def test_load_cohort_manifest_validates_pinned_sha256(tmp_path: Path) -> None:
+    cohort_txt = tmp_path / "cohort.txt"
+    cohort_txt.write_text("case_a\n", encoding="utf-8")
+    cohort_json = tmp_path / "cohort.json"
+    cohort_json.write_text(
+        json.dumps({"sha256": "deadbeef" * 8, "case_ids": ["case_a"]}),
+        encoding="utf-8",
+    )
+    with pytest.raises(CouplingCampaignError, match="sha256 mismatch"):
+        load_cohort_manifest(cohort_txt)
+
+
+def test_run_coupling_campaign_exports_detectable_operator_metrics(tmp_path: Path) -> None:
+    cohort_path = tmp_path / "cohort.txt"
+    cohort_path.write_text("case_000002\n", encoding="utf-8")
+    out = tmp_path / "results"
+    subset = tmp_path / "subset"
+    result = run_coupling_campaign(
+        FIXTURE_DATASET,
+        output_dir=out,
+        cohort_path=cohort_path,
+        subset_dir=subset,
+        campaign_seed=44,
+        use_symlinks=False,
+    )
+    metrics = list(csv.DictReader(result.coupling_metrics_path.open(encoding="utf-8")))
+    detectable_rows = [
+        row
+        for row in metrics
+        if row["metric"] == "complete_repair_rate_detectable" and row["primary_operator"]
+    ]
+    assert detectable_rows
+    assert (result.tables_dir / "table_repair_detectable_by_operator_order.tex").is_file()

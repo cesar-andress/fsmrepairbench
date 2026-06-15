@@ -1,0 +1,43 @@
+{
+  "bug_id": "synthetic_3952_3_2__hom__action_corruption__wrong_event__wrong_source__19656",
+  "reference_fsm_id": "synthetic_3952_3_2",
+  "faulty_fsm_id": "synthetic_3952_3_2__faulty__hom__action_corruption__wrong_event__wrong_source__19656",
+  "mutation_operator": "action_corruption,wrong_event,wrong_source",
+  "changed_transition_id": "t3952_3",
+  "description": "Higher-order mutant applying 3 operators: action_corruption, wrong_event, wrong_source",
+  "seed": 19656,
+  "mutation_complexity": null,
+  "mutation_scope": null,
+  "mutation_mode": null,
+  "mutation_order": 3,
+  "component_faults": [
+    {
+      "operator": "action_corruption",
+      "seed": 19656,
+      "bug_id": "synthetic_3952_3_2__action_corruption__19656",
+      "changed_transition_id": "t3952_1",
+      "description": "Changed action of transition 't3952_1' from 'act3952_1' to 'wrong_act3952_1'"
+    },
+    {
+      "operator": "wrong_event",
+      "seed": 20656,
+      "bug_id": "synthetic_3952_3_2__faulty__action_corruption__19656__wrong_event__20656",
+      "changed_transition_id": "t3952_3",
+      "description": "Changed event of transition 't3952_3' from 'e3952_0' to 'e3952_1'"
+    },
+    {
+      "operator": "wrong_source",
+      "seed": 21656,
+      "bug_id": "synthetic_3952_3_2__faulty__action_corruption__19656__faulty__wrong_event__20656__wrong_source__21656",
+      "changed_transition_id": "t3952_3",
+      "description": "Changed source of transition 't3952_3' from 's3952_2' to 's3952_1'"
+    }
+  ],
+  "is_higher_order": true,
+  "coupled_to_simple_faults": [
+    "synthetic_3952_3_2__action_corruption__19656",
+    "synthetic_3952_3_2__faulty__action_corruption__19656__wrong_event__20656",
+    "synthetic_3952_3_2__faulty__action_corruption__19656__faulty__wrong_event__20656__wrong_source__21656"
+  ],
+  "is_negative_control": false
+}

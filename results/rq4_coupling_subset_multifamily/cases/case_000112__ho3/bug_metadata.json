@@ -1,0 +1,43 @@
+{
+  "bug_id": "synthetic_2152_3_2__hom__wrong_source__wrong_event__guard_weaken__7314",
+  "reference_fsm_id": "synthetic_2152_3_2",
+  "faulty_fsm_id": "synthetic_2152_3_2__faulty__hom__wrong_source__wrong_event__guard_weaken__7314",
+  "mutation_operator": "wrong_source,wrong_event,guard_weaken",
+  "changed_transition_id": "t2152_hub_1",
+  "description": "Higher-order mutant applying 3 operators: wrong_source, wrong_event, guard_weaken",
+  "seed": 7314,
+  "mutation_complexity": null,
+  "mutation_scope": null,
+  "mutation_mode": null,
+  "mutation_order": 3,
+  "component_faults": [
+    {
+      "operator": "wrong_source",
+      "seed": 7314,
+      "bug_id": "synthetic_2152_3_2__wrong_source__7314",
+      "changed_transition_id": "t2152_hub_1",
+      "description": "Changed source of transition 't2152_hub_1' from 's2152_0' to 's2152_1'"
+    },
+    {
+      "operator": "wrong_event",
+      "seed": 8314,
+      "bug_id": "synthetic_2152_3_2__faulty__wrong_source__7314__wrong_event__8314",
+      "changed_transition_id": "t2152_hub_1",
+      "description": "Changed event of transition 't2152_hub_1' from 'e2152_1' to 'e2152_0'"
+    },
+    {
+      "operator": "guard_weaken",
+      "seed": 9314,
+      "bug_id": "synthetic_2152_3_2__faulty__wrong_source__7314__faulty__wrong_event__8314__guard_weaken__9314",
+      "changed_transition_id": "t2152_hub_1",
+      "description": "Weakened guard on transition 't2152_hub_1' to 'true'"
+    }
+  ],
+  "is_higher_order": true,
+  "coupled_to_simple_faults": [
+    "synthetic_2152_3_2__wrong_source__7314",
+    "synthetic_2152_3_2__faulty__wrong_source__7314__wrong_event__8314",
+    "synthetic_2152_3_2__faulty__wrong_source__7314__faulty__wrong_event__8314__guard_weaken__9314"
+  ],
+  "is_negative_control": false
+}

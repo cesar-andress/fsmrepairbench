@@ -1,0 +1,35 @@
+{
+  "bug_id": "synthetic_17300_3_2__hom__wrong_target__guard_strengthen__87336",
+  "reference_fsm_id": "synthetic_17300_3_2",
+  "faulty_fsm_id": "synthetic_17300_3_2__faulty__hom__wrong_target__guard_strengthen__87336",
+  "mutation_operator": "wrong_target,guard_strengthen",
+  "changed_transition_id": "t17300_12",
+  "description": "Higher-order mutant applying 2 operators: wrong_target, guard_strengthen",
+  "seed": 87336,
+  "mutation_complexity": null,
+  "mutation_scope": null,
+  "mutation_mode": null,
+  "mutation_order": 2,
+  "component_faults": [
+    {
+      "operator": "wrong_target",
+      "seed": 87336,
+      "bug_id": "synthetic_17300_3_2__wrong_target__87336",
+      "changed_transition_id": "t17300_5",
+      "description": "Changed target of transition 't17300_5' from 's17300_2' to 's17300_1'"
+    },
+    {
+      "operator": "guard_strengthen",
+      "seed": 88336,
+      "bug_id": "synthetic_17300_3_2__faulty__wrong_target__87336__guard_strengthen__88336",
+      "changed_transition_id": "t17300_12",
+      "description": "Strengthened guard on transition 't17300_12'"
+    }
+  ],
+  "is_higher_order": true,
+  "coupled_to_simple_faults": [
+    "synthetic_17300_3_2__wrong_target__87336",
+    "synthetic_17300_3_2__faulty__wrong_target__87336__guard_strengthen__88336"
+  ],
+  "is_negative_control": false
+}

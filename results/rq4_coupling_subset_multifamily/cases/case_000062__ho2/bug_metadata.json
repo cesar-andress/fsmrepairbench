@@ -1,0 +1,35 @@
+{
+  "bug_id": "synthetic_1201_3_2__hom__nondeterminism_intro__wrong_source__68992",
+  "reference_fsm_id": "synthetic_1201_3_2",
+  "faulty_fsm_id": "synthetic_1201_3_2__faulty__hom__nondeterminism_intro__wrong_source__68992",
+  "mutation_operator": "nondeterminism_intro,wrong_source",
+  "changed_transition_id": "t1201_1__nd__68992",
+  "description": "Higher-order mutant applying 2 operators: nondeterminism_intro, wrong_source",
+  "seed": 68992,
+  "mutation_complexity": null,
+  "mutation_scope": null,
+  "mutation_mode": null,
+  "mutation_order": 2,
+  "component_faults": [
+    {
+      "operator": "nondeterminism_intro",
+      "seed": 68992,
+      "bug_id": "synthetic_1201_3_2__nondeterminism_intro__68992",
+      "changed_transition_id": "t1201_1",
+      "description": "Added nondeterministic duplicate for event 'e1201_1' from 's1201_0'"
+    },
+    {
+      "operator": "wrong_source",
+      "seed": 69992,
+      "bug_id": "synthetic_1201_3_2__faulty__nondeterminism_intro__68992__wrong_source__69992",
+      "changed_transition_id": "t1201_1__nd__68992",
+      "description": "Changed source of transition 't1201_1__nd__68992' from 's1201_0' to 's1201_2'"
+    }
+  ],
+  "is_higher_order": true,
+  "coupled_to_simple_faults": [
+    "synthetic_1201_3_2__nondeterminism_intro__68992",
+    "synthetic_1201_3_2__faulty__nondeterminism_intro__68992__wrong_source__69992"
+  ],
+  "is_negative_control": false
+}

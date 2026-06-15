@@ -1,0 +1,35 @@
+{
+  "bug_id": "synthetic_4818_3_2__hom__guard_flip__wrong_initial_state__43995",
+  "reference_fsm_id": "synthetic_4818_3_2",
+  "faulty_fsm_id": "synthetic_4818_3_2__faulty__hom__guard_flip__wrong_initial_state__43995",
+  "mutation_operator": "guard_flip,wrong_initial_state",
+  "changed_transition_id": null,
+  "description": "Higher-order mutant applying 2 operators: guard_flip, wrong_initial_state",
+  "seed": 43995,
+  "mutation_complexity": null,
+  "mutation_scope": null,
+  "mutation_mode": null,
+  "mutation_order": 2,
+  "component_faults": [
+    {
+      "operator": "guard_flip",
+      "seed": 43995,
+      "bug_id": "synthetic_4818_3_2__guard_flip__43995",
+      "changed_transition_id": "t4818_4",
+      "description": "Changed guard of transition 't4818_4' from 'x_4818_3 > 0' to 'not_x_4818_3 > 0'"
+    },
+    {
+      "operator": "wrong_initial_state",
+      "seed": 44995,
+      "bug_id": "synthetic_4818_3_2__faulty__guard_flip__43995__wrong_initial_state__44995",
+      "changed_transition_id": null,
+      "description": "Changed initial_state from 's4818_0' to 's4818_1'"
+    }
+  ],
+  "is_higher_order": true,
+  "coupled_to_simple_faults": [
+    "synthetic_4818_3_2__guard_flip__43995",
+    "synthetic_4818_3_2__faulty__guard_flip__43995__wrong_initial_state__44995"
+  ],
+  "is_negative_control": false
+}

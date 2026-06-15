@@ -3,10 +3,10 @@
   "campaign_label": "RQ1-taxonomy-coverage",
   "zenodo_doi": "10.5281/zenodo.20602528",
   "experiment": "taxonomy-coverage-report",
-  "dataset_dir": "data/fsmrepairbench_1k",
-  "output_dir": "results/taxonomy_coverage",
+  "dataset_dir": "/home/cesar/papers/fsmrepairbench/fsmrepairbench/data/fsmrepairbench_1k",
+  "output_dir": "/home/cesar/papers/fsmrepairbench/fsmrepairbench/results/taxonomy_coverage",
   "case_count": 1000,
-  "cohort_path": "data/fsmrepairbench_1k/analysis_cohort_1k.txt",
+  "cohort_path": "/home/cesar/papers/fsmrepairbench/fsmrepairbench/data/fsmrepairbench_1k/analysis_cohort_1k.txt",
   "cohort_sha256": "c03c4d5981259510bccfced987c5175f28058d7bdccc164e7ce2ba22410f04f8",
   "feature_source": "case_features.json_or_inferred",
   "summary": [
@@ -65,12 +65,17 @@
     "feature_matrix_snapshot.csv",
     "feature_space_report.json",
     "figures/complexity_tier_case_counts.png",
+    "figures/complexity_tier_coverage_balanced.png",
     "figures/dimension_coverage_ratio.png",
     "figures/feature_space_coverage_ratios.png",
     "figures/fsm_family_case_counts.png",
     "figures/mutation_operator_case_counts.png",
+    "figures/plan_machine_type_gaps.png",
+    "figures/plan_operator_combination_gaps.png",
     "figures/unique_combinations_summary.png",
+    "figures/unrepresented_taxonomy_values.png",
     "manifest.json",
+    "plan_cell_gaps.csv",
     "summary.csv",
     "tables/table_complexity_tier_coverage.tex",
     "tables/table_dimension_coverage.tex",
@@ -79,12 +84,13 @@
     "tables/table_top_combinations.tex",
     "tables/table_unique_combinations.tex",
     "taxonomy_coverage_report.md",
-    "unique_combinations_summary.csv"
+    "unique_combinations_summary.csv",
+    "unrepresented_dimension_values.csv"
   ],
   "regeneration_commands": [
-    "fsmrepairbench generate-taxonomy-coverage data/fsmrepairbench_1k --out results/taxonomy_coverage",
-    "fsmrepairbench generate-taxonomy-coverage data/fsmrepairbench_1k --out results/taxonomy_coverage --cohort-file data/fsmrepairbench_1k/analysis_cohort_1k.txt"
+    "fsmrepairbench generate-taxonomy-coverage data/fsmrepairbench_1k --out /home/cesar/papers/fsmrepairbench/fsmrepairbench/results/taxonomy_coverage",
+    "fsmrepairbench generate-taxonomy-coverage data/fsmrepairbench_1k --out /home/cesar/papers/fsmrepairbench/fsmrepairbench/results/taxonomy_coverage --cohort-file /home/cesar/papers/fsmrepairbench/fsmrepairbench/data/fsmrepairbench_1k/analysis_cohort_1k.txt"
   ],
-  "git_commit_hash": "461520cb2ace87962f469fafb36048716d23123d",
-  "generated_at": "2026-06-09T07:45:50.492447+00:00"
+  "git_commit_hash": "1efae10cfe9dded2dbd4b52258bc98f18a624fa1",
+  "generated_at": "2026-06-15T17:55:43.904627+00:00"
 }

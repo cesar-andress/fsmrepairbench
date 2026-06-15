@@ -1,0 +1,35 @@
+{
+  "bug_id": "synthetic_9624_3_2__hom__wrong_target__guard_weaken__25737",
+  "reference_fsm_id": "synthetic_9624_3_2",
+  "faulty_fsm_id": "synthetic_9624_3_2__faulty__hom__wrong_target__guard_weaken__25737",
+  "mutation_operator": "wrong_target,guard_weaken",
+  "changed_transition_id": "t9624_hub_1",
+  "description": "Higher-order mutant applying 2 operators: wrong_target, guard_weaken",
+  "seed": 25737,
+  "mutation_complexity": null,
+  "mutation_scope": null,
+  "mutation_mode": null,
+  "mutation_order": 2,
+  "component_faults": [
+    {
+      "operator": "wrong_target",
+      "seed": 25737,
+      "bug_id": "synthetic_9624_3_2__wrong_target__25737",
+      "changed_transition_id": "t9624_hub_1",
+      "description": "Changed target of transition 't9624_hub_1' from 's9624_1' to 's9624_2'"
+    },
+    {
+      "operator": "guard_weaken",
+      "seed": 26737,
+      "bug_id": "synthetic_9624_3_2__faulty__wrong_target__25737__guard_weaken__26737",
+      "changed_transition_id": "t9624_hub_1",
+      "description": "Weakened guard on transition 't9624_hub_1' to 'true'"
+    }
+  ],
+  "is_higher_order": true,
+  "coupled_to_simple_faults": [
+    "synthetic_9624_3_2__wrong_target__25737",
+    "synthetic_9624_3_2__faulty__wrong_target__25737__guard_weaken__26737"
+  ],
+  "is_negative_control": false
+}
