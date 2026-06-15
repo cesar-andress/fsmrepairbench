@@ -1,0 +1,59 @@
+{
+  "release_label": "RQ3-localization-ochiai-1k",
+  "dataset_dir": "/home/cesar/papers/fsmrepairbench/fsmrepairbench/data/fsmrepairbench_1k",
+  "source_audit": "/home/cesar/papers/fsmrepairbench/paper1/results/rq3_localization_1k/localizability_audit.csv",
+  "partition": "localized_transition_localizable_gt",
+  "summary": {
+    "n_cases": 376,
+    "n_exact_match": 376,
+    "agreement_rate": 1.0,
+    "n_no_anchor": 0,
+    "n_multiple_anchors": 0
+  },
+  "operator_agreement": [
+    {
+      "operator": "guard_flip",
+      "n_cases": 59,
+      "n_exact_match": 59,
+      "agreement_rate": 1.0
+    },
+    {
+      "operator": "guard_inter_class",
+      "n_cases": 20,
+      "n_exact_match": 20,
+      "agreement_rate": 1.0
+    },
+    {
+      "operator": "guard_strengthen",
+      "n_cases": 59,
+      "n_exact_match": 59,
+      "agreement_rate": 1.0
+    },
+    {
+      "operator": "guard_weaken",
+      "n_cases": 59,
+      "n_exact_match": 59,
+      "agreement_rate": 1.0
+    },
+    {
+      "operator": "wrong_event",
+      "n_cases": 59,
+      "n_exact_match": 59,
+      "agreement_rate": 1.0
+    },
+    {
+      "operator": "wrong_source",
+      "n_cases": 60,
+      "n_exact_match": 60,
+      "agreement_rate": 1.0
+    },
+    {
+      "operator": "wrong_target",
+      "n_cases": 60,
+      "n_exact_match": 60,
+      "agreement_rate": 1.0
+    }
+  ],
+  "disagreement_count": 0,
+  "generated_at_utc": "2026-06-15T19:02:21.729917+00:00"
+}
