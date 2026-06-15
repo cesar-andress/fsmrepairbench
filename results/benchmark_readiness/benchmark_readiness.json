@@ -4,7 +4,7 @@
   "dimension_scores": {
     "artifact_completeness": 4,
     "coverage": 2,
-    "discriminative_power": 4,
+    "discriminative_power": 3,
     "localization_support": 2,
     "repair_support": 2,
     "reproducibility": 3
@@ -21,18 +21,18 @@
         "SV-COMP / JAPEX-style perennial tracks: not yet realised."
       ],
       "metrics": {
-        "artifact_count": 319,
+        "artifact_count": 329,
         "artifact_counts_by_media_type": {
-          "csv": 132,
-          "png": 109,
-          "tex": 78
+          "csv": 137,
+          "png": 112,
+          "tex": 80
         },
-        "artifact_media_total": 319,
+        "artifact_media_total": 329,
         "verification_pass": true
       },
       "score": 4,
       "strengths": [
-        "319 manuscript exports tracked with SHA-256 digests and campaign manifests.",
+        "329 manuscript exports tracked with SHA-256 digests and campaign manifests.",
         "ACM-style artifact package includes verification report and reproducibility instructions."
       ]
     },
@@ -63,7 +63,7 @@
       ]
     },
     "discriminative_power": {
-      "evidence_ratio": 0.777897,
+      "evidence_ratio": 0.734697,
       "limitations": [
         "Only three deterministic engines plus one random control are evaluated.",
         "Operator-level rank stability is low on the detectable-only partition (Kendall tau ~ 0.11).",
@@ -74,13 +74,13 @@
         "Just et al.\\ Defects4J practice: paired per-case disagreement and effect sizes are implemented."
       ],
       "metrics": {
-        "cohort_wide_discrimination_index": 0.436,
-        "detectable_only_discrimination_index": 0.880808,
-        "detectable_only_rank_stability_kendall_tau": 0.348148,
-        "detectable_only_utility_index": 0.891154,
-        "tool_count": 6
+        "cohort_wide_discrimination_index": 0.399,
+        "detectable_only_discrimination_index": 0.806061,
+        "detectable_only_rank_stability_kendall_tau": 0.111111,
+        "detectable_only_utility_index": 0.999277,
+        "tool_count": 3
       },
-      "score": 4,
+      "score": 3,
       "strengths": [
         "All three deterministic C1 baselines are statistically distinguishable on detectable-only repair.",
         "Large Cohen's h effect sizes separate missing-transition from random controls."
@@ -153,7 +153,7 @@
         "ACM artifact evaluation checklist: available, verified exports; execution pinning incomplete."
       ],
       "metrics": {
-        "artifact_count": 319,
+        "artifact_count": 329,
         "artifacts_checked": 107,
         "artifacts_passed": 107
       },
@@ -164,7 +164,7 @@
       ]
     }
   },
-  "generated_at": "2026-06-15T17:52:59.873711+00:00",
+  "generated_at": "2026-06-15T19:26:06.887940+00:00",
   "github_tag": "v0.2.1-stvr-polish",
   "literature_comparison": [
     {
@@ -184,7 +184,7 @@
     {
       "criterion": "Discriminative utility among repair methods",
       "fsmrepairbench_v0_2": "Three deterministic baselines separable on detectable-only repair",
-      "readiness_score": "4",
+      "readiness_score": "3",
       "source": "Gazzola et al. (2019); Just et al. (2014)",
       "typical_mature_benchmark": "Multiple techniques separable with stable rankings"
     },
@@ -210,7 +210,7 @@
       "typical_mature_benchmark": "Verified bundle, perennial tracks, held-out splits"
     }
   ],
-  "mean_readiness_score": 2.833,
+  "mean_readiness_score": 2.667,
   "priority_gaps": [
     {
       "dimension": "coverage",
@@ -229,6 +229,12 @@
       "gap": "Only single-pass deterministic engines are characterised; search/LLM repair tracks are absent.",
       "priority": "high",
       "score": "2"
+    },
+    {
+      "dimension": "discriminative_power",
+      "gap": "Only three deterministic engines plus one random control are evaluated.",
+      "priority": "medium",
+      "score": "3"
     },
     {
       "dimension": "reproducibility",
