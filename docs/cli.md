@@ -96,6 +96,22 @@ fsmrepairbench apply-patch tests/fixtures/valid_fsm.json patch.json --out PATH
 | `out` | `Path` | `--out` | required | Output path for patched FSM JSON. |
 | `allow_nondeterminism` | `bool` | `--allow-nondeterminism` | False | Allow non-deterministic resulting FSMs. |
 
+### `audit-rq3-localization-localizability`
+
+Audit transition-level ground-truth localizability for frozen RQ3 exports.
+
+**Usage**
+
+```bash
+fsmrepairbench audit-rq3-localization-localizability DATASET_DIR
+```
+
+| Parameter | Type | Flags | Default | Description |
+|-----------|------|-------|---------|-------------|
+| `dataset_dir` | `Path` | positional | required |  |
+| `out` | `Path` | `--out` | results/rq3_localization_1k | Directory containing frozen per_case_results.csv and audit outputs. |
+| `per_case_file` | `Path | None` | `--per-case-file` | None | Optional path to per_case_results.csv (defaults to OUT/per_case_results.csv). |
+
 ### `baseline-repair`
 
 Propose a baseline repair patch for an FSM using oracle guidance.
@@ -379,6 +395,21 @@ fsmrepairbench export-hf DATASET_DIR
 | Parameter | Type | Flags | Default | Description |
 |-----------|------|-------|---------|-------------|
 | `dataset_dir` | `Path` | positional | required |  |
+
+### `export-paper-confidence-intervals`
+
+Aggregate bootstrap 95% CIs for headline paper metrics from frozen per-case CSVs.
+
+**Usage**
+
+```bash
+fsmrepairbench export-paper-confidence-intervals
+```
+
+| Parameter | Type | Flags | Default | Description |
+|-----------|------|-------|---------|-------------|
+| `out` | `Path` | `--out` | results/confidence_intervals | Directory for consolidated CI CSV/JSON/LaTeX exports. |
+| `paper_out` | `Path` | `--paper-out` | ../paper1/results/confidence_intervals | Paper mirror directory for CI exports. |
 
 ### `filter-cases`
 

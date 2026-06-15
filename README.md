@@ -95,6 +95,7 @@ Empirical campaigns reported in the STVR manuscript use release label **`v0.2.0-
 | **Cohort manifests** | `analysis_cohort_1k.txt`, `localization_cohort_1k.txt`, `coupling_campaign_250.txt`, `oracle_depth_ablation_200.txt` |
 | **Mutation operators** | **19 registered**, **17 realised** in the analysis cohort (`timed_selective_mutation`, `variable_intra_class`: 0 cases) |
 | **Frozen exports** | `results/taxonomy_coverage/`, `results/analysis/`, `results/rq3_localization_1k/`, `results/rq4_coupling_250/`, `results/baseline_repair_C1/`, `results/oracle_depth_ablation/` |
+| **Reproduction guide** | [`../paper1/CANONICAL_REPRODUCTION.md`](../paper1/CANONICAL_REPRODUCTION.md) (GitHub `v0.2.1-stvr-polish`) |
 | **Paper mirror** | `../paper1/results/` (LaTeX/PNG copies; see monorepo layout) |
 
 Verify pinned cohort SHA-256 digests:
@@ -134,17 +135,16 @@ fsmrepairbench analyze-benchmark data/fsmrepairbench_1k --out results/analysis
 **C1 — baseline repair**
 
 ```bash
-fsmrepairbench run-tools data/fsmrepairbench_1k tools/baselines_c1/ \
+fsmrepairbench run-c1-baseline-repair data/fsmrepairbench_1k \
   --out results/repair_baseline_1k_c1 \
   --cohort-file data/fsmrepairbench_1k/analysis_cohort_1k.txt \
-  --workers 4
-fsmrepairbench export-c1-baseline-repair data/fsmrepairbench_1k \
-  --out results/repair_baseline_1k_c1 \
+  --tools-dir tools/baselines_c1 \
   --paper-export-dir ../paper1/results/baseline_repair_C1 \
-  --workers 4
+  --workers 4 \
+  --skip-multi-seed
 ```
 
-One-shot alternative: `fsmrepairbench run-c1-baseline-repair data/fsmrepairbench_1k …`
+Canonical commands and SHA-256 digests: [`../paper1/CANONICAL_REPRODUCTION.md`](../paper1/CANONICAL_REPRODUCTION.md).
 
 **RQ3 — Ochiai localization**
 
@@ -152,6 +152,9 @@ One-shot alternative: `fsmrepairbench run-c1-baseline-repair data/fsmrepairbench
 fsmrepairbench run-localization-campaign data/fsmrepairbench_1k \
   --cohort-file data/fsmrepairbench_1k/localization_cohort_1k.txt \
   --out results/rq3_localization_1k
+fsmrepairbench audit-rq3-localization-localizability data/fsmrepairbench_1k \
+  --out results/rq3_localization_1k
+python ../paper1/scripts/generate_rq3_localization_outputs.py
 ```
 
 **RQ4 — higher-order coupling**
@@ -162,6 +165,7 @@ fsmrepairbench run-coupling-campaign data/fsmrepairbench_1k \
   --out results/rq4_coupling_250 \
   --subset-dir results/rq4_coupling_subset \
   --seed 44
+python ../paper1/scripts/generate_rq4_coupling_outputs.py
 ```
 
 **C3 — oracle depth ablation**
@@ -171,6 +175,7 @@ fsmrepairbench run-oracle-depth-ablation data/fsmrepairbench_1k \
   --out results/oracle_depth_ablation \
   --cohort-file data/fsmrepairbench_1k/oracle_depth_ablation_200.txt \
   --no-write-cohort
+python ../paper1/scripts/generate_oracle_depth_ablation_outputs.py
 ```
 
 **Campaign partition summary (cross-campaign denominators)**

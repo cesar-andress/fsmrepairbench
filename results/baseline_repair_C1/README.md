@@ -15,18 +15,18 @@ Regenerate:
 
 ```bash
 cd fsmrepairbench
-fsmrepairbench run-tools data/fsmrepairbench_1k tools/baselines_c1/ \
-  --out results/repair_baseline_1k_c1 \
-  --cohort-file data/fsmrepairbench_1k/analysis_cohort_1k.txt \
+fsmrepairbench run-tools /home/cesar/papers/fsmrepairbench/fsmrepairbench/data/fsmrepairbench_1k tools/baselines_c1/ \
+  --out /home/cesar/papers/fsmrepairbench/fsmrepairbench/results/baseline_repair_C1 \
+  --cohort-file /home/cesar/papers/fsmrepairbench/fsmrepairbench/data/fsmrepairbench_1k/analysis_cohort_1k.txt \
   --workers 4
-fsmrepairbench export-c1-baseline-repair data/fsmrepairbench_1k \
-  --out results/repair_baseline_1k_c1 \
-  --cohort-file data/fsmrepairbench_1k/analysis_cohort_1k.txt \
+fsmrepairbench export-c1-baseline-repair /home/cesar/papers/fsmrepairbench/fsmrepairbench/data/fsmrepairbench_1k \
+  --out /home/cesar/papers/fsmrepairbench/fsmrepairbench/results/baseline_repair_C1 \
+  --cohort-file /home/cesar/papers/fsmrepairbench/fsmrepairbench/data/fsmrepairbench_1k/analysis_cohort_1k.txt \
   --workers 4
 ```
 
 One-shot:
 
 ```bash
-fsmrepairbench run-c1-baseline-repair data/fsmrepairbench_1k --workers 4
+fsmrepairbench run-c1-baseline-repair /home/cesar/papers/fsmrepairbench/fsmrepairbench/data/fsmrepairbench_1k --out /home/cesar/papers/fsmrepairbench/fsmrepairbench/results/baseline_repair_C1 --workers 4
 ```

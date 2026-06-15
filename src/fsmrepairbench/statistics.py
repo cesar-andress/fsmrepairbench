@@ -467,6 +467,7 @@ def compute_rq4_confidence_intervals(rows: Sequence[Any]) -> list[ConfidenceInte
             continue
 
         order_label = f"order_{order}"
+        detectable = [row for row in group if _csv_bool(row, "fault_detected")]
         ci_rows.extend(
             [
                 bootstrap_rate_ci(
@@ -479,13 +480,13 @@ def compute_rq4_confidence_intervals(rows: Sequence[Any]) -> list[ConfidenceInte
                     [_csv_bool(row, "complete_repair") for row in group],
                     "complete_repair_rate",
                     group="RQ4",
-                    subgroup=order_label,
+                    subgroup=f"{order_label}_cohort_wide",
                 ),
                 bootstrap_rate_ci(
                     [_csv_bool(row, "effective_repair") for row in group],
                     "effective_repair_rate",
                     group="RQ4",
-                    subgroup=order_label,
+                    subgroup=f"{order_label}_cohort_wide",
                 ),
                 bootstrap_mean_ci(
                     [_csv_float(row, "bpr_delta") for row in group],
@@ -494,6 +495,49 @@ def compute_rq4_confidence_intervals(rows: Sequence[Any]) -> list[ConfidenceInte
                     subgroup=order_label,
                 ),
             ]
+        )
+        if detectable:
+            detectable_label = f"{order_label}_detectable"
+            ci_rows.extend(
+                [
+                    bootstrap_rate_ci(
+                        [_csv_bool(row, "complete_repair") for row in detectable],
+                        "complete_repair_rate",
+                        group="RQ4",
+                        subgroup=detectable_label,
+                    ),
+                    bootstrap_rate_ci(
+                        [_csv_bool(row, "effective_repair") for row in detectable],
+                        "effective_repair_rate",
+                        group="RQ4",
+                        subgroup=detectable_label,
+                    ),
+                ]
+            )
+
+    fo_group = [
+        row for row in rows if int(_row_value(row, "mutation_order", 0)) == 1
+    ]
+    ho_group = [
+        row for row in rows if int(_row_value(row, "mutation_order", 0)) in (2, 3)
+    ]
+    if fo_group:
+        ci_rows.append(
+            bootstrap_rate_ci(
+                [_csv_bool(row, "fault_detected") for row in fo_group],
+                "detection_rate",
+                group="RQ4",
+                subgroup="fo_subset",
+            )
+        )
+    if ho_group:
+        ci_rows.append(
+            bootstrap_rate_ci(
+                [_csv_bool(row, "fault_detected") for row in ho_group],
+                "detection_rate",
+                group="RQ4",
+                subgroup="ho_orders_2_3",
+            )
         )
     return ci_rows
 

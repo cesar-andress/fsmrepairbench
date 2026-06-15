@@ -1,0 +1,287 @@
+{
+  "case_id": "case_000725",
+  "tool_id": "baseline_random",
+  "tool_type": "baseline",
+  "model": "baseline_random",
+  "mutation_operator": "wrong_source",
+  "status": "completed",
+  "failure_class": "no_improvement",
+  "input_format": "fsmrepairbench_case_v1",
+  "output_format": "fsmrepairbench_repair_result_v1",
+  "initial_bpr": 0.22727272727272727,
+  "final_bpr": 0.22727272727272727,
+  "delta_bpr": 0.0,
+  "complete_repair": false,
+  "effective_repair": false,
+  "regression": false,
+  "patch_parse_failures": 0,
+  "patch_validation_failures": 0,
+  "patch_application_failures": 0,
+  "iterations_completed": 1,
+  "runtime_seconds": 0.0016,
+  "repair_result": {
+    "bug_id": "synthetic_768_5_3__faulty__wrong_source__725043",
+    "passed": false,
+    "score": 0.22727272727272727,
+    "details": {
+      "model": "baseline_random",
+      "backend": "baseline",
+      "baseline_engine": "random",
+      "baseline_seed": 5,
+      "temperature": 0.0,
+      "max_iterations": 1,
+      "runtime_seconds": 0.0016,
+      "iterations": [
+        {
+          "iteration": 1,
+          "bpr_before": 0.22727272727272727,
+          "patch_valid": true,
+          "patch_applied": true,
+          "patch": {
+            "patch_id": "baseline_random_5_synthetic_768_5_3__faulty__wrong_source__725043",
+            "target_fsm_id": "synthetic_768_5_3__faulty__wrong_source__725043",
+            "operations": [
+              {
+                "op": "replace_transition_event",
+                "transition_id": "t768_2",
+                "event": "e768_0"
+              },
+              {
+                "op": "replace_transition_source",
+                "transition_id": "t768_10",
+                "source": "s768_0"
+              }
+            ]
+          },
+          "validation_errors": [],
+          "bpr_after": 0.22727272727272727
+        }
+      ],
+      "final_fsm": {
+        "id": "synthetic_768_5_3__faulty__wrong_source__725043",
+        "name": "Synthetic FSM (small) (faulty: wrong_source)",
+        "description": "Synthetic FSM generated with seed=768, states=5, events=3, branching_factor=2, deterministic=True, allow_dead_states=False",
+        "states": [
+          {
+            "id": "s768_0",
+            "state_output": null,
+            "refusal": false,
+            "quiescence": false
+          },
+          {
+            "id": "s768_1",
+            "state_output": null,
+            "refusal": false,
+            "quiescence": false
+          },
+          {
+            "id": "s768_2",
+            "state_output": null,
+            "refusal": false,
+            "quiescence": false
+          },
+          {
+            "id": "s768_3",
+            "state_output": null,
+            "refusal": false,
+            "quiescence": false
+          },
+          {
+            "id": "s768_4",
+            "state_output": null,
+            "refusal": false,
+            "quiescence": false
+          }
+        ],
+        "initial_state": "s768_0",
+        "events": [
+          "e768_0",
+          "e768_1",
+          "e768_2"
+        ],
+        "transitions": [
+          {
+            "id": "t768_1",
+            "source": "s768_1",
+            "event": "e768_1",
+            "target": "s768_1",
+            "guard": null,
+            "action": "act768_1",
+            "output": null,
+            "timeout": null,
+            "delay": null,
+            "requirements": [],
+            "probability": null,
+            "is_nondeterministic": false,
+            "refusal": false,
+            "quiescence": false,
+            "discrete_time": null
+          },
+          {
+            "id": "t768_2",
+            "source": "s768_1",
+            "event": "e768_0",
+            "target": "s768_2",
+            "guard": null,
+            "action": "act768_2",
+            "output": null,
+            "timeout": null,
+            "delay": null,
+            "requirements": [],
+            "probability": null,
+            "is_nondeterministic": false,
+            "refusal": false,
+            "quiescence": false,
+            "discrete_time": null
+          },
+          {
+            "id": "t768_3",
+            "source": "s768_0",
+            "event": "e768_1",
+            "target": "s768_3",
+            "guard": "g768_2_1",
+            "action": "act768_3",
+            "output": null,
+            "timeout": null,
+            "delay": null,
+            "requirements": [],
+            "probability": null,
+            "is_nondeterministic": false,
+            "refusal": false,
+            "quiescence": false,
+            "discrete_time": null
+          },
+          {
+            "id": "t768_4",
+            "source": "s768_1",
+            "event": "e768_2",
+            "target": "s768_4",
+            "guard": null,
+            "action": "act768_4",
+            "output": null,
+            "timeout": null,
+            "delay": null,
+            "requirements": [],
+            "probability": null,
+            "is_nondeterministic": false,
+            "refusal": false,
+            "quiescence": false,
+            "discrete_time": null
+          },
+          {
+            "id": "t768_5",
+            "source": "s768_2",
+            "event": "e768_0",
+            "target": "s768_4",
+            "guard": null,
+            "action": "act768_5",
+            "output": null,
+            "timeout": null,
+            "delay": null,
+            "requirements": [],
+            "probability": null,
+            "is_nondeterministic": false,
+            "refusal": false,
+            "quiescence": false,
+            "discrete_time": null
+          },
+          {
+            "id": "t768_6",
+            "source": "s768_2",
+            "event": "e768_0",
+            "target": "s768_1",
+            "guard": "g768_5_1",
+            "action": "act768_6",
+            "output": null,
+            "timeout": null,
+            "delay": null,
+            "requirements": [],
+            "probability": null,
+            "is_nondeterministic": false,
+            "refusal": false,
+            "quiescence": false,
+            "discrete_time": null
+          },
+          {
+            "id": "t768_7",
+            "source": "s768_3",
+            "event": "e768_0",
+            "target": "s768_2",
+            "guard": null,
+            "action": "act768_7",
+            "output": null,
+            "timeout": null,
+            "delay": null,
+            "requirements": [],
+            "probability": null,
+            "is_nondeterministic": false,
+            "refusal": false,
+            "quiescence": false,
+            "discrete_time": null
+          },
+          {
+            "id": "t768_8",
+            "source": "s768_3",
+            "event": "e768_2",
+            "target": "s768_1",
+            "guard": null,
+            "action": "act768_8",
+            "output": null,
+            "timeout": null,
+            "delay": null,
+            "requirements": [],
+            "probability": null,
+            "is_nondeterministic": false,
+            "refusal": false,
+            "quiescence": false,
+            "discrete_time": null
+          },
+          {
+            "id": "t768_9",
+            "source": "s768_4",
+            "event": "e768_2",
+            "target": "s768_2",
+            "guard": null,
+            "action": "act768_9",
+            "output": null,
+            "timeout": null,
+            "delay": null,
+            "requirements": [],
+            "probability": null,
+            "is_nondeterministic": false,
+            "refusal": false,
+            "quiescence": false,
+            "discrete_time": null
+          },
+          {
+            "id": "t768_10",
+            "source": "s768_0",
+            "event": "e768_1",
+            "target": "s768_0",
+            "guard": null,
+            "action": "act768_10",
+            "output": null,
+            "timeout": null,
+            "delay": null,
+            "requirements": [],
+            "probability": null,
+            "is_nondeterministic": false,
+            "refusal": false,
+            "quiescence": false,
+            "discrete_time": null
+          }
+        ],
+        "variables": {},
+        "parent_fsm_id": "synthetic_768_5_3",
+        "reference_fsm_id": "synthetic_768_5_3",
+        "discrete_time_step": null,
+        "semantics_mode": null,
+        "cyclic_metadata": null
+      },
+      "passed_steps": 5,
+      "total_steps": 22,
+      "passed_scenarios": 3,
+      "total_scenarios": 10
+    }
+  }
+}

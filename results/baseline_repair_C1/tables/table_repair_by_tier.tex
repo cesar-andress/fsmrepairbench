@@ -1,15 +1,16 @@
 % Auto-generated from fsmrepairbench.c1_baseline_repair_exports
 \begin{table}[t]
-\caption{Complete repair rate by structural complexity tier under the \texttt{missing-transition} baseline ($n=1,000$).}
+\caption{Complete repair by structural complexity tier under the \texttt{missing-transition} baseline ($n=1,000$). \textbf{Detectable-only primary}; cohort-wide$^\dagger$ includes 505/1{,}000 oracle-saturated cases.}
 \label{tab:baseline-repair-by-tier}
-\begin{tabular}{@{}lrrrr@{}}
+\begin{tabular}{@{}lrrrrr@{}}
 \toprule
-Tier & Cases & Complete repair & Mean difficulty & Mean $\Delta$BPR \\
+Tier & Detectable & Complete (detectable-only) & Complete (cohort-wide$^\dagger$) & Mean difficulty & Mean $\Delta$BPR \\
 \midrule
-small & 246 & 0.8415 & 13.74 & 0.0740 \\
-medium & 251 & 0.8406 & 21.28 & 0.0466 \\
-large & 251 & 0.8406 & 33.15 & 0.0501 \\
-very\_large & 252 & 0.8532 & 60.45 & 0.0384 \\
+small & 121 & 67.8\% & 84.1\% & 13.74 & 0.0740 \\
+medium & 124 & 67.7\% & 84.1\% & 21.28 & 0.0466 \\
+large & 127 & 68.5\% & 84.1\% & 33.15 & 0.0501 \\
+very\_large & 123 & 69.9\% & 85.3\% & 60.45 & 0.0384 \\
 \bottomrule
 \end{tabular}
+\par\footnotesize Cohort-wide complete/effective repair includes 505 oracle-saturated cases (faulty BPR $= 1.0$). Rows with detection $= 0\%$ and mean $\Delta$BPR $= 0$ but cohort-wide complete repair $= 100\%$ reflect oracle saturation, not structural repair. Source: \texttt{leaderboard.csv} (SHA-256 prefix \texttt{c6efb8fd5d4c3059...}); cohort digest prefix \texttt{c03c4d5981259510...} in \texttt{manifest.json}.
 \end{table}

@@ -528,8 +528,9 @@ def _write_latex_tables(
         "\\midrule",
     ]
     for row in dimension_summary:
+        dim = str(row["dimension"]).replace("_", "\\_")
         lines.append(
-            f"{row['dimension']} & {row['observed_values']} & {row['universe_values']} & "
+            f"\\texttt{{{dim}}} & {row['observed_values']} & {row['universe_values']} & "
             f"{float(row['coverage_ratio']):.1%} \\\\"
         )
     lines.extend(["\\bottomrule", "\\end{tabular}", ""])
@@ -546,8 +547,9 @@ def _write_latex_tables(
         for row in title_values:
             if int(row["case_count"]) <= 0:
                 continue
+            group = str(row["group_value"]).replace("_", "\\_")
             table_lines.append(
-                f"{row['group_value']} & {row['case_count']} & "
+                f"\\texttt{{{group}}} & {row['case_count']} & "
                 f"{float(row['cohort_fraction']):.1%} \\\\"
             )
         table_lines.extend(["\\bottomrule", "\\end{tabular}", ""])
@@ -1012,6 +1014,16 @@ def generate_taxonomy_coverage_report(
         fsm_rows=fsm_rows,
         mutation_rows=mutation_rows,
         complexity_rows=complexity_rows,
+    )
+    from fsmrepairbench.taxonomy_gap_figures import write_taxonomy_gap_figures
+
+    plan_path = Path(__file__).resolve().parents[2] / "plans" / "fsmrepairbench_v0_1k_plan.yaml"
+    write_taxonomy_gap_figures(
+        figures_dir,
+        rows=string_rows,
+        plan_path=plan_path,
+        complexity_rows=complexity_rows,
+        output_dir=out,
     )
     _write_unique_combination_figure(figures_dir, summary_rows=unique_summary)
     _write_latex_tables(

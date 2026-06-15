@@ -153,12 +153,18 @@ def parse_seeds(raw: str | None, *, default: Sequence[int] = DEFAULT_RANDOM_SEED
     return parse_random_seeds(raw, default=default)
 
 
-def _load_c1_summary_rows(summary_path: Path, cohort_ids: set[str]) -> list[dict[str, str]]:
-    if not summary_path.is_file():
+def _load_c1_summary_rows(raw_runs_dir: Path, cohort_ids: set[str]) -> list[dict[str, str]]:
+    per_case_path = raw_runs_dir / "per_case_results.csv"
+    summary_path = raw_runs_dir / "summary.csv"
+    source_path = per_case_path if per_case_path.is_file() else summary_path
+    if not source_path.is_file():
         return []
     rows: list[dict[str, str]] = []
-    with summary_path.open(encoding="utf-8", newline="") as handle:
-        for row in csv.DictReader(handle):
+    with source_path.open(encoding="utf-8", newline="") as handle:
+        reader = csv.DictReader(handle)
+        if reader.fieldnames is None or "case_id" not in reader.fieldnames:
+            return []
+        for row in reader:
             if row["case_id"] in cohort_ids:
                 rows.append(dict(row))
     return rows
@@ -187,11 +193,18 @@ def write_c1_confidence_interval_exports(
 ) -> ConfidenceIntervalExportResult | None:
     """Write case-bootstrap CIs for C1 baseline repair metrics."""
     cohort_ids = set(load_cohort_manifest(cohort_file))
-    tool_rows = _load_c1_summary_rows(raw_runs_dir / "summary.csv", cohort_ids)
+    tool_rows = _load_c1_summary_rows(raw_runs_dir, cohort_ids)
     if not tool_rows:
         return None
 
-    detectable_ids = _detectable_case_ids(dataset_dir, cohort_ids)
+    if "oracle_detected" in tool_rows[0]:
+        detectable_ids = {
+            row["case_id"]
+            for row in tool_rows
+            if row.get("oracle_detected", "").strip().lower() == "true"
+        }
+    else:
+        detectable_ids = _detectable_case_ids(dataset_dir, cohort_ids)
     ci_rows = compute_c1_confidence_intervals(
         tool_rows,
         detectable_case_ids=detectable_ids,

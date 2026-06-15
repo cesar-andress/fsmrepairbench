@@ -1,0 +1,287 @@
+{
+  "case_id": "case_000865",
+  "tool_id": "baseline_random",
+  "tool_type": "baseline",
+  "model": "baseline_random",
+  "mutation_operator": "guard_strengthen",
+  "status": "completed",
+  "failure_class": "regression",
+  "input_format": "fsmrepairbench_case_v1",
+  "output_format": "fsmrepairbench_repair_result_v1",
+  "initial_bpr": 0.9545454545454546,
+  "final_bpr": 0.9090909090909091,
+  "delta_bpr": -0.045454545454545525,
+  "complete_repair": false,
+  "effective_repair": false,
+  "regression": true,
+  "patch_parse_failures": 0,
+  "patch_validation_failures": 0,
+  "patch_application_failures": 0,
+  "iterations_completed": 1,
+  "runtime_seconds": 0.0007,
+  "repair_result": {
+    "bug_id": "synthetic_908_5_3__faulty__guard_strengthen__865043",
+    "passed": false,
+    "score": 0.9090909090909091,
+    "details": {
+      "model": "baseline_random",
+      "backend": "baseline",
+      "baseline_engine": "random",
+      "baseline_seed": 5,
+      "temperature": 0.0,
+      "max_iterations": 1,
+      "runtime_seconds": 0.0007,
+      "iterations": [
+        {
+          "iteration": 1,
+          "bpr_before": 0.9545454545454546,
+          "patch_valid": true,
+          "patch_applied": true,
+          "patch": {
+            "patch_id": "baseline_random_5_synthetic_908_5_3__faulty__guard_strengthen__865043",
+            "target_fsm_id": "synthetic_908_5_3__faulty__guard_strengthen__865043",
+            "operations": [
+              {
+                "op": "replace_transition_target",
+                "transition_id": "t908_6",
+                "target": "s908_0"
+              },
+              {
+                "op": "replace_action",
+                "transition_id": "t908_10",
+                "action": "random_action_t908_10"
+              }
+            ]
+          },
+          "validation_errors": [],
+          "bpr_after": 0.9090909090909091
+        }
+      ],
+      "final_fsm": {
+        "id": "synthetic_908_5_3__faulty__guard_strengthen__865043",
+        "name": "Synthetic FSM (small) (faulty: guard_strengthen)",
+        "description": "Synthetic FSM generated with seed=908, states=5, events=3, branching_factor=2, deterministic=True, allow_dead_states=False",
+        "states": [
+          {
+            "id": "s908_0",
+            "state_output": null,
+            "refusal": false,
+            "quiescence": false
+          },
+          {
+            "id": "s908_1",
+            "state_output": null,
+            "refusal": false,
+            "quiescence": false
+          },
+          {
+            "id": "s908_2",
+            "state_output": null,
+            "refusal": false,
+            "quiescence": false
+          },
+          {
+            "id": "s908_3",
+            "state_output": null,
+            "refusal": false,
+            "quiescence": false
+          },
+          {
+            "id": "s908_4",
+            "state_output": null,
+            "refusal": false,
+            "quiescence": false
+          }
+        ],
+        "initial_state": "s908_0",
+        "events": [
+          "e908_0",
+          "e908_1",
+          "e908_2"
+        ],
+        "transitions": [
+          {
+            "id": "t908_1",
+            "source": "s908_0",
+            "event": "e908_1",
+            "target": "s908_1",
+            "guard": null,
+            "action": "act908_1",
+            "output": null,
+            "timeout": null,
+            "delay": null,
+            "requirements": [],
+            "probability": null,
+            "is_nondeterministic": false,
+            "refusal": false,
+            "quiescence": false,
+            "discrete_time": null
+          },
+          {
+            "id": "t908_2",
+            "source": "s908_0",
+            "event": "e908_0",
+            "target": "s908_2",
+            "guard": null,
+            "action": "act908_2",
+            "output": null,
+            "timeout": null,
+            "delay": null,
+            "requirements": [],
+            "probability": null,
+            "is_nondeterministic": false,
+            "refusal": false,
+            "quiescence": false,
+            "discrete_time": null
+          },
+          {
+            "id": "t908_3",
+            "source": "s908_1",
+            "event": "e908_2",
+            "target": "s908_3",
+            "guard": null,
+            "action": "act908_3",
+            "output": null,
+            "timeout": null,
+            "delay": null,
+            "requirements": [],
+            "probability": null,
+            "is_nondeterministic": false,
+            "refusal": false,
+            "quiescence": false,
+            "discrete_time": null
+          },
+          {
+            "id": "t908_4",
+            "source": "s908_2",
+            "event": "e908_2",
+            "target": "s908_4",
+            "guard": null,
+            "action": "act908_4",
+            "output": null,
+            "timeout": null,
+            "delay": null,
+            "requirements": [],
+            "probability": null,
+            "is_nondeterministic": false,
+            "refusal": false,
+            "quiescence": false,
+            "discrete_time": null
+          },
+          {
+            "id": "t908_5",
+            "source": "s908_1",
+            "event": "e908_1",
+            "target": "s908_3",
+            "guard": null,
+            "action": "act908_5",
+            "output": null,
+            "timeout": null,
+            "delay": null,
+            "requirements": [],
+            "probability": null,
+            "is_nondeterministic": false,
+            "refusal": false,
+            "quiescence": false,
+            "discrete_time": null
+          },
+          {
+            "id": "t908_6",
+            "source": "s908_2",
+            "event": "e908_2",
+            "target": "s908_0",
+            "guard": "g908_5_1",
+            "action": "act908_6",
+            "output": null,
+            "timeout": null,
+            "delay": null,
+            "requirements": [],
+            "probability": null,
+            "is_nondeterministic": false,
+            "refusal": false,
+            "quiescence": false,
+            "discrete_time": null
+          },
+          {
+            "id": "t908_7",
+            "source": "s908_3",
+            "event": "e908_0",
+            "target": "s908_2",
+            "guard": null,
+            "action": "act908_7",
+            "output": null,
+            "timeout": null,
+            "delay": null,
+            "requirements": [],
+            "probability": null,
+            "is_nondeterministic": false,
+            "refusal": false,
+            "quiescence": false,
+            "discrete_time": null
+          },
+          {
+            "id": "t908_8",
+            "source": "s908_3",
+            "event": "e908_0",
+            "target": "s908_1",
+            "guard": "(g908_7_1) and strict_check",
+            "action": "act908_8",
+            "output": null,
+            "timeout": null,
+            "delay": null,
+            "requirements": [],
+            "probability": null,
+            "is_nondeterministic": false,
+            "refusal": false,
+            "quiescence": false,
+            "discrete_time": null
+          },
+          {
+            "id": "t908_9",
+            "source": "s908_4",
+            "event": "e908_1",
+            "target": "s908_3",
+            "guard": null,
+            "action": "act908_9",
+            "output": null,
+            "timeout": null,
+            "delay": null,
+            "requirements": [],
+            "probability": null,
+            "is_nondeterministic": false,
+            "refusal": false,
+            "quiescence": false,
+            "discrete_time": null
+          },
+          {
+            "id": "t908_10",
+            "source": "s908_4",
+            "event": "e908_0",
+            "target": "s908_3",
+            "guard": null,
+            "action": "random_action_t908_10",
+            "output": null,
+            "timeout": null,
+            "delay": null,
+            "requirements": [],
+            "probability": null,
+            "is_nondeterministic": false,
+            "refusal": false,
+            "quiescence": false,
+            "discrete_time": null
+          }
+        ],
+        "variables": {},
+        "parent_fsm_id": "synthetic_908_5_3",
+        "reference_fsm_id": "synthetic_908_5_3",
+        "discrete_time_step": null,
+        "semantics_mode": null,
+        "cyclic_metadata": null
+      },
+      "passed_steps": 20,
+      "total_steps": 22,
+      "passed_scenarios": 8,
+      "total_scenarios": 10
+    }
+  }
+}

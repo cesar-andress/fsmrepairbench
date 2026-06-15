@@ -1,28 +1,29 @@
 % Auto-generated from fsmrepairbench.c1_baseline_repair_exports
 \begin{table}[t]
-\caption{Complete repair rate and mean $\Delta$BPR by mutation operator under the \texttt{missing-transition} baseline ($n=1,000$).}
+\caption{Repair outcomes by mutation operator under the \texttt{missing-transition} baseline ($n=1,000$ cohort). \textbf{Detectable-only primary}; cohort-wide$^\dagger$ includes 505/1{,}000 oracle-saturated cases.}
 \label{tab:baseline-repair-by-operator}
-\begin{tabular}{@{}lrrrr@{}}
+\begin{tabular}{@{}lrrrrr@{}}
 \toprule
-Operator & Cases & Detection & Complete repair & Mean $\Delta$BPR \\
+Operator & Detectable & Detection & Complete (detectable-only) & Complete (cohort-wide$^\dagger$) & Mean $\Delta$BPR \\
 \midrule
-action\_corruption & 59 & 0.0000 & 1.0000 & 0.0000 \\
-action\_full\_mutation & 59 & 0.0000 & 1.0000 & 0.0000 \\
-dead\_state\_intro & 59 & 0.0000 & 1.0000 & 0.0000 \\
-delay\_corruption & 59 & 0.0000 & 1.0000 & 0.0000 \\
-duplicate\_transition & 59 & 0.0000 & 1.0000 & 0.0000 \\
-guard\_flip & 59 & 1.0000 & 1.0000 & 0.0500 \\
-guard\_inter\_class & 53 & 0.3774 & 0.8113 & 0.0254 \\
-guard\_strengthen & 59 & 1.0000 & 1.0000 & 0.0604 \\
-guard\_weaken & 59 & 1.0000 & 1.0000 & 0.0470 \\
-missing\_transition & 60 & 1.0000 & 1.0000 & 0.0496 \\
-nondeterminism\_intro & 59 & 0.0000 & 1.0000 & 0.0000 \\
-timeout\_corruption & 59 & 0.0000 & 1.0000 & 0.0000 \\
-unreachable\_state\_intro & 59 & 0.0000 & 1.0000 & 0.0000 \\
-wrong\_event & 59 & 1.0000 & 0.7966 & 0.0475 \\
-wrong\_initial\_state & 59 & 1.0000 & 0.1695 & 0.5837 \\
-wrong\_source & 60 & 1.0000 & 0.5833 & 0.0213 \\
-wrong\_target & 60 & 1.0000 & 0.0000 & 0.0000 \\
+action\_corruption & 0 & --- & 0.0\% & 100.0\% & 0.0000 \\
+action\_full\_mutation & 0 & --- & 0.0\% & 100.0\% & 0.0000 \\
+dead\_state\_intro & 0 & --- & 0.0\% & 100.0\% & 0.0000 \\
+delay\_corruption & 0 & --- & 0.0\% & 100.0\% & 0.0000 \\
+duplicate\_transition & 0 & --- & 0.0\% & 100.0\% & 0.0000 \\
+guard\_flip & 59 & --- & 100.0\% & 100.0\% & 0.0500 \\
+guard\_inter\_class & 20 & --- & 50.0\% & 81.1\% & 0.0254 \\
+guard\_strengthen & 59 & --- & 100.0\% & 100.0\% & 0.0604 \\
+guard\_weaken & 59 & --- & 100.0\% & 100.0\% & 0.0470 \\
+missing\_transition & 60 & --- & 100.0\% & 100.0\% & 0.0496 \\
+nondeterminism\_intro & 0 & --- & 0.0\% & 100.0\% & 0.0000 \\
+timeout\_corruption & 0 & --- & 0.0\% & 100.0\% & 0.0000 \\
+unreachable\_state\_intro & 0 & --- & 0.0\% & 100.0\% & 0.0000 \\
+wrong\_event & 59 & --- & 79.7\% & 79.7\% & 0.0475 \\
+wrong\_initial\_state & 59 & --- & 16.9\% & 16.9\% & 0.5837 \\
+wrong\_source & 60 & --- & 58.3\% & 58.3\% & 0.0213 \\
+wrong\_target & 60 & --- & 0.0\% & 0.0\% & 0.0000 \\
 \bottomrule
 \end{tabular}
+\par\footnotesize Cohort-wide complete/effective repair includes 505 oracle-saturated cases (faulty BPR $= 1.0$). Rows with detection $= 0\%$ and mean $\Delta$BPR $= 0$ but cohort-wide complete repair $= 100\%$ reflect oracle saturation, not structural repair. Source: \texttt{leaderboard.csv} (SHA-256 prefix \texttt{c6efb8fd5d4c3059...}); cohort digest prefix \texttt{c03c4d5981259510...} in \texttt{manifest.json}.
 \end{table}

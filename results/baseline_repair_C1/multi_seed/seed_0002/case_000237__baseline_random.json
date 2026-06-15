@@ -1,0 +1,287 @@
+{
+  "case_id": "case_000237",
+  "tool_id": "baseline_random",
+  "tool_type": "baseline",
+  "model": "baseline_random",
+  "mutation_operator": "guard_weaken",
+  "status": "completed",
+  "failure_class": "regression",
+  "input_format": "fsmrepairbench_case_v1",
+  "output_format": "fsmrepairbench_repair_result_v1",
+  "initial_bpr": 0.9545454545454546,
+  "final_bpr": 0.8636363636363636,
+  "delta_bpr": -0.09090909090909094,
+  "complete_repair": false,
+  "effective_repair": false,
+  "regression": true,
+  "patch_parse_failures": 0,
+  "patch_validation_failures": 0,
+  "patch_application_failures": 0,
+  "iterations_completed": 1,
+  "runtime_seconds": 0.0006,
+  "repair_result": {
+    "bug_id": "synthetic_280_5_3__faulty__guard_weaken__237043",
+    "passed": false,
+    "score": 0.8636363636363636,
+    "details": {
+      "model": "baseline_random",
+      "backend": "baseline",
+      "baseline_engine": "random",
+      "baseline_seed": 2,
+      "temperature": 0.0,
+      "max_iterations": 1,
+      "runtime_seconds": 0.0006,
+      "iterations": [
+        {
+          "iteration": 1,
+          "bpr_before": 0.9545454545454546,
+          "patch_valid": true,
+          "patch_applied": true,
+          "patch": {
+            "patch_id": "baseline_random_2_synthetic_280_5_3__faulty__guard_weaken__237043",
+            "target_fsm_id": "synthetic_280_5_3__faulty__guard_weaken__237043",
+            "operations": [
+              {
+                "op": "replace_transition_target",
+                "transition_id": "t280_9",
+                "target": "s280_0"
+              },
+              {
+                "op": "replace_transition_target",
+                "transition_id": "t280_6",
+                "target": "s280_1"
+              }
+            ]
+          },
+          "validation_errors": [],
+          "bpr_after": 0.8636363636363636
+        }
+      ],
+      "final_fsm": {
+        "id": "synthetic_280_5_3__faulty__guard_weaken__237043",
+        "name": "Synthetic FSM (small) (faulty: guard_weaken)",
+        "description": "Synthetic FSM generated with seed=280, states=5, events=3, branching_factor=2, deterministic=True, allow_dead_states=False",
+        "states": [
+          {
+            "id": "s280_0",
+            "state_output": null,
+            "refusal": false,
+            "quiescence": false
+          },
+          {
+            "id": "s280_1",
+            "state_output": null,
+            "refusal": false,
+            "quiescence": false
+          },
+          {
+            "id": "s280_2",
+            "state_output": null,
+            "refusal": false,
+            "quiescence": false
+          },
+          {
+            "id": "s280_3",
+            "state_output": null,
+            "refusal": false,
+            "quiescence": false
+          },
+          {
+            "id": "s280_4",
+            "state_output": null,
+            "refusal": false,
+            "quiescence": false
+          }
+        ],
+        "initial_state": "s280_0",
+        "events": [
+          "e280_0",
+          "e280_1",
+          "e280_2"
+        ],
+        "transitions": [
+          {
+            "id": "t280_1",
+            "source": "s280_0",
+            "event": "e280_1",
+            "target": "s280_1",
+            "guard": null,
+            "action": "act280_1",
+            "output": null,
+            "timeout": null,
+            "delay": null,
+            "requirements": [],
+            "probability": null,
+            "is_nondeterministic": false,
+            "refusal": false,
+            "quiescence": false,
+            "discrete_time": null
+          },
+          {
+            "id": "t280_2",
+            "source": "s280_0",
+            "event": "e280_2",
+            "target": "s280_2",
+            "guard": null,
+            "action": "act280_2",
+            "output": null,
+            "timeout": null,
+            "delay": null,
+            "requirements": [],
+            "probability": null,
+            "is_nondeterministic": false,
+            "refusal": false,
+            "quiescence": false,
+            "discrete_time": null
+          },
+          {
+            "id": "t280_3",
+            "source": "s280_1",
+            "event": "e280_1",
+            "target": "s280_3",
+            "guard": null,
+            "action": "act280_3",
+            "output": null,
+            "timeout": null,
+            "delay": null,
+            "requirements": [],
+            "probability": null,
+            "is_nondeterministic": false,
+            "refusal": false,
+            "quiescence": false,
+            "discrete_time": null
+          },
+          {
+            "id": "t280_4",
+            "source": "s280_2",
+            "event": "e280_2",
+            "target": "s280_4",
+            "guard": null,
+            "action": "act280_4",
+            "output": null,
+            "timeout": null,
+            "delay": null,
+            "requirements": [],
+            "probability": null,
+            "is_nondeterministic": false,
+            "refusal": false,
+            "quiescence": false,
+            "discrete_time": null
+          },
+          {
+            "id": "t280_5",
+            "source": "s280_1",
+            "event": "e280_1",
+            "target": "s280_0",
+            "guard": "true",
+            "action": "act280_5",
+            "output": null,
+            "timeout": null,
+            "delay": null,
+            "requirements": [],
+            "probability": null,
+            "is_nondeterministic": false,
+            "refusal": false,
+            "quiescence": false,
+            "discrete_time": null
+          },
+          {
+            "id": "t280_6",
+            "source": "s280_2",
+            "event": "e280_2",
+            "target": "s280_1",
+            "guard": "g280_5_1",
+            "action": "act280_6",
+            "output": null,
+            "timeout": null,
+            "delay": null,
+            "requirements": [],
+            "probability": null,
+            "is_nondeterministic": false,
+            "refusal": false,
+            "quiescence": false,
+            "discrete_time": null
+          },
+          {
+            "id": "t280_7",
+            "source": "s280_3",
+            "event": "e280_1",
+            "target": "s280_1",
+            "guard": null,
+            "action": "act280_7",
+            "output": null,
+            "timeout": null,
+            "delay": null,
+            "requirements": [],
+            "probability": null,
+            "is_nondeterministic": false,
+            "refusal": false,
+            "quiescence": false,
+            "discrete_time": null
+          },
+          {
+            "id": "t280_8",
+            "source": "s280_3",
+            "event": "e280_0",
+            "target": "s280_3",
+            "guard": null,
+            "action": "act280_8",
+            "output": null,
+            "timeout": null,
+            "delay": null,
+            "requirements": [],
+            "probability": null,
+            "is_nondeterministic": false,
+            "refusal": false,
+            "quiescence": false,
+            "discrete_time": null
+          },
+          {
+            "id": "t280_9",
+            "source": "s280_4",
+            "event": "e280_1",
+            "target": "s280_0",
+            "guard": null,
+            "action": "act280_9",
+            "output": null,
+            "timeout": null,
+            "delay": null,
+            "requirements": [],
+            "probability": null,
+            "is_nondeterministic": false,
+            "refusal": false,
+            "quiescence": false,
+            "discrete_time": null
+          },
+          {
+            "id": "t280_10",
+            "source": "s280_4",
+            "event": "e280_2",
+            "target": "s280_4",
+            "guard": null,
+            "action": "act280_10",
+            "output": null,
+            "timeout": null,
+            "delay": null,
+            "requirements": [],
+            "probability": null,
+            "is_nondeterministic": false,
+            "refusal": false,
+            "quiescence": false,
+            "discrete_time": null
+          }
+        ],
+        "variables": {},
+        "parent_fsm_id": "synthetic_280_5_3",
+        "reference_fsm_id": "synthetic_280_5_3",
+        "discrete_time_step": null,
+        "semantics_mode": null,
+        "cyclic_metadata": null
+      },
+      "passed_steps": 19,
+      "total_steps": 22,
+      "passed_scenarios": 7,
+      "total_scenarios": 10
+    }
+  }
+}

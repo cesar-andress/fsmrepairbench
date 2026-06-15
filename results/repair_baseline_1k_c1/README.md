@@ -28,5 +28,5 @@ fsmrepairbench export-c1-baseline-repair data/fsmrepairbench_1k \
 One-shot:
 
 ```bash
-fsmrepairbench run-c1-baseline-repair data/fsmrepairbench_1k --workers 4
+fsmrepairbench run-c1-baseline-repair data/fsmrepairbench_1k --out results/repair_baseline_1k_c1 --workers 4
 ```

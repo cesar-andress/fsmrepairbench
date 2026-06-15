@@ -1,16 +1,20 @@
 % Auto-generated from fsmrepairbench.c1_baseline_repair_exports
 \begin{table}[t]
-\caption{Metadata linking the C1 baseline repair campaign to the v0.2.0-analysis cohort ($n=1,000$).
-Takeaway: overall oracle mutation detection is 49.5% on the same cases used for repair evaluation.}
+\caption{Metadata linking the C1 baseline repair campaign to the v0.2.0-analysis cohort ($n=1,000$; 495 oracle-detectable, 505 oracle-saturated at faulty BPR $= 1.0$).
+Takeaway: overall oracle mutation detection is 49.5\%; repairability is reported on the detectable subset as the primary partition.}
 \label{tab:baseline-dataset-summary}
 \begin{tabular}{@{}lr@{}}
 \toprule
 Metric & Value \\
 \midrule
 Analyzed cases & 1,000 \\
-Cohort manifest & analysis_cohort_1k.txt \\
+Oracle-detectable cases & 495 \\
+Oracle-saturated cases (faulty BPR $= 1.0$) & 505 \\
+Cohort manifest & \texttt{analysis\_cohort\_1k.txt} \\
+Cohort manifest SHA-256 (prefix) & \texttt{c03c4d5981259510...} \\
 Tools & 3 (missing-transition, wrong-target, random) \\
 Overall detection rate (v0.2.0-analysis) & 0.4950 \\
 \bottomrule
 \end{tabular}
+\par\footnotesize Cohort-wide complete/effective repair includes 505 oracle-saturated cases (faulty BPR $= 1.0$). Source: \texttt{per\_case\_results.csv} (SHA-256 prefix \texttt{947c7566aac7049d...}); cohort digest prefix \texttt{c03c4d5981259510...} in \texttt{manifest.json}.
 \end{table}

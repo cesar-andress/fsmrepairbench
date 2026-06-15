@@ -1,14 +1,14 @@
 % Auto-generated from fsmrepairbench.c1_baseline_repair_exports
 \begin{table}[t]
-\caption{Cohort-level outcomes for three deterministic baseline repair engines (C1 campaign; $n=1,000$).}
+\caption{C1 baseline repair leaderboard ($n=1{,}000$). Complete repair on detectable faults ($n=495$) is the primary repairability indicator; cohort-wide complete repair includes 505 oracle-saturated cases at faulty BPR $= 1.0$.}
 \label{tab:baseline-leaderboard}
-\begin{tabular}{@{}lrrrr@{}}
+\begin{tabular}{@{}lrrrrrr@{}}
 \toprule
-Tool & Cases & Complete repair & Effective repair & Mean $\Delta$BPR \\
+Tool & Cases & Complete (detect.) & Complete (cohort) & Effective (detect.) & Effective (cohort) & Mean $\Delta$BPR \\
 \midrule
-baseline\_missing\_transition & 1000 & 0.8440 & 0.3860 & 0.0521 \\
-baseline\_wrong\_target & 1000 & 0.5650 & 0.1090 & 0.0241 \\
-baseline\_random & 1000 & 0.5060 & 0.0030 & -0.0081 \\
+baseline\_missing\_transition & 1000 & 0.6848 & 0.8440 & 0.7798 & 0.3860 & 0.0521 \\
+baseline\_wrong\_target & 1000 & 0.1212 & 0.5650 & 0.2202 & 0.1090 & 0.0241 \\
+baseline\_random & 1000 & 0.0020 & 0.5060 & 0.0061 & 0.0030 & -0.0081 \\
 \bottomrule
 \end{tabular}
 \end{table}

@@ -18,6 +18,7 @@ from fsmrepairbench.coupling_campaign import (
     DEFAULT_RANDOM_SECONDARY_SEEDS,
     DEFAULT_RANDOM_SECONDARY_SUBSET,
     DEFAULT_REPAIR_ENGINE,
+    ZENODO_DOI,
     CaseCouplingCampaignResult,
     CouplingCampaignError,
     _aggregate_metrics,
@@ -33,6 +34,11 @@ from fsmrepairbench.higher_order_mutation import (
 from fsmrepairbench.statistics import BOOTSTRAP_CI, BOOTSTRAP_RESAMPLES, BOOTSTRAP_SEED, bootstrap_ci
 
 RANDOM_SECONDARY_EXPERIMENT = "RQ4-random-secondary-sensitivity-250"
+DETECTABLE_ORDER_METRICS: tuple[str, ...] = (
+    "complete_repair_rate",
+    "effective_repair_rate",
+    "mean_bpr_delta",
+)
 PER_SEED_SUMMARY_COLUMNS: tuple[str, ...] = (
     "secondary_random_seed",
     "cohort_size",
@@ -52,6 +58,18 @@ PER_SEED_SUMMARY_COLUMNS: tuple[str, ...] = (
     "mean_bpr_delta_order_1",
     "mean_bpr_delta_order_2",
     "mean_bpr_delta_order_3",
+    "detectable_count_order_1",
+    "detectable_count_order_2",
+    "detectable_count_order_3",
+    "complete_repair_rate_order_1_detectable",
+    "complete_repair_rate_order_2_detectable",
+    "complete_repair_rate_order_3_detectable",
+    "effective_repair_rate_order_1_detectable",
+    "effective_repair_rate_order_2_detectable",
+    "effective_repair_rate_order_3_detectable",
+    "mean_bpr_delta_order_1_detectable",
+    "mean_bpr_delta_order_2_detectable",
+    "mean_bpr_delta_order_3_detectable",
     "skipped_ho_generations",
 )
 PER_CASE_RANDOM_COLUMNS: tuple[str, ...] = (
@@ -93,6 +111,18 @@ RANDOM_SECONDARY_METRICS: tuple[str, ...] = (
     "mean_bpr_delta_order_1",
     "mean_bpr_delta_order_2",
     "mean_bpr_delta_order_3",
+    "detectable_count_order_1",
+    "detectable_count_order_2",
+    "detectable_count_order_3",
+    "complete_repair_rate_order_1_detectable",
+    "complete_repair_rate_order_2_detectable",
+    "complete_repair_rate_order_3_detectable",
+    "effective_repair_rate_order_1_detectable",
+    "effective_repair_rate_order_2_detectable",
+    "effective_repair_rate_order_3_detectable",
+    "mean_bpr_delta_order_1_detectable",
+    "mean_bpr_delta_order_2_detectable",
+    "mean_bpr_delta_order_3_detectable",
 )
 RANDOM_SECONDARY_FLAT_SUFFIXES: tuple[str, ...] = (
     "mean",
@@ -116,7 +146,32 @@ class RandomSecondaryCouplingResult:
     report_path: Path
     manifest_path: Path
     tables_dir: Path
+    figures_dir: Path
     paper_export_dir: Path
+
+
+def _detectable_order_metrics(
+    rows: Sequence[CaseCouplingCampaignResult],
+    order: int,
+) -> dict[str, float | int]:
+    detectable = [row for row in rows if row.mutation_order == order and row.fault_detected]
+    count = len(detectable)
+    if count == 0:
+        return {
+            f"detectable_count_order_{order}": 0,
+            f"complete_repair_rate_order_{order}_detectable": 0.0,
+            f"effective_repair_rate_order_{order}_detectable": 0.0,
+            f"mean_bpr_delta_order_{order}_detectable": 0.0,
+        }
+    complete = sum(1 for row in detectable if row.complete_repair) / count
+    effective = sum(1 for row in detectable if row.effective_repair) / count
+    mean_delta = sum(row.bpr_delta for row in detectable) / count
+    return {
+        f"detectable_count_order_{order}": count,
+        f"complete_repair_rate_order_{order}_detectable": round(complete, 6),
+        f"effective_repair_rate_order_{order}_detectable": round(effective, 6),
+        f"mean_bpr_delta_order_{order}_detectable": round(mean_delta, 6),
+    }
 
 
 def _metric_by_order(
@@ -139,7 +194,7 @@ def summarize_seed_run(
 ) -> dict[str, float | int]:
     metrics = _aggregate_metrics(list(rows))
     cohort_size = len({row.source_case_id for row in rows if row.generation_status == "source"})
-    return {
+    summary: dict[str, float | int] = {
         "secondary_random_seed": secondary_random_seed,
         "cohort_size": cohort_size,
         "total_cases": len(rows),
@@ -160,6 +215,9 @@ def summarize_seed_run(
         "mean_bpr_delta_order_3": round(_metric_by_order(metrics, "mean_bpr_delta", 3), 6),
         "skipped_ho_generations": len(skipped_ho),
     }
+    for order in (1, 2, 3):
+        summary.update(_detectable_order_metrics(rows, order))
+    return summary
 
 
 def compute_random_secondary_statistics(
@@ -287,7 +345,9 @@ def _write_random_secondary_report(
             "- `per_case_results.csv`",
             "- `random_secondary_summary.csv`",
             "- `random_secondary_summary.json`",
+            "- `per_seed_summary.csv`",
             "- `tables/`",
+            "- `figures/`",
             "",
         ]
     )
@@ -329,6 +389,215 @@ def _write_random_secondary_tex(
         )
     lines.extend(["\\bottomrule", "\\end{tabular}", "\\end{table}", ""])
     path.write_text("\n".join(lines), encoding="utf-8")
+
+
+def _metric_stats(flat_summary: dict[str, float | int], metric: str) -> tuple[float, float, float, float]:
+    return (
+        float(flat_summary[f"{metric}_mean"]),
+        float(flat_summary[f"{metric}_std"]),
+        float(flat_summary[f"{metric}_ci95_low"]),
+        float(flat_summary[f"{metric}_ci95_high"]),
+    )
+
+
+def _ci_bracket(low: float, high: float, *, percent: bool = False) -> str:
+    if percent:
+        return f"{{[{100 * low:.1f}--{100 * high:.1f}]}}"
+    return f"{{[{low:.3f}--{high:.3f}]}}"
+
+
+def _pct_cell(mean: float, std: float, low: float, high: float) -> str:
+    return (
+        f"{100 * mean:.1f}\\% $\\pm$ {100 * std:.1f} "
+        f"{_ci_bracket(low, high, percent=True)}"
+    )
+
+
+def _delta_cell(mean: float, std: float, low: float, high: float) -> str:
+    return f"{mean:.3f} $\\pm$ {std:.3f} {_ci_bracket(low, high)}"
+
+
+def _write_random_secondary_detectable_tex(
+    path: Path,
+    flat_summary: dict[str, float | int],
+    *,
+    seed_count: int,
+) -> None:
+    lines = [
+        "% Auto-generated from fsmrepairbench.coupling_random_secondary",
+        "\\begin{table}[t]",
+        (
+            f"\\caption{{Detectable-only repair and $\\Delta$BPR by mutation order under random-secondary "
+            f"HO chaining ($n={seed_count}$ secondary seeds; campaign seed~44; "
+            "\\texttt{missing-transition} baseline). Means $\\pm$ standard deviation across seeds; "
+            "bracketed ranges are across-seed bootstrap 95\\% confidence intervals. "
+            "Primary deterministic RQ4 appears in \\Tab{tab:coupling-repair-detectable}.}"
+        ),
+        "\\label{tab:rq4-random-secondary-detectable}",
+        "\\scriptsize",
+        "\\setlength{\\tabcolsep}{3pt}",
+        "\\begin{tabular}{@{}lrrrr@{}}",
+        "\\toprule",
+        "Order & Detectable ($n$) & Complete (detectable-only) & Effective (detectable-only) "
+        "& Mean $\\Delta$BPR \\\\",
+        "\\midrule",
+    ]
+    for order in (1, 2, 3):
+        n_mean, n_std, n_low, n_high = _metric_stats(flat_summary, f"detectable_count_order_{order}")
+        c_mean, c_std, c_low, c_high = _metric_stats(
+            flat_summary, f"complete_repair_rate_order_{order}_detectable"
+        )
+        e_mean, e_std, e_low, e_high = _metric_stats(
+            flat_summary, f"effective_repair_rate_order_{order}_detectable"
+        )
+        d_mean, d_std, d_low, d_high = _metric_stats(
+            flat_summary, f"mean_bpr_delta_order_{order}_detectable"
+        )
+        n_cell = f"{n_mean:.0f} $\\pm$ {n_std:.1f} {{[{n_low:.0f}--{n_high:.0f}]}}"
+        lines.append(
+            f"{order} & {n_cell} & {_pct_cell(c_mean, c_std, c_low, c_high)} & "
+            f"{_pct_cell(e_mean, e_std, e_low, e_high)} & {_delta_cell(d_mean, d_std, d_low, d_high)} \\\\"
+        )
+    lines.extend(["\\bottomrule", "\\end{tabular}", "\\end{table}", ""])
+    path.write_text("\n".join(lines), encoding="utf-8")
+
+
+def _pyplot():
+    try:
+        import matplotlib
+
+        matplotlib.use("Agg")
+        import matplotlib.pyplot as plt
+    except ImportError as exc:
+        msg = f"Plotting dependencies missing for random-secondary figures: {exc}"
+        raise CouplingCampaignError(msg) from exc
+    return plt
+
+
+def _write_random_secondary_figures(
+    figures_dir: Path,
+    *,
+    per_seed_rows: Sequence[dict[str, float | int]],
+    flat_summary: dict[str, float | int],
+) -> None:
+    figures_dir.mkdir(parents=True, exist_ok=True)
+    plt = _pyplot()
+    seeds = [int(row["secondary_random_seed"]) for row in per_seed_rows]
+
+    figure, axis = plt.subplots(figsize=(8, 5))
+    for order, color in ((1, "#4472C4"), (2, "#ED7D31"), (3, "#70AD47")):
+        values = [100.0 * float(row[f"detection_rate_order_{order}"]) for row in per_seed_rows]
+        axis.plot(seeds, values, marker="o", label=f"Order {order}", color=color)
+    axis.set_title("Detection Rate by Secondary Random Seed")
+    axis.set_xlabel("Secondary random seed")
+    axis.set_ylabel("Detection rate (%)")
+    axis.set_ylim(0, 105)
+    axis.legend()
+    figure.tight_layout()
+    figure.savefig(figures_dir / "detection_rate_by_seed.png", dpi=120)
+    plt.close(figure)
+
+    order_labels = ["Order 1", "Order 2", "Order 3"]
+    for metric, title, ylabel, filename in (
+        (
+            "complete_repair_rate_order_{order}_detectable",
+            "Detectable-only Complete Repair by Mutation Order",
+            "Complete repair rate (%)",
+            "detectable_complete_repair_by_order.png",
+        ),
+        (
+            "effective_repair_rate_order_{order}_detectable",
+            "Detectable-only Effective Repair by Mutation Order",
+            "Effective repair rate (%)",
+            "detectable_effective_repair_by_order.png",
+        ),
+        (
+            "mean_bpr_delta_order_{order}_detectable",
+            "Detectable-only Mean $\\Delta$BPR by Mutation Order",
+            "Mean $\\Delta$BPR",
+            "detectable_mean_bpr_delta_by_order.png",
+        ),
+    ):
+        means: list[float] = []
+        stds: list[float] = []
+        for order in (1, 2, 3):
+            key = metric.format(order=order)
+            means.append(
+                100.0 * float(flat_summary[f"{key}_mean"])
+                if "bpr_delta" not in key
+                else float(flat_summary[f"{key}_mean"])
+            )
+            stds.append(
+                100.0 * float(flat_summary[f"{key}_std"])
+                if "bpr_delta" not in key
+                else float(flat_summary[f"{key}_std"])
+            )
+        figure, axis = plt.subplots(figsize=(8, 5))
+        axis.bar(order_labels, means, yerr=stds, capsize=4, color="#4472C4", alpha=0.85)
+        axis.set_title(title)
+        axis.set_xlabel("Mutation order")
+        axis.set_ylabel(ylabel)
+        figure.tight_layout()
+        figure.savefig(figures_dir / filename, dpi=120)
+        plt.close(figure)
+
+
+def _experiment_manifest_payload(
+    *,
+    cohort: Path,
+    out: Path,
+    subset_base: Path,
+    paper_dir: Path,
+    campaign_seed: int,
+    repair_engine: str,
+    random_secondary_seeds: Sequence[int],
+) -> dict[str, Any]:
+    return {
+        "experiment": RANDOM_SECONDARY_EXPERIMENT,
+        "design": {
+            "complements": "RQ4-higher-order-coupling-250",
+            "cohort_manifest": str(cohort),
+            "cohort_size": 250,
+            "secondary_operator_policy": "random",
+            "secondary_operator_pool": [
+                "wrong_target",
+                "guard_flip",
+                "missing_transition",
+                "wrong_event",
+                "wrong_source",
+                "guard_weaken",
+                "guard_strengthen",
+                "wrong_initial_state",
+            ],
+            "ho_orders": [2, 3],
+            "campaign_seed": campaign_seed,
+            "repair_engine": repair_engine,
+            "random_secondary_seeds": list(random_secondary_seeds),
+            "variance_unit": "secondary_random_seed",
+            "primary_metrics": [
+                "detection_rate",
+                "complete_repair_rate",
+                "effective_repair_rate",
+                "mean_bpr_delta",
+            ],
+            "primary_partition": "detectable_only",
+        },
+        "regeneration": {
+            "cli": (
+                "fsmrepairbench run-coupling-campaign data/fsmrepairbench_1k "
+                "--cohort-file data/fsmrepairbench_1k/coupling_campaign_250.txt "
+                "--secondary-operator-policy random "
+                "--random-secondary-seeds 10 "
+                "--out results/rq4_coupling_250_random_secondary "
+                "--subset-dir results/rq4_coupling_subset_random_secondary "
+                "--paper-export-dir ../paper1/results/rq4_coupling_250_random_secondary "
+                "--seed 44"
+            ),
+            "paper_wrapper": "python ../paper1/scripts/run_rq4_random_secondary_campaign.py",
+            "freeze_paper": "python ../paper1/scripts/generate_rq4_random_secondary_outputs.py",
+            "wrap_latex": "python ../paper1/scripts/compile_results_latex.py",
+        },
+    }
 
 
 def _read_deterministic_ho_detection(results_dir: Path) -> float | None:
@@ -455,10 +724,34 @@ def run_random_secondary_coupling_campaign(
         flat_summary,
         seed_count=len(random_secondary_seeds),
     )
+    _write_random_secondary_detectable_tex(
+        tables_dir / "table_random_secondary_detectable_by_order.tex",
+        flat_summary,
+        seed_count=len(random_secondary_seeds),
+    )
+
+    figures_dir = out / "figures"
+    _write_random_secondary_figures(
+        figures_dir,
+        per_seed_rows=per_seed_rows,
+        flat_summary=flat_summary,
+    )
+
+    experiment_design = _experiment_manifest_payload(
+        cohort=cohort,
+        out=out,
+        subset_base=subset_base,
+        paper_dir=paper_dir,
+        campaign_seed=campaign_seed,
+        repair_engine=repair_engine,
+        random_secondary_seeds=random_secondary_seeds,
+    )
 
     paper_dir.mkdir(parents=True, exist_ok=True)
     paper_tables = paper_dir / "tables"
+    paper_figures = paper_dir / "figures"
     paper_tables.mkdir(parents=True, exist_ok=True)
+    paper_figures.mkdir(parents=True, exist_ok=True)
     (paper_dir / "random_secondary_summary.csv").write_text(
         summary_csv_path.read_text(encoding="utf-8"),
         encoding="utf-8",
@@ -467,29 +760,43 @@ def run_random_secondary_coupling_campaign(
         summary_json_path.read_text(encoding="utf-8"),
         encoding="utf-8",
     )
-    (paper_tables / "table_random_secondary_summary.tex").write_text(
-        (tables_dir / "table_random_secondary_summary.tex").read_text(encoding="utf-8"),
+    (paper_dir / "per_seed_summary.csv").write_text(
+        per_seed_summary_path.read_text(encoding="utf-8"),
         encoding="utf-8",
     )
+    (paper_dir / "per_case_results.csv").write_text(
+        per_case_path.read_text(encoding="utf-8"),
+        encoding="utf-8",
+    )
+    for name in (
+        "table_random_secondary_summary.tex",
+        "table_random_secondary_detectable_by_order.tex",
+    ):
+        (paper_tables / name).write_text((tables_dir / name).read_text(encoding="utf-8"), encoding="utf-8")
+    for figure_path in figures_dir.glob("*.png"):
+        (paper_figures / figure_path.name).write_bytes(figure_path.read_bytes())
     (paper_dir / "report.md").write_text(report_path.read_text(encoding="utf-8"), encoding="utf-8")
 
     manifest_path = out / "manifest.json"
     manifest_path.write_text(
         json.dumps(
             {
-                "experiment": RANDOM_SECONDARY_EXPERIMENT,
+                "release_label": RANDOM_SECONDARY_EXPERIMENT,
+                "zenodo_doi": ZENODO_DOI,
+                **experiment_design,
                 "dataset_dir": str(dataset_dir),
                 "cohort_path": str(cohort),
                 "cohort_sha256": sha256_file(cohort),
+                "case_count": len(case_ids),
                 "output_dir": str(out),
                 "paper_export_dir": str(paper_dir),
                 "subset_root": str(subset_base),
-                "campaign_seed": campaign_seed,
-                "repair_engine": repair_engine,
-                "secondary_operator_policy": "random",
-                "random_secondary_seeds": list(random_secondary_seeds),
                 "git_commit_hash": get_git_commit(),
                 "seed_runs": seed_payloads,
+                "limitations_note": (
+                    "Sensitivity complement to deterministic HO chaining on the pinned "
+                    "n=250 subset; variance unit is secondary_random_seed, not case resampling."
+                ),
                 "generated_at": datetime.now(UTC).isoformat(),
             },
             indent=2,
@@ -497,6 +804,7 @@ def run_random_secondary_coupling_campaign(
         + "\n",
         encoding="utf-8",
     )
+    (paper_dir / "manifest.json").write_text(manifest_path.read_text(encoding="utf-8"), encoding="utf-8")
 
     return RandomSecondaryCouplingResult(
         output_dir=out,
@@ -507,5 +815,6 @@ def run_random_secondary_coupling_campaign(
         report_path=report_path,
         manifest_path=manifest_path,
         tables_dir=tables_dir,
+        figures_dir=figures_dir,
         paper_export_dir=paper_dir,
     )

@@ -1,0 +1,287 @@
+{
+  "case_id": "case_000289",
+  "tool_id": "baseline_random",
+  "tool_type": "baseline",
+  "model": "baseline_random",
+  "mutation_operator": "wrong_event",
+  "status": "completed",
+  "failure_class": "effective_repair",
+  "input_format": "fsmrepairbench_case_v1",
+  "output_format": "fsmrepairbench_repair_result_v1",
+  "initial_bpr": 0.7692307692307693,
+  "final_bpr": 0.9615384615384616,
+  "delta_bpr": 0.1923076923076923,
+  "complete_repair": false,
+  "effective_repair": true,
+  "regression": false,
+  "patch_parse_failures": 0,
+  "patch_validation_failures": 0,
+  "patch_application_failures": 0,
+  "iterations_completed": 1,
+  "runtime_seconds": 0.0008,
+  "repair_result": {
+    "bug_id": "synthetic_332_5_3__faulty__wrong_event__289043",
+    "passed": false,
+    "score": 0.9615384615384616,
+    "details": {
+      "model": "baseline_random",
+      "backend": "baseline",
+      "baseline_engine": "random",
+      "baseline_seed": 2,
+      "temperature": 0.0,
+      "max_iterations": 1,
+      "runtime_seconds": 0.0008,
+      "iterations": [
+        {
+          "iteration": 1,
+          "bpr_before": 0.7692307692307693,
+          "patch_valid": true,
+          "patch_applied": true,
+          "patch": {
+            "patch_id": "baseline_random_2_synthetic_332_5_3__faulty__wrong_event__289043",
+            "target_fsm_id": "synthetic_332_5_3__faulty__wrong_event__289043",
+            "operations": [
+              {
+                "op": "replace_transition_event",
+                "transition_id": "t332_3",
+                "event": "e332_1"
+              },
+              {
+                "op": "replace_guard",
+                "transition_id": "t332_10",
+                "guard": "random_guard_t332_10"
+              }
+            ]
+          },
+          "validation_errors": [],
+          "bpr_after": 0.9615384615384616
+        }
+      ],
+      "final_fsm": {
+        "id": "synthetic_332_5_3__faulty__wrong_event__289043",
+        "name": "Synthetic FSM (small) (faulty: wrong_event)",
+        "description": "Synthetic FSM generated with seed=332, states=5, events=3, branching_factor=2, deterministic=True, allow_dead_states=False",
+        "states": [
+          {
+            "id": "s332_0",
+            "state_output": null,
+            "refusal": false,
+            "quiescence": false
+          },
+          {
+            "id": "s332_1",
+            "state_output": null,
+            "refusal": false,
+            "quiescence": false
+          },
+          {
+            "id": "s332_2",
+            "state_output": null,
+            "refusal": false,
+            "quiescence": false
+          },
+          {
+            "id": "s332_3",
+            "state_output": null,
+            "refusal": false,
+            "quiescence": false
+          },
+          {
+            "id": "s332_4",
+            "state_output": null,
+            "refusal": false,
+            "quiescence": false
+          }
+        ],
+        "initial_state": "s332_0",
+        "events": [
+          "e332_0",
+          "e332_1",
+          "e332_2"
+        ],
+        "transitions": [
+          {
+            "id": "t332_1",
+            "source": "s332_0",
+            "event": "e332_2",
+            "target": "s332_1",
+            "guard": null,
+            "action": "act332_1",
+            "output": null,
+            "timeout": null,
+            "delay": null,
+            "requirements": [],
+            "probability": null,
+            "is_nondeterministic": false,
+            "refusal": false,
+            "quiescence": false,
+            "discrete_time": null
+          },
+          {
+            "id": "t332_2",
+            "source": "s332_1",
+            "event": "e332_2",
+            "target": "s332_2",
+            "guard": null,
+            "action": "act332_2",
+            "output": null,
+            "timeout": null,
+            "delay": null,
+            "requirements": [],
+            "probability": null,
+            "is_nondeterministic": false,
+            "refusal": false,
+            "quiescence": false,
+            "discrete_time": null
+          },
+          {
+            "id": "t332_3",
+            "source": "s332_2",
+            "event": "e332_1",
+            "target": "s332_3",
+            "guard": null,
+            "action": "act332_3",
+            "output": null,
+            "timeout": null,
+            "delay": null,
+            "requirements": [],
+            "probability": null,
+            "is_nondeterministic": false,
+            "refusal": false,
+            "quiescence": false,
+            "discrete_time": null
+          },
+          {
+            "id": "t332_4",
+            "source": "s332_1",
+            "event": "e332_0",
+            "target": "s332_4",
+            "guard": null,
+            "action": "act332_4",
+            "output": null,
+            "timeout": null,
+            "delay": null,
+            "requirements": [],
+            "probability": null,
+            "is_nondeterministic": false,
+            "refusal": false,
+            "quiescence": false,
+            "discrete_time": null
+          },
+          {
+            "id": "t332_5",
+            "source": "s332_0",
+            "event": "e332_2",
+            "target": "s332_1",
+            "guard": "g332_4_1",
+            "action": "act332_5",
+            "output": null,
+            "timeout": null,
+            "delay": null,
+            "requirements": [],
+            "probability": null,
+            "is_nondeterministic": false,
+            "refusal": false,
+            "quiescence": false,
+            "discrete_time": null
+          },
+          {
+            "id": "t332_6",
+            "source": "s332_2",
+            "event": "e332_0",
+            "target": "s332_4",
+            "guard": null,
+            "action": "act332_6",
+            "output": null,
+            "timeout": null,
+            "delay": null,
+            "requirements": [],
+            "probability": null,
+            "is_nondeterministic": false,
+            "refusal": false,
+            "quiescence": false,
+            "discrete_time": null
+          },
+          {
+            "id": "t332_7",
+            "source": "s332_3",
+            "event": "e332_2",
+            "target": "s332_0",
+            "guard": null,
+            "action": "act332_7",
+            "output": null,
+            "timeout": null,
+            "delay": null,
+            "requirements": [],
+            "probability": null,
+            "is_nondeterministic": false,
+            "refusal": false,
+            "quiescence": false,
+            "discrete_time": null
+          },
+          {
+            "id": "t332_8",
+            "source": "s332_3",
+            "event": "e332_0",
+            "target": "s332_0",
+            "guard": null,
+            "action": "act332_8",
+            "output": null,
+            "timeout": null,
+            "delay": null,
+            "requirements": [],
+            "probability": null,
+            "is_nondeterministic": false,
+            "refusal": false,
+            "quiescence": false,
+            "discrete_time": null
+          },
+          {
+            "id": "t332_9",
+            "source": "s332_4",
+            "event": "e332_0",
+            "target": "s332_4",
+            "guard": null,
+            "action": "act332_9",
+            "output": null,
+            "timeout": null,
+            "delay": null,
+            "requirements": [],
+            "probability": null,
+            "is_nondeterministic": false,
+            "refusal": false,
+            "quiescence": false,
+            "discrete_time": null
+          },
+          {
+            "id": "t332_10",
+            "source": "s332_4",
+            "event": "e332_2",
+            "target": "s332_4",
+            "guard": "random_guard_t332_10",
+            "action": "act332_10",
+            "output": null,
+            "timeout": null,
+            "delay": null,
+            "requirements": [],
+            "probability": null,
+            "is_nondeterministic": false,
+            "refusal": false,
+            "quiescence": false,
+            "discrete_time": null
+          }
+        ],
+        "variables": {},
+        "parent_fsm_id": "synthetic_332_5_3",
+        "reference_fsm_id": "synthetic_332_5_3",
+        "discrete_time_step": null,
+        "semantics_mode": null,
+        "cyclic_metadata": null
+      },
+      "passed_steps": 25,
+      "total_steps": 26,
+      "passed_scenarios": 9,
+      "total_scenarios": 10
+    }
+  }
+}

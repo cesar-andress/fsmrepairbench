@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 import csv
+import json
 import shutil
 import statistics
 from collections import defaultdict
@@ -25,6 +26,7 @@ from fsmrepairbench.baseline_repair_campaign import (
     write_c1_confidence_interval_exports,
 )
 from fsmrepairbench.dataset_builder import DatasetBuilderError, DatasetCaseRow, load_dataset_cases
+from fsmrepairbench.freeze import sha256_file
 
 C1_TOOL_IDS: tuple[str, ...] = (
     "baseline_missing_transition",
@@ -64,6 +66,11 @@ def _sync_paper_export(out_dir: Path, paper_export_dir: Path) -> None:
         "summary.csv",
         "cohort_summary.csv",
         "leaderboard.csv",
+        "repair_by_operator.csv",
+        "repair_by_complexity_tier.csv",
+        "repair_by_operator_missing_transition.csv",
+        "repair_by_operator_wrong_target.csv",
+        "repair_by_operator_random.csv",
         "report.md",
         "README.md",
         "manifest.json",
@@ -117,6 +124,88 @@ def _load_v02_detection(summary_path: Path | None) -> dict[str, float]:
                 out["__overall__"] = float(row["value"])
         return out
     return {}
+
+
+def _load_enriched_from_per_case(
+    per_case_path: Path,
+    cohort_ids: set[str],
+) -> list[dict[str, str | float | bool | int]]:
+    """Load enriched C1 rows from a frozen ``per_case_results.csv`` export."""
+    if not per_case_path.is_file():
+        msg = f"Missing per-case export: {per_case_path}"
+        raise C1BaselineRepairExportError(msg)
+    enriched: list[dict[str, str | float | bool | int]] = []
+    for row in csv.DictReader(per_case_path.open(encoding="utf-8")):
+        if row["case_id"] not in cohort_ids:
+            continue
+        parsed: dict[str, str | float | bool | int] = {
+            "case_id": row["case_id"],
+            "tool_id": row["tool_id"],
+            "mutation_operator": row["mutation_operator"],
+            "complexity_tier": row.get("complexity_tier", ""),
+            "initial_bpr": float(row["initial_bpr"]),
+            "final_bpr": float(row["final_bpr"]),
+            "delta_bpr": float(row["delta_bpr"]),
+            "complete_repair": row["complete_repair"].strip().lower() == "true",
+            "effective_repair": row["effective_repair"].strip().lower() == "true",
+            "regression": row.get("regression", "false").strip().lower() == "true",
+            "faulty_bpr": float(row.get("faulty_bpr", row["initial_bpr"])),
+            "reference_bpr": float(row.get("reference_bpr", "1.0")),
+            "difficulty_score": float(row.get("difficulty_score", "0") or 0),
+            "oracle_detected": row.get("oracle_detected", "false").strip().lower() == "true",
+            "bpr_delta_pre_repair": float(row.get("bpr_delta_pre_repair", row["delta_bpr"])),
+        }
+        enriched.append(parsed)
+    return enriched
+
+
+def _tex_escape(name: str) -> str:
+    return name.replace("_", "\\_")
+
+
+def _tex_filename(name: str) -> str:
+    return f"\\texttt{{{_tex_escape(name)}}}"
+
+
+def _repair_table_note(
+    *,
+    csv_name: str,
+    manifest_path: Path | None = None,
+    cohort_path: Path | None = None,
+    include_delta_zero_note: bool = False,
+) -> str:
+    parts = [
+        "Cohort-wide complete/effective repair includes 505 oracle-saturated cases "
+        "(faulty BPR $= 1.0$).",
+    ]
+    if include_delta_zero_note:
+        parts.append(
+            "Rows with detection $= 0\\%$ and mean $\\Delta$BPR $= 0$ but cohort-wide "
+            "complete repair $= 100\\%$ reflect oracle saturation, not structural repair."
+        )
+    cohort_sha = ""
+    if manifest_path and manifest_path.is_file():
+        manifest = json.loads(manifest_path.read_text(encoding="utf-8"))
+        cohort_sha = str(manifest.get("cohort_sha256", ""))[:16]
+    elif cohort_path and cohort_path.is_file():
+        cohort_sha = sha256_file(cohort_path)[:16]
+    csv_sha = ""
+    if manifest_path and manifest_path.is_file():
+        csv_path = manifest_path.parent / csv_name
+        if csv_path.is_file():
+            csv_sha = sha256_file(csv_path)[:16]
+    if csv_sha or cohort_sha:
+        source_bits = []
+        if csv_sha:
+            source_bits.append(
+                f"{_tex_filename(csv_name)} (SHA-256 prefix \\texttt{{{csv_sha}...}})"
+            )
+        if cohort_sha:
+            source_bits.append(
+                f"cohort digest prefix \\texttt{{{cohort_sha}...}} in {_tex_filename('manifest.json')}"
+            )
+        parts.append("Source: " + "; ".join(source_bits) + ".")
+    return r"\par\footnotesize " + " ".join(parts)
 
 
 def _load_tool_runs(summary_path: Path, cohort_ids: set[str]) -> list[dict[str, str | float | bool]]:
@@ -184,6 +273,7 @@ def _enriched_rows(
 def _summary_metrics(enriched: list[dict], tool_id: str) -> dict[str, float | int | str]:
     subset = [row for row in enriched if row["tool_id"] == tool_id]
     detectable = [row for row in subset if row["oracle_detected"]]
+    oracle_saturated_cases = len(subset) - len(detectable)
     return {
         "tool_id": tool_id,
         "cases": len(subset),
@@ -199,7 +289,14 @@ def _summary_metrics(enriched: list[dict], tool_id: str) -> dict[str, float | in
         )
         if detectable
         else 0.0,
+        "effective_repair_rate_detectable_only": round(
+            _rate([bool(row["effective_repair"]) for row in detectable]),
+            6,
+        )
+        if detectable
+        else 0.0,
         "detectable_cases": len(detectable),
+        "oracle_saturated_cases": oracle_saturated_cases,
     }
 
 
@@ -215,20 +312,35 @@ def _operator_table(
     rows: list[dict] = []
     for operator in sorted(by_op):
         items = by_op[operator]
+        detectable_items = [row for row in items if row["oracle_detected"]]
         rows.append(
             {
                 "mutation_operator": operator,
                 "cases": len(items),
+                "detectable_cases": len(detectable_items),
+                "oracle_saturated_cases": len(items) - len(detectable_items),
                 "detection_rate": detection.get(operator, float("nan")),
                 "mean_faulty_bpr": round(_mean([float(row["faulty_bpr"]) for row in items]), 6),
                 "complete_repair_rate": round(
                     _rate([bool(row["complete_repair"]) for row in items]),
                     6,
                 ),
+                "complete_repair_rate_detectable_only": round(
+                    _rate([bool(row["complete_repair"]) for row in detectable_items]),
+                    6,
+                )
+                if detectable_items
+                else 0.0,
                 "effective_repair_rate": round(
                     _rate([bool(row["effective_repair"]) for row in items]),
                     6,
                 ),
+                "effective_repair_rate_detectable_only": round(
+                    _rate([bool(row["effective_repair"]) for row in detectable_items]),
+                    6,
+                )
+                if detectable_items
+                else 0.0,
                 "mean_delta_bpr": round(_mean([float(row["delta_bpr"]) for row in items]), 6),
             }
         )
@@ -246,14 +358,23 @@ def _tier_table(enriched: list[dict], tool_id: str) -> list[dict]:
         items = by_tier.get(tier, [])
         if not items:
             continue
+        detectable_items = [row for row in items if row["oracle_detected"]]
         rows.append(
             {
                 "complexity_tier": tier,
                 "cases": len(items),
+                "detectable_cases": len(detectable_items),
+                "oracle_saturated_cases": len(items) - len(detectable_items),
                 "complete_repair_rate": round(
                     _rate([bool(row["complete_repair"]) for row in items]),
                     6,
                 ),
+                "complete_repair_rate_detectable_only": round(
+                    _rate([bool(row["complete_repair"]) for row in detectable_items]),
+                    6,
+                )
+                if detectable_items
+                else 0.0,
                 "mean_delta_bpr": round(_mean([float(row["delta_bpr"]) for row in items]), 6),
                 "mean_difficulty_score": round(
                     _mean([float(row["difficulty_score"]) for row in items]),
@@ -264,8 +385,8 @@ def _tier_table(enriched: list[dict], tool_id: str) -> list[dict]:
     return rows
 
 
-def _tex_escape(name: str) -> str:
-    return name.replace("_", "\\_")
+def _tex_pct(value: float) -> str:
+    return f"{100.0 * value:.1f}\\%"
 
 
 def _write_tex_table(
@@ -274,6 +395,8 @@ def _write_tex_table(
     label: str,
     headers: list[str],
     rows: list[list[str]],
+    *,
+    note: str | None = None,
 ) -> None:
     if " Takeaway: " in caption and "\nTakeaway:" not in caption:
         lead, takeaway = caption.split(" Takeaway: ", 1)
@@ -291,7 +414,10 @@ def _write_tex_table(
     ]
     for row in rows:
         lines.append(" & ".join(row) + " \\\\")
-    lines.extend(["\\bottomrule", "\\end{tabular}", "\\end{table}", ""])
+    lines.extend(["\\bottomrule", "\\end{tabular}"])
+    if note:
+        lines.append(note)
+    lines.extend(["\\end{table}", ""])
     path.write_text("\n".join(lines), encoding="utf-8")
 
 
@@ -302,12 +428,16 @@ def _make_figures(enriched: list[dict], *, figures_dir: Path, case_count: int) -
     primary = "baseline_missing_transition"
 
     primary_rows = [row for row in enriched if row["tool_id"] == primary]
+    detectable_primary = [row for row in primary_rows if row["oracle_detected"]]
     finals = [float(row["final_bpr"]) for row in primary_rows]
     plt.figure(figsize=(8, 4))
     plt.hist(finals, bins=20, color="#2c7bb6", edgecolor="white")
     plt.xlabel("Final BPR after repair")
     plt.ylabel("Case count")
-    plt.title(f"Final BPR distribution ({primary}, n={case_count})")
+    plt.title(
+        f"Final BPR distribution ({primary}, n={case_count}; "
+        f"{len(detectable_primary)} detectable, {case_count - len(detectable_primary)} oracle-saturated)"
+    )
     plt.tight_layout()
     plt.savefig(figures_dir / "repair_success_histogram.png", dpi=150)
     plt.close()
@@ -322,15 +452,17 @@ def _make_figures(enriched: list[dict], *, figures_dir: Path, case_count: int) -
             items = [
                 row
                 for row in enriched
-                if row["tool_id"] == tool_id and row["mutation_operator"] == operator
+                if row["tool_id"] == tool_id
+                and row["mutation_operator"] == operator
+                and row["oracle_detected"]
             ]
-            means.append(_mean([float(row["delta_bpr"]) for row in items]))
+            means.append(_mean([float(row["delta_bpr"]) for row in items]) if items else 0.0)
         offset = (idx - 1) * width
         plt.bar([i + offset for i in x], means, width=width, label=tool_id.replace("baseline_", ""))
     plt.xticks(list(x), operators, rotation=45, ha="right")
     plt.axhline(0.0, color="black", linewidth=0.8)
     plt.ylabel("Mean ΔBPR")
-    plt.title("Mean ΔBPR by mutation operator and baseline")
+    plt.title("Mean ΔBPR by mutation operator and baseline (detectable faults only)")
     plt.legend()
     plt.tight_layout()
     plt.savefig(figures_dir / "delta_bpr_by_operator.png", dpi=150)
@@ -338,13 +470,19 @@ def _make_figures(enriched: list[dict], *, figures_dir: Path, case_count: int) -
 
     tier_rows = _tier_table(enriched, primary)
     tiers = [row["complexity_tier"] for row in tier_rows]
-    rates = [row["complete_repair_rate"] for row in tier_rows]
-    plt.figure(figsize=(7, 4))
-    plt.bar(tiers, rates, color="#fdae61")
+    detectable_rates = [row["complete_repair_rate_detectable_only"] for row in tier_rows]
+    cohort_rates = [row["complete_repair_rate"] for row in tier_rows]
+    x = range(len(tiers))
+    width = 0.35
+    plt.figure(figsize=(8, 4))
+    plt.bar([i - width / 2 for i in x], detectable_rates, width=width, label="Detectable only", color="#2c7bb6")
+    plt.bar([i + width / 2 for i in x], cohort_rates, width=width, label="Cohort-wide", color="#fdae61")
+    plt.xticks(list(x), tiers)
     plt.ylim(0, 1.05)
     plt.ylabel("Complete repair rate")
     plt.xlabel("Complexity tier")
-    plt.title(f"Complete repair rate by tier ({primary})")
+    plt.title(f"Complete repair by tier ({primary}; detectable vs cohort-wide)")
+    plt.legend()
     plt.tight_layout()
     plt.savefig(figures_dir / "repair_rate_by_complexity_tier.png", dpi=150)
     plt.close()
@@ -387,13 +525,27 @@ def generate_c1_baseline_repair_exports(
     case_count = len(cohort_ids)
     detection = _load_v02_detection(v02_summary_path)
 
-    runs = _load_tool_runs(out_dir / "summary.csv", cohort_ids)
-    if not runs:
-        msg = f"No run-tools rows matched cohort ({case_count} cases) in {out_dir / 'summary.csv'}"
+    per_case_path = out_dir / "per_case_results.csv"
+    summary_path = out_dir / "summary.csv"
+    if per_case_path.is_file():
+        enriched = _load_enriched_from_per_case(per_case_path, cohort_ids)
+    elif summary_path.is_file():
+        runs = _load_tool_runs(summary_path, cohort_ids)
+        if not runs:
+            msg = (
+                f"No run-tools rows matched cohort ({case_count} cases) in {summary_path}"
+            )
+            raise C1BaselineRepairExportError(msg)
+        dataset_rows = _dataset_rows_by_id(dataset_dir, cohort_ids)
+        enriched = _enriched_rows(runs, dataset_rows)
+    else:
+        msg = f"Missing C1 run output in {out_dir} (expected per_case_results.csv or summary.csv)"
         raise C1BaselineRepairExportError(msg)
-
-    dataset_rows = _dataset_rows_by_id(dataset_dir, cohort_ids)
-    enriched = _enriched_rows(runs, dataset_rows)
+    detectable_case_ids = {
+        str(row["case_id"]) for row in enriched if row["oracle_detected"]
+    }
+    detectable_count = len(detectable_case_ids)
+    saturated_count = case_count - detectable_count
 
     out_dir.mkdir(parents=True, exist_ok=True)
     figures_dir = out_dir / "figures"
@@ -412,14 +564,16 @@ def generate_c1_baseline_repair_exports(
     leaderboard_fields = [
         "tool_id",
         "cases",
+        "detectable_cases",
+        "oracle_saturated_cases",
+        "complete_repair_rate_detectable_only",
+        "effective_repair_rate_detectable_only",
         "complete_repair_rate",
         "effective_repair_rate",
         "regression_rate",
         "mean_delta_bpr",
         "mean_initial_bpr",
         "mean_final_bpr",
-        "complete_repair_rate_detectable_only",
-        "detectable_cases",
     ]
     leaderboard_path = out_dir / "leaderboard.csv"
     _write_csv(leaderboard_path, leaderboard_fields, summaries)
@@ -447,23 +601,49 @@ def generate_c1_baseline_repair_exports(
         tier_primary,
     )
 
+    cohort_sha_prefix = sha256_file(cohort_path)[:16]
+    repair_note = _repair_table_note(
+        csv_name="leaderboard.csv",
+        manifest_path=out_dir / "manifest.json",
+        cohort_path=cohort_path,
+        include_delta_zero_note=False,
+    )
+    repair_note_with_delta = _repair_table_note(
+        csv_name="leaderboard.csv",
+        manifest_path=out_dir / "manifest.json",
+        cohort_path=cohort_path,
+        include_delta_zero_note=True,
+    )
     _write_tex_table(
         tables_dir / "table_dataset_summary.tex",
         "Metadata linking the C1 baseline repair campaign to the v0.2.0-analysis cohort "
-        f"($n={case_count:,}$). "
+        f"($n={case_count:,}$; {detectable_count} oracle-detectable, {saturated_count} "
+        "oracle-saturated at faulty BPR $= 1.0$). "
         f"Takeaway: overall oracle mutation detection is "
-        f"{detection.get('__overall__', 0.495):.1%} on the same cases used for repair evaluation.",
+        f"{_tex_pct(detection.get('__overall__', 0.495))}; repairability is reported on the "
+        "detectable subset as the primary partition.",
         "tab:baseline-dataset-summary",
         ["Metric", "Value"],
         [
             ["Analyzed cases", f"{case_count:,}"],
-            ["Cohort manifest", cohort_path.name],
+            ["Oracle-detectable cases", f"{detectable_count:,}"],
+            ["Oracle-saturated cases (faulty BPR $= 1.0$)", f"{saturated_count:,}"],
+            ["Cohort manifest", f"\\texttt{{{_tex_escape(cohort_path.name)}}}"],
+            [
+                "Cohort manifest SHA-256 (prefix)",
+                f"\\texttt{{{cohort_sha_prefix}...}}",
+            ],
             ["Tools", "3 (missing-transition, wrong-target, random)"],
             [
                 "Overall detection rate (v0.2.0-analysis)",
                 f"{detection.get('__overall__', 0.495):.4f}",
             ],
         ],
+        note=_repair_table_note(
+            csv_name="per_case_results.csv",
+            manifest_path=out_dir / "manifest.json",
+            cohort_path=cohort_path,
+        ),
     )
 
     det_rows = [
@@ -489,28 +669,40 @@ def generate_c1_baseline_repair_exports(
     repair_rows = [
         [
             _tex_escape(row["mutation_operator"]),
-            str(row["cases"]),
-            f"{row['detection_rate']:.4f}",
-            f"{row['complete_repair_rate']:.4f}",
+            str(row["detectable_cases"]),
+            f"{row['detection_rate']:.4f}"
+            if row["detection_rate"] == row["detection_rate"]
+            else "---",
+            _tex_pct(row["complete_repair_rate_detectable_only"]),
+            _tex_pct(row["complete_repair_rate"]),
             f"{row['mean_delta_bpr']:.4f}",
         ]
         for row in op_primary
     ]
     _write_tex_table(
         tables_dir / "table_repair_by_operator.tex",
-        "Complete repair rate and mean $\\Delta$BPR by mutation operator under the "
-        "\\texttt{missing-transition} baseline "
-        f"($n={case_count:,}$).",
+        "Repair outcomes by mutation operator under the \\texttt{missing-transition} baseline "
+        f"($n={case_count:,}$ cohort). \\textbf{{Detectable-only primary}}; "
+        f"cohort-wide$^\\dagger$ includes {saturated_count}/1{{,}}000 oracle-saturated cases.",
         "tab:baseline-repair-by-operator",
-        ["Operator", "Cases", "Detection", "Complete repair", "Mean $\\Delta$BPR"],
+        [
+            "Operator",
+            "Detectable",
+            "Detection",
+            "Complete (detectable-only)",
+            "Complete (cohort-wide$^\\dagger$)",
+            "Mean $\\Delta$BPR",
+        ],
         repair_rows,
+        note=repair_note_with_delta,
     )
 
     tier_rows = [
         [
             _tex_escape(row["complexity_tier"]),
-            str(row["cases"]),
-            f"{row['complete_repair_rate']:.4f}",
+            str(row["detectable_cases"]),
+            _tex_pct(row["complete_repair_rate_detectable_only"]),
+            _tex_pct(row["complete_repair_rate"]),
             f"{row['mean_difficulty_score']:.2f}",
             f"{row['mean_delta_bpr']:.4f}",
         ]
@@ -518,30 +710,52 @@ def generate_c1_baseline_repair_exports(
     ]
     _write_tex_table(
         tables_dir / "table_repair_by_tier.tex",
-        "Complete repair rate by structural complexity tier under the \\texttt{missing-transition} "
-        f"baseline ($n={case_count:,}$).",
+        "Complete repair by structural complexity tier under the \\texttt{missing-transition} "
+        f"baseline ($n={case_count:,}$). \\textbf{{Detectable-only primary}}; "
+        f"cohort-wide$^\\dagger$ includes {saturated_count}/1{{,}}000 oracle-saturated cases.",
         "tab:baseline-repair-by-tier",
-        ["Tier", "Cases", "Complete repair", "Mean difficulty", "Mean $\\Delta$BPR"],
+        [
+            "Tier",
+            "Detectable",
+            "Complete (detectable-only)",
+            "Complete (cohort-wide$^\\dagger$)",
+            "Mean difficulty",
+            "Mean $\\Delta$BPR",
+        ],
         tier_rows,
+        note=repair_note_with_delta,
     )
 
     lb_rows = [
         [
             _tex_escape(str(summary["tool_id"])),
             str(summary["cases"]),
-            f"{summary['complete_repair_rate']:.4f}",
-            f"{summary['effective_repair_rate']:.4f}",
+            _tex_pct(summary["complete_repair_rate_detectable_only"]),
+            _tex_pct(summary["complete_repair_rate"]),
+            _tex_pct(summary["effective_repair_rate_detectable_only"]),
+            _tex_pct(summary["effective_repair_rate"]),
             f"{summary['mean_delta_bpr']:.4f}",
         ]
         for summary in summaries
     ]
     _write_tex_table(
         tables_dir / "table_baseline_leaderboard.tex",
-        "Cohort-level outcomes for three deterministic baseline repair engines "
-        f"(C1 campaign; $n={case_count:,}$).",
+        "C1 baseline repair leaderboard ($n=1{,}000$). "
+        f"\\textbf{{Detectable-only primary}} ($n={detectable_count}$); "
+        f"cohort-wide$^\\dagger$ columns include {saturated_count}/1{{,}}000 oracle-saturated cases "
+        "(faulty BPR $= 1.0$).",
         "tab:baseline-leaderboard",
-        ["Tool", "Cases", "Complete repair", "Effective repair", "Mean $\\Delta$BPR"],
+        [
+            "Tool",
+            "Cases",
+            "Complete (detectable-only)",
+            "Complete (cohort-wide$^\\dagger$)",
+            "Effective (detectable-only)",
+            "Effective (cohort-wide$^\\dagger$)",
+            "Mean $\\Delta$BPR",
+        ],
         lb_rows,
+        note=repair_note,
     )
 
     _make_figures(enriched, figures_dir=figures_dir, case_count=case_count)
@@ -559,11 +773,15 @@ def generate_c1_baseline_repair_exports(
     ]
     for summary in summaries:
         report_lines.append(
-            f"- **{summary['tool_id']}**: complete={summary['complete_repair_rate']:.4f}, "
-            f"effective={summary['effective_repair_rate']:.4f}, "
-            f"mean ΔBPR={summary['mean_delta_bpr']:.4f}, "
-            f"detectable-only complete={summary['complete_repair_rate_detectable_only']:.4f} "
-            f"(n={summary['detectable_cases']})"
+            f"- **{summary['tool_id']}**: detectable-only complete="
+            f"{summary['complete_repair_rate_detectable_only']:.4f}, "
+            f"detectable-only effective="
+            f"{summary['effective_repair_rate_detectable_only']:.4f} "
+            f"(n={summary['detectable_cases']}); cohort-wide complete="
+            f"{summary['complete_repair_rate']:.4f}, effective="
+            f"{summary['effective_repair_rate']:.4f} "
+            f"(includes {summary['oracle_saturated_cases']} oracle-saturated); "
+            f"mean ΔBPR={summary['mean_delta_bpr']:.4f}"
         )
     report_lines.extend(
         [
