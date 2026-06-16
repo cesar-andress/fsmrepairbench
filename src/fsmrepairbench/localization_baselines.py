@@ -36,9 +36,21 @@ LocalizationBaselineMethod = Literal[
     "ochiai",
     "tarantula",
     "jaccard",
+    "dstar",
+    "op2",
     "random",
     "structural_diff",
 ]
+
+SpectralBaselineMethod = Literal["ochiai", "tarantula", "jaccard", "dstar", "op2"]
+
+PUBLISHED_SBFL_METHODS: tuple[SpectralBaselineMethod, ...] = (
+    "ochiai",
+    "tarantula",
+    "dstar",
+    "op2",
+    "jaccard",
+)
 
 BASELINE_METHODS: tuple[LocalizationBaselineMethod, ...] = (
     "ochiai",
@@ -52,9 +64,13 @@ BASELINE_METHOD_LABELS: dict[LocalizationBaselineMethod, str] = {
     "ochiai": "Ochiai",
     "tarantula": "Tarantula",
     "jaccard": "Jaccard",
+    "dstar": "DStar",
+    "op2": "Op2",
     "random": "Random",
     "structural_diff": "Structural diff",
 }
+
+SPECTRAL_BASELINE_METHODS: frozenset[SpectralBaselineMethod] = frozenset(PUBLISHED_SBFL_METHODS)
 
 RANDOM_BASELINE_SEED = 44
 
@@ -171,7 +187,7 @@ def localize_case_baseline(
     if not _case_has_failing_scenario(faulty, oracle):
         return _empty_case_result(case_id=case_id, operator=operator, target=target)
 
-    if method in ("ochiai", "tarantula", "jaccard"):
+    if method in SPECTRAL_BASELINE_METHODS:
         spectral_method: SuspiciousnessMethod = method
         try:
             report = localize_fault(faulty, oracle, method=spectral_method)

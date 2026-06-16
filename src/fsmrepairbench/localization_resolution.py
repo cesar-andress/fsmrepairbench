@@ -390,8 +390,25 @@ def _write_resolution_vs_mrr_figure(
     x_values = [row.spectral_resolution for row in rows]
     y_values = [row.reciprocal_rank for row in rows]
 
-    figure, axis = plt.subplots(figsize=(6.5, 4.5))
-    axis.scatter(x_values, y_values, alpha=0.45, s=24, edgecolors="none")
+    plt.rcParams.update(
+        {
+            "font.size": 10,
+            "axes.labelsize": 10,
+            "xtick.labelsize": 9,
+            "ytick.labelsize": 9,
+            "savefig.dpi": 200,
+        }
+    )
+    figure, axis = plt.subplots(figsize=(6.8, 4.5))
+    axis.scatter(
+        x_values,
+        y_values,
+        alpha=0.55,
+        s=28,
+        color="#4472C4",
+        edgecolors="white",
+        linewidths=0.4,
+    )
     if len(x_values) >= 2:
         mean_x = statistics.mean(x_values)
         mean_y = statistics.mean(y_values)
@@ -404,20 +421,27 @@ def _write_resolution_vs_mrr_figure(
             intercept = mean_y - slope * mean_x
             x_line = [min(x_values), max(x_values)]
             y_line = [slope * x + intercept for x in x_line]
-            axis.plot(x_line, y_line, color="black", linewidth=1.2, linestyle="--")
+            axis.plot(x_line, y_line, color="#333333", linewidth=1.2, linestyle="--")
 
     axis.set_xlabel("Spectral resolution (distinct profiles / executed transitions)")
     axis.set_ylabel("Reciprocal rank (MRR contribution)")
-    axis.set_title(
-        "Shallow-oracle spectral resolution vs. localization quality "
-        f"(Spearman $\\rho$={correlation.spearman_rho:.3f})"
-    )
     axis.set_xlim(0.0, 1.05)
     axis.set_ylim(-0.02, 1.05)
     axis.grid(True, alpha=0.25)
+    axis.text(
+        0.03,
+        0.97,
+        f"Spearman rho={correlation.spearman_rho:.3f}\nn={len(rows)}",
+        transform=axis.transAxes,
+        ha="left",
+        va="top",
+        fontsize=9,
+        bbox={"boxstyle": "round,pad=0.25", "facecolor": "white", "edgecolor": "#CCCCCC", "alpha": 0.9},
+    )
     figure.tight_layout()
     path.parent.mkdir(parents=True, exist_ok=True)
-    figure.savefig(path, dpi=160)
+    figure.savefig(path, dpi=200, bbox_inches="tight")
+    figure.savefig(path.with_suffix(".pdf"), bbox_inches="tight")
     plt.close(figure)
 
 

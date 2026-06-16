@@ -60,6 +60,20 @@ def test_suspiciousness_coefficients() -> None:
         total_failed_scenarios=2,
         total_passed_scenarios=1,
     ) == pytest.approx(1.0)
+    assert suspiciousness_score(
+        method="dstar",
+        failed_cover_count=2,
+        passed_cover_count=1,
+        total_failed_scenarios=3,
+        total_passed_scenarios=1,
+    ) == pytest.approx(2.0)
+    assert suspiciousness_score(
+        method="op2",
+        failed_cover_count=2,
+        passed_cover_count=0,
+        total_failed_scenarios=2,
+        total_passed_scenarios=1,
+    ) == pytest.approx(2.0)
 
 
 def test_trace_scenario_spectrum_records_covered_elements() -> None:
@@ -80,7 +94,7 @@ def test_trace_scenario_spectrum_records_covered_elements() -> None:
     assert "open_gate" in spectrum.covered_actions
 
 
-@pytest.mark.parametrize("method", ["ochiai", "tarantula", "jaccard"])
+@pytest.mark.parametrize("method", ["ochiai", "tarantula", "jaccard", "dstar", "op2"])
 def test_wrong_target_transition_ranked_in_top_five(method: str) -> None:
     reference = load_fsm(FIXTURES / "valid_fsm.json")
     oracle = load_oracle_suite(FIXTURES / "valid_oracle.json")

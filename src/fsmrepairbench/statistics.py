@@ -1183,8 +1183,8 @@ def render_paper_main_ci_tex(rows: Sequence[ConfidenceIntervalRow]) -> str:
         "\\caption{Bootstrap 95\\% confidence intervals for headline empirical results "
         f"(non-parametric case resampling; {BOOTSTRAP_RESAMPLES:,} resamples; seed {BOOTSTRAP_SEED}). "
         "C1 repair rows use detectable-only partitions ($n=495$). Full campaign metrics with cohort-wide "
-        "and detectable-only partitions appear in \\Tab{tab:ci-campaign-metrics}; paired comparisons in "
-        "\\Tab{tab:ci-paired-comparisons}.}",
+        "and detectable-only partitions and paired comparisons appear in Appendix~\\ref{app:ci-supplementary} "
+        "(\\Tab{tab:ci-campaign-metrics}, \\Tab{tab:ci-paired-comparisons}).}",
         "\\label{tab:ci-main-results}",
         "\\small",
         "\\begin{tabular}{@{}llllrrrr@{}}",

@@ -13,7 +13,7 @@ from fsmrepairbench.models import FSM, OracleScenario, OracleSemanticsMode, Orac
 from fsmrepairbench.oracle import execute_scenario, trace_scenario_transitions
 from fsmrepairbench.oracle_generator import reachable_state_ids
 
-SuspiciousnessMethod = Literal["ochiai", "tarantula", "jaccard"]
+SuspiciousnessMethod = Literal["ochiai", "tarantula", "jaccard", "dstar", "op2"]
 
 ElementType = Literal["state", "transition", "guard", "action", "timeout"]
 
@@ -182,10 +182,26 @@ def _jaccard(ef: int, ep: int, nf: int, np: int) -> float:
     return ef / denominator
 
 
+def _dstar(ef: int, ep: int, nf: int, np: int) -> float:
+    _ = np
+    denominator = ep + nf
+    if denominator == 0:
+        return 0.0
+    return (ef * ef) / denominator
+
+
+def _op2(ef: int, ep: int, nf: int, np: int) -> float:
+    _ = nf
+    _ = np
+    return float(ef - ep)
+
+
 SUSPICIOUSNESS_FORMULAE: dict[SuspiciousnessMethod, Callable[[int, int, int, int], float]] = {
     "ochiai": _ochiai,
     "tarantula": _tarantula,
     "jaccard": _jaccard,
+    "dstar": _dstar,
+    "op2": _op2,
 }
 
 

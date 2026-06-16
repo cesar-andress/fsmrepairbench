@@ -278,6 +278,24 @@ def _save_bar_plot(
     plt.close(figure)
 
 
+def _configure_publication_style() -> None:
+    plt = _pyplot()
+    plt.rcParams.update(
+        {
+            "font.size": 10,
+            "axes.labelsize": 10,
+            "axes.titlesize": 10,
+            "xtick.labelsize": 9,
+            "ytick.labelsize": 9,
+            "legend.fontsize": 9,
+            "figure.dpi": 120,
+            "savefig.dpi": 200,
+            "axes.linewidth": 0.8,
+            "grid.alpha": 0.25,
+        }
+    )
+
+
 def _save_histogram(
     path: Path,
     *,
@@ -287,13 +305,143 @@ def _save_histogram(
     bins: int = 10,
 ) -> None:
     plt = _pyplot()
-    figure, axis = plt.subplots(figsize=(8, 5))
-    axis.hist(values, bins=bins, color="#70AD47", edgecolor="white")
-    axis.set_title(title)
+    _configure_publication_style()
+    figure, axis = plt.subplots(figsize=(6.5, 4.0))
+    axis.hist(values, bins=bins, color="#4472C4", edgecolor="white", linewidth=0.6, alpha=0.92)
     axis.set_xlabel(xlabel)
-    axis.set_ylabel("Frequency")
+    axis.set_ylabel("Case count")
+    axis.set_title(title)
+    axis.grid(axis="y", alpha=0.25)
+    axis.set_xlim(0.0, 1.02)
     figure.tight_layout()
-    figure.savefig(path, dpi=120)
+    figure.savefig(path, dpi=200, bbox_inches="tight")
+    plt.close(figure)
+
+
+def _save_faulty_bpr_histogram(path: Path, values: list[float]) -> None:
+    """Publication histogram for faulty-model BPR (STVR Fig. 6.1 style)."""
+    plt = _pyplot()
+    _configure_publication_style()
+    plt.rcParams.update(
+        {
+            "font.family": "sans-serif",
+            "font.sans-serif": ["DejaVu Sans", "Arial", "Helvetica"],
+            "axes.spines.top": False,
+            "axes.spines.right": False,
+        }
+    )
+
+    epsilon = 1e-9
+    n = len(values)
+    below_sat = [value for value in values if value < 1.0 - epsilon]
+    saturated = n - len(below_sat)
+    mean_value = sum(values) / n if n else 0.0
+    pct_saturated = 100.0 * saturated / n
+
+    bin_width = 0.05
+    n_bins_below = 19
+    counts = [0] * n_bins_below
+    for value in below_sat:
+        index = min(int(value / bin_width), n_bins_below - 1)
+        counts[index] += 1
+
+    percentages = [100.0 * count / n for count in counts]
+    centers = [(index + 0.5) * bin_width for index in range(n_bins_below)]
+    pct_sat_bar = pct_saturated
+    sat_bar_width = 0.09
+
+    figure, axis = plt.subplots(figsize=(7.2, 4.6))
+    axis.bar(
+        centers,
+        percentages,
+        width=bin_width * 0.88,
+        color="#5B7DB1",
+        edgecolor="white",
+        linewidth=0.55,
+        zorder=2,
+    )
+    axis.bar(
+        [1.0],
+        [pct_sat_bar],
+        width=sat_bar_width,
+        color="#B22222",
+        edgecolor="white",
+        linewidth=0.55,
+        zorder=4,
+    )
+    axis.axvspan(1.0 - sat_bar_width / 2.0, 1.0 + sat_bar_width / 2.0, color="#B22222", alpha=0.08, zorder=1)
+
+    y_max = max(max(percentages + [pct_sat_bar]) * 1.22, 58.0)
+    axis.set_ylim(0.0, y_max)
+    axis.set_xlim(-0.02, 1.06)
+
+    axis.axvline(
+        mean_value,
+        color="#2F2F2F",
+        linewidth=1.15,
+        linestyle=(0, (4, 3)),
+        zorder=5,
+    )
+    axis.annotate(
+        f"Mean = {mean_value:.3f}",
+        xy=(mean_value, y_max * 0.04),
+        xytext=(max(mean_value - 0.28, 0.08), y_max * 0.58),
+        fontsize=9.5,
+        color="#2F2F2F",
+        arrowprops={"arrowstyle": "-|>", "color": "#2F2F2F", "lw": 0.95, "shrinkA": 0, "shrinkB": 3},
+    )
+
+    axis.annotate(
+        f"Oracle-saturated\n({saturated:,} cases)",
+        xy=(1.0, pct_sat_bar),
+        xytext=(0.58, min(pct_sat_bar + 14.0, y_max * 0.92)),
+        fontsize=9.5,
+        color="#B22222",
+        ha="center",
+        va="bottom",
+        linespacing=1.15,
+        arrowprops={
+            "arrowstyle": "-|>",
+            "color": "#B22222",
+            "lw": 1.0,
+            "connectionstyle": "arc3,rad=-0.15",
+        },
+    )
+    axis.text(
+        1.0,
+        pct_sat_bar * 0.5,
+        f"{pct_saturated:.1f}%",
+        ha="center",
+        va="center",
+        color="white",
+        fontsize=9.5,
+        fontweight="bold",
+        zorder=6,
+        clip_on=False,
+    )
+    axis.text(
+        0.02,
+        0.98,
+        f"n = {n:,}",
+        transform=axis.transAxes,
+        ha="left",
+        va="top",
+        fontsize=9.5,
+        color="#333333",
+    )
+
+    axis.set_xlabel("Faulty behavioural pass rate (BPR)")
+    axis.set_ylabel("Share of cohort (%)")
+    axis.set_xticks([0.0, 0.2, 0.4, 0.6, 0.8, 1.0])
+    axis.set_xticklabels(["0", "0.2", "0.4", "0.6", "0.8", "1.0"])
+    axis.yaxis.set_major_formatter(plt.FuncFormatter(lambda y, _pos: f"{y:.0f}"))
+    axis.grid(axis="y", alpha=0.22, zorder=0)
+    axis.set_axisbelow(True)
+
+    figure.tight_layout()
+    path.parent.mkdir(parents=True, exist_ok=True)
+    figure.savefig(path, dpi=300, bbox_inches="tight")
+    figure.savefig(path.with_suffix(".pdf"), bbox_inches="tight")
     plt.close(figure)
 
 
@@ -600,12 +748,9 @@ def write_analysis_figures(
         values=reference_values,
         bins=min(10, max(3, len(set(reference_values)))),
     )
-    _save_histogram(
+    _save_faulty_bpr_histogram(
         figures_dir / "faulty_bpr_distribution.png",
-        title="Faulty BPR Distribution",
-        xlabel="Faulty BPR",
-        values=faulty_values,
-        bins=min(10, max(3, len(set(faulty_values)))),
+        faulty_values,
     )
 
     detection_rates = compute_mutation_detection_rates(cases)

@@ -1,7 +1,7 @@
 # FSMRepairBench Dataset Analysis Report
 
 **Dataset:** `data/fsmrepairbench_1k`  
-**Generated:** 2026-06-09 01:26 UTC  
+**Generated:** 2026-06-16 14:25 UTC  
 **Cases analyzed:** 1000
 
 ## Abstract
@@ -76,6 +76,7 @@ Pearson correlations relate structural/oracle features to `difficulty_score` and
 ## Artifacts
 
 - Summary metrics: `results/analysis/summary.csv`
+- Confidence intervals: `results/analysis/confidence_intervals.csv`
 - Distributions: `results/analysis/distributions.csv`
 - Correlations: `results/analysis/correlations.csv`
 - Figures: `results/analysis/figures/`
@@ -85,6 +86,6 @@ Pearson correlations relate structural/oracle features to `difficulty_score` and
 Non-parametric percentile bootstrap over cases (10,000 resamples, 95% CI, seed 44).
 Exports: `confidence_intervals.csv` and `confidence_intervals.json`.
 
-- `overall_detection_rate`: 0.495000 [0.465000, 0.525000] (n=1000)
-- `mean_faulty_bpr`: 0.916578 [0.901501, 0.931421] (n=1000)
-- `mean_bpr_delta`: 0.083422 [0.068579, 0.098499] (n=1000)
+- `overall_detection_rate (RQ2)`: 0.495000 [0.465000, 0.525000] (n=1000)
+- `mean_faulty_bpr (RQ2)`: 0.916578 [0.901501, 0.931421] (n=1000)
+- `mean_bpr_delta (RQ2)`: 0.083422 [0.068579, 0.098499] (n=1000)

@@ -1,7 +1,7 @@
 # FSMRepairBench Benchmark Readiness Assessment
 
 **Release:** `v0.2.0-analysis`  
-**Generated:** 2026-06-15T19:26:06.887940+00:00  
+**Generated:** 2026-06-16T14:30:49.379781+00:00  
 **Mean readiness score:** 2.67/5 (early release)  
 
 ## Purpose
