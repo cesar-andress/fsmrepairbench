@@ -1,7 +1,7 @@
 # Stratified Dataset: fsmrepairbench_1k
 
 - **Dataset:** fsmrepairbench_1k
-- **Version:** 0.2.0-analysis
+- **Release label:** v0.3.0 (canonical); historical export label `0.2.0-analysis` on early campaign metadata
 - **Number of completed FSM cases:** 1,024
 - **Number of analyzed FSM cases:** 1,000 (pinned cohort)
 - **Files:** reference_fsm.json, faulty_fsm.json, oracle_suite.json, bug_metadata.json, case_features.json

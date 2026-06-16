@@ -5,8 +5,8 @@
 [![Python 3.11+](https://img.shields.io/badge/python-3.11+-3776ab?logo=python&logoColor=white)](https://www.python.org/downloads/)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
 [![Package](https://img.shields.io/badge/package-0.1.0-blue)](pyproject.toml)
-[![Release](https://img.shields.io/badge/release-v0.2.1--stvr--polish-blue)](https://github.com/cesar-andress/fsmrepairbench/releases/tag/v0.2.1-stvr-polish)
-[![Dataset](https://img.shields.io/badge/dataset-v0.2.0--analysis-green)](https://doi.org/10.5281/zenodo.20602528)
+[![Release](https://img.shields.io/badge/release-v0.3.0-blue)](https://github.com/cesar-andress/fsmrepairbench/releases/tag/v0.3.0)
+[![Dataset](https://img.shields.io/badge/dataset-v0.3.0-green)](https://doi.org/10.5281/zenodo.20602528)
 [![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.20602528.svg)](https://doi.org/10.5281/zenodo.20602528)
 
 **Behavioural finite-state machine repair benchmark — toolkit, generators, and experiment pipeline.**
@@ -16,30 +16,28 @@ faulty state machines using **oracle-based scoring**, not textual diff against a
 reference. The repository ships a working Python implementation: JSON schemas, validation,
 seeded mutation, dataset builders, LLM/baseline repair experiments, and governance tooling.
 
-> **The empirical dataset and paper metrics remain frozen at
-> [v0.2.0-analysis](https://doi.org/10.5281/zenodo.20602528) / Zenodo DOI
-> [10.5281/zenodo.20602528](https://doi.org/10.5281/zenodo.20602528).**
+> **Canonical release for the STVR manuscript:**
+> **[v0.3.0 — Benchmark Demonstration Release](https://github.com/cesar-andress/fsmrepairbench/releases/tag/v0.3.0)**
+> (Zenodo DOI [10.5281/zenodo.20602528](https://doi.org/10.5281/zenodo.20602528)).
 >
-> **[v0.2.1-stvr-polish](https://github.com/cesar-andress/fsmrepairbench/releases/tag/v0.2.1-stvr-polish)**
-> is the latest GitHub release for reproducibility, documentation, manifests, and
-> submission polish. **v0.2.1-stvr-polish does not modify benchmark cases, oracle suites,
-> mutation operators, campaign cohorts, or reported empirical metrics.**
+> The release archives the frozen thousand-case cohort, construct-labelled demonstration
+> exports (repair, localisation, oracle-depth/surface studies, SBFL comparison, coupling),
+> reproducibility scripts, and manuscript assets. Headline empirical metrics are unchanged
+> from prior frozen exports.
 >
 > **Package version** `0.1.0` (`pyproject.toml`) is the installable Python semver; it is
-> independent of Zenodo and GitHub release labels.
+> independent of GitHub release labels.
 >
-> **v0.3.x pilots** (multi-family smoke, negative controls, oracle-depth v2, random-secondary
-> coupling) are future experimental work and **not** part of the primary paper deposit.
-> Multi-family cohort documentation:
-> [`../docs/multifamily_cohorts.md`](../docs/multifamily_cohorts.md).
+> **Historical labels:** `v0.2.0-analysis` and `v0.2.1-stvr-polish` refer to earlier
+> packaging of the same frozen cohort and metrics; see [`VERSIONING_POLICY.md`](VERSIONING_POLICY.md).
 
 ### Release labels
 
 | Label | Role | Cite / use |
 |-------|------|------------|
-| **[v0.2.0-analysis](https://doi.org/10.5281/zenodo.20602528)** | Frozen dataset and empirical campaign release | **Cite this in the STVR paper** (Zenodo DOI `10.5281/zenodo.20602528`) |
-| **[v0.2.1-stvr-polish](https://github.com/cesar-andress/fsmrepairbench/releases/tag/v0.2.1-stvr-polish)** | Reproducibility and submission-polish release | **Use this for latest tooling and public documentation** |
-| **v0.3.x** | Future pilots and extensions | Not paper evidence; experimental only |
+| **[v0.3.0](https://github.com/cesar-andress/fsmrepairbench/releases/tag/v0.3.0)** | Benchmark demonstration release | **Cite in the STVR paper** (GitHub release + Zenodo DOI `10.5281/zenodo.20602528`) |
+| **`v0.2.0-analysis`** | Historical export label on early campaign bundles | Provenance only; superseded by v0.3.0 |
+| **`v0.2.1-stvr-polish`** | Historical tooling tag | Provenance only; superseded by v0.3.0 |
 
 ---
 
@@ -85,10 +83,11 @@ candidate FSM. See [docs/oracle_spec.md](docs/oracle_spec.md).
 
 ---
 
-## Paper release (v0.2.0-analysis)
+## Paper release (v0.3.0)
 
-Empirical campaigns reported in the STVR manuscript use release label **`v0.2.0-analysis`**
-(Zenodo [10.5281/zenodo.20602528](https://doi.org/10.5281/zenodo.20602528)).
+Empirical campaigns reported in the STVR manuscript use release label **`v0.3.0`**
+([GitHub](https://github.com/cesar-andress/fsmrepairbench/releases/tag/v0.3.0);
+Zenodo [10.5281/zenodo.20602528](https://doi.org/10.5281/zenodo.20602528)).
 
 | Item | Value |
 |------|-------|
@@ -97,7 +96,7 @@ Empirical campaigns reported in the STVR manuscript use release label **`v0.2.0-
 | **Cohort manifests** | `analysis_cohort_1k.txt`, `localization_cohort_1k.txt`, `coupling_campaign_250.txt`, `oracle_depth_ablation_200.txt` |
 | **Mutation operators** | **19 registered**, **17 realised** in the analysis cohort (`timed_selective_mutation`, `variable_intra_class`: 0 cases) |
 | **Frozen exports** | `results/taxonomy_coverage/`, `results/analysis/`, `results/rq3_localization_1k/`, `results/rq4_coupling_250/`, `results/baseline_repair_C1/`, `results/oracle_depth_ablation/` |
-| **Reproduction guide** | [`../paper1/CANONICAL_REPRODUCTION.md`](../paper1/CANONICAL_REPRODUCTION.md) (GitHub `v0.2.1-stvr-polish`) |
+| **Reproduction guide** | [`../paper1/CANONICAL_REPRODUCTION.md`](../paper1/CANONICAL_REPRODUCTION.md) (GitHub `v0.3.0`) |
 | **Paper mirror** | `../paper1/results/` (LaTeX/PNG copies; see monorepo layout) |
 
 Verify pinned cohort SHA-256 digests:
@@ -214,24 +213,29 @@ fsmrepairbench analyze-benchmark data/fsmrepairbench_1k_multifamily \
 ```
 
 Full guide: [`../docs/multifamily_cohorts.md`](../docs/multifamily_cohorts.md) · GitHub
-[`v0.2.1-stvr-polish`](https://github.com/cesar-andress/fsmrepairbench/releases/tag/v0.2.1-stvr-polish)
+[`v0.3.0`](https://github.com/cesar-andress/fsmrepairbench/releases/tag/v0.3.0)
 
 ---
 
-## Tooling release (v0.2.1-stvr-polish)
+## Historical tooling release (v0.2.1-stvr-polish)
 
 GitHub release:
 **[v0.2.1-stvr-polish](https://github.com/cesar-andress/fsmrepairbench/releases/tag/v0.2.1-stvr-polish)**
 
-This tag improves reproducibility documentation, release audits, manifest metadata, and
-paper-export traceability. It **does not** change:
+Historical pre-v0.3.0 tag for reproducibility documentation and submission polish.
+Superseded by **`v0.3.0`** for manuscript citation. It **does not** change benchmark cases,
+oracle suites, mutation operators, cohort manifests, or headline empirical metrics.
 
-- benchmark cases under `data/fsmrepairbench_1k/cases/`
-- oracle suites, mutation operators, or cohort manifests
-- frozen campaign CSV/PNG exports or the empirical metrics reported in the manuscript
+---
 
-Clone or check out `v0.2.1-stvr-polish` for the latest public docs; cite Zenodo
-**`v0.2.0-analysis`** (`10.5281/zenodo.20602528`) for all paper tables and figures.
+## Canonical release (v0.3.0)
+
+GitHub release:
+**[v0.3.0](https://github.com/cesar-andress/fsmrepairbench/releases/tag/v0.3.0)**
+(*FSMRepairBench v0.3.0 — Benchmark Demonstration Release*)
+
+Clone or check out **`v0.3.0`** for the STVR manuscript bundle; cite Zenodo
+**`10.5281/zenodo.20602528`** for dataset bytes and headline metrics.
 
 ---
 
@@ -567,19 +571,18 @@ Full roadmap: [docs/roadmap.md](docs/roadmap.md) · Vision:
 
 ## Citation
 
-If you use the **empirical dataset or paper metrics**, cite Zenodo **`v0.2.0-analysis`**
-(`10.5281/zenodo.20602528`). If you use the **software toolchain**, cite the GitHub
-repository (optionally tag **`v0.2.1-stvr-polish`** for the latest reproducibility bundle):
+If you use the **empirical dataset, demonstration exports, or paper metrics**, cite
+**`v0.3.0`** and Zenodo DOI **`10.5281/zenodo.20602528`**. If you use the **software
+toolchain**, cite the GitHub repository at tag **`v0.3.0`**:
 
 ```bibtex
-@software{fsmrepairbench2026,
-  title        = {FSMRepairBench: A Benchmark for Behavioural Finite-State Machine Repair},
-  author       = {Andr{\'e}s, C{\'e}sar and FSMRepairBench Contributors},
+@misc{fsmrepairbench2026_v030,
+  title        = {{FSMRepairBench v0.3.0: Benchmark Demonstration Release}},
+  author       = {Andr{\'e}s, C{\'e}sar},
   year         = {2026},
-  url          = {https://github.com/cesar-andress/fsmrepairbench},
-  version      = {0.1.0},
+  howpublished = {\url{https://github.com/cesar-andress/fsmrepairbench/releases/tag/v0.3.0}},
   doi          = {10.5281/zenodo.20602528},
-  note         = {Release label v0.2.0-analysis; frozen 1{,}000-case empirical campaign}
+  note         = {Version v0.3.0}
 }
 ```
 

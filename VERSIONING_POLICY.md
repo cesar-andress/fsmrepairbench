@@ -17,61 +17,71 @@ FSMRepairBench uses **three** complementary version axes:
 |-------|----------|---------|
 | **Schema version** | `v0.1`, `v1.0`, `v1.1`, `v2.0` | On-disk JSON contract |
 | **Evolution release** | `v0`, `v1`, `v2` | Major benchmark generation era |
-| **Paper / Zenodo release label** | `v0.2.0-analysis` | Frozen empirical campaign bundle (dataset + exports) |
-| **GitHub tooling release label** | `v0.2.1-stvr-polish` | Reproducibility, documentation, manifests — no new empirical data |
+| **Paper / GitHub release label** | `v0.3.0` | Canonical benchmark demonstration release (STVR manuscript) |
+| **Historical Zenodo campaign label** | `v0.2.0-analysis` | Earlier export metadata on the same frozen cohort |
+| **Historical GitHub tooling label** | `v0.2.1-stvr-polish` | Pre-v0.3.0 reproducibility tag |
 | **Python package version** | `0.1.0` (`pyproject.toml`) | Installable CLI/library semver |
 
-**The empirical dataset and paper metrics remain frozen at
-[v0.2.0-analysis](https://doi.org/10.5281/zenodo.20602528) / Zenodo DOI
-[10.5281/zenodo.20602528](https://doi.org/10.5281/zenodo.20602528).**
+**Canonical release for the STVR manuscript:**
+**[v0.3.0 — Benchmark Demonstration Release](https://github.com/cesar-andress/fsmrepairbench/releases/tag/v0.3.0)**
+with Zenodo DOI [10.5281/zenodo.20602528](https://doi.org/10.5281/zenodo.20602528).
 
 ### Release labels (summary)
 
 | Label | Role |
 |-------|------|
-| **`v0.2.0-analysis`** | Frozen dataset and empirical campaign release — cite in the STVR paper |
-| **[v0.2.1-stvr-polish](https://github.com/cesar-andress/fsmrepairbench/releases/tag/v0.2.1-stvr-polish)** | Reproducibility and submission-polish release — use for latest tooling |
-| **`v0.3.x`** | Future pilots and extensions — not paper evidence |
+| **`v0.3.0`** | Benchmark demonstration release — cite in the STVR paper |
+| **`v0.2.0-analysis`** | Historical export label — provenance only |
+| **`v0.2.1-stvr-polish`** | Historical tooling tag — provenance only |
 
-### v0.2.0-analysis (frozen paper release)
+### v0.3.0 (canonical benchmark demonstration release)
 
-The STVR manuscript and Zenodo deposit [10.5281/zenodo.20602528](https://doi.org/10.5281/zenodo.20602528)
-use release label **`v0.2.0-analysis`**. This label identifies:
+GitHub release:
+**[v0.3.0](https://github.com/cesar-andress/fsmrepairbench/releases/tag/v0.3.0)**
+(*FSMRepairBench v0.3.0 — Benchmark Demonstration Release*).
+
+This label identifies:
 
 - Dataset `data/fsmrepairbench_1k/` (1,024 completed builds; **1,000** pinned analysis cases)
 - Pinned cohort manifests (`analysis_cohort_1k.txt`, `localization_cohort_1k.txt`,
   `coupling_campaign_250.txt`, `oracle_depth_ablation_200.txt`)
-- Frozen campaign exports under `results/` (RQ1–RQ4, C1, C3) with `manifest.json`
+- Frozen demonstration exports under `paper1/results/` and `results/` (RQ1–RQ4, C1, C3,
+  oracle-surface sensitivity, SBFL comparison, open-weight repair baseline)
+- Reproducibility scripts, manuscript exports, and artifact manifests
 
-The Python package may remain at **`0.1.0`** while the Zenodo release label stays
-`v0.2.0-analysis`. Cite the **Zenodo DOI and release label** for empirical results;
+Cite **GitHub release `v0.3.0` and Zenodo DOI `10.5281/zenodo.20602528`** for empirical
+results and archived demonstration readouts. Cite **package version + git tag** for software
+reproducibility.
+
+### v0.2.0-analysis (historical export label)
+
+The label **`v0.2.0-analysis`** appears on early frozen export metadata for the same
+ thousand-case cohort. It does **not** supersede **`v0.3.0`** for manuscript citation.
+
+Zenodo deposit [10.5281/zenodo.20602528](https://doi.org/10.5281/zenodo.20602528) hosts
+dataset bytes referenced by all release labels above.
+
+The Python package may remain at **`0.1.0`** while GitHub release labels evolve.
+Cite the **Zenodo DOI and v0.3.0 release label** for empirical results;
 cite **package version + git tag** for software reproducibility.
 
-Git tag: `v0.2.0-analysis` on this repository.
-
-### v0.2.1-stvr-polish (tooling and documentation release)
+### v0.2.1-stvr-polish (historical tooling release)
 
 GitHub release:
 **[v0.2.1-stvr-polish](https://github.com/cesar-andress/fsmrepairbench/releases/tag/v0.2.1-stvr-polish)**
 
-This label identifies documentation, reproducibility audits, manifest metadata alignment, and
-submission-polish updates shipped after the Zenodo deposit. **v0.2.1-stvr-polish does not
-modify benchmark cases, oracle suites, mutation operators, campaign cohorts, or reported
-empirical metrics.**
+Historical tag for pre-v0.3.0 reproducibility polish. Superseded by **`v0.3.0`** for
+manuscript citation. **Does not modify benchmark cases, oracle suites, mutation operators,
+campaign cohorts, or reported empirical metrics** relative to the frozen cohort.
 
-- Dataset remains **`data/fsmrepairbench_1k`** pinned to Zenodo **`v0.2.0-analysis`**
-- Cite Zenodo DOI **`10.5281/zenodo.20602528`** for all paper tables and figures
-- Check out tag **`v0.2.1-stvr-polish`** for the latest public reproducibility bundle
-
-### v0.3.x experimental pilots (not a replacement release)
+### Experimental pilots (not the primary release)
 
 Features under `results/multifamily_v0_3_smoke/`, `results/negative_controls/`,
 `results/oracle_depth_ablation_v2/`, and `results/rq4_coupling_250_random_secondary/`
 are **experimental** robustness pilots. They:
 
-- Do **not** supersede `v0.2.0-analysis`
-- Are **not** part of the primary Zenodo deposit for the STVR paper
-- May change without a Zenodo version bump until promoted to a future release label
+- Do **not** supersede headline metrics on the primary thousand-case cohort
+- May change without a release bump until promoted into a future release label
 
 See [docs/implementation_audit_v0_3.md](docs/implementation_audit_v0_3.md) and
 [docs/README.md](docs/README.md).
