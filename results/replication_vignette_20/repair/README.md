@@ -5,7 +5,7 @@ Experiment **C1**: deterministic baseline repair on the pinned analysis cohort.
 | Field | Value |
 |-------|-------|
 | Cases analyzed | 20 |
-| DOI | [10.5281/zenodo.20602528](https://doi.org/10.5281/zenodo.20602528) |
+| DOI | [10.5281/zenodo.20724095](https://doi.org/10.5281/zenodo.20724095) |
 | Release label | v0.2.0-analysis |
 | Campaign | C1-baseline-repair |
 | Tools | missing-transition, wrong-target, random |

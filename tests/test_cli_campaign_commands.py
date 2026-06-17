@@ -62,7 +62,7 @@ def test_campaign_cli_writes_manifest_and_core_exports(
     assert manifest_path.is_file(), f"stdout:\n{result.stdout}"
 
     manifest = json.loads(manifest_path.read_text(encoding="utf-8"))
-    assert manifest.get("zenodo_doi") == "10.5281/zenodo.20602528"
+    assert manifest.get("zenodo_doi") == "10.5281/zenodo.20724095"
     assert manifest.get("release_label")
     assert manifest.get("regeneration_commands")
 

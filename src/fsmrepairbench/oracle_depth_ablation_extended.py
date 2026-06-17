@@ -52,7 +52,7 @@ EXTENDED_RELEASE_LABEL = "C3-oracle-depth-ablation-extended-200"
 DEFAULT_EXTENDED_OUTPUT = Path("results/oracle_depth_ablation_extended")
 DEFAULT_EXTENDED_PAPER_EXPORT = Path("../paper1/results/oracle_depth_ablation_extended")
 DEFAULT_REPAIR_ENGINE = "missing-transition"
-ZENODO_DOI = "10.5281/zenodo.20602528"
+ZENODO_DOI = "10.5281/zenodo.20724095"
 
 EXTENDED_PER_CASE_COLUMNS: tuple[str, ...] = (
     "case_id",

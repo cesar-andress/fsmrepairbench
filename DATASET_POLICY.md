@@ -22,8 +22,8 @@ See also:
 ## Frozen Zenodo release (`v0.2.0-analysis`)
 
 **The empirical dataset and paper metrics remain frozen at
-[v0.2.0-analysis](https://doi.org/10.5281/zenodo.20602528) / Zenodo DOI
-[10.5281/zenodo.20602528](https://doi.org/10.5281/zenodo.20602528).**
+[v0.2.0-analysis](https://doi.org/10.5281/zenodo.20724095) / Zenodo DOI
+[10.5281/zenodo.20724095](https://doi.org/10.5281/zenodo.20724095).**
 
 The STVR paper release is archived at Zenodo with release label **`v0.2.0-analysis`**.
 
@@ -52,7 +52,7 @@ GitHub release:
 | **Scope** | Documentation, reproducibility audits, manifest metadata — not new benchmark content |
 | **Dataset** | Still **`data/fsmrepairbench_1k`** as frozen by Zenodo **`v0.2.0-analysis`** |
 | **Empirical metrics** | Unchanged — **v0.2.1-stvr-polish does not modify benchmark cases, oracle suites, mutation operators, campaign cohorts, or reported empirical metrics** |
-| **Citation** | Paper tables/figures → Zenodo DOI **`10.5281/zenodo.20602528`**; tooling → GitHub tag **`v0.2.1-stvr-polish`** |
+| **Citation** | Paper tables/figures → Zenodo DOI **`10.5281/zenodo.20724095`**; tooling → GitHub tag **`v0.2.1-stvr-polish`** |
 
 ### v0.3.x pilot datasets (non-authoritative for the paper)
 

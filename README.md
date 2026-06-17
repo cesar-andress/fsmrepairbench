@@ -6,8 +6,8 @@
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
 [![Package](https://img.shields.io/badge/package-0.1.0-blue)](pyproject.toml)
 [![Release](https://img.shields.io/badge/release-v0.3.0-blue)](https://github.com/cesar-andress/fsmrepairbench/releases/tag/v0.3.0)
-[![Dataset](https://img.shields.io/badge/dataset-v0.3.0-green)](https://doi.org/10.5281/zenodo.20602528)
-[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.20602528.svg)](https://doi.org/10.5281/zenodo.20602528)
+[![Dataset](https://img.shields.io/badge/dataset-v0.3.0-green)](https://doi.org/10.5281/zenodo.20724095)
+[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.20724095.svg)](https://doi.org/10.5281/zenodo.20724095)
 
 **Behavioural finite-state machine repair benchmark — toolkit, generators, and experiment pipeline.**
 
@@ -18,7 +18,7 @@ seeded mutation, dataset builders, LLM/baseline repair experiments, and governan
 
 > **Canonical release for the STVR manuscript:**
 > **[v0.3.0 — Benchmark Demonstration Release](https://github.com/cesar-andress/fsmrepairbench/releases/tag/v0.3.0)**
-> (Zenodo DOI [10.5281/zenodo.20602528](https://doi.org/10.5281/zenodo.20602528)).
+> (Zenodo DOI [10.5281/zenodo.20724095](https://doi.org/10.5281/zenodo.20724095)).
 >
 > The release archives the frozen thousand-case cohort, construct-labelled demonstration
 > exports (repair, localisation, oracle-depth/surface studies, SBFL comparison, coupling),
@@ -35,7 +35,7 @@ seeded mutation, dataset builders, LLM/baseline repair experiments, and governan
 
 | Label | Role | Cite / use |
 |-------|------|------------|
-| **[v0.3.0](https://github.com/cesar-andress/fsmrepairbench/releases/tag/v0.3.0)** | Benchmark demonstration release | **Cite in the STVR paper** (GitHub release + Zenodo DOI `10.5281/zenodo.20602528`) |
+| **[v0.3.0](https://github.com/cesar-andress/fsmrepairbench/releases/tag/v0.3.0)** | Benchmark demonstration release | **Cite in the STVR paper** (GitHub release + Zenodo DOI `10.5281/zenodo.20724095`) |
 | **`v0.2.0-analysis`** | Historical export label on early campaign bundles | Provenance only; superseded by v0.3.0 |
 | **`v0.2.1-stvr-polish`** | Historical tooling tag | Provenance only; superseded by v0.3.0 |
 
@@ -87,7 +87,7 @@ candidate FSM. See [docs/oracle_spec.md](docs/oracle_spec.md).
 
 Empirical campaigns reported in the STVR manuscript use release label **`v0.3.0`**
 ([GitHub](https://github.com/cesar-andress/fsmrepairbench/releases/tag/v0.3.0);
-Zenodo [10.5281/zenodo.20602528](https://doi.org/10.5281/zenodo.20602528)).
+Zenodo [10.5281/zenodo.20724095](https://doi.org/10.5281/zenodo.20724095)).
 
 | Item | Value |
 |------|-------|
@@ -235,7 +235,7 @@ GitHub release:
 (*FSMRepairBench v0.3.0 — Benchmark Demonstration Release*)
 
 Clone or check out **`v0.3.0`** for the STVR manuscript bundle; cite Zenodo
-**`10.5281/zenodo.20602528`** for dataset bytes and headline metrics.
+**`10.5281/zenodo.20724095`** for dataset bytes and headline metrics.
 
 ---
 
@@ -572,7 +572,7 @@ Full roadmap: [docs/roadmap.md](docs/roadmap.md) · Vision:
 ## Citation
 
 If you use the **empirical dataset, demonstration exports, or paper metrics**, cite
-**`v0.3.0`** and Zenodo DOI **`10.5281/zenodo.20602528`**. If you use the **software
+**`v0.3.0`** and Zenodo DOI **`10.5281/zenodo.20724095`**. If you use the **software
 toolchain**, cite the GitHub repository at tag **`v0.3.0`**:
 
 ```bibtex
@@ -581,7 +581,7 @@ toolchain**, cite the GitHub repository at tag **`v0.3.0`**:
   author       = {Andr{\'e}s, C{\'e}sar},
   year         = {2026},
   howpublished = {\url{https://github.com/cesar-andress/fsmrepairbench/releases/tag/v0.3.0}},
-  doi          = {10.5281/zenodo.20602528},
+  doi          = {10.5281/zenodo.20724095},
   note         = {Version v0.3.0}
 }
 ```

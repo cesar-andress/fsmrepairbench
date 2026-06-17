@@ -11,7 +11,7 @@ from pathlib import Path
 from typing import Any
 
 RELEASE_LABEL = "v0.2.0-analysis"
-ZENODO_DOI = "10.5281/zenodo.20602528"
+ZENODO_DOI = "10.5281/zenodo.20724095"
 GITHUB_TAG = "v0.2.1-stvr-polish"
 COHORT_SIZE = 1000
 MUTATION_OPERATORS_TOTAL = 19

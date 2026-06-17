@@ -33,7 +33,7 @@ DEFAULT_OUTPUT_DIR = Path("results/taxonomy_coverage")
 DEFAULT_COHORT_MANIFEST = "analysis_cohort_1k.txt"
 RELEASE_LABEL = "v0.2.0-analysis"
 CAMPAIGN_LABEL = "RQ1-taxonomy-coverage"
-ZENODO_DOI = "10.5281/zenodo.20602528"
+ZENODO_DOI = "10.5281/zenodo.20724095"
 UNIQUE_COMBINATION_COLUMNS: tuple[str, ...] = (
     "rank",
     "case_count",

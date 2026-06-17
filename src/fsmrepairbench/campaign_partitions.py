@@ -17,7 +17,7 @@ from fsmrepairbench.freeze import sha256_file
 DEFAULT_DATASET_DIR = Path("data/fsmrepairbench_1k")
 DEFAULT_OUTPUT_DIR = Path("results/campaign_partitions")
 DEFAULT_PAPER_EXPORT_DIR = Path("../paper1/results/campaign_partitions")
-ZENODO_DOI = "10.5281/zenodo.20602528"
+ZENODO_DOI = "10.5281/zenodo.20724095"
 
 PARTITION_COLUMNS: tuple[str, ...] = (
     "campaign",

@@ -56,4 +56,4 @@ python ../paper1/scripts/generate_multifamily_v0_3_outputs.py
 
 - Documentation: [`../../docs/multifamily_cohorts.md`](../../docs/multifamily_cohorts.md)
 - GitHub: https://github.com/cesar-andress/fsmrepairbench
-- Zenodo (frozen paper dataset): https://doi.org/10.5281/zenodo.20602528
+- Zenodo (frozen paper dataset): https://doi.org/10.5281/zenodo.20724095

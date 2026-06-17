@@ -29,7 +29,7 @@ def test_verify_campaign_manifest_integrity_passes_for_c1(tmp_path: Path) -> Non
     export_dir.mkdir()
     manifest = {
         "release_label": "v0.2.0-analysis",
-        "zenodo_doi": "10.5281/zenodo.20602528",
+        "zenodo_doi": "10.5281/zenodo.20724095",
         "cohort_file": "data/fsmrepairbench_1k/analysis_cohort_1k.txt",
         "cohort_sha256": "c03c4d5981259510bccfced987c5175f28058d7bdccc164e7ce2ba22410f04f8",
         "regeneration_commands": ["fsmrepairbench export-c1-baseline-repair ..."],

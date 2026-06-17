@@ -56,7 +56,7 @@ def test_generate_taxonomy_coverage_from_feature_matrix(tmp_path: Path) -> None:
     payload = json.loads((out / "feature_space_report.json").read_text(encoding="utf-8"))
     assert payload["case_count"] == 3
     manifest = json.loads((out / "manifest.json").read_text(encoding="utf-8"))
-    assert manifest["zenodo_doi"] == "10.5281/zenodo.20602528"
+    assert manifest["zenodo_doi"] == "10.5281/zenodo.20724095"
     assert manifest["release_label"] == "v0.2.0-analysis"
     assert "regeneration_commands" in manifest
 

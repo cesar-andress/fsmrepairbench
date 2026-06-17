@@ -42,7 +42,7 @@ def test_enhanced_ablation_produces_varying_scenario_lengths(tmp_path: Path) -> 
 
     manifest = json.loads((out / "manifest.json").read_text(encoding="utf-8"))
     assert manifest["release_label"] == "C3-oracle-depth-ablation-500"
-    assert manifest["zenodo_doi"] == "10.5281/zenodo.20602528"
+    assert manifest["zenodo_doi"] == "10.5281/zenodo.20724095"
     assert manifest["git_commit_hash"]
     assert manifest["depth_summary_sha256"]
     assert (paper / "depth_summary.csv").is_file()

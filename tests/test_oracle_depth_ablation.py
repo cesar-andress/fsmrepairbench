@@ -83,7 +83,7 @@ def test_run_oracle_depth_ablation_on_fixture_dataset(tmp_path: Path) -> None:
 
     manifest = json.loads(result.manifest_path.read_text(encoding="utf-8"))
     assert manifest["release_label"] == RELEASE_LABEL
-    assert manifest["zenodo_doi"] == "10.5281/zenodo.20602528"
+    assert manifest["zenodo_doi"] == "10.5281/zenodo.20724095"
     assert manifest["cohort_sha256"]
     assert manifest["regeneration_commands"]
     assert manifest["case_count"] == 1
@@ -106,7 +106,7 @@ def test_refresh_oracle_depth_manifest_preserves_depth_summaries(tmp_path: Path)
     after = json.loads((out / "manifest.json").read_text(encoding="utf-8"))
     assert after["depth_summaries"] == summaries_before
     assert after["release_label"] == RELEASE_LABEL
-    assert after["zenodo_doi"] == "10.5281/zenodo.20602528"
+    assert after["zenodo_doi"] == "10.5281/zenodo.20724095"
     assert after["regeneration_commands"]
 
 

@@ -28,7 +28,7 @@ DEFAULT_ANALYSIS_OUTPUT_DIR = Path("results/analysis_1k_multifamily")
 DEFAULT_PAPER_ANALYSIS_DIR = Path("../paper1/results/analysis_1k_multifamily")
 
 V0_1K_MULTIFAMILY_RELEASE = "v0.3.0-1k-plan-multifamily"
-ZENODO_DOI = "10.5281/zenodo.20602528"
+ZENODO_DOI = "10.5281/zenodo.20724095"
 
 ANALYSIS_COHORT_TXT = "analysis_cohort_1k.txt"
 ANALYSIS_COHORT_JSON = "analysis_cohort_1k.json"

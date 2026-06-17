@@ -69,7 +69,7 @@ def test_run_coupling_campaign_on_fixture_cohort(tmp_path: Path) -> None:
     assert "coupling_effect_estimate" in summary
 
     manifest = json.loads(result.manifest_path.read_text(encoding="utf-8"))
-    assert manifest["zenodo_doi"] == "10.5281/zenodo.20602528"
+    assert manifest["zenodo_doi"] == "10.5281/zenodo.20724095"
     assert manifest["campaign_seed"] == 44
     assert manifest["regeneration_commands"]
 

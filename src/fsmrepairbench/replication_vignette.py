@@ -31,7 +31,7 @@ SATURATED_QUOTA = 10
 SOURCE_MANIFEST = "analysis_cohort_1k.txt"
 CAMPAIGN_LABEL = "replication-vignette-20"
 RELEASE_LABEL = "v0.2.0-analysis"
-ZENODO_DOI = "10.5281/zenodo.20602528"
+ZENODO_DOI = "10.5281/zenodo.20724095"
 COHORT_SHA256 = "06a4d9f477a6da71f93d02e08bc784e2d8ce969dc21ea1400e81d4e8c9b7688d"
 
 FROZEN_EXPORT_FILES: tuple[tuple[str, str], ...] = (

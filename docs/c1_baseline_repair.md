@@ -1,7 +1,7 @@
 # C1 baseline repair campaign
 
 Campaign label: **`C1-baseline-repair`**  
-Zenodo release: **`v0.2.0-analysis`** (`10.5281/zenodo.20602528`)
+Zenodo release: **`v0.2.0-analysis`** (`10.5281/zenodo.20724095`)
 
 ## Cohort and engines
 

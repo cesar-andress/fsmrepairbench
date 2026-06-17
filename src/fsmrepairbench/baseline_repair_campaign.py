@@ -42,7 +42,7 @@ from fsmrepairbench.tool_runner import (
 
 RELEASE_LABEL = "v0.2.0-analysis"
 CAMPAIGN_LABEL = "C1-baseline-repair"
-ZENODO_DOI = "10.5281/zenodo.20602528"
+ZENODO_DOI = "10.5281/zenodo.20724095"
 DEFAULT_DATASET_PATH = "data/fsmrepairbench_1k"
 DEFAULT_COHORT_FILE = "analysis_cohort_1k.txt"
 DEFAULT_TOOLS_DIR = "tools/baselines_c1"

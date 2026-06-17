@@ -31,7 +31,7 @@ from fsmrepairbench.taxonomy_gap_figures import compute_plan_cell_realisations
 
 GITHUB_REPO = "https://github.com/cesar-andress/fsmrepairbench"
 GITHUB_TAG = "v0.2.1-stvr-polish"
-ZENODO_URL = "https://doi.org/10.5281/zenodo.20602528"
+ZENODO_URL = "https://doi.org/10.5281/zenodo.20724095"
 
 COHORT_MANIFEST_SPECS: tuple[tuple[str, str, int], ...] = (
     (ANALYSIS_COHORT_TXT, ANALYSIS_COHORT_JSON, 1000),

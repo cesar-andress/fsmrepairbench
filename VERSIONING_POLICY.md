@@ -24,7 +24,7 @@ FSMRepairBench uses **three** complementary version axes:
 
 **Canonical release for the STVR manuscript:**
 **[v0.3.0 — Benchmark Demonstration Release](https://github.com/cesar-andress/fsmrepairbench/releases/tag/v0.3.0)**
-with Zenodo DOI [10.5281/zenodo.20602528](https://doi.org/10.5281/zenodo.20602528).
+with Zenodo DOI [10.5281/zenodo.20724095](https://doi.org/10.5281/zenodo.20724095).
 
 ### Release labels (summary)
 
@@ -49,7 +49,7 @@ This label identifies:
   oracle-surface sensitivity, SBFL comparison, open-weight repair baseline)
 - Reproducibility scripts, manuscript exports, and artifact manifests
 
-Cite **GitHub release `v0.3.0` and Zenodo DOI `10.5281/zenodo.20602528`** for empirical
+Cite **GitHub release `v0.3.0` and Zenodo DOI `10.5281/zenodo.20724095`** for empirical
 results and archived demonstration readouts. Cite **package version + git tag** for software
 reproducibility.
 
@@ -58,7 +58,7 @@ reproducibility.
 The label **`v0.2.0-analysis`** appears on early frozen export metadata for the same
  thousand-case cohort. It does **not** supersede **`v0.3.0`** for manuscript citation.
 
-Zenodo deposit [10.5281/zenodo.20602528](https://doi.org/10.5281/zenodo.20602528) hosts
+Zenodo deposit [10.5281/zenodo.20724095](https://doi.org/10.5281/zenodo.20724095) hosts
 dataset bytes referenced by all release labels above.
 
 The Python package may remain at **`0.1.0`** while GitHub release labels evolve.

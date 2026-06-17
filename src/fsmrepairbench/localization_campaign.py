@@ -32,7 +32,7 @@ DEFAULT_COHORT_MANIFEST = "localization_cohort_1k.txt"
 DEFAULT_OUTPUT_DIR = Path("results/rq3_localization_1k")
 RELEASE_LABEL = "v0.2.0-analysis"
 CAMPAIGN_LABEL = "RQ3-localization-ochiai-1k"
-ZENODO_DOI = "10.5281/zenodo.20602528"
+ZENODO_DOI = "10.5281/zenodo.20724095"
 TOP_K_VALUES: tuple[int, ...] = (1, 3, 5)
 RANK_BUCKETS: tuple[str, ...] = (
     "1",

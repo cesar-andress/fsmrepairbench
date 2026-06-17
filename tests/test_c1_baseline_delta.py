@@ -130,7 +130,7 @@ def test_write_c1_baseline_delta_exports(tmp_path: Path) -> None:
     assert result.summary_csv_path.is_file()
     assert result.manifest_path.is_file()
     manifest = json.loads(result.manifest_path.read_text(encoding="utf-8"))
-    assert manifest["zenodo_doi"] == "10.5281/zenodo.20602528"
+    assert manifest["zenodo_doi"] == "10.5281/zenodo.20724095"
     assert manifest["github_tag"]
     assert manifest["source_per_case_sha256"]
     assert result.operator_figure_path.is_file()

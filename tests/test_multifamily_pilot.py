@@ -199,7 +199,7 @@ def test_analyze_multifamily_pilot_exports_coverage_and_manifest_hashes(tmp_path
 
     manifest = json.loads(result.manifest_path.read_text(encoding="utf-8"))
     assert manifest["release_label"] == "v0.3.0-multifamily-pilot"
-    assert manifest["frozen_v0_2_reference"]["zenodo_doi"] == "10.5281/zenodo.20602528"
+    assert manifest["frozen_v0_2_reference"]["zenodo_doi"] == "10.5281/zenodo.20724095"
     assert isinstance(manifest["output_sha256"], dict)
     assert manifest["output_sha256"]["family_summary.csv"]
     assert manifest["regeneration_commands"]

@@ -104,7 +104,7 @@ def test_run_localization_campaign_on_fixture_dataset(tmp_path: Path) -> None:
     assert float(metrics["detectable_denominator"]) == 1.0
 
     manifest = json.loads(result.manifest_path.read_text(encoding="utf-8"))
-    assert manifest["zenodo_doi"] == "10.5281/zenodo.20602528"
+    assert manifest["zenodo_doi"] == "10.5281/zenodo.20724095"
     assert manifest["detectable_denominator"] == 1
 
 
