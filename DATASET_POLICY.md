@@ -22,8 +22,8 @@ See also:
 ## Frozen Zenodo release (`v0.2.0-analysis`)
 
 **The empirical dataset and paper metrics remain frozen at
-[v0.2.0-analysis](https://doi.org/10.5281/zenodo.20724095) / Zenodo DOI
-[10.5281/zenodo.20724095](https://doi.org/10.5281/zenodo.20724095).**
+[v0.2.0-analysis](https://doi.org/10.5281/zenodo.20602577) / Zenodo DOI
+[10.5281/zenodo.20602577](https://doi.org/10.5281/zenodo.20602577).**
 
 The STVR paper release is archived at Zenodo with release label **`v0.2.0-analysis`**.
 

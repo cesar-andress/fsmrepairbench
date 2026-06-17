@@ -3,8 +3,8 @@
 Technical specifications, campaign guides, and release audit notes.
 
 **The empirical dataset and paper metrics remain frozen at
-[v0.2.0-analysis](https://doi.org/10.5281/zenodo.20602528) / Zenodo DOI
-[10.5281/zenodo.20602528](https://doi.org/10.5281/zenodo.20602528).**
+[v0.2.0-analysis](https://doi.org/10.5281/zenodo.20602577) / Zenodo DOI
+[10.5281/zenodo.20602577](https://doi.org/10.5281/zenodo.20602577).**
 
 **[v0.2.1-stvr-polish](https://github.com/cesar-andress/fsmrepairbench/releases/tag/v0.2.1-stvr-polish)**
 is the latest GitHub release for reproducibility, documentation, manifests, and submission
@@ -15,7 +15,7 @@ operators, campaign cohorts, or reported empirical metrics.**
 
 | Label | Role | Cite / use |
 |-------|------|------------|
-| **[v0.2.0-analysis](https://doi.org/10.5281/zenodo.20602528)** | Frozen dataset and empirical campaign release | **Cite this in the STVR paper** |
+| **[v0.2.0-analysis](https://doi.org/10.5281/zenodo.20602577)** | Frozen dataset and empirical campaign release | **Cite this in the STVR paper** |
 | **[v0.2.1-stvr-polish](https://github.com/cesar-andress/fsmrepairbench/releases/tag/v0.2.1-stvr-polish)** | Reproducibility and submission-polish release | **Use this for latest tooling and docs** |
 | **v0.3.x** | Future pilots and extensions | Not paper evidence |
 

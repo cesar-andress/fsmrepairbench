@@ -7,7 +7,7 @@ Selective removal of individual mutation operators from the frozen 1k analysis c
 - **Dataset:** `/home/cesar/papers/fsmrepairbench/fsmrepairbench/data/fsmrepairbench_1k`
 - **Cohort:** `analysis_cohort_1k.txt` (1000 cases)
 - **Repair engine:** `baseline_missing_transition`
-- **Release:** `v0.2.0-analysis` (DOI [10.5281/zenodo.20602528](https://doi.org/10.5281/zenodo.20602528))
+- **Release:** `v0.2.0-analysis` (DOI [10.5281/zenodo.20602577](https://doi.org/10.5281/zenodo.20602577))
 
 ## Full-cohort baseline
 
