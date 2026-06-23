@@ -4678,6 +4678,114 @@ def reproduce_cmd(
     raise typer.Exit(code=0)
 
 
+@app.command("run-multiseed-stability")
+def run_multiseed_stability_cmd(
+    output_dir: Path = typer.Option(
+        Path("results/multiseed_stability"),
+        "--output-dir",
+        help="Directory for cohort builds and aggregate exports.",
+    ),
+    plan_path: Path = typer.Option(
+        Path("plans/fsmrepairbench_v0_1k_plan.yaml"),
+        "--plan",
+        help="Stratified generation plan (cell counts fixed; seed overridden per cohort).",
+    ),
+    smoke: bool = typer.Option(
+        False,
+        "--smoke",
+        help="Use the 100-case smoke plan for fast validation.",
+    ),
+    seeds: str = typer.Option(
+        "",
+        "--seeds",
+        help="Comma-separated cohort seeds (default: 44,54,...,134).",
+    ),
+    repair_seed: int = typer.Option(0, "--repair-seed"),
+    workers: int = typer.Option(4, "--workers"),
+    skip_build: bool = typer.Option(False, "--skip-build"),
+    skip_repair: bool = typer.Option(False, "--skip-repair"),
+) -> None:
+    """Build independent cohorts across seeds and aggregate stability metrics."""
+    from fsmrepairbench.multiseed_stability_study import (
+        DEFAULT_COHORT_SEEDS,
+        DEFAULT_SMOKE_PLAN_PATH,
+        run_multiseed_stability_study,
+    )
+
+    resolved_plan = DEFAULT_SMOKE_PLAN_PATH if smoke else plan_path
+    cohort_seeds = DEFAULT_COHORT_SEEDS
+    if seeds.strip():
+        cohort_seeds = tuple(int(item.strip()) for item in seeds.split(",") if item.strip())
+    try:
+        result = run_multiseed_stability_study(
+            output_dir=output_dir,
+            plan_path=resolved_plan,
+            cohort_seeds=cohort_seeds,
+            repair_seed=repair_seed,
+            workers=workers,
+            skip_build=skip_build,
+            skip_repair=skip_repair,
+        )
+    except Exception as exc:
+        console.print(f"[red]ERROR[/red] {exc}")
+        raise typer.Exit(code=1) from exc
+
+    console.print(
+        f"[green]OK[/green] Multi-seed stability study over {result.seed_count} cohort seeds"
+    )
+    console.print(f"Per-seed metrics: {result.per_seed_path}")
+    console.print(f"Aggregates: {result.aggregate_path}")
+    console.print(f"Interpretation: {result.interpretation_path}")
+    if result.figure_path is not None:
+        console.print(f"Figure: {result.figure_path}")
+    raise typer.Exit(code=0)
+
+
+@app.command("run-observability-boundary")
+def run_observability_boundary_cmd(
+    output_dir: Path = typer.Option(
+        Path("results/observability_boundary"),
+        "--output-dir",
+    ),
+    dataset_dir: Path = typer.Option(
+        Path("data/fsmrepairbench_1k"),
+        "--dataset-dir",
+    ),
+    cohort_path: Path | None = typer.Option(
+        None,
+        "--cohort",
+        help="Cohort manifest (default: dataset_dir/analysis_cohort_1k.txt).",
+    ),
+    repair_runs_dir: Path | None = typer.Option(
+        Path("results/baseline_repair_C1/multi_seed/seed_0000"),
+        "--repair-runs-dir",
+        help="Directory with baseline_random JSON runs containing final_fsm.",
+    ),
+) -> None:
+    """Run progressive S0→S3 observability boundary analysis on a frozen cohort."""
+    from fsmrepairbench.observability_boundary_study import run_observability_boundary_study
+
+    try:
+        result = run_observability_boundary_study(
+            dataset_dir=dataset_dir,
+            output_dir=output_dir,
+            cohort_path=cohort_path,
+            repair_runs_dir=repair_runs_dir,
+        )
+    except Exception as exc:
+        console.print(f"[red]ERROR[/red] {exc}")
+        raise typer.Exit(code=1) from exc
+
+    console.print(
+        f"[green]OK[/green] Observability boundary study over {result.surface_count} surfaces"
+    )
+    console.print(f"Summary: {result.summary_path}")
+    console.print(f"Interpretation: {result.interpretation_path}")
+    if result.figure_path is not None:
+        console.print(f"Figure: {result.figure_path}")
+    raise typer.Exit(code=0)
+
+
 def main() -> None:
     """Entry point for the console script."""
     app()

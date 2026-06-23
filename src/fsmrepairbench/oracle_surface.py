@@ -14,6 +14,8 @@ class OracleSurfaceId(str, Enum):
 
     S0_PUBLISHED = "S0"
     S1_ACTION_EXTENDED = "S1"
+    S2_GUARD_EXTENDED = "S2"
+    S3_EVENT_EXTENDED = "S3"
 
 
 @dataclass(frozen=True)
@@ -22,27 +24,63 @@ class OracleSurfaceProfile:
 
     surface_id: OracleSurfaceId
     label: str
+    visible_fields: str
     check_state: bool = True
     check_action: bool = False
+    check_guard: bool = False
+    check_event: bool = False
 
 
 SURFACE_S0 = OracleSurfaceProfile(
     surface_id=OracleSurfaceId.S0_PUBLISHED,
     label="published",
+    visible_fields="state",
     check_state=True,
     check_action=False,
+    check_guard=False,
+    check_event=False,
 )
 SURFACE_S1 = OracleSurfaceProfile(
     surface_id=OracleSurfaceId.S1_ACTION_EXTENDED,
     label="action_extended",
+    visible_fields="state, action",
     check_state=True,
     check_action=True,
+    check_guard=False,
+    check_event=False,
+)
+SURFACE_S2 = OracleSurfaceProfile(
+    surface_id=OracleSurfaceId.S2_GUARD_EXTENDED,
+    label="guard_extended",
+    visible_fields="state, action, guard",
+    check_state=True,
+    check_action=True,
+    check_guard=True,
+    check_event=False,
+)
+SURFACE_S3 = OracleSurfaceProfile(
+    surface_id=OracleSurfaceId.S3_EVENT_EXTENDED,
+    label="event_extended",
+    visible_fields="state, action, guard, event",
+    check_state=True,
+    check_action=True,
+    check_guard=True,
+    check_event=True,
 )
 
 SURFACE_PROFILES: dict[OracleSurfaceId, OracleSurfaceProfile] = {
     OracleSurfaceId.S0_PUBLISHED: SURFACE_S0,
     OracleSurfaceId.S1_ACTION_EXTENDED: SURFACE_S1,
+    OracleSurfaceId.S2_GUARD_EXTENDED: SURFACE_S2,
+    OracleSurfaceId.S3_EVENT_EXTENDED: SURFACE_S3,
 }
+
+PROGRESSIVE_SURFACE_ORDER: tuple[OracleSurfaceId, ...] = (
+    OracleSurfaceId.S0_PUBLISHED,
+    OracleSurfaceId.S1_ACTION_EXTENDED,
+    OracleSurfaceId.S2_GUARD_EXTENDED,
+    OracleSurfaceId.S3_EVENT_EXTENDED,
+)
 
 
 def _acceptable_states(step, semantics_mode: OracleSemanticsMode | None) -> set[str]:
@@ -91,6 +129,10 @@ def execute_scenario_with_surface(
             passed = current_state in acceptable
         if profile.check_action:
             passed = passed and transition.action == reference_transition.action
+        if profile.check_guard:
+            passed = passed and (transition.guard or "") == (reference_transition.guard or "")
+        if profile.check_event:
+            passed = passed and transition.event == step.event
 
         if passed:
             passed_steps += 1

@@ -1,0 +1,91 @@
+{
+  "generated_at": "2026-06-23T04:20:39.279792+00:00",
+  "study": "multiseed_stability",
+  "plan_path": "plans/fsmrepairbench_v0_smoke_plan.yaml",
+  "cohort_seeds": [
+    44,
+    54
+  ],
+  "repair_seed": 0,
+  "skip_build": false,
+  "skip_repair": true,
+  "aggregates": [
+    {
+      "metric": "detection_rate",
+      "n_seeds": 2,
+      "mean": 0.64,
+      "std": 0.0,
+      "min": 0.64,
+      "max": 0.64,
+      "ci95_low": 0.64,
+      "ci95_high": 0.64,
+      "stability": "stable"
+    },
+    {
+      "metric": "saturation_rate",
+      "n_seeds": 2,
+      "mean": 0.36,
+      "std": 0.0,
+      "min": 0.36,
+      "max": 0.36,
+      "ci95_low": 0.36,
+      "ci95_high": 0.36,
+      "stability": "stable"
+    },
+    {
+      "metric": "detectable_only_crr",
+      "n_seeds": 2,
+      "mean": 0.0,
+      "std": 0.0,
+      "min": 0.0,
+      "max": 0.0,
+      "ci95_low": 0.0,
+      "ci95_high": 0.0,
+      "stability": "stable"
+    },
+    {
+      "metric": "participation_rate",
+      "n_seeds": 2,
+      "mean": 0.337121,
+      "std": 0.003788,
+      "min": 0.333333,
+      "max": 0.340909,
+      "ci95_low": 0.333333,
+      "ci95_high": 0.340909,
+      "stability": "stable"
+    },
+    {
+      "metric": "saturation_inflation_pp",
+      "n_seeds": 2,
+      "mean": 0.0,
+      "std": 0.0,
+      "min": 0.0,
+      "max": 0.0,
+      "ci95_low": 0.0,
+      "ci95_high": 0.0,
+      "stability": "stable"
+    },
+    {
+      "metric": "structural_gt_count",
+      "n_seeds": 2,
+      "mean": 44.5,
+      "std": 0.5,
+      "min": 44.0,
+      "max": 45.0,
+      "ci95_low": 44.0,
+      "ci95_high": 45.0,
+      "stability": "stable"
+    },
+    {
+      "metric": "spectrally_participating_count",
+      "n_seeds": 2,
+      "mean": 15.0,
+      "std": 0.0,
+      "min": 15.0,
+      "max": 15.0,
+      "ci95_low": 15.0,
+      "ci95_high": 15.0,
+      "stability": "stable"
+    }
+  ]
+}
