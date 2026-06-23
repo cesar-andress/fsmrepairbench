@@ -49,6 +49,25 @@ PROJECT_GT_NAMES: dict[str, str] = {
 RANKING_COEFFICIENTS: tuple[str, ...] = ("ochiai", "tarantula", "dstar", "barinel")
 OPTIONAL_COEFFICIENTS: tuple[str, ...] = ("op2", "jaccard")
 
+PER_CASE_CSV_COLUMNS: tuple[str, ...] = (
+    "project",
+    "bug_id",
+    "bug_key",
+    "scenario",
+    "stratum",
+    "coefficient",
+    "pattern",
+    "ground_truth_available",
+    "omission_fault",
+    "search_space",
+    "first_rank",
+    "top1_hit",
+    "top5_hit",
+    "reciprocal_rank",
+    "exam",
+    "localizable",
+)
+
 BUG_DIR_RE = re.compile(r"/([A-Za-z]+)/([a-z]+)_(\d+)_v(D4J|Buggy)/")
 
 
@@ -63,6 +82,7 @@ class ExternalDefects4jResult:
     by_project_path: Path
     by_stratum_path: Path
     coefficient_path: Path
+    per_case_path: Path
     report_path: Path
     editorial_path: Path
     case_count: int
@@ -346,6 +366,79 @@ def _reanalyze_cases(
         msg = "Ground-truth fetch failed for all bugs"
         raise ExternalDefects4jError(msg)
     return cases
+
+
+def _per_case_export_rows(cases: list[dict[str, Any]]) -> list[dict[str, Any]]:
+    rows: list[dict[str, Any]] = []
+    for case in cases:
+        rows.append(
+            {
+                "project": case["project"],
+                "bug_id": case["bug_id"],
+                "bug_key": case["bug_key"],
+                "scenario": case["scenario"],
+                "stratum": case["stratum"],
+                "coefficient": case["coefficient"],
+                "pattern": case.get("pattern", ""),
+                "ground_truth_available": case["ground_truth_available"],
+                "omission_fault": case["omission_fault"],
+                "search_space": case["search_space"],
+                "first_rank": case["first_rank"] if case["first_rank"] is not None else "",
+                "top1_hit": case["top1_hit"],
+                "top5_hit": case["top5_hit"],
+                "reciprocal_rank": case["reciprocal_rank"],
+                "exam": case["exam"] if case.get("exam") is not None else "",
+                "localizable": case["localizable"],
+            }
+        )
+    return rows
+
+
+def load_defects4j_per_case_rows(
+    *,
+    output_dir: Path,
+    artifacts_dir: Path | None = None,
+    rebuild_if_missing: bool = True,
+) -> tuple[list[dict[str, Any]], str]:
+    """Load per-case Defects4J rows from CSV or rebuild from local artifacts."""
+    output_dir = output_dir.resolve()
+    artifacts = (artifacts_dir or output_dir / "artifacts").resolve()
+    per_case_path = output_dir / "external_validation_per_case.csv"
+
+    if per_case_path.is_file():
+        rows = list(csv.DictReader(per_case_path.open(encoding="utf-8")))
+        for row in rows:
+            row["bug_id"] = int(row["bug_id"])
+            row["pattern"] = int(row["pattern"]) if str(row.get("pattern", "")).strip().isdigit() else None
+            row["ground_truth_available"] = str(row["ground_truth_available"]).lower() in {"true", "1"}
+            row["omission_fault"] = str(row["omission_fault"]).lower() in {"true", "1"}
+            row["search_space"] = int(row["search_space"])
+            row["first_rank"] = int(row["first_rank"]) if str(row.get("first_rank", "")).strip() else None
+            row["top1_hit"] = int(row["top1_hit"])
+            row["top5_hit"] = int(row["top5_hit"])
+            row["reciprocal_rank"] = float(row["reciprocal_rank"])
+            row["exam"] = float(row["exam"]) if str(row.get("exam", "")).strip() else None
+            row["localizable"] = str(row["localizable"]).lower() in {"true", "1"}
+        return rows, str(per_case_path)
+
+    if not rebuild_if_missing:
+        msg = f"Missing per-case export: {per_case_path}"
+        raise ExternalDefects4jError(msg)
+
+    sbfl_root = artifacts / "SBFL_FL_results"
+    rafi_repo = artifacts / "rafi_repo"
+    if not sbfl_root.is_dir() or not rafi_repo.is_dir():
+        msg = (
+            "Per-case Defects4J export missing and local artifacts unavailable; "
+            "run run_external_defects4j_reanalysis.py first"
+        )
+        raise ExternalDefects4jError(msg)
+
+    pattern_labels = _load_pattern_labels(rafi_repo)
+    cases = _reanalyze_cases(sbfl_root, artifacts / "ground_truth", pattern_labels)
+    export_rows = _per_case_export_rows(cases)
+    _write_csv(per_case_path, PER_CASE_CSV_COLUMNS, export_rows)
+    return cases, f"{per_case_path} (rebuilt from artifacts)"
 
 
 def _summary_rows(cases: list[dict[str, Any]]) -> list[dict[str, Any]]:
@@ -853,6 +946,7 @@ def run_external_defects4j_reanalysis(
     by_project_path = output_dir / "external_validation_by_project.csv"
     by_stratum_path = output_dir / "external_validation_by_stratum.csv"
     coefficient_path = output_dir / "coefficient_comparison_by_stratum.csv"
+    per_case_path = output_dir / "external_validation_per_case.csv"
     report_path = output_dir / "external_validation_report.md"
     editorial_path = output_dir / "editorial_recommendation.md"
 
@@ -873,6 +967,7 @@ def run_external_defects4j_reanalysis(
     _write_csv(summary_path, summary_fields, summary_rows)
     _write_csv(by_project_path, summary_fields, by_project_rows)
     _write_csv(by_stratum_path, summary_fields, by_stratum_rows)
+    _write_csv(per_case_path, PER_CASE_CSV_COLUMNS, _per_case_export_rows(cases))
     _write_csv(
         coefficient_path,
         (
@@ -914,6 +1009,7 @@ def run_external_defects4j_reanalysis(
         by_project_path=by_project_path,
         by_stratum_path=by_stratum_path,
         coefficient_path=coefficient_path,
+        per_case_path=per_case_path,
         report_path=report_path,
         editorial_path=editorial_path,
         case_count=n_bugs,
