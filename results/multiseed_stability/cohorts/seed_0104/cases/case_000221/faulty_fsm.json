@@ -1,0 +1,106 @@
+{
+  "id": "synthetic_4265_3_2__faulty__action_corruption__221104",
+  "name": "Synthetic FSM (custom) (faulty: action_corruption)",
+  "description": "Synthetic FSM generated with seed=4265, states=3, events=2, branching_factor=1, deterministic=True, allow_dead_states=False",
+  "states": [
+    {
+      "id": "s4265_0",
+      "state_output": null,
+      "refusal": false,
+      "quiescence": false
+    },
+    {
+      "id": "s4265_1",
+      "state_output": null,
+      "refusal": false,
+      "quiescence": false
+    },
+    {
+      "id": "s4265_2",
+      "state_output": null,
+      "refusal": false,
+      "quiescence": false
+    }
+  ],
+  "initial_state": "s4265_0",
+  "events": [
+    "e4265_0",
+    "e4265_1"
+  ],
+  "transitions": [
+    {
+      "id": "t4265_1",
+      "source": "s4265_0",
+      "event": "e4265_0",
+      "target": "s4265_1",
+      "guard": "x_4265_0 > 0",
+      "action": "act4265_1",
+      "output": "out_4265_0",
+      "timeout": null,
+      "delay": null,
+      "requirements": [],
+      "probability": null,
+      "is_nondeterministic": false,
+      "refusal": false,
+      "quiescence": false,
+      "discrete_time": null
+    },
+    {
+      "id": "t4265_2",
+      "source": "s4265_0",
+      "event": "e4265_0",
+      "target": "s4265_2",
+      "guard": "x_4265_1 > 0",
+      "action": "act4265_2",
+      "output": "out_4265_1",
+      "timeout": null,
+      "delay": null,
+      "requirements": [],
+      "probability": null,
+      "is_nondeterministic": false,
+      "refusal": false,
+      "quiescence": false,
+      "discrete_time": null
+    },
+    {
+      "id": "t4265_3",
+      "source": "s4265_1",
+      "event": "e4265_1",
+      "target": "s4265_2",
+      "guard": "x_4265_2 > 0",
+      "action": "wrong_act4265_3",
+      "output": "out_4265_2",
+      "timeout": null,
+      "delay": null,
+      "requirements": [],
+      "probability": null,
+      "is_nondeterministic": false,
+      "refusal": false,
+      "quiescence": false,
+      "discrete_time": null
+    },
+    {
+      "id": "t4265_4",
+      "source": "s4265_2",
+      "event": "e4265_1",
+      "target": "s4265_2",
+      "guard": "x_4265_3 > 0",
+      "action": "act4265_4",
+      "output": "out_4265_3",
+      "timeout": null,
+      "delay": null,
+      "requirements": [],
+      "probability": null,
+      "is_nondeterministic": false,
+      "refusal": false,
+      "quiescence": false,
+      "discrete_time": null
+    }
+  ],
+  "variables": {},
+  "parent_fsm_id": "synthetic_4265_3_2",
+  "reference_fsm_id": "synthetic_4265_3_2",
+  "discrete_time_step": null,
+  "semantics_mode": null,
+  "cyclic_metadata": null
+}

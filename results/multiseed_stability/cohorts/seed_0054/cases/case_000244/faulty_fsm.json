@@ -1,0 +1,106 @@
+{
+  "id": "synthetic_4606_3_2__faulty__action_corruption__244054",
+  "name": "Synthetic FSM (custom) (faulty: action_corruption)",
+  "description": "Synthetic FSM generated with seed=4606, states=3, events=2, branching_factor=1, deterministic=True, allow_dead_states=False",
+  "states": [
+    {
+      "id": "s4606_0",
+      "state_output": null,
+      "refusal": false,
+      "quiescence": false
+    },
+    {
+      "id": "s4606_1",
+      "state_output": null,
+      "refusal": false,
+      "quiescence": false
+    },
+    {
+      "id": "s4606_2",
+      "state_output": null,
+      "refusal": false,
+      "quiescence": false
+    }
+  ],
+  "initial_state": "s4606_0",
+  "events": [
+    "e4606_0",
+    "e4606_1"
+  ],
+  "transitions": [
+    {
+      "id": "t4606_1",
+      "source": "s4606_0",
+      "event": "e4606_0",
+      "target": "s4606_1",
+      "guard": "x_4606_0 > 0",
+      "action": "wrong_act4606_1",
+      "output": "out_4606_0",
+      "timeout": null,
+      "delay": null,
+      "requirements": [],
+      "probability": null,
+      "is_nondeterministic": false,
+      "refusal": false,
+      "quiescence": false,
+      "discrete_time": null
+    },
+    {
+      "id": "t4606_2",
+      "source": "s4606_0",
+      "event": "e4606_0",
+      "target": "s4606_2",
+      "guard": "x_4606_1 > 0",
+      "action": "act4606_2",
+      "output": "out_4606_1",
+      "timeout": null,
+      "delay": null,
+      "requirements": [],
+      "probability": null,
+      "is_nondeterministic": false,
+      "refusal": false,
+      "quiescence": false,
+      "discrete_time": null
+    },
+    {
+      "id": "t4606_3",
+      "source": "s4606_1",
+      "event": "e4606_0",
+      "target": "s4606_2",
+      "guard": "x_4606_2 > 0",
+      "action": "act4606_3",
+      "output": "out_4606_2",
+      "timeout": null,
+      "delay": null,
+      "requirements": [],
+      "probability": null,
+      "is_nondeterministic": false,
+      "refusal": false,
+      "quiescence": false,
+      "discrete_time": null
+    },
+    {
+      "id": "t4606_4",
+      "source": "s4606_2",
+      "event": "e4606_1",
+      "target": "s4606_2",
+      "guard": "x_4606_3 > 0",
+      "action": "act4606_4",
+      "output": "out_4606_3",
+      "timeout": null,
+      "delay": null,
+      "requirements": [],
+      "probability": null,
+      "is_nondeterministic": false,
+      "refusal": false,
+      "quiescence": false,
+      "discrete_time": null
+    }
+  ],
+  "variables": {},
+  "parent_fsm_id": "synthetic_4606_3_2",
+  "reference_fsm_id": "synthetic_4606_3_2",
+  "discrete_time_step": null,
+  "semantics_mode": null,
+  "cyclic_metadata": null
+}

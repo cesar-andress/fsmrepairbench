@@ -1,0 +1,123 @@
+{
+  "id": "synthetic_5400_3_2",
+  "name": "Synthetic FSM (custom)",
+  "description": "Synthetic FSM generated with seed=5400, states=3, events=2, branching_factor=2, deterministic=True, allow_dead_states=True",
+  "states": [
+    {
+      "id": "s5400_0",
+      "state_output": null,
+      "refusal": false,
+      "quiescence": false
+    },
+    {
+      "id": "s5400_1",
+      "state_output": null,
+      "refusal": false,
+      "quiescence": false
+    },
+    {
+      "id": "s5400_2",
+      "state_output": null,
+      "refusal": false,
+      "quiescence": false
+    }
+  ],
+  "initial_state": "s5400_0",
+  "events": [
+    "e5400_0",
+    "e5400_1"
+  ],
+  "transitions": [
+    {
+      "id": "t5400_1",
+      "source": "s5400_0",
+      "event": "e5400_0",
+      "target": "s5400_1",
+      "guard": "x_5400_0 > 0",
+      "action": "act5400_1",
+      "output": "out_5400_0",
+      "timeout": null,
+      "delay": null,
+      "requirements": [],
+      "probability": null,
+      "is_nondeterministic": false,
+      "refusal": false,
+      "quiescence": false,
+      "discrete_time": null
+    },
+    {
+      "id": "t5400_2",
+      "source": "s5400_1",
+      "event": "e5400_0",
+      "target": "s5400_2",
+      "guard": "x_5400_1 > 0",
+      "action": "act5400_2",
+      "output": "out_5400_1",
+      "timeout": null,
+      "delay": null,
+      "requirements": [],
+      "probability": null,
+      "is_nondeterministic": false,
+      "refusal": false,
+      "quiescence": false,
+      "discrete_time": null
+    },
+    {
+      "id": "t5400_3",
+      "source": "s5400_0",
+      "event": "e5400_1",
+      "target": "s5400_2",
+      "guard": "x_5400_2 > 0",
+      "action": "act5400_3",
+      "output": "out_5400_2",
+      "timeout": null,
+      "delay": null,
+      "requirements": [],
+      "probability": null,
+      "is_nondeterministic": false,
+      "refusal": false,
+      "quiescence": false,
+      "discrete_time": null
+    },
+    {
+      "id": "t5400_4",
+      "source": "s5400_1",
+      "event": "e5400_1",
+      "target": "s5400_2",
+      "guard": "x_5400_3 > 0",
+      "action": "act5400_4",
+      "output": "out_5400_3",
+      "timeout": null,
+      "delay": null,
+      "requirements": [],
+      "probability": null,
+      "is_nondeterministic": false,
+      "refusal": false,
+      "quiescence": false,
+      "discrete_time": null
+    },
+    {
+      "id": "t5400_6",
+      "source": "s5400_2",
+      "event": "e5400_1",
+      "target": "s5400_2",
+      "guard": "x_5400_5 > 0",
+      "action": "act5400_6",
+      "output": "out_5400_5",
+      "timeout": null,
+      "delay": null,
+      "requirements": [],
+      "probability": null,
+      "is_nondeterministic": false,
+      "refusal": false,
+      "quiescence": false,
+      "discrete_time": null
+    }
+  ],
+  "variables": {},
+  "parent_fsm_id": null,
+  "reference_fsm_id": null,
+  "discrete_time_step": null,
+  "semantics_mode": null,
+  "cyclic_metadata": null
+}

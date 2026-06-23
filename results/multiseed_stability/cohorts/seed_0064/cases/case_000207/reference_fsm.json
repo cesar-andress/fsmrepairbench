@@ -1,0 +1,106 @@
+{
+  "id": "synthetic_3987_3_2",
+  "name": "Synthetic FSM (custom)",
+  "description": "Synthetic FSM generated with seed=3987, states=3, events=2, branching_factor=1, deterministic=True, allow_dead_states=False",
+  "states": [
+    {
+      "id": "s3987_0",
+      "state_output": null,
+      "refusal": false,
+      "quiescence": false
+    },
+    {
+      "id": "s3987_1",
+      "state_output": null,
+      "refusal": false,
+      "quiescence": false
+    },
+    {
+      "id": "s3987_2",
+      "state_output": null,
+      "refusal": false,
+      "quiescence": false
+    }
+  ],
+  "initial_state": "s3987_0",
+  "events": [
+    "e3987_0",
+    "e3987_1"
+  ],
+  "transitions": [
+    {
+      "id": "t3987_1",
+      "source": "s3987_0",
+      "event": "e3987_0",
+      "target": "s3987_1",
+      "guard": "x_3987_0 > 0",
+      "action": "act3987_1",
+      "output": "out_3987_0",
+      "timeout": null,
+      "delay": null,
+      "requirements": [],
+      "probability": null,
+      "is_nondeterministic": false,
+      "refusal": false,
+      "quiescence": false,
+      "discrete_time": null
+    },
+    {
+      "id": "t3987_2",
+      "source": "s3987_0",
+      "event": "e3987_0",
+      "target": "s3987_2",
+      "guard": "x_3987_1 > 0",
+      "action": "act3987_2",
+      "output": "out_3987_1",
+      "timeout": null,
+      "delay": null,
+      "requirements": [],
+      "probability": null,
+      "is_nondeterministic": false,
+      "refusal": false,
+      "quiescence": false,
+      "discrete_time": null
+    },
+    {
+      "id": "t3987_3",
+      "source": "s3987_1",
+      "event": "e3987_0",
+      "target": "s3987_2",
+      "guard": "x_3987_2 > 0",
+      "action": "act3987_3",
+      "output": "out_3987_2",
+      "timeout": null,
+      "delay": null,
+      "requirements": [],
+      "probability": null,
+      "is_nondeterministic": false,
+      "refusal": false,
+      "quiescence": false,
+      "discrete_time": null
+    },
+    {
+      "id": "t3987_4",
+      "source": "s3987_2",
+      "event": "e3987_1",
+      "target": "s3987_2",
+      "guard": "x_3987_3 > 0",
+      "action": "act3987_4",
+      "output": "out_3987_3",
+      "timeout": null,
+      "delay": null,
+      "requirements": [],
+      "probability": null,
+      "is_nondeterministic": false,
+      "refusal": false,
+      "quiescence": false,
+      "discrete_time": null
+    }
+  ],
+  "variables": {},
+  "parent_fsm_id": null,
+  "reference_fsm_id": null,
+  "discrete_time_step": null,
+  "semantics_mode": null,
+  "cyclic_metadata": null
+}

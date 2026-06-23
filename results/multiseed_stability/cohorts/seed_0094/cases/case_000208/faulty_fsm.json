@@ -1,0 +1,106 @@
+{
+  "id": "synthetic_4034_3_2__faulty__action_corruption__208094",
+  "name": "Synthetic FSM (custom) (faulty: action_corruption)",
+  "description": "Synthetic FSM generated with seed=4034, states=3, events=2, branching_factor=1, deterministic=True, allow_dead_states=False",
+  "states": [
+    {
+      "id": "s4034_0",
+      "state_output": null,
+      "refusal": false,
+      "quiescence": false
+    },
+    {
+      "id": "s4034_1",
+      "state_output": null,
+      "refusal": false,
+      "quiescence": false
+    },
+    {
+      "id": "s4034_2",
+      "state_output": null,
+      "refusal": false,
+      "quiescence": false
+    }
+  ],
+  "initial_state": "s4034_0",
+  "events": [
+    "e4034_0",
+    "e4034_1"
+  ],
+  "transitions": [
+    {
+      "id": "t4034_1",
+      "source": "s4034_0",
+      "event": "e4034_0",
+      "target": "s4034_1",
+      "guard": "x_4034_0 > 0",
+      "action": "act4034_1",
+      "output": "out_4034_0",
+      "timeout": null,
+      "delay": null,
+      "requirements": [],
+      "probability": null,
+      "is_nondeterministic": false,
+      "refusal": false,
+      "quiescence": false,
+      "discrete_time": null
+    },
+    {
+      "id": "t4034_2",
+      "source": "s4034_0",
+      "event": "e4034_0",
+      "target": "s4034_2",
+      "guard": "x_4034_1 > 0",
+      "action": "wrong_act4034_2",
+      "output": "out_4034_1",
+      "timeout": null,
+      "delay": null,
+      "requirements": [],
+      "probability": null,
+      "is_nondeterministic": false,
+      "refusal": false,
+      "quiescence": false,
+      "discrete_time": null
+    },
+    {
+      "id": "t4034_3",
+      "source": "s4034_1",
+      "event": "e4034_0",
+      "target": "s4034_2",
+      "guard": "x_4034_2 > 0",
+      "action": "act4034_3",
+      "output": "out_4034_2",
+      "timeout": null,
+      "delay": null,
+      "requirements": [],
+      "probability": null,
+      "is_nondeterministic": false,
+      "refusal": false,
+      "quiescence": false,
+      "discrete_time": null
+    },
+    {
+      "id": "t4034_4",
+      "source": "s4034_2",
+      "event": "e4034_1",
+      "target": "s4034_2",
+      "guard": "x_4034_3 > 0",
+      "action": "act4034_4",
+      "output": "out_4034_3",
+      "timeout": null,
+      "delay": null,
+      "requirements": [],
+      "probability": null,
+      "is_nondeterministic": false,
+      "refusal": false,
+      "quiescence": false,
+      "discrete_time": null
+    }
+  ],
+  "variables": {},
+  "parent_fsm_id": "synthetic_4034_3_2",
+  "reference_fsm_id": "synthetic_4034_3_2",
+  "discrete_time_step": null,
+  "semantics_mode": null,
+  "cyclic_metadata": null
+}

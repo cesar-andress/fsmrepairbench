@@ -1,0 +1,218 @@
+{
+  "case_id": "case_000398",
+  "tool_id": "baseline_random",
+  "tool_type": "baseline",
+  "model": "baseline_random",
+  "mutation_operator": "wrong_target",
+  "status": "completed",
+  "failure_class": "regression",
+  "input_format": "fsmrepairbench_case_v1",
+  "output_format": "fsmrepairbench_repair_result_v1",
+  "initial_bpr": 0.5454545454545454,
+  "final_bpr": 0.45454545454545453,
+  "delta_bpr": -0.09090909090909088,
+  "complete_repair": false,
+  "effective_repair": false,
+  "regression": true,
+  "patch_parse_failures": 0,
+  "patch_validation_failures": 0,
+  "patch_application_failures": 0,
+  "iterations_completed": 1,
+  "runtime_seconds": 0.0004,
+  "repair_result": {
+    "bug_id": "synthetic_7567_3_2__faulty__wrong_target__398094",
+    "passed": false,
+    "score": 0.45454545454545453,
+    "details": {
+      "model": "baseline_random",
+      "backend": "baseline",
+      "baseline_engine": "random",
+      "baseline_seed": 0,
+      "temperature": 0.0,
+      "max_iterations": 1,
+      "runtime_seconds": 0.0004,
+      "iterations": [
+        {
+          "iteration": 1,
+          "bpr_before": 0.5454545454545454,
+          "patch_valid": true,
+          "patch_applied": true,
+          "patch": {
+            "patch_id": "baseline_random_0_synthetic_7567_3_2__faulty__wrong_target__398094",
+            "target_fsm_id": "synthetic_7567_3_2__faulty__wrong_target__398094",
+            "operations": [
+              {
+                "op": "replace_transition_source",
+                "transition_id": "t7567_7",
+                "source": "s7567_0"
+              }
+            ]
+          },
+          "validation_errors": [],
+          "bpr_after": 0.45454545454545453
+        }
+      ],
+      "final_fsm": {
+        "id": "synthetic_7567_3_2__faulty__wrong_target__398094",
+        "name": "Synthetic FSM (custom) (faulty: wrong_target)",
+        "description": "Synthetic FSM generated with seed=7567, states=3, events=2, branching_factor=4, deterministic=True, allow_dead_states=False",
+        "states": [
+          {
+            "id": "s7567_0",
+            "state_output": null,
+            "refusal": false,
+            "quiescence": false
+          },
+          {
+            "id": "s7567_1",
+            "state_output": null,
+            "refusal": false,
+            "quiescence": false
+          },
+          {
+            "id": "s7567_2",
+            "state_output": null,
+            "refusal": false,
+            "quiescence": false
+          }
+        ],
+        "initial_state": "s7567_0",
+        "events": [
+          "e7567_0",
+          "e7567_1"
+        ],
+        "transitions": [
+          {
+            "id": "t7567_1",
+            "source": "s7567_0",
+            "event": "e7567_0",
+            "target": "s7567_2",
+            "guard": "x_7567_0 > 0",
+            "action": "act7567_1",
+            "output": "out_7567_0",
+            "timeout": null,
+            "delay": null,
+            "requirements": [],
+            "probability": null,
+            "is_nondeterministic": false,
+            "refusal": false,
+            "quiescence": false,
+            "discrete_time": null
+          },
+          {
+            "id": "t7567_2",
+            "source": "s7567_0",
+            "event": "e7567_0",
+            "target": "s7567_2",
+            "guard": "x_7567_1 > 0",
+            "action": "act7567_2",
+            "output": "out_7567_1",
+            "timeout": null,
+            "delay": null,
+            "requirements": [],
+            "probability": null,
+            "is_nondeterministic": false,
+            "refusal": false,
+            "quiescence": false,
+            "discrete_time": null
+          },
+          {
+            "id": "t7567_3",
+            "source": "s7567_0",
+            "event": "e7567_1",
+            "target": "s7567_2",
+            "guard": "x_7567_2 > 0",
+            "action": "act7567_3",
+            "output": "out_7567_2",
+            "timeout": null,
+            "delay": null,
+            "requirements": [],
+            "probability": null,
+            "is_nondeterministic": false,
+            "refusal": false,
+            "quiescence": false,
+            "discrete_time": null
+          },
+          {
+            "id": "t7567_4",
+            "source": "s7567_1",
+            "event": "e7567_1",
+            "target": "s7567_1",
+            "guard": "x_7567_3 > 0",
+            "action": "act7567_4",
+            "output": "out_7567_3",
+            "timeout": null,
+            "delay": null,
+            "requirements": [],
+            "probability": null,
+            "is_nondeterministic": false,
+            "refusal": false,
+            "quiescence": false,
+            "discrete_time": null
+          },
+          {
+            "id": "t7567_5",
+            "source": "s7567_1",
+            "event": "e7567_1",
+            "target": "s7567_2",
+            "guard": "x_7567_4 > 0",
+            "action": "act7567_5",
+            "output": "out_7567_4",
+            "timeout": null,
+            "delay": null,
+            "requirements": [],
+            "probability": null,
+            "is_nondeterministic": false,
+            "refusal": false,
+            "quiescence": false,
+            "discrete_time": null
+          },
+          {
+            "id": "t7567_6",
+            "source": "s7567_2",
+            "event": "e7567_1",
+            "target": "s7567_2",
+            "guard": "x_7567_5 > 0",
+            "action": "act7567_6",
+            "output": "out_7567_5",
+            "timeout": null,
+            "delay": null,
+            "requirements": [],
+            "probability": null,
+            "is_nondeterministic": false,
+            "refusal": false,
+            "quiescence": false,
+            "discrete_time": null
+          },
+          {
+            "id": "t7567_7",
+            "source": "s7567_0",
+            "event": "e7567_0",
+            "target": "s7567_2",
+            "guard": "x_7567_6 > 0",
+            "action": "act7567_7",
+            "output": "out_7567_6",
+            "timeout": null,
+            "delay": null,
+            "requirements": [],
+            "probability": null,
+            "is_nondeterministic": false,
+            "refusal": false,
+            "quiescence": false,
+            "discrete_time": null
+          }
+        ],
+        "variables": {},
+        "parent_fsm_id": "synthetic_7567_3_2",
+        "reference_fsm_id": "synthetic_7567_3_2",
+        "discrete_time_step": null,
+        "semantics_mode": null,
+        "cyclic_metadata": null
+      },
+      "passed_steps": 5,
+      "total_steps": 11,
+      "passed_scenarios": 3,
+      "total_scenarios": 7
+    }
+  }
+}

@@ -1,0 +1,66 @@
+{
+  "id": "synthetic_12854_3_2_oracles",
+  "fsm_id": "synthetic_12854_3_2",
+  "scenarios": [
+    {
+      "id": "cover_transition_t12854_1",
+      "description": "Covers transition 't12854_1' (s12854_0 --e12854_0--> s12854_1).",
+      "steps": [
+        {
+          "event": "e12854_0",
+          "expected_state": "s12854_1",
+          "guard": "x_12854_0 > 0 and y_12854_0 < 10",
+          "accepting_states": [],
+          "probability_threshold": null,
+          "refusal_expected": false,
+          "quiescence_expected": false,
+          "discrete_time": null
+        }
+      ]
+    },
+    {
+      "id": "cover_transition_t12854_2",
+      "description": "Covers transition 't12854_2' (s12854_0 --e12854_1--> s12854_0).",
+      "steps": [
+        {
+          "event": "e12854_1",
+          "expected_state": "s12854_0",
+          "guard": "x_12854_1 > 0 and y_12854_1 < 10",
+          "accepting_states": [],
+          "probability_threshold": null,
+          "refusal_expected": false,
+          "quiescence_expected": false,
+          "discrete_time": null
+        }
+      ]
+    },
+    {
+      "id": "cover_transition_t12854_4",
+      "description": "Covers transition 't12854_4' (s12854_1 --e12854_0--> s12854_1).",
+      "steps": [
+        {
+          "event": "e12854_0",
+          "expected_state": "s12854_1",
+          "guard": "x_12854_0 > 0 and y_12854_0 < 10",
+          "accepting_states": [],
+          "probability_threshold": null,
+          "refusal_expected": false,
+          "quiescence_expected": false,
+          "discrete_time": null
+        },
+        {
+          "event": "e12854_0",
+          "expected_state": "s12854_1",
+          "guard": "x_12854_3 > 0 and y_12854_3 < 10",
+          "accepting_states": [],
+          "probability_threshold": null,
+          "refusal_expected": false,
+          "quiescence_expected": false,
+          "discrete_time": null
+        }
+      ]
+    }
+  ],
+  "semantics_mode": null,
+  "probability_threshold": null
+}

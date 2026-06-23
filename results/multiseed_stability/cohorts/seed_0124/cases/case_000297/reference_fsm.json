@@ -1,0 +1,123 @@
+{
+  "id": "synthetic_5678_3_2",
+  "name": "Synthetic FSM (custom)",
+  "description": "Synthetic FSM generated with seed=5678, states=3, events=2, branching_factor=2, deterministic=True, allow_dead_states=True",
+  "states": [
+    {
+      "id": "s5678_0",
+      "state_output": null,
+      "refusal": false,
+      "quiescence": false
+    },
+    {
+      "id": "s5678_1",
+      "state_output": null,
+      "refusal": false,
+      "quiescence": false
+    },
+    {
+      "id": "s5678_2",
+      "state_output": null,
+      "refusal": false,
+      "quiescence": false
+    }
+  ],
+  "initial_state": "s5678_0",
+  "events": [
+    "e5678_0",
+    "e5678_1"
+  ],
+  "transitions": [
+    {
+      "id": "t5678_1",
+      "source": "s5678_0",
+      "event": "e5678_0",
+      "target": "s5678_1",
+      "guard": "x_5678_0 > 0",
+      "action": "act5678_1",
+      "output": "out_5678_0",
+      "timeout": null,
+      "delay": null,
+      "requirements": [],
+      "probability": null,
+      "is_nondeterministic": false,
+      "refusal": false,
+      "quiescence": false,
+      "discrete_time": null
+    },
+    {
+      "id": "t5678_2",
+      "source": "s5678_1",
+      "event": "e5678_1",
+      "target": "s5678_2",
+      "guard": "x_5678_1 > 0",
+      "action": "act5678_2",
+      "output": "out_5678_1",
+      "timeout": null,
+      "delay": null,
+      "requirements": [],
+      "probability": null,
+      "is_nondeterministic": false,
+      "refusal": false,
+      "quiescence": false,
+      "discrete_time": null
+    },
+    {
+      "id": "t5678_3",
+      "source": "s5678_0",
+      "event": "e5678_0",
+      "target": "s5678_2",
+      "guard": "x_5678_2 > 0",
+      "action": "act5678_3",
+      "output": "out_5678_2",
+      "timeout": null,
+      "delay": null,
+      "requirements": [],
+      "probability": null,
+      "is_nondeterministic": false,
+      "refusal": false,
+      "quiescence": false,
+      "discrete_time": null
+    },
+    {
+      "id": "t5678_4",
+      "source": "s5678_1",
+      "event": "e5678_0",
+      "target": "s5678_1",
+      "guard": "x_5678_3 > 0",
+      "action": "act5678_4",
+      "output": "out_5678_3",
+      "timeout": null,
+      "delay": null,
+      "requirements": [],
+      "probability": null,
+      "is_nondeterministic": false,
+      "refusal": false,
+      "quiescence": false,
+      "discrete_time": null
+    },
+    {
+      "id": "t5678_5",
+      "source": "s5678_2",
+      "event": "e5678_1",
+      "target": "s5678_2",
+      "guard": "x_5678_4 > 0",
+      "action": "act5678_5",
+      "output": "out_5678_4",
+      "timeout": null,
+      "delay": null,
+      "requirements": [],
+      "probability": null,
+      "is_nondeterministic": false,
+      "refusal": false,
+      "quiescence": false,
+      "discrete_time": null
+    }
+  ],
+  "variables": {},
+  "parent_fsm_id": null,
+  "reference_fsm_id": null,
+  "discrete_time_step": null,
+  "semantics_mode": null,
+  "cyclic_metadata": null
+}

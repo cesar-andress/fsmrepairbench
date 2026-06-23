@@ -1,0 +1,55 @@
+{
+  "id": "synthetic_5216_3_2__faulty__guard_flip__271104",
+  "name": "Synthetic FSM (custom) (faulty: guard_flip)",
+  "description": "Synthetic FSM generated with seed=5216, states=3, events=2, branching_factor=2, deterministic=True, allow_dead_states=True",
+  "states": [
+    {
+      "id": "s5216_0",
+      "state_output": null,
+      "refusal": false,
+      "quiescence": false
+    },
+    {
+      "id": "s5216_1",
+      "state_output": null,
+      "refusal": false,
+      "quiescence": false
+    },
+    {
+      "id": "s5216_2",
+      "state_output": null,
+      "refusal": false,
+      "quiescence": false
+    }
+  ],
+  "initial_state": "s5216_0",
+  "events": [
+    "e5216_0",
+    "e5216_1"
+  ],
+  "transitions": [
+    {
+      "id": "t5216_2",
+      "source": "s5216_0",
+      "event": "e5216_1",
+      "target": "s5216_0",
+      "guard": "not_x_5216_1 > 0",
+      "action": "act5216_2",
+      "output": "out_5216_1",
+      "timeout": null,
+      "delay": null,
+      "requirements": [],
+      "probability": null,
+      "is_nondeterministic": false,
+      "refusal": false,
+      "quiescence": false,
+      "discrete_time": null
+    }
+  ],
+  "variables": {},
+  "parent_fsm_id": "synthetic_5216_3_2",
+  "reference_fsm_id": "synthetic_5216_3_2",
+  "discrete_time_step": null,
+  "semantics_mode": null,
+  "cyclic_metadata": null
+}

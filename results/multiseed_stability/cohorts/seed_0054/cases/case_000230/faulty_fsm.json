@@ -1,0 +1,106 @@
+{
+  "id": "synthetic_4368_3_2__faulty__action_corruption__230054",
+  "name": "Synthetic FSM (custom) (faulty: action_corruption)",
+  "description": "Synthetic FSM generated with seed=4368, states=3, events=2, branching_factor=1, deterministic=True, allow_dead_states=False",
+  "states": [
+    {
+      "id": "s4368_0",
+      "state_output": null,
+      "refusal": false,
+      "quiescence": false
+    },
+    {
+      "id": "s4368_1",
+      "state_output": null,
+      "refusal": false,
+      "quiescence": false
+    },
+    {
+      "id": "s4368_2",
+      "state_output": null,
+      "refusal": false,
+      "quiescence": false
+    }
+  ],
+  "initial_state": "s4368_0",
+  "events": [
+    "e4368_0",
+    "e4368_1"
+  ],
+  "transitions": [
+    {
+      "id": "t4368_1",
+      "source": "s4368_0",
+      "event": "e4368_1",
+      "target": "s4368_1",
+      "guard": "x_4368_0 > 0",
+      "action": "act4368_1",
+      "output": "out_4368_0",
+      "timeout": null,
+      "delay": null,
+      "requirements": [],
+      "probability": null,
+      "is_nondeterministic": false,
+      "refusal": false,
+      "quiescence": false,
+      "discrete_time": null
+    },
+    {
+      "id": "t4368_2",
+      "source": "s4368_0",
+      "event": "e4368_0",
+      "target": "s4368_2",
+      "guard": "x_4368_1 > 0",
+      "action": "wrong_act4368_2",
+      "output": "out_4368_1",
+      "timeout": null,
+      "delay": null,
+      "requirements": [],
+      "probability": null,
+      "is_nondeterministic": false,
+      "refusal": false,
+      "quiescence": false,
+      "discrete_time": null
+    },
+    {
+      "id": "t4368_3",
+      "source": "s4368_1",
+      "event": "e4368_1",
+      "target": "s4368_1",
+      "guard": "x_4368_2 > 0",
+      "action": "act4368_3",
+      "output": "out_4368_2",
+      "timeout": null,
+      "delay": null,
+      "requirements": [],
+      "probability": null,
+      "is_nondeterministic": false,
+      "refusal": false,
+      "quiescence": false,
+      "discrete_time": null
+    },
+    {
+      "id": "t4368_4",
+      "source": "s4368_2",
+      "event": "e4368_1",
+      "target": "s4368_2",
+      "guard": "x_4368_3 > 0",
+      "action": "act4368_4",
+      "output": "out_4368_3",
+      "timeout": null,
+      "delay": null,
+      "requirements": [],
+      "probability": null,
+      "is_nondeterministic": false,
+      "refusal": false,
+      "quiescence": false,
+      "discrete_time": null
+    }
+  ],
+  "variables": {},
+  "parent_fsm_id": "synthetic_4368_3_2",
+  "reference_fsm_id": "synthetic_4368_3_2",
+  "discrete_time_step": null,
+  "semantics_mode": null,
+  "cyclic_metadata": null
+}

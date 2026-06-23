@@ -1,0 +1,55 @@
+{
+  "id": "synthetic_9947_3_2__faulty__wrong_target__519114",
+  "name": "Synthetic FSM (custom) (faulty: wrong_target)",
+  "description": "Synthetic FSM generated with seed=9947, states=3, events=2, branching_factor=1, deterministic=False, allow_dead_states=True",
+  "states": [
+    {
+      "id": "s9947_0",
+      "state_output": "out_9947_0",
+      "refusal": false,
+      "quiescence": false
+    },
+    {
+      "id": "s9947_1",
+      "state_output": "out_9947_1",
+      "refusal": false,
+      "quiescence": false
+    },
+    {
+      "id": "s9947_2",
+      "state_output": "out_9947_2",
+      "refusal": false,
+      "quiescence": false
+    }
+  ],
+  "initial_state": "s9947_0",
+  "events": [
+    "e9947_0",
+    "e9947_1"
+  ],
+  "transitions": [
+    {
+      "id": "t9947_hub_2",
+      "source": "s9947_0",
+      "event": "e9947_1",
+      "target": "s9947_0",
+      "guard": null,
+      "action": null,
+      "output": null,
+      "timeout": null,
+      "delay": null,
+      "requirements": [],
+      "probability": null,
+      "is_nondeterministic": false,
+      "refusal": false,
+      "quiescence": false,
+      "discrete_time": null
+    }
+  ],
+  "variables": {},
+  "parent_fsm_id": "synthetic_9947_3_2",
+  "reference_fsm_id": "synthetic_9947_3_2",
+  "discrete_time_step": null,
+  "semantics_mode": null,
+  "cyclic_metadata": null
+}

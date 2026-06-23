@@ -1,0 +1,55 @@
+{
+  "id": "synthetic_3045_3_2",
+  "name": "Synthetic FSM (custom)",
+  "description": "Synthetic FSM generated with seed=3045, states=3, events=2, branching_factor=1, deterministic=True, allow_dead_states=True",
+  "states": [
+    {
+      "id": "s3045_0",
+      "state_output": null,
+      "refusal": false,
+      "quiescence": false
+    },
+    {
+      "id": "s3045_1",
+      "state_output": null,
+      "refusal": false,
+      "quiescence": false
+    },
+    {
+      "id": "s3045_2",
+      "state_output": null,
+      "refusal": false,
+      "quiescence": false
+    }
+  ],
+  "initial_state": "s3045_0",
+  "events": [
+    "e3045_0",
+    "e3045_1"
+  ],
+  "transitions": [
+    {
+      "id": "t3045_hub_1",
+      "source": "s3045_0",
+      "event": "e3045_1",
+      "target": "s3045_1",
+      "guard": null,
+      "action": null,
+      "output": null,
+      "timeout": null,
+      "delay": null,
+      "requirements": [],
+      "probability": null,
+      "is_nondeterministic": false,
+      "refusal": false,
+      "quiescence": false,
+      "discrete_time": null
+    }
+  ],
+  "variables": {},
+  "parent_fsm_id": null,
+  "reference_fsm_id": null,
+  "discrete_time_step": null,
+  "semantics_mode": null,
+  "cyclic_metadata": null
+}

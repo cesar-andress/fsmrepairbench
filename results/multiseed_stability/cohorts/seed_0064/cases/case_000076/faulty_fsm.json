@@ -1,0 +1,106 @@
+{
+  "id": "synthetic_9376_3_2__faulty__nondeterminism_intro__76064",
+  "name": "Synthetic FSM (custom) (faulty: nondeterminism_intro)",
+  "description": "Synthetic FSM generated with seed=9376, states=3, events=2, branching_factor=1, deterministic=True, allow_dead_states=False",
+  "states": [
+    {
+      "id": "s9376_0",
+      "state_output": null,
+      "refusal": false,
+      "quiescence": false
+    },
+    {
+      "id": "s9376_1",
+      "state_output": null,
+      "refusal": false,
+      "quiescence": false
+    },
+    {
+      "id": "s9376_2",
+      "state_output": null,
+      "refusal": false,
+      "quiescence": false
+    }
+  ],
+  "initial_state": "s9376_0",
+  "events": [
+    "e9376_0",
+    "e9376_1"
+  ],
+  "transitions": [
+    {
+      "id": "t9376_1",
+      "source": "s9376_0",
+      "event": "e9376_0",
+      "target": "s9376_1",
+      "guard": null,
+      "action": "act9376_1",
+      "output": null,
+      "timeout": null,
+      "delay": null,
+      "requirements": [],
+      "probability": null,
+      "is_nondeterministic": false,
+      "refusal": false,
+      "quiescence": false,
+      "discrete_time": null
+    },
+    {
+      "id": "t9376_2",
+      "source": "s9376_1",
+      "event": "e9376_0",
+      "target": "s9376_2",
+      "guard": null,
+      "action": "act9376_2",
+      "output": null,
+      "timeout": null,
+      "delay": null,
+      "requirements": [],
+      "probability": null,
+      "is_nondeterministic": false,
+      "refusal": false,
+      "quiescence": false,
+      "discrete_time": null
+    },
+    {
+      "id": "t9376_3",
+      "source": "s9376_2",
+      "event": "e9376_0",
+      "target": "s9376_2",
+      "guard": null,
+      "action": "act9376_3",
+      "output": null,
+      "timeout": null,
+      "delay": null,
+      "requirements": [],
+      "probability": null,
+      "is_nondeterministic": false,
+      "refusal": false,
+      "quiescence": false,
+      "discrete_time": null
+    },
+    {
+      "id": "t9376_3__nd__76064",
+      "source": "s9376_2",
+      "event": "e9376_0",
+      "target": "s9376_0",
+      "guard": null,
+      "action": "act9376_3",
+      "output": null,
+      "timeout": null,
+      "delay": null,
+      "requirements": [],
+      "probability": null,
+      "is_nondeterministic": false,
+      "refusal": false,
+      "quiescence": false,
+      "discrete_time": null
+    }
+  ],
+  "variables": {},
+  "parent_fsm_id": "synthetic_9376_3_2",
+  "reference_fsm_id": "synthetic_9376_3_2",
+  "discrete_time_step": null,
+  "semantics_mode": null,
+  "cyclic_metadata": null
+}

@@ -1,0 +1,245 @@
+{
+  "case_id": "case_000993",
+  "tool_id": "baseline_random",
+  "tool_type": "baseline",
+  "model": "baseline_random",
+  "mutation_operator": "missing_transition",
+  "status": "completed",
+  "failure_class": "regression",
+  "input_format": "fsmrepairbench_case_v1",
+  "output_format": "fsmrepairbench_repair_result_v1",
+  "initial_bpr": 0.9444444444444444,
+  "final_bpr": 0.1111111111111111,
+  "delta_bpr": -0.8333333333333333,
+  "complete_repair": false,
+  "effective_repair": false,
+  "regression": true,
+  "patch_parse_failures": 0,
+  "patch_validation_failures": 0,
+  "patch_application_failures": 0,
+  "iterations_completed": 1,
+  "runtime_seconds": 0.0006,
+  "repair_result": {
+    "bug_id": "synthetic_18844_3_2__faulty__missing_transition__993044",
+    "passed": false,
+    "score": 0.1111111111111111,
+    "details": {
+      "model": "baseline_random",
+      "backend": "baseline",
+      "baseline_engine": "random",
+      "baseline_seed": 0,
+      "temperature": 0.0,
+      "max_iterations": 1,
+      "runtime_seconds": 0.0006,
+      "iterations": [
+        {
+          "iteration": 1,
+          "bpr_before": 0.9444444444444444,
+          "patch_valid": true,
+          "patch_applied": true,
+          "patch": {
+            "patch_id": "baseline_random_0_synthetic_18844_3_2__faulty__missing_transition__993044",
+            "target_fsm_id": "synthetic_18844_3_2__faulty__missing_transition__993044",
+            "operations": [
+              {
+                "op": "replace_transition_target",
+                "transition_id": "t18844_8",
+                "target": "s18844_0"
+              },
+              {
+                "op": "replace_transition_target",
+                "transition_id": "t18844_1",
+                "target": "s18844_0"
+              },
+              {
+                "op": "replace_guard",
+                "transition_id": "t18844_5",
+                "guard": "random_guard_t18844_5"
+              }
+            ]
+          },
+          "validation_errors": [],
+          "bpr_after": 0.1111111111111111
+        }
+      ],
+      "final_fsm": {
+        "id": "synthetic_18844_3_2__faulty__missing_transition__993044",
+        "name": "Synthetic FSM (custom) (faulty: missing_transition)",
+        "description": "Synthetic FSM generated with seed=18844, states=3, events=2, branching_factor=4, deterministic=True, allow_dead_states=False",
+        "states": [
+          {
+            "id": "s18844_0",
+            "state_output": null,
+            "refusal": false,
+            "quiescence": false
+          },
+          {
+            "id": "s18844_1",
+            "state_output": null,
+            "refusal": false,
+            "quiescence": false
+          },
+          {
+            "id": "s18844_2",
+            "state_output": null,
+            "refusal": false,
+            "quiescence": false
+          }
+        ],
+        "initial_state": "s18844_0",
+        "events": [
+          "e18844_0",
+          "e18844_1"
+        ],
+        "transitions": [
+          {
+            "id": "t18844_1",
+            "source": "s18844_0",
+            "event": "e18844_1",
+            "target": "s18844_0",
+            "guard": "x_18844_0 > 0",
+            "action": "act18844_1",
+            "output": null,
+            "timeout": 1.0,
+            "delay": null,
+            "requirements": [],
+            "probability": null,
+            "is_nondeterministic": false,
+            "refusal": false,
+            "quiescence": false,
+            "discrete_time": null
+          },
+          {
+            "id": "t18844_2",
+            "source": "s18844_1",
+            "event": "e18844_0",
+            "target": "s18844_2",
+            "guard": "x_18844_1 > 0",
+            "action": "act18844_2",
+            "output": null,
+            "timeout": 2.0,
+            "delay": null,
+            "requirements": [],
+            "probability": null,
+            "is_nondeterministic": false,
+            "refusal": false,
+            "quiescence": false,
+            "discrete_time": null
+          },
+          {
+            "id": "t18844_3",
+            "source": "s18844_0",
+            "event": "e18844_1",
+            "target": "s18844_0",
+            "guard": "x_18844_2 > 0",
+            "action": "act18844_3",
+            "output": null,
+            "timeout": 3.0,
+            "delay": null,
+            "requirements": [],
+            "probability": null,
+            "is_nondeterministic": false,
+            "refusal": false,
+            "quiescence": false,
+            "discrete_time": null
+          },
+          {
+            "id": "t18844_4",
+            "source": "s18844_0",
+            "event": "e18844_0",
+            "target": "s18844_1",
+            "guard": "x_18844_3 > 0",
+            "action": "act18844_4",
+            "output": null,
+            "timeout": 4.0,
+            "delay": null,
+            "requirements": [],
+            "probability": null,
+            "is_nondeterministic": false,
+            "refusal": false,
+            "quiescence": false,
+            "discrete_time": null
+          },
+          {
+            "id": "t18844_5",
+            "source": "s18844_1",
+            "event": "e18844_0",
+            "target": "s18844_2",
+            "guard": "random_guard_t18844_5",
+            "action": "act18844_5",
+            "output": null,
+            "timeout": 5.0,
+            "delay": null,
+            "requirements": [],
+            "probability": null,
+            "is_nondeterministic": false,
+            "refusal": false,
+            "quiescence": false,
+            "discrete_time": null
+          },
+          {
+            "id": "t18844_6",
+            "source": "s18844_1",
+            "event": "e18844_1",
+            "target": "s18844_1",
+            "guard": "x_18844_5 > 0",
+            "action": "act18844_6",
+            "output": null,
+            "timeout": 6.0,
+            "delay": null,
+            "requirements": [],
+            "probability": null,
+            "is_nondeterministic": false,
+            "refusal": false,
+            "quiescence": false,
+            "discrete_time": null
+          },
+          {
+            "id": "t18844_7",
+            "source": "s18844_2",
+            "event": "e18844_0",
+            "target": "s18844_2",
+            "guard": "x_18844_6 > 0",
+            "action": "act18844_7",
+            "output": null,
+            "timeout": 7.0,
+            "delay": null,
+            "requirements": [],
+            "probability": null,
+            "is_nondeterministic": false,
+            "refusal": false,
+            "quiescence": false,
+            "discrete_time": null
+          },
+          {
+            "id": "t18844_8",
+            "source": "s18844_2",
+            "event": "e18844_0",
+            "target": "s18844_0",
+            "guard": "x_18844_7 > 0",
+            "action": "act18844_8",
+            "output": null,
+            "timeout": 8.0,
+            "delay": null,
+            "requirements": [],
+            "probability": null,
+            "is_nondeterministic": false,
+            "refusal": false,
+            "quiescence": false,
+            "discrete_time": null
+          }
+        ],
+        "variables": {},
+        "parent_fsm_id": "synthetic_18844_3_2",
+        "reference_fsm_id": "synthetic_18844_3_2",
+        "discrete_time_step": null,
+        "semantics_mode": null,
+        "cyclic_metadata": null
+      },
+      "passed_steps": 2,
+      "total_steps": 18,
+      "passed_scenarios": 2,
+      "total_scenarios": 9
+    }
+  }
+}

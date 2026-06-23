@@ -1,0 +1,109 @@
+{
+  "id": "synthetic_11710_3_2",
+  "name": "Synthetic FSM (custom)",
+  "description": "Synthetic FSM generated with seed=11710, states=3, events=2, branching_factor=1, deterministic=True, allow_dead_states=False",
+  "states": [
+    {
+      "id": "s11710_0",
+      "state_output": null,
+      "refusal": false,
+      "quiescence": false
+    },
+    {
+      "id": "s11710_1",
+      "state_output": null,
+      "refusal": false,
+      "quiescence": false
+    },
+    {
+      "id": "s11710_2",
+      "state_output": null,
+      "refusal": false,
+      "quiescence": false
+    }
+  ],
+  "initial_state": "s11710_0",
+  "events": [
+    "e11710_0",
+    "e11710_1"
+  ],
+  "transitions": [
+    {
+      "id": "t11710_1",
+      "source": "s11710_0",
+      "event": "e11710_0",
+      "target": "s11710_1",
+      "guard": "x_11710_0 > 0 and y_11710_0 < 10",
+      "action": "act11710_1",
+      "output": null,
+      "timeout": null,
+      "delay": null,
+      "requirements": [],
+      "probability": null,
+      "is_nondeterministic": false,
+      "refusal": false,
+      "quiescence": false,
+      "discrete_time": null
+    },
+    {
+      "id": "t11710_2",
+      "source": "s11710_0",
+      "event": "e11710_0",
+      "target": "s11710_2",
+      "guard": "x_11710_1 > 0 and y_11710_1 < 10",
+      "action": "act11710_2",
+      "output": null,
+      "timeout": null,
+      "delay": null,
+      "requirements": [],
+      "probability": null,
+      "is_nondeterministic": false,
+      "refusal": false,
+      "quiescence": false,
+      "discrete_time": null
+    },
+    {
+      "id": "t11710_3",
+      "source": "s11710_1",
+      "event": "e11710_0",
+      "target": "s11710_2",
+      "guard": "x_11710_2 > 0 and y_11710_2 < 10",
+      "action": "act11710_3",
+      "output": null,
+      "timeout": null,
+      "delay": null,
+      "requirements": [],
+      "probability": null,
+      "is_nondeterministic": false,
+      "refusal": false,
+      "quiescence": false,
+      "discrete_time": null
+    },
+    {
+      "id": "t11710_4",
+      "source": "s11710_2",
+      "event": "e11710_1",
+      "target": "s11710_2",
+      "guard": "x_11710_3 > 0 and y_11710_3 < 10",
+      "action": "act11710_4",
+      "output": null,
+      "timeout": null,
+      "delay": null,
+      "requirements": [],
+      "probability": null,
+      "is_nondeterministic": false,
+      "refusal": false,
+      "quiescence": false,
+      "discrete_time": null
+    }
+  ],
+  "variables": {
+    "x": "int",
+    "y": "int"
+  },
+  "parent_fsm_id": null,
+  "reference_fsm_id": null,
+  "discrete_time_step": null,
+  "semantics_mode": null,
+  "cyclic_metadata": null
+}

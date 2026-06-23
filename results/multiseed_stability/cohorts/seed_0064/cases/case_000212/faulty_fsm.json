@@ -1,0 +1,106 @@
+{
+  "id": "synthetic_4072_3_2__faulty__action_corruption__212064",
+  "name": "Synthetic FSM (custom) (faulty: action_corruption)",
+  "description": "Synthetic FSM generated with seed=4072, states=3, events=2, branching_factor=1, deterministic=True, allow_dead_states=False",
+  "states": [
+    {
+      "id": "s4072_0",
+      "state_output": null,
+      "refusal": false,
+      "quiescence": false
+    },
+    {
+      "id": "s4072_1",
+      "state_output": null,
+      "refusal": false,
+      "quiescence": false
+    },
+    {
+      "id": "s4072_2",
+      "state_output": null,
+      "refusal": false,
+      "quiescence": false
+    }
+  ],
+  "initial_state": "s4072_0",
+  "events": [
+    "e4072_0",
+    "e4072_1"
+  ],
+  "transitions": [
+    {
+      "id": "t4072_1",
+      "source": "s4072_0",
+      "event": "e4072_1",
+      "target": "s4072_1",
+      "guard": "x_4072_0 > 0",
+      "action": "wrong_act4072_1",
+      "output": "out_4072_0",
+      "timeout": null,
+      "delay": null,
+      "requirements": [],
+      "probability": null,
+      "is_nondeterministic": false,
+      "refusal": false,
+      "quiescence": false,
+      "discrete_time": null
+    },
+    {
+      "id": "t4072_2",
+      "source": "s4072_0",
+      "event": "e4072_0",
+      "target": "s4072_2",
+      "guard": "x_4072_1 > 0",
+      "action": "act4072_2",
+      "output": "out_4072_1",
+      "timeout": null,
+      "delay": null,
+      "requirements": [],
+      "probability": null,
+      "is_nondeterministic": false,
+      "refusal": false,
+      "quiescence": false,
+      "discrete_time": null
+    },
+    {
+      "id": "t4072_3",
+      "source": "s4072_1",
+      "event": "e4072_1",
+      "target": "s4072_2",
+      "guard": "x_4072_2 > 0",
+      "action": "act4072_3",
+      "output": "out_4072_2",
+      "timeout": null,
+      "delay": null,
+      "requirements": [],
+      "probability": null,
+      "is_nondeterministic": false,
+      "refusal": false,
+      "quiescence": false,
+      "discrete_time": null
+    },
+    {
+      "id": "t4072_4",
+      "source": "s4072_2",
+      "event": "e4072_1",
+      "target": "s4072_2",
+      "guard": "x_4072_3 > 0",
+      "action": "act4072_4",
+      "output": "out_4072_3",
+      "timeout": null,
+      "delay": null,
+      "requirements": [],
+      "probability": null,
+      "is_nondeterministic": false,
+      "refusal": false,
+      "quiescence": false,
+      "discrete_time": null
+    }
+  ],
+  "variables": {},
+  "parent_fsm_id": "synthetic_4072_3_2",
+  "reference_fsm_id": "synthetic_4072_3_2",
+  "discrete_time_step": null,
+  "semantics_mode": null,
+  "cyclic_metadata": null
+}

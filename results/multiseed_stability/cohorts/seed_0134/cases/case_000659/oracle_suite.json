@@ -1,0 +1,128 @@
+{
+  "id": "synthetic_12650_3_2_oracles",
+  "fsm_id": "synthetic_12650_3_2",
+  "scenarios": [
+    {
+      "id": "cover_transition_t12650_1",
+      "description": "Covers transition 't12650_1' (s12650_0 --e12650_1--> s12650_1).",
+      "steps": [
+        {
+          "event": "e12650_1",
+          "expected_state": "s12650_1",
+          "guard": "x_12650_0 > 0 and y_12650_0 < 10",
+          "accepting_states": [],
+          "probability_threshold": null,
+          "refusal_expected": false,
+          "quiescence_expected": false,
+          "discrete_time": null
+        }
+      ]
+    },
+    {
+      "id": "cover_transition_t12650_2",
+      "description": "Covers transition 't12650_2' (s12650_1 --e12650_1--> s12650_2).",
+      "steps": [
+        {
+          "event": "e12650_1",
+          "expected_state": "s12650_1",
+          "guard": "x_12650_0 > 0 and y_12650_0 < 10",
+          "accepting_states": [],
+          "probability_threshold": null,
+          "refusal_expected": false,
+          "quiescence_expected": false,
+          "discrete_time": null
+        },
+        {
+          "event": "e12650_1",
+          "expected_state": "s12650_2",
+          "guard": "x_12650_1 > 0 and y_12650_1 < 10",
+          "accepting_states": [],
+          "probability_threshold": null,
+          "refusal_expected": false,
+          "quiescence_expected": false,
+          "discrete_time": null
+        }
+      ]
+    },
+    {
+      "id": "cover_transition_t12650_3",
+      "description": "Covers transition 't12650_3' (s12650_0 --e12650_1--> s12650_1).",
+      "steps": [
+        {
+          "event": "e12650_1",
+          "expected_state": "s12650_1",
+          "guard": "x_12650_2 > 0 and y_12650_2 < 10",
+          "accepting_states": [],
+          "probability_threshold": null,
+          "refusal_expected": false,
+          "quiescence_expected": false,
+          "discrete_time": null
+        }
+      ]
+    },
+    {
+      "id": "cover_transition_t12650_4",
+      "description": "Covers transition 't12650_4' (s12650_1 --e12650_0--> s12650_2).",
+      "steps": [
+        {
+          "event": "e12650_1",
+          "expected_state": "s12650_1",
+          "guard": "x_12650_0 > 0 and y_12650_0 < 10",
+          "accepting_states": [],
+          "probability_threshold": null,
+          "refusal_expected": false,
+          "quiescence_expected": false,
+          "discrete_time": null
+        },
+        {
+          "event": "e12650_0",
+          "expected_state": "s12650_2",
+          "guard": "x_12650_3 > 0 and y_12650_3 < 10",
+          "accepting_states": [],
+          "probability_threshold": null,
+          "refusal_expected": false,
+          "quiescence_expected": false,
+          "discrete_time": null
+        }
+      ]
+    },
+    {
+      "id": "cover_transition_t12650_6",
+      "description": "Covers transition 't12650_6' (s12650_2 --e12650_0--> s12650_2).",
+      "steps": [
+        {
+          "event": "e12650_1",
+          "expected_state": "s12650_1",
+          "guard": "x_12650_0 > 0 and y_12650_0 < 10",
+          "accepting_states": [],
+          "probability_threshold": null,
+          "refusal_expected": false,
+          "quiescence_expected": false,
+          "discrete_time": null
+        },
+        {
+          "event": "e12650_1",
+          "expected_state": "s12650_2",
+          "guard": "x_12650_1 > 0 and y_12650_1 < 10",
+          "accepting_states": [],
+          "probability_threshold": null,
+          "refusal_expected": false,
+          "quiescence_expected": false,
+          "discrete_time": null
+        },
+        {
+          "event": "e12650_0",
+          "expected_state": "s12650_2",
+          "guard": "x_12650_5 > 0 and y_12650_5 < 10",
+          "accepting_states": [],
+          "probability_threshold": null,
+          "refusal_expected": false,
+          "quiescence_expected": false,
+          "discrete_time": null
+        }
+      ]
+    }
+  ],
+  "semantics_mode": null,
+  "probability_threshold": null
+}

@@ -1,0 +1,72 @@
+{
+  "id": "synthetic_315_3_2__faulty__nondeterminism_intro__10044",
+  "name": "Synthetic FSM (custom) (faulty: nondeterminism_intro)",
+  "description": "Synthetic FSM generated with seed=315, states=3, events=2, branching_factor=1, deterministic=False, allow_dead_states=True",
+  "states": [
+    {
+      "id": "s315_0",
+      "state_output": null,
+      "refusal": false,
+      "quiescence": false
+    },
+    {
+      "id": "s315_1",
+      "state_output": null,
+      "refusal": false,
+      "quiescence": false
+    },
+    {
+      "id": "s315_2",
+      "state_output": null,
+      "refusal": false,
+      "quiescence": false
+    }
+  ],
+  "initial_state": "s315_0",
+  "events": [
+    "e315_0",
+    "e315_1"
+  ],
+  "transitions": [
+    {
+      "id": "t315_1",
+      "source": "s315_0",
+      "event": "e315_1",
+      "target": "s315_1",
+      "guard": null,
+      "action": "act315_1",
+      "output": null,
+      "timeout": null,
+      "delay": null,
+      "requirements": [],
+      "probability": null,
+      "is_nondeterministic": false,
+      "refusal": false,
+      "quiescence": false,
+      "discrete_time": null
+    },
+    {
+      "id": "t315_1__nd__10044",
+      "source": "s315_0",
+      "event": "e315_1",
+      "target": "s315_2",
+      "guard": null,
+      "action": "act315_1",
+      "output": null,
+      "timeout": null,
+      "delay": null,
+      "requirements": [],
+      "probability": null,
+      "is_nondeterministic": false,
+      "refusal": false,
+      "quiescence": false,
+      "discrete_time": null
+    }
+  ],
+  "variables": {},
+  "parent_fsm_id": "synthetic_315_3_2",
+  "reference_fsm_id": "synthetic_315_3_2",
+  "discrete_time_step": null,
+  "semantics_mode": null,
+  "cyclic_metadata": null
+}

@@ -1,0 +1,72 @@
+{
+  "id": "synthetic_95_3_2__faulty__missing_transition__3044",
+  "name": "Synthetic FSM (custom) (faulty: missing_transition)",
+  "description": "Synthetic FSM generated with seed=95, states=3, events=2, branching_factor=1, deterministic=True, allow_dead_states=True",
+  "states": [
+    {
+      "id": "s95_0",
+      "state_output": null,
+      "refusal": false,
+      "quiescence": false
+    },
+    {
+      "id": "s95_1",
+      "state_output": null,
+      "refusal": false,
+      "quiescence": false
+    },
+    {
+      "id": "s95_2",
+      "state_output": null,
+      "refusal": false,
+      "quiescence": false
+    }
+  ],
+  "initial_state": "s95_0",
+  "events": [
+    "e95_0",
+    "e95_1"
+  ],
+  "transitions": [
+    {
+      "id": "t95_1",
+      "source": "s95_0",
+      "event": "e95_1",
+      "target": "s95_1",
+      "guard": null,
+      "action": "act95_1",
+      "output": null,
+      "timeout": null,
+      "delay": null,
+      "requirements": [],
+      "probability": null,
+      "is_nondeterministic": false,
+      "refusal": false,
+      "quiescence": false,
+      "discrete_time": null
+    },
+    {
+      "id": "t95_4",
+      "source": "s95_2",
+      "event": "e95_1",
+      "target": "s95_2",
+      "guard": null,
+      "action": "act95_4",
+      "output": null,
+      "timeout": null,
+      "delay": null,
+      "requirements": [],
+      "probability": null,
+      "is_nondeterministic": false,
+      "refusal": false,
+      "quiescence": false,
+      "discrete_time": null
+    }
+  ],
+  "variables": {},
+  "parent_fsm_id": "synthetic_95_3_2",
+  "reference_fsm_id": "synthetic_95_3_2",
+  "discrete_time_step": null,
+  "semantics_mode": null,
+  "cyclic_metadata": null
+}

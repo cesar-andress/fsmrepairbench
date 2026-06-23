@@ -1,0 +1,106 @@
+{
+  "id": "synthetic_3088_3_2__faulty__timeout_corruption__84044",
+  "name": "Synthetic FSM (custom) (faulty: timeout_corruption)",
+  "description": "Synthetic FSM generated with seed=3088, states=3, events=2, branching_factor=1, deterministic=True, allow_dead_states=False",
+  "states": [
+    {
+      "id": "s3088_0",
+      "state_output": null,
+      "refusal": false,
+      "quiescence": false
+    },
+    {
+      "id": "s3088_1",
+      "state_output": null,
+      "refusal": false,
+      "quiescence": false
+    },
+    {
+      "id": "s3088_2",
+      "state_output": null,
+      "refusal": false,
+      "quiescence": false
+    }
+  ],
+  "initial_state": "s3088_0",
+  "events": [
+    "e3088_0",
+    "e3088_1"
+  ],
+  "transitions": [
+    {
+      "id": "t3088_1",
+      "source": "s3088_0",
+      "event": "e3088_1",
+      "target": "s3088_1",
+      "guard": "x_3088_0 > 0",
+      "action": "act3088_1",
+      "output": null,
+      "timeout": 1.0,
+      "delay": null,
+      "requirements": [],
+      "probability": null,
+      "is_nondeterministic": false,
+      "refusal": false,
+      "quiescence": false,
+      "discrete_time": null
+    },
+    {
+      "id": "t3088_2",
+      "source": "s3088_0",
+      "event": "e3088_1",
+      "target": "s3088_2",
+      "guard": "x_3088_1 > 0",
+      "action": "act3088_2",
+      "output": null,
+      "timeout": 2.0,
+      "delay": null,
+      "requirements": [],
+      "probability": null,
+      "is_nondeterministic": false,
+      "refusal": false,
+      "quiescence": false,
+      "discrete_time": null
+    },
+    {
+      "id": "t3088_3",
+      "source": "s3088_1",
+      "event": "e3088_0",
+      "target": "s3088_2",
+      "guard": "x_3088_2 > 0",
+      "action": "act3088_3",
+      "output": null,
+      "timeout": 3.0,
+      "delay": null,
+      "requirements": [],
+      "probability": null,
+      "is_nondeterministic": false,
+      "refusal": false,
+      "quiescence": false,
+      "discrete_time": null
+    },
+    {
+      "id": "t3088_4",
+      "source": "s3088_2",
+      "event": "e3088_1",
+      "target": "s3088_2",
+      "guard": "x_3088_3 > 0",
+      "action": "act3088_4",
+      "output": null,
+      "timeout": 8.0,
+      "delay": null,
+      "requirements": [],
+      "probability": null,
+      "is_nondeterministic": false,
+      "refusal": false,
+      "quiescence": false,
+      "discrete_time": null
+    }
+  ],
+  "variables": {},
+  "parent_fsm_id": "synthetic_3088_3_2",
+  "reference_fsm_id": "synthetic_3088_3_2",
+  "discrete_time_step": null,
+  "semantics_mode": null,
+  "cyclic_metadata": null
+}

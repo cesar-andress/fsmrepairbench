@@ -1,0 +1,156 @@
+{
+  "case_id": "case_000086",
+  "tool_id": "baseline_random",
+  "tool_type": "baseline",
+  "model": "baseline_random",
+  "mutation_operator": "nondeterminism_intro",
+  "status": "completed",
+  "failure_class": "complete_repair",
+  "input_format": "fsmrepairbench_case_v1",
+  "output_format": "fsmrepairbench_repair_result_v1",
+  "initial_bpr": 1.0,
+  "final_bpr": 1.0,
+  "delta_bpr": 0.0,
+  "complete_repair": true,
+  "effective_repair": false,
+  "regression": false,
+  "patch_parse_failures": 0,
+  "patch_validation_failures": 0,
+  "patch_application_failures": 0,
+  "iterations_completed": 1,
+  "runtime_seconds": 0.0001,
+  "repair_result": {
+    "bug_id": "synthetic_1617_3_2__faulty__nondeterminism_intro__86054",
+    "passed": true,
+    "score": 1.0,
+    "details": {
+      "model": "baseline_random",
+      "backend": "baseline",
+      "baseline_engine": "random",
+      "baseline_seed": 0,
+      "temperature": 0.0,
+      "max_iterations": 1,
+      "runtime_seconds": 0.0001,
+      "iterations": [
+        {
+          "iteration": 1,
+          "bpr_before": 1.0,
+          "patch_valid": false,
+          "patch_applied": false,
+          "stopped_early": true,
+          "bpr_after": 1.0
+        }
+      ],
+      "final_fsm": {
+        "id": "synthetic_1617_3_2__faulty__nondeterminism_intro__86054",
+        "name": "Synthetic FSM (custom) (faulty: nondeterminism_intro)",
+        "description": "Synthetic FSM generated with seed=1617, states=3, events=2, branching_factor=1, deterministic=True, allow_dead_states=False",
+        "states": [
+          {
+            "id": "s1617_0",
+            "state_output": null,
+            "refusal": false,
+            "quiescence": false
+          },
+          {
+            "id": "s1617_1",
+            "state_output": null,
+            "refusal": false,
+            "quiescence": false
+          },
+          {
+            "id": "s1617_2",
+            "state_output": null,
+            "refusal": false,
+            "quiescence": false
+          }
+        ],
+        "initial_state": "s1617_0",
+        "events": [
+          "e1617_0",
+          "e1617_1"
+        ],
+        "transitions": [
+          {
+            "id": "t1617_1",
+            "source": "s1617_0",
+            "event": "e1617_0",
+            "target": "s1617_1",
+            "guard": null,
+            "action": "act1617_1",
+            "output": null,
+            "timeout": null,
+            "delay": null,
+            "requirements": [],
+            "probability": null,
+            "is_nondeterministic": false,
+            "refusal": false,
+            "quiescence": false,
+            "discrete_time": null
+          },
+          {
+            "id": "t1617_2",
+            "source": "s1617_1",
+            "event": "e1617_0",
+            "target": "s1617_2",
+            "guard": null,
+            "action": "act1617_2",
+            "output": null,
+            "timeout": null,
+            "delay": null,
+            "requirements": [],
+            "probability": null,
+            "is_nondeterministic": false,
+            "refusal": false,
+            "quiescence": false,
+            "discrete_time": null
+          },
+          {
+            "id": "t1617_3",
+            "source": "s1617_2",
+            "event": "e1617_0",
+            "target": "s1617_2",
+            "guard": null,
+            "action": "act1617_3",
+            "output": null,
+            "timeout": null,
+            "delay": null,
+            "requirements": [],
+            "probability": null,
+            "is_nondeterministic": false,
+            "refusal": false,
+            "quiescence": false,
+            "discrete_time": null
+          },
+          {
+            "id": "t1617_2__nd__86054",
+            "source": "s1617_1",
+            "event": "e1617_0",
+            "target": "s1617_1",
+            "guard": null,
+            "action": "act1617_2",
+            "output": null,
+            "timeout": null,
+            "delay": null,
+            "requirements": [],
+            "probability": null,
+            "is_nondeterministic": false,
+            "refusal": false,
+            "quiescence": false,
+            "discrete_time": null
+          }
+        ],
+        "variables": {},
+        "parent_fsm_id": "synthetic_1617_3_2",
+        "reference_fsm_id": "synthetic_1617_3_2",
+        "discrete_time_step": null,
+        "semantics_mode": null,
+        "cyclic_metadata": null
+      },
+      "passed_steps": 6,
+      "total_steps": 6,
+      "passed_scenarios": 3,
+      "total_scenarios": 3
+    }
+  }
+}

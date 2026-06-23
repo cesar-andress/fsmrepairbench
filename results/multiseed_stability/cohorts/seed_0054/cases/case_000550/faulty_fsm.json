@@ -1,0 +1,55 @@
+{
+  "id": "synthetic_10414_3_2__faulty__wrong_target__550054",
+  "name": "Synthetic FSM (custom) (faulty: wrong_target)",
+  "description": "Synthetic FSM generated with seed=10414, states=3, events=2, branching_factor=1, deterministic=False, allow_dead_states=True",
+  "states": [
+    {
+      "id": "s10414_0",
+      "state_output": "out_10414_0",
+      "refusal": false,
+      "quiescence": false
+    },
+    {
+      "id": "s10414_1",
+      "state_output": "out_10414_1",
+      "refusal": false,
+      "quiescence": false
+    },
+    {
+      "id": "s10414_2",
+      "state_output": "out_10414_2",
+      "refusal": false,
+      "quiescence": false
+    }
+  ],
+  "initial_state": "s10414_0",
+  "events": [
+    "e10414_0",
+    "e10414_1"
+  ],
+  "transitions": [
+    {
+      "id": "t10414_hub_2",
+      "source": "s10414_0",
+      "event": "e10414_0",
+      "target": "s10414_1",
+      "guard": null,
+      "action": null,
+      "output": null,
+      "timeout": null,
+      "delay": null,
+      "requirements": [],
+      "probability": null,
+      "is_nondeterministic": false,
+      "refusal": false,
+      "quiescence": false,
+      "discrete_time": null
+    }
+  ],
+  "variables": {},
+  "parent_fsm_id": "synthetic_10414_3_2",
+  "reference_fsm_id": "synthetic_10414_3_2",
+  "discrete_time_step": null,
+  "semantics_mode": null,
+  "cyclic_metadata": null
+}

@@ -1,0 +1,92 @@
+{
+  "id": "synthetic_11796_3_2__faulty__guard_weaken__620044",
+  "name": "Synthetic FSM (custom) (faulty: guard_weaken)",
+  "description": "Synthetic FSM generated with seed=11796, states=3, events=2, branching_factor=1, deterministic=True, allow_dead_states=False",
+  "states": [
+    {
+      "id": "s11796_0",
+      "state_output": null,
+      "refusal": false,
+      "quiescence": false
+    },
+    {
+      "id": "s11796_1",
+      "state_output": null,
+      "refusal": false,
+      "quiescence": false
+    },
+    {
+      "id": "s11796_2",
+      "state_output": null,
+      "refusal": false,
+      "quiescence": false
+    }
+  ],
+  "initial_state": "s11796_0",
+  "events": [
+    "e11796_0",
+    "e11796_1"
+  ],
+  "transitions": [
+    {
+      "id": "t11796_1",
+      "source": "s11796_0",
+      "event": "e11796_1",
+      "target": "s11796_1",
+      "guard": "x_11796_0 > 0 and y_11796_0 < 10",
+      "action": "act11796_1",
+      "output": null,
+      "timeout": null,
+      "delay": null,
+      "requirements": [],
+      "probability": null,
+      "is_nondeterministic": false,
+      "refusal": false,
+      "quiescence": false,
+      "discrete_time": null
+    },
+    {
+      "id": "t11796_2",
+      "source": "s11796_1",
+      "event": "e11796_1",
+      "target": "s11796_2",
+      "guard": "x_11796_1 > 0 and y_11796_1 < 10",
+      "action": "act11796_2",
+      "output": null,
+      "timeout": null,
+      "delay": null,
+      "requirements": [],
+      "probability": null,
+      "is_nondeterministic": false,
+      "refusal": false,
+      "quiescence": false,
+      "discrete_time": null
+    },
+    {
+      "id": "t11796_3",
+      "source": "s11796_2",
+      "event": "e11796_1",
+      "target": "s11796_2",
+      "guard": "true",
+      "action": "act11796_3",
+      "output": null,
+      "timeout": null,
+      "delay": null,
+      "requirements": [],
+      "probability": null,
+      "is_nondeterministic": false,
+      "refusal": false,
+      "quiescence": false,
+      "discrete_time": null
+    }
+  ],
+  "variables": {
+    "x": "int",
+    "y": "int"
+  },
+  "parent_fsm_id": "synthetic_11796_3_2",
+  "reference_fsm_id": "synthetic_11796_3_2",
+  "discrete_time_step": null,
+  "semantics_mode": null,
+  "cyclic_metadata": null
+}

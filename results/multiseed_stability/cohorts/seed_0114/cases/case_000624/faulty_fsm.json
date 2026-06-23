@@ -1,0 +1,109 @@
+{
+  "id": "synthetic_11934_3_2__faulty__guard_weaken__624114",
+  "name": "Synthetic FSM (custom) (faulty: guard_weaken)",
+  "description": "Synthetic FSM generated with seed=11934, states=3, events=2, branching_factor=1, deterministic=True, allow_dead_states=False",
+  "states": [
+    {
+      "id": "s11934_0",
+      "state_output": null,
+      "refusal": false,
+      "quiescence": false
+    },
+    {
+      "id": "s11934_1",
+      "state_output": null,
+      "refusal": false,
+      "quiescence": false
+    },
+    {
+      "id": "s11934_2",
+      "state_output": null,
+      "refusal": false,
+      "quiescence": false
+    }
+  ],
+  "initial_state": "s11934_0",
+  "events": [
+    "e11934_0",
+    "e11934_1"
+  ],
+  "transitions": [
+    {
+      "id": "t11934_1",
+      "source": "s11934_0",
+      "event": "e11934_0",
+      "target": "s11934_1",
+      "guard": "x_11934_0 > 0 and y_11934_0 < 10",
+      "action": "act11934_1",
+      "output": null,
+      "timeout": null,
+      "delay": null,
+      "requirements": [],
+      "probability": null,
+      "is_nondeterministic": false,
+      "refusal": false,
+      "quiescence": false,
+      "discrete_time": null
+    },
+    {
+      "id": "t11934_2",
+      "source": "s11934_0",
+      "event": "e11934_1",
+      "target": "s11934_2",
+      "guard": "true",
+      "action": "act11934_2",
+      "output": null,
+      "timeout": null,
+      "delay": null,
+      "requirements": [],
+      "probability": null,
+      "is_nondeterministic": false,
+      "refusal": false,
+      "quiescence": false,
+      "discrete_time": null
+    },
+    {
+      "id": "t11934_3",
+      "source": "s11934_1",
+      "event": "e11934_1",
+      "target": "s11934_2",
+      "guard": "x_11934_2 > 0 and y_11934_2 < 10",
+      "action": "act11934_3",
+      "output": null,
+      "timeout": null,
+      "delay": null,
+      "requirements": [],
+      "probability": null,
+      "is_nondeterministic": false,
+      "refusal": false,
+      "quiescence": false,
+      "discrete_time": null
+    },
+    {
+      "id": "t11934_4",
+      "source": "s11934_2",
+      "event": "e11934_1",
+      "target": "s11934_2",
+      "guard": "x_11934_3 > 0 and y_11934_3 < 10",
+      "action": "act11934_4",
+      "output": null,
+      "timeout": null,
+      "delay": null,
+      "requirements": [],
+      "probability": null,
+      "is_nondeterministic": false,
+      "refusal": false,
+      "quiescence": false,
+      "discrete_time": null
+    }
+  ],
+  "variables": {
+    "x": "int",
+    "y": "int"
+  },
+  "parent_fsm_id": "synthetic_11934_3_2",
+  "reference_fsm_id": "synthetic_11934_3_2",
+  "discrete_time_step": null,
+  "semantics_mode": null,
+  "cyclic_metadata": null
+}

@@ -1,0 +1,106 @@
+{
+  "id": "synthetic_4571_3_2__faulty__action_corruption__239104",
+  "name": "Synthetic FSM (custom) (faulty: action_corruption)",
+  "description": "Synthetic FSM generated with seed=4571, states=3, events=2, branching_factor=1, deterministic=True, allow_dead_states=False",
+  "states": [
+    {
+      "id": "s4571_0",
+      "state_output": null,
+      "refusal": false,
+      "quiescence": false
+    },
+    {
+      "id": "s4571_1",
+      "state_output": null,
+      "refusal": false,
+      "quiescence": false
+    },
+    {
+      "id": "s4571_2",
+      "state_output": null,
+      "refusal": false,
+      "quiescence": false
+    }
+  ],
+  "initial_state": "s4571_0",
+  "events": [
+    "e4571_0",
+    "e4571_1"
+  ],
+  "transitions": [
+    {
+      "id": "t4571_1",
+      "source": "s4571_0",
+      "event": "e4571_0",
+      "target": "s4571_1",
+      "guard": "x_4571_0 > 0",
+      "action": "act4571_1",
+      "output": "out_4571_0",
+      "timeout": null,
+      "delay": null,
+      "requirements": [],
+      "probability": null,
+      "is_nondeterministic": false,
+      "refusal": false,
+      "quiescence": false,
+      "discrete_time": null
+    },
+    {
+      "id": "t4571_2",
+      "source": "s4571_0",
+      "event": "e4571_0",
+      "target": "s4571_2",
+      "guard": "x_4571_1 > 0",
+      "action": "act4571_2",
+      "output": "out_4571_1",
+      "timeout": null,
+      "delay": null,
+      "requirements": [],
+      "probability": null,
+      "is_nondeterministic": false,
+      "refusal": false,
+      "quiescence": false,
+      "discrete_time": null
+    },
+    {
+      "id": "t4571_3",
+      "source": "s4571_1",
+      "event": "e4571_0",
+      "target": "s4571_1",
+      "guard": "x_4571_2 > 0",
+      "action": "act4571_3",
+      "output": "out_4571_2",
+      "timeout": null,
+      "delay": null,
+      "requirements": [],
+      "probability": null,
+      "is_nondeterministic": false,
+      "refusal": false,
+      "quiescence": false,
+      "discrete_time": null
+    },
+    {
+      "id": "t4571_4",
+      "source": "s4571_2",
+      "event": "e4571_0",
+      "target": "s4571_2",
+      "guard": "x_4571_3 > 0",
+      "action": "wrong_act4571_4",
+      "output": "out_4571_3",
+      "timeout": null,
+      "delay": null,
+      "requirements": [],
+      "probability": null,
+      "is_nondeterministic": false,
+      "refusal": false,
+      "quiescence": false,
+      "discrete_time": null
+    }
+  ],
+  "variables": {},
+  "parent_fsm_id": "synthetic_4571_3_2",
+  "reference_fsm_id": "synthetic_4571_3_2",
+  "discrete_time_step": null,
+  "semantics_mode": null,
+  "cyclic_metadata": null
+}

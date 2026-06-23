@@ -14,7 +14,7 @@ from fsmrepairbench.campaign_partitions import resolve_results_dir
 
 DEFAULT_OUTPUT_DIR = Path("results/campaign_metrics_by_partition")
 DEFAULT_PAPER_EXPORT_DIR = Path("../paper1/results/campaign_metrics_by_partition")
-ZENODO_DOI = "10.5281/zenodo.20724095"
+ZENODO_DOI = "10.5281/zenodo.20602577"
 
 METRICS_BY_PARTITION_COLUMNS: tuple[str, ...] = (
     "campaign",

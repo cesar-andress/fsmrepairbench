@@ -1,0 +1,86 @@
+{
+  "id": "synthetic_15776_3_2_oracles",
+  "fsm_id": "synthetic_15776_3_2",
+  "scenarios": [
+    {
+      "id": "cover_transition_t15776_1",
+      "description": "Covers transition 't15776_1' (s15776_0 --e15776_1--> s15776_1).",
+      "steps": [
+        {
+          "event": "e15776_1",
+          "expected_state": "s15776_1",
+          "guard": "x_15776_0 > 0",
+          "accepting_states": [],
+          "probability_threshold": null,
+          "refusal_expected": false,
+          "quiescence_expected": false,
+          "discrete_time": null
+        }
+      ]
+    },
+    {
+      "id": "cover_transition_t15776_2",
+      "description": "Covers transition 't15776_2' (s15776_1 --e15776_1--> s15776_2).",
+      "steps": [
+        {
+          "event": "e15776_1",
+          "expected_state": "s15776_1",
+          "guard": "x_15776_0 > 0",
+          "accepting_states": [],
+          "probability_threshold": null,
+          "refusal_expected": false,
+          "quiescence_expected": false,
+          "discrete_time": null
+        },
+        {
+          "event": "e15776_1",
+          "expected_state": "s15776_2",
+          "guard": "x_15776_1 > 0",
+          "accepting_states": [],
+          "probability_threshold": null,
+          "refusal_expected": false,
+          "quiescence_expected": false,
+          "discrete_time": null
+        }
+      ]
+    },
+    {
+      "id": "cover_transition_t15776_3",
+      "description": "Covers transition 't15776_3' (s15776_2 --e15776_0--> s15776_2).",
+      "steps": [
+        {
+          "event": "e15776_1",
+          "expected_state": "s15776_1",
+          "guard": "x_15776_0 > 0",
+          "accepting_states": [],
+          "probability_threshold": null,
+          "refusal_expected": false,
+          "quiescence_expected": false,
+          "discrete_time": null
+        },
+        {
+          "event": "e15776_1",
+          "expected_state": "s15776_2",
+          "guard": "x_15776_1 > 0",
+          "accepting_states": [],
+          "probability_threshold": null,
+          "refusal_expected": false,
+          "quiescence_expected": false,
+          "discrete_time": null
+        },
+        {
+          "event": "e15776_0",
+          "expected_state": "s15776_2",
+          "guard": "x_15776_2 > 0",
+          "accepting_states": [],
+          "probability_threshold": null,
+          "refusal_expected": false,
+          "quiescence_expected": false,
+          "discrete_time": null
+        }
+      ]
+    }
+  ],
+  "semantics_mode": null,
+  "probability_threshold": null
+}

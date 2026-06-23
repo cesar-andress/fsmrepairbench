@@ -1,0 +1,140 @@
+{
+  "id": "synthetic_7029_3_2",
+  "name": "Synthetic FSM (custom)",
+  "description": "Synthetic FSM generated with seed=7029, states=3, events=2, branching_factor=4, deterministic=True, allow_dead_states=False",
+  "states": [
+    {
+      "id": "s7029_0",
+      "state_output": null,
+      "refusal": false,
+      "quiescence": false
+    },
+    {
+      "id": "s7029_1",
+      "state_output": null,
+      "refusal": false,
+      "quiescence": false
+    },
+    {
+      "id": "s7029_2",
+      "state_output": null,
+      "refusal": false,
+      "quiescence": false
+    }
+  ],
+  "initial_state": "s7029_0",
+  "events": [
+    "e7029_0",
+    "e7029_1"
+  ],
+  "transitions": [
+    {
+      "id": "t7029_1",
+      "source": "s7029_0",
+      "event": "e7029_1",
+      "target": "s7029_1",
+      "guard": "x_7029_0 > 0",
+      "action": "act7029_1",
+      "output": "out_7029_0",
+      "timeout": null,
+      "delay": null,
+      "requirements": [],
+      "probability": null,
+      "is_nondeterministic": false,
+      "refusal": false,
+      "quiescence": false,
+      "discrete_time": null
+    },
+    {
+      "id": "t7029_2",
+      "source": "s7029_0",
+      "event": "e7029_0",
+      "target": "s7029_2",
+      "guard": "x_7029_1 > 0",
+      "action": "act7029_2",
+      "output": "out_7029_1",
+      "timeout": null,
+      "delay": null,
+      "requirements": [],
+      "probability": null,
+      "is_nondeterministic": false,
+      "refusal": false,
+      "quiescence": false,
+      "discrete_time": null
+    },
+    {
+      "id": "t7029_3",
+      "source": "s7029_1",
+      "event": "e7029_0",
+      "target": "s7029_2",
+      "guard": "x_7029_2 > 0",
+      "action": "act7029_3",
+      "output": "out_7029_2",
+      "timeout": null,
+      "delay": null,
+      "requirements": [],
+      "probability": null,
+      "is_nondeterministic": false,
+      "refusal": false,
+      "quiescence": false,
+      "discrete_time": null
+    },
+    {
+      "id": "t7029_4",
+      "source": "s7029_1",
+      "event": "e7029_1",
+      "target": "s7029_2",
+      "guard": "x_7029_3 > 0",
+      "action": "act7029_4",
+      "output": "out_7029_3",
+      "timeout": null,
+      "delay": null,
+      "requirements": [],
+      "probability": null,
+      "is_nondeterministic": false,
+      "refusal": false,
+      "quiescence": false,
+      "discrete_time": null
+    },
+    {
+      "id": "t7029_5",
+      "source": "s7029_2",
+      "event": "e7029_1",
+      "target": "s7029_2",
+      "guard": "x_7029_4 > 0",
+      "action": "act7029_5",
+      "output": "out_7029_4",
+      "timeout": null,
+      "delay": null,
+      "requirements": [],
+      "probability": null,
+      "is_nondeterministic": false,
+      "refusal": false,
+      "quiescence": false,
+      "discrete_time": null
+    },
+    {
+      "id": "t7029_6",
+      "source": "s7029_2",
+      "event": "e7029_0",
+      "target": "s7029_2",
+      "guard": "x_7029_5 > 0",
+      "action": "act7029_6",
+      "output": "out_7029_5",
+      "timeout": null,
+      "delay": null,
+      "requirements": [],
+      "probability": null,
+      "is_nondeterministic": false,
+      "refusal": false,
+      "quiescence": false,
+      "discrete_time": null
+    }
+  ],
+  "variables": {},
+  "parent_fsm_id": null,
+  "reference_fsm_id": null,
+  "discrete_time_step": null,
+  "semantics_mode": null,
+  "cyclic_metadata": null
+}

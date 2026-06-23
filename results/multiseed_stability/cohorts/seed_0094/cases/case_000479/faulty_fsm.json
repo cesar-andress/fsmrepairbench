@@ -1,0 +1,61 @@
+{
+  "id": "synthetic_9146_3_2__faulty__dead_state_intro__479094",
+  "name": "Synthetic FSM (custom) (faulty: dead_state_intro)",
+  "description": "Synthetic FSM generated with seed=9146, states=3, events=2, branching_factor=1, deterministic=True, allow_dead_states=True",
+  "states": [
+    {
+      "id": "s9146_0",
+      "state_output": "out_9146_0",
+      "refusal": false,
+      "quiescence": false
+    },
+    {
+      "id": "s9146_1",
+      "state_output": "out_9146_1",
+      "refusal": false,
+      "quiescence": false
+    },
+    {
+      "id": "s9146_2",
+      "state_output": "out_9146_2",
+      "refusal": false,
+      "quiescence": false
+    },
+    {
+      "id": "dead_479094",
+      "state_output": null,
+      "refusal": false,
+      "quiescence": false
+    }
+  ],
+  "initial_state": "s9146_0",
+  "events": [
+    "e9146_0",
+    "e9146_1"
+  ],
+  "transitions": [
+    {
+      "id": "t9146_hub_1",
+      "source": "s9146_0",
+      "event": "e9146_1",
+      "target": "s9146_1",
+      "guard": null,
+      "action": null,
+      "output": null,
+      "timeout": null,
+      "delay": null,
+      "requirements": [],
+      "probability": null,
+      "is_nondeterministic": false,
+      "refusal": false,
+      "quiescence": false,
+      "discrete_time": null
+    }
+  ],
+  "variables": {},
+  "parent_fsm_id": "synthetic_9146_3_2",
+  "reference_fsm_id": "synthetic_9146_3_2",
+  "discrete_time_step": null,
+  "semantics_mode": null,
+  "cyclic_metadata": null
+}

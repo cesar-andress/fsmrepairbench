@@ -1,0 +1,55 @@
+{
+  "id": "synthetic_7967_3_2",
+  "name": "Synthetic FSM (custom)",
+  "description": "Synthetic FSM generated with seed=7967, states=3, events=2, branching_factor=1, deterministic=True, allow_dead_states=True",
+  "states": [
+    {
+      "id": "s7967_0",
+      "state_output": "out_7967_0",
+      "refusal": false,
+      "quiescence": false
+    },
+    {
+      "id": "s7967_1",
+      "state_output": "out_7967_1",
+      "refusal": false,
+      "quiescence": false
+    },
+    {
+      "id": "s7967_2",
+      "state_output": "out_7967_2",
+      "refusal": false,
+      "quiescence": false
+    }
+  ],
+  "initial_state": "s7967_0",
+  "events": [
+    "e7967_0",
+    "e7967_1"
+  ],
+  "transitions": [
+    {
+      "id": "t7967_hub_1",
+      "source": "s7967_0",
+      "event": "e7967_1",
+      "target": "s7967_1",
+      "guard": null,
+      "action": null,
+      "output": null,
+      "timeout": null,
+      "delay": null,
+      "requirements": [],
+      "probability": null,
+      "is_nondeterministic": false,
+      "refusal": false,
+      "quiescence": false,
+      "discrete_time": null
+    }
+  ],
+  "variables": {},
+  "parent_fsm_id": null,
+  "reference_fsm_id": null,
+  "discrete_time_step": null,
+  "semantics_mode": null,
+  "cyclic_metadata": null
+}

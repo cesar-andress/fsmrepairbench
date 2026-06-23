@@ -1,0 +1,55 @@
+{
+  "id": "synthetic_8045_3_2",
+  "name": "Synthetic FSM (custom)",
+  "description": "Synthetic FSM generated with seed=8045, states=3, events=2, branching_factor=1, deterministic=True, allow_dead_states=True",
+  "states": [
+    {
+      "id": "s8045_0",
+      "state_output": "out_8045_0",
+      "refusal": false,
+      "quiescence": false
+    },
+    {
+      "id": "s8045_1",
+      "state_output": "out_8045_1",
+      "refusal": false,
+      "quiescence": false
+    },
+    {
+      "id": "s8045_2",
+      "state_output": "out_8045_2",
+      "refusal": false,
+      "quiescence": false
+    }
+  ],
+  "initial_state": "s8045_0",
+  "events": [
+    "e8045_0",
+    "e8045_1"
+  ],
+  "transitions": [
+    {
+      "id": "t8045_hub_2",
+      "source": "s8045_0",
+      "event": "e8045_0",
+      "target": "s8045_2",
+      "guard": null,
+      "action": null,
+      "output": null,
+      "timeout": null,
+      "delay": null,
+      "requirements": [],
+      "probability": null,
+      "is_nondeterministic": false,
+      "refusal": false,
+      "quiescence": false,
+      "discrete_time": null
+    }
+  ],
+  "variables": {},
+  "parent_fsm_id": null,
+  "reference_fsm_id": null,
+  "discrete_time_step": null,
+  "semantics_mode": null,
+  "cyclic_metadata": null
+}

@@ -1,0 +1,106 @@
+{
+  "id": "synthetic_1153_3_2__faulty__nondeterminism_intro__54134",
+  "name": "Synthetic FSM (custom) (faulty: nondeterminism_intro)",
+  "description": "Synthetic FSM generated with seed=1153, states=3, events=2, branching_factor=1, deterministic=True, allow_dead_states=False",
+  "states": [
+    {
+      "id": "s1153_0",
+      "state_output": null,
+      "refusal": false,
+      "quiescence": false
+    },
+    {
+      "id": "s1153_1",
+      "state_output": null,
+      "refusal": false,
+      "quiescence": false
+    },
+    {
+      "id": "s1153_2",
+      "state_output": null,
+      "refusal": false,
+      "quiescence": false
+    }
+  ],
+  "initial_state": "s1153_0",
+  "events": [
+    "e1153_0",
+    "e1153_1"
+  ],
+  "transitions": [
+    {
+      "id": "t1153_1",
+      "source": "s1153_0",
+      "event": "e1153_1",
+      "target": "s1153_1",
+      "guard": null,
+      "action": "act1153_1",
+      "output": null,
+      "timeout": null,
+      "delay": null,
+      "requirements": [],
+      "probability": null,
+      "is_nondeterministic": false,
+      "refusal": false,
+      "quiescence": false,
+      "discrete_time": null
+    },
+    {
+      "id": "t1153_2",
+      "source": "s1153_1",
+      "event": "e1153_0",
+      "target": "s1153_2",
+      "guard": null,
+      "action": "act1153_2",
+      "output": null,
+      "timeout": null,
+      "delay": null,
+      "requirements": [],
+      "probability": null,
+      "is_nondeterministic": false,
+      "refusal": false,
+      "quiescence": false,
+      "discrete_time": null
+    },
+    {
+      "id": "t1153_3",
+      "source": "s1153_2",
+      "event": "e1153_0",
+      "target": "s1153_2",
+      "guard": null,
+      "action": "act1153_3",
+      "output": null,
+      "timeout": null,
+      "delay": null,
+      "requirements": [],
+      "probability": null,
+      "is_nondeterministic": false,
+      "refusal": false,
+      "quiescence": false,
+      "discrete_time": null
+    },
+    {
+      "id": "t1153_3__nd__54134",
+      "source": "s1153_2",
+      "event": "e1153_0",
+      "target": "s1153_1",
+      "guard": null,
+      "action": "act1153_3",
+      "output": null,
+      "timeout": null,
+      "delay": null,
+      "requirements": [],
+      "probability": null,
+      "is_nondeterministic": false,
+      "refusal": false,
+      "quiescence": false,
+      "discrete_time": null
+    }
+  ],
+  "variables": {},
+  "parent_fsm_id": "synthetic_1153_3_2",
+  "reference_fsm_id": "synthetic_1153_3_2",
+  "discrete_time_step": null,
+  "semantics_mode": null,
+  "cyclic_metadata": null
+}

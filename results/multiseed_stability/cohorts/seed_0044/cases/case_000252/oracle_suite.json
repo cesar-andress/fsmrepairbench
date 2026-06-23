@@ -1,0 +1,66 @@
+{
+  "id": "synthetic_4833_3_2_oracles",
+  "fsm_id": "synthetic_4833_3_2",
+  "scenarios": [
+    {
+      "id": "cover_transition_t4833_1",
+      "description": "Covers transition 't4833_1' (s4833_0 --e4833_0--> s4833_1).",
+      "steps": [
+        {
+          "event": "e4833_0",
+          "expected_state": "s4833_1",
+          "guard": "x_4833_0 > 0",
+          "accepting_states": [],
+          "probability_threshold": null,
+          "refusal_expected": false,
+          "quiescence_expected": false,
+          "discrete_time": null
+        }
+      ]
+    },
+    {
+      "id": "cover_transition_t4833_2",
+      "description": "Covers transition 't4833_2' (s4833_0 --e4833_0--> s4833_1).",
+      "steps": [
+        {
+          "event": "e4833_0",
+          "expected_state": "s4833_1",
+          "guard": "x_4833_1 > 0",
+          "accepting_states": [],
+          "probability_threshold": null,
+          "refusal_expected": false,
+          "quiescence_expected": false,
+          "discrete_time": null
+        }
+      ]
+    },
+    {
+      "id": "cover_transition_t4833_3",
+      "description": "Covers transition 't4833_3' (s4833_1 --e4833_0--> s4833_1).",
+      "steps": [
+        {
+          "event": "e4833_0",
+          "expected_state": "s4833_1",
+          "guard": "x_4833_0 > 0",
+          "accepting_states": [],
+          "probability_threshold": null,
+          "refusal_expected": false,
+          "quiescence_expected": false,
+          "discrete_time": null
+        },
+        {
+          "event": "e4833_0",
+          "expected_state": "s4833_1",
+          "guard": "x_4833_2 > 0",
+          "accepting_states": [],
+          "probability_threshold": null,
+          "refusal_expected": false,
+          "quiescence_expected": false,
+          "discrete_time": null
+        }
+      ]
+    }
+  ],
+  "semantics_mode": null,
+  "probability_threshold": null
+}

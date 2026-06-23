@@ -1,0 +1,106 @@
+{
+  "id": "synthetic_1827_3_2__faulty__nondeterminism_intro__96094",
+  "name": "Synthetic FSM (custom) (faulty: nondeterminism_intro)",
+  "description": "Synthetic FSM generated with seed=1827, states=3, events=2, branching_factor=1, deterministic=True, allow_dead_states=False",
+  "states": [
+    {
+      "id": "s1827_0",
+      "state_output": null,
+      "refusal": false,
+      "quiescence": false
+    },
+    {
+      "id": "s1827_1",
+      "state_output": null,
+      "refusal": false,
+      "quiescence": false
+    },
+    {
+      "id": "s1827_2",
+      "state_output": null,
+      "refusal": false,
+      "quiescence": false
+    }
+  ],
+  "initial_state": "s1827_0",
+  "events": [
+    "e1827_0",
+    "e1827_1"
+  ],
+  "transitions": [
+    {
+      "id": "t1827_1",
+      "source": "s1827_0",
+      "event": "e1827_0",
+      "target": "s1827_1",
+      "guard": null,
+      "action": "act1827_1",
+      "output": null,
+      "timeout": null,
+      "delay": null,
+      "requirements": [],
+      "probability": null,
+      "is_nondeterministic": false,
+      "refusal": false,
+      "quiescence": false,
+      "discrete_time": null
+    },
+    {
+      "id": "t1827_2",
+      "source": "s1827_1",
+      "event": "e1827_1",
+      "target": "s1827_2",
+      "guard": null,
+      "action": "act1827_2",
+      "output": null,
+      "timeout": null,
+      "delay": null,
+      "requirements": [],
+      "probability": null,
+      "is_nondeterministic": false,
+      "refusal": false,
+      "quiescence": false,
+      "discrete_time": null
+    },
+    {
+      "id": "t1827_3",
+      "source": "s1827_2",
+      "event": "e1827_0",
+      "target": "s1827_2",
+      "guard": null,
+      "action": "act1827_3",
+      "output": null,
+      "timeout": null,
+      "delay": null,
+      "requirements": [],
+      "probability": null,
+      "is_nondeterministic": false,
+      "refusal": false,
+      "quiescence": false,
+      "discrete_time": null
+    },
+    {
+      "id": "t1827_3__nd__96094",
+      "source": "s1827_2",
+      "event": "e1827_0",
+      "target": "s1827_0",
+      "guard": null,
+      "action": "act1827_3",
+      "output": null,
+      "timeout": null,
+      "delay": null,
+      "requirements": [],
+      "probability": null,
+      "is_nondeterministic": false,
+      "refusal": false,
+      "quiescence": false,
+      "discrete_time": null
+    }
+  ],
+  "variables": {},
+  "parent_fsm_id": "synthetic_1827_3_2",
+  "reference_fsm_id": "synthetic_1827_3_2",
+  "discrete_time_step": null,
+  "semantics_mode": null,
+  "cyclic_metadata": null
+}

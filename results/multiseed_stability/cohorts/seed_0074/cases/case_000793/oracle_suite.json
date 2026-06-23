@@ -1,0 +1,144 @@
+{
+  "id": "synthetic_15070_3_2_oracles",
+  "fsm_id": "synthetic_15070_3_2",
+  "scenarios": [
+    {
+      "id": "cover_transition_t15070_1",
+      "description": "Covers transition 't15070_1' (s15070_0 --e15070_1--> s15070_1).",
+      "steps": [
+        {
+          "event": "e15070_1",
+          "expected_state": "s15070_1",
+          "guard": "x_15070_0 > 0 and y_15070_0 < 10",
+          "accepting_states": [],
+          "probability_threshold": null,
+          "refusal_expected": false,
+          "quiescence_expected": false,
+          "discrete_time": null
+        }
+      ]
+    },
+    {
+      "id": "cover_transition_t15070_2",
+      "description": "Covers transition 't15070_2' (s15070_0 --e15070_0--> s15070_2).",
+      "steps": [
+        {
+          "event": "e15070_0",
+          "expected_state": "s15070_2",
+          "guard": "x_15070_1 > 0 and y_15070_1 < 10",
+          "accepting_states": [],
+          "probability_threshold": null,
+          "refusal_expected": false,
+          "quiescence_expected": false,
+          "discrete_time": null
+        }
+      ]
+    },
+    {
+      "id": "cover_transition_t15070_3",
+      "description": "Covers transition 't15070_3' (s15070_1 --e15070_0--> s15070_1).",
+      "steps": [
+        {
+          "event": "e15070_1",
+          "expected_state": "s15070_1",
+          "guard": "x_15070_0 > 0 and y_15070_0 < 10",
+          "accepting_states": [],
+          "probability_threshold": null,
+          "refusal_expected": false,
+          "quiescence_expected": false,
+          "discrete_time": null
+        },
+        {
+          "event": "e15070_0",
+          "expected_state": "s15070_1",
+          "guard": "x_15070_2 > 0 and y_15070_2 < 10",
+          "accepting_states": [],
+          "probability_threshold": null,
+          "refusal_expected": false,
+          "quiescence_expected": false,
+          "discrete_time": null
+        }
+      ]
+    },
+    {
+      "id": "cover_transition_t15070_4",
+      "description": "Covers transition 't15070_4' (s15070_1 --e15070_1--> s15070_1).",
+      "steps": [
+        {
+          "event": "e15070_1",
+          "expected_state": "s15070_1",
+          "guard": "x_15070_0 > 0 and y_15070_0 < 10",
+          "accepting_states": [],
+          "probability_threshold": null,
+          "refusal_expected": false,
+          "quiescence_expected": false,
+          "discrete_time": null
+        },
+        {
+          "event": "e15070_1",
+          "expected_state": "s15070_1",
+          "guard": "x_15070_3 > 0 and y_15070_3 < 10",
+          "accepting_states": [],
+          "probability_threshold": null,
+          "refusal_expected": false,
+          "quiescence_expected": false,
+          "discrete_time": null
+        }
+      ]
+    },
+    {
+      "id": "cover_transition_t15070_5",
+      "description": "Covers transition 't15070_5' (s15070_2 --e15070_1--> s15070_2).",
+      "steps": [
+        {
+          "event": "e15070_0",
+          "expected_state": "s15070_2",
+          "guard": "x_15070_1 > 0 and y_15070_1 < 10",
+          "accepting_states": [],
+          "probability_threshold": null,
+          "refusal_expected": false,
+          "quiescence_expected": false,
+          "discrete_time": null
+        },
+        {
+          "event": "e15070_1",
+          "expected_state": "s15070_2",
+          "guard": "x_15070_4 > 0 and y_15070_4 < 10",
+          "accepting_states": [],
+          "probability_threshold": null,
+          "refusal_expected": false,
+          "quiescence_expected": false,
+          "discrete_time": null
+        }
+      ]
+    },
+    {
+      "id": "cover_transition_t15070_6",
+      "description": "Covers transition 't15070_6' (s15070_2 --e15070_1--> s15070_2).",
+      "steps": [
+        {
+          "event": "e15070_0",
+          "expected_state": "s15070_2",
+          "guard": "x_15070_1 > 0 and y_15070_1 < 10",
+          "accepting_states": [],
+          "probability_threshold": null,
+          "refusal_expected": false,
+          "quiescence_expected": false,
+          "discrete_time": null
+        },
+        {
+          "event": "e15070_1",
+          "expected_state": "s15070_2",
+          "guard": "x_15070_5 > 0 and y_15070_5 < 10",
+          "accepting_states": [],
+          "probability_threshold": null,
+          "refusal_expected": false,
+          "quiescence_expected": false,
+          "discrete_time": null
+        }
+      ]
+    }
+  ],
+  "semantics_mode": null,
+  "probability_threshold": null
+}

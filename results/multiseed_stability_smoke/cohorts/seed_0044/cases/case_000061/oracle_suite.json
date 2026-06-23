@@ -1,0 +1,92 @@
+{
+  "id": "synthetic_2293_3_2_oracles",
+  "fsm_id": "synthetic_2293_3_2",
+  "scenarios": [
+    {
+      "id": "cover_transition_t2293_1",
+      "description": "Covers transition 't2293_1' (s2293_0 --e2293_1--> s2293_1).",
+      "steps": [
+        {
+          "event": "e2293_1",
+          "expected_state": "s2293_1",
+          "guard": "x_2293_0 > 0 and y_2293_0 < 10",
+          "accepting_states": [],
+          "probability_threshold": null,
+          "refusal_expected": false,
+          "quiescence_expected": false,
+          "discrete_time": null
+        }
+      ]
+    },
+    {
+      "id": "cover_transition_t2293_2",
+      "description": "Covers transition 't2293_2' (s2293_0 --e2293_1--> s2293_2).",
+      "steps": [
+        {
+          "event": "e2293_1",
+          "expected_state": "s2293_2",
+          "guard": "x_2293_1 > 0 and y_2293_1 < 10",
+          "accepting_states": [],
+          "probability_threshold": null,
+          "refusal_expected": false,
+          "quiescence_expected": false,
+          "discrete_time": null
+        }
+      ]
+    },
+    {
+      "id": "cover_transition_t2293_3",
+      "description": "Covers transition 't2293_3' (s2293_1 --e2293_1--> s2293_2).",
+      "steps": [
+        {
+          "event": "e2293_1",
+          "expected_state": "s2293_1",
+          "guard": "x_2293_0 > 0 and y_2293_0 < 10",
+          "accepting_states": [],
+          "probability_threshold": null,
+          "refusal_expected": false,
+          "quiescence_expected": false,
+          "discrete_time": null
+        },
+        {
+          "event": "e2293_1",
+          "expected_state": "s2293_2",
+          "guard": "x_2293_2 > 0 and y_2293_2 < 10",
+          "accepting_states": [],
+          "probability_threshold": null,
+          "refusal_expected": false,
+          "quiescence_expected": false,
+          "discrete_time": null
+        }
+      ]
+    },
+    {
+      "id": "cover_transition_t2293_4",
+      "description": "Covers transition 't2293_4' (s2293_2 --e2293_1--> s2293_2).",
+      "steps": [
+        {
+          "event": "e2293_1",
+          "expected_state": "s2293_2",
+          "guard": "x_2293_1 > 0 and y_2293_1 < 10",
+          "accepting_states": [],
+          "probability_threshold": null,
+          "refusal_expected": false,
+          "quiescence_expected": false,
+          "discrete_time": null
+        },
+        {
+          "event": "e2293_1",
+          "expected_state": "s2293_2",
+          "guard": "x_2293_3 > 0 and y_2293_3 < 10",
+          "accepting_states": [],
+          "probability_threshold": null,
+          "refusal_expected": false,
+          "quiescence_expected": false,
+          "discrete_time": null
+        }
+      ]
+    }
+  ],
+  "semantics_mode": null,
+  "probability_threshold": null
+}

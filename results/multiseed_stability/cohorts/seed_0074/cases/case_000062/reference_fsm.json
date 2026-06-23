@@ -1,0 +1,106 @@
+{
+  "id": "synthetic_17067_3_2",
+  "name": "Synthetic FSM (custom)",
+  "description": "Synthetic FSM generated with seed=17067, states=3, events=2, branching_factor=1, deterministic=True, allow_dead_states=False",
+  "states": [
+    {
+      "id": "s17067_0",
+      "state_output": null,
+      "refusal": false,
+      "quiescence": false
+    },
+    {
+      "id": "s17067_1",
+      "state_output": null,
+      "refusal": false,
+      "quiescence": false
+    },
+    {
+      "id": "s17067_2",
+      "state_output": null,
+      "refusal": false,
+      "quiescence": false
+    }
+  ],
+  "initial_state": "s17067_0",
+  "events": [
+    "e17067_0",
+    "e17067_1"
+  ],
+  "transitions": [
+    {
+      "id": "t17067_1",
+      "source": "s17067_0",
+      "event": "e17067_0",
+      "target": "s17067_1",
+      "guard": null,
+      "action": "act17067_1",
+      "output": null,
+      "timeout": null,
+      "delay": null,
+      "requirements": [],
+      "probability": null,
+      "is_nondeterministic": false,
+      "refusal": false,
+      "quiescence": false,
+      "discrete_time": null
+    },
+    {
+      "id": "t17067_2",
+      "source": "s17067_0",
+      "event": "e17067_1",
+      "target": "s17067_2",
+      "guard": null,
+      "action": "act17067_2",
+      "output": null,
+      "timeout": null,
+      "delay": null,
+      "requirements": [],
+      "probability": null,
+      "is_nondeterministic": false,
+      "refusal": false,
+      "quiescence": false,
+      "discrete_time": null
+    },
+    {
+      "id": "t17067_3",
+      "source": "s17067_1",
+      "event": "e17067_0",
+      "target": "s17067_2",
+      "guard": null,
+      "action": "act17067_3",
+      "output": null,
+      "timeout": null,
+      "delay": null,
+      "requirements": [],
+      "probability": null,
+      "is_nondeterministic": false,
+      "refusal": false,
+      "quiescence": false,
+      "discrete_time": null
+    },
+    {
+      "id": "t17067_4",
+      "source": "s17067_2",
+      "event": "e17067_1",
+      "target": "s17067_2",
+      "guard": null,
+      "action": "act17067_4",
+      "output": null,
+      "timeout": null,
+      "delay": null,
+      "requirements": [],
+      "probability": null,
+      "is_nondeterministic": false,
+      "refusal": false,
+      "quiescence": false,
+      "discrete_time": null
+    }
+  ],
+  "variables": {},
+  "parent_fsm_id": null,
+  "reference_fsm_id": null,
+  "discrete_time_step": null,
+  "semantics_mode": null,
+  "cyclic_metadata": null
+}

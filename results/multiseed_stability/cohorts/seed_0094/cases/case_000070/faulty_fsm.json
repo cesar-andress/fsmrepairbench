@@ -1,0 +1,106 @@
+{
+  "id": "synthetic_9304_3_2__faulty__nondeterminism_intro__70094",
+  "name": "Synthetic FSM (custom) (faulty: nondeterminism_intro)",
+  "description": "Synthetic FSM generated with seed=9304, states=3, events=2, branching_factor=1, deterministic=True, allow_dead_states=False",
+  "states": [
+    {
+      "id": "s9304_0",
+      "state_output": null,
+      "refusal": false,
+      "quiescence": false
+    },
+    {
+      "id": "s9304_1",
+      "state_output": null,
+      "refusal": false,
+      "quiescence": false
+    },
+    {
+      "id": "s9304_2",
+      "state_output": null,
+      "refusal": false,
+      "quiescence": false
+    }
+  ],
+  "initial_state": "s9304_0",
+  "events": [
+    "e9304_0",
+    "e9304_1"
+  ],
+  "transitions": [
+    {
+      "id": "t9304_1",
+      "source": "s9304_0",
+      "event": "e9304_1",
+      "target": "s9304_1",
+      "guard": null,
+      "action": "act9304_1",
+      "output": null,
+      "timeout": null,
+      "delay": null,
+      "requirements": [],
+      "probability": null,
+      "is_nondeterministic": false,
+      "refusal": false,
+      "quiescence": false,
+      "discrete_time": null
+    },
+    {
+      "id": "t9304_2",
+      "source": "s9304_1",
+      "event": "e9304_0",
+      "target": "s9304_2",
+      "guard": null,
+      "action": "act9304_2",
+      "output": null,
+      "timeout": null,
+      "delay": null,
+      "requirements": [],
+      "probability": null,
+      "is_nondeterministic": false,
+      "refusal": false,
+      "quiescence": false,
+      "discrete_time": null
+    },
+    {
+      "id": "t9304_3",
+      "source": "s9304_2",
+      "event": "e9304_1",
+      "target": "s9304_2",
+      "guard": null,
+      "action": "act9304_3",
+      "output": null,
+      "timeout": null,
+      "delay": null,
+      "requirements": [],
+      "probability": null,
+      "is_nondeterministic": false,
+      "refusal": false,
+      "quiescence": false,
+      "discrete_time": null
+    },
+    {
+      "id": "t9304_1__nd__70094",
+      "source": "s9304_0",
+      "event": "e9304_1",
+      "target": "s9304_0",
+      "guard": null,
+      "action": "act9304_1",
+      "output": null,
+      "timeout": null,
+      "delay": null,
+      "requirements": [],
+      "probability": null,
+      "is_nondeterministic": false,
+      "refusal": false,
+      "quiescence": false,
+      "discrete_time": null
+    }
+  ],
+  "variables": {},
+  "parent_fsm_id": "synthetic_9304_3_2",
+  "reference_fsm_id": "synthetic_9304_3_2",
+  "discrete_time_step": null,
+  "semantics_mode": null,
+  "cyclic_metadata": null
+}

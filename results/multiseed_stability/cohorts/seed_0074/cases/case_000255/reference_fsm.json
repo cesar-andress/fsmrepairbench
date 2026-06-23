@@ -1,0 +1,123 @@
+{
+  "id": "synthetic_4914_3_2",
+  "name": "Synthetic FSM (custom)",
+  "description": "Synthetic FSM generated with seed=4914, states=3, events=2, branching_factor=2, deterministic=True, allow_dead_states=True",
+  "states": [
+    {
+      "id": "s4914_0",
+      "state_output": null,
+      "refusal": false,
+      "quiescence": false
+    },
+    {
+      "id": "s4914_1",
+      "state_output": null,
+      "refusal": false,
+      "quiescence": false
+    },
+    {
+      "id": "s4914_2",
+      "state_output": null,
+      "refusal": false,
+      "quiescence": false
+    }
+  ],
+  "initial_state": "s4914_0",
+  "events": [
+    "e4914_0",
+    "e4914_1"
+  ],
+  "transitions": [
+    {
+      "id": "t4914_1",
+      "source": "s4914_0",
+      "event": "e4914_0",
+      "target": "s4914_1",
+      "guard": "x_4914_0 > 0",
+      "action": "act4914_1",
+      "output": "out_4914_0",
+      "timeout": null,
+      "delay": null,
+      "requirements": [],
+      "probability": null,
+      "is_nondeterministic": false,
+      "refusal": false,
+      "quiescence": false,
+      "discrete_time": null
+    },
+    {
+      "id": "t4914_2",
+      "source": "s4914_1",
+      "event": "e4914_1",
+      "target": "s4914_2",
+      "guard": "x_4914_1 > 0",
+      "action": "act4914_2",
+      "output": "out_4914_1",
+      "timeout": null,
+      "delay": null,
+      "requirements": [],
+      "probability": null,
+      "is_nondeterministic": false,
+      "refusal": false,
+      "quiescence": false,
+      "discrete_time": null
+    },
+    {
+      "id": "t4914_3",
+      "source": "s4914_0",
+      "event": "e4914_0",
+      "target": "s4914_0",
+      "guard": "x_4914_2 > 0",
+      "action": "act4914_3",
+      "output": "out_4914_2",
+      "timeout": null,
+      "delay": null,
+      "requirements": [],
+      "probability": null,
+      "is_nondeterministic": false,
+      "refusal": false,
+      "quiescence": false,
+      "discrete_time": null
+    },
+    {
+      "id": "t4914_4",
+      "source": "s4914_1",
+      "event": "e4914_1",
+      "target": "s4914_1",
+      "guard": "x_4914_3 > 0",
+      "action": "act4914_4",
+      "output": "out_4914_3",
+      "timeout": null,
+      "delay": null,
+      "requirements": [],
+      "probability": null,
+      "is_nondeterministic": false,
+      "refusal": false,
+      "quiescence": false,
+      "discrete_time": null
+    },
+    {
+      "id": "t4914_5",
+      "source": "s4914_2",
+      "event": "e4914_1",
+      "target": "s4914_2",
+      "guard": "x_4914_4 > 0",
+      "action": "act4914_5",
+      "output": "out_4914_4",
+      "timeout": null,
+      "delay": null,
+      "requirements": [],
+      "probability": null,
+      "is_nondeterministic": false,
+      "refusal": false,
+      "quiescence": false,
+      "discrete_time": null
+    }
+  ],
+  "variables": {},
+  "parent_fsm_id": null,
+  "reference_fsm_id": null,
+  "discrete_time_step": null,
+  "semantics_mode": null,
+  "cyclic_metadata": null
+}

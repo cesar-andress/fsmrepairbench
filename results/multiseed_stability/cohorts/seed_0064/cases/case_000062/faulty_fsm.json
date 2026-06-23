@@ -1,0 +1,106 @@
+{
+  "id": "synthetic_1219_3_2__faulty__nondeterminism_intro__62064",
+  "name": "Synthetic FSM (custom) (faulty: nondeterminism_intro)",
+  "description": "Synthetic FSM generated with seed=1219, states=3, events=2, branching_factor=1, deterministic=True, allow_dead_states=False",
+  "states": [
+    {
+      "id": "s1219_0",
+      "state_output": null,
+      "refusal": false,
+      "quiescence": false
+    },
+    {
+      "id": "s1219_1",
+      "state_output": null,
+      "refusal": false,
+      "quiescence": false
+    },
+    {
+      "id": "s1219_2",
+      "state_output": null,
+      "refusal": false,
+      "quiescence": false
+    }
+  ],
+  "initial_state": "s1219_0",
+  "events": [
+    "e1219_0",
+    "e1219_1"
+  ],
+  "transitions": [
+    {
+      "id": "t1219_1",
+      "source": "s1219_0",
+      "event": "e1219_0",
+      "target": "s1219_1",
+      "guard": null,
+      "action": "act1219_1",
+      "output": null,
+      "timeout": null,
+      "delay": null,
+      "requirements": [],
+      "probability": null,
+      "is_nondeterministic": false,
+      "refusal": false,
+      "quiescence": false,
+      "discrete_time": null
+    },
+    {
+      "id": "t1219_2",
+      "source": "s1219_1",
+      "event": "e1219_0",
+      "target": "s1219_2",
+      "guard": null,
+      "action": "act1219_2",
+      "output": null,
+      "timeout": null,
+      "delay": null,
+      "requirements": [],
+      "probability": null,
+      "is_nondeterministic": false,
+      "refusal": false,
+      "quiescence": false,
+      "discrete_time": null
+    },
+    {
+      "id": "t1219_3",
+      "source": "s1219_2",
+      "event": "e1219_0",
+      "target": "s1219_2",
+      "guard": null,
+      "action": "act1219_3",
+      "output": null,
+      "timeout": null,
+      "delay": null,
+      "requirements": [],
+      "probability": null,
+      "is_nondeterministic": false,
+      "refusal": false,
+      "quiescence": false,
+      "discrete_time": null
+    },
+    {
+      "id": "t1219_1__nd__62064",
+      "source": "s1219_0",
+      "event": "e1219_0",
+      "target": "s1219_2",
+      "guard": null,
+      "action": "act1219_1",
+      "output": null,
+      "timeout": null,
+      "delay": null,
+      "requirements": [],
+      "probability": null,
+      "is_nondeterministic": false,
+      "refusal": false,
+      "quiescence": false,
+      "discrete_time": null
+    }
+  ],
+  "variables": {},
+  "parent_fsm_id": "synthetic_1219_3_2",
+  "reference_fsm_id": "synthetic_1219_3_2",
+  "discrete_time_step": null,
+  "semantics_mode": null,
+  "cyclic_metadata": null
+}

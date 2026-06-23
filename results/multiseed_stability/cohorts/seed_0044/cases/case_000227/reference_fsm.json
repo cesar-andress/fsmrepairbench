@@ -1,0 +1,106 @@
+{
+  "id": "synthetic_4307_3_2",
+  "name": "Synthetic FSM (custom)",
+  "description": "Synthetic FSM generated with seed=4307, states=3, events=2, branching_factor=1, deterministic=True, allow_dead_states=False",
+  "states": [
+    {
+      "id": "s4307_0",
+      "state_output": null,
+      "refusal": false,
+      "quiescence": false
+    },
+    {
+      "id": "s4307_1",
+      "state_output": null,
+      "refusal": false,
+      "quiescence": false
+    },
+    {
+      "id": "s4307_2",
+      "state_output": null,
+      "refusal": false,
+      "quiescence": false
+    }
+  ],
+  "initial_state": "s4307_0",
+  "events": [
+    "e4307_0",
+    "e4307_1"
+  ],
+  "transitions": [
+    {
+      "id": "t4307_1",
+      "source": "s4307_0",
+      "event": "e4307_1",
+      "target": "s4307_1",
+      "guard": "x_4307_0 > 0",
+      "action": "act4307_1",
+      "output": "out_4307_0",
+      "timeout": null,
+      "delay": null,
+      "requirements": [],
+      "probability": null,
+      "is_nondeterministic": false,
+      "refusal": false,
+      "quiescence": false,
+      "discrete_time": null
+    },
+    {
+      "id": "t4307_2",
+      "source": "s4307_0",
+      "event": "e4307_0",
+      "target": "s4307_2",
+      "guard": "x_4307_1 > 0",
+      "action": "act4307_2",
+      "output": "out_4307_1",
+      "timeout": null,
+      "delay": null,
+      "requirements": [],
+      "probability": null,
+      "is_nondeterministic": false,
+      "refusal": false,
+      "quiescence": false,
+      "discrete_time": null
+    },
+    {
+      "id": "t4307_3",
+      "source": "s4307_1",
+      "event": "e4307_1",
+      "target": "s4307_1",
+      "guard": "x_4307_2 > 0",
+      "action": "act4307_3",
+      "output": "out_4307_2",
+      "timeout": null,
+      "delay": null,
+      "requirements": [],
+      "probability": null,
+      "is_nondeterministic": false,
+      "refusal": false,
+      "quiescence": false,
+      "discrete_time": null
+    },
+    {
+      "id": "t4307_4",
+      "source": "s4307_2",
+      "event": "e4307_1",
+      "target": "s4307_2",
+      "guard": "x_4307_3 > 0",
+      "action": "act4307_4",
+      "output": "out_4307_3",
+      "timeout": null,
+      "delay": null,
+      "requirements": [],
+      "probability": null,
+      "is_nondeterministic": false,
+      "refusal": false,
+      "quiescence": false,
+      "discrete_time": null
+    }
+  ],
+  "variables": {},
+  "parent_fsm_id": null,
+  "reference_fsm_id": null,
+  "discrete_time_step": null,
+  "semantics_mode": null,
+  "cyclic_metadata": null
+}

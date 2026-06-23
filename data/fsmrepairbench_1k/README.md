@@ -6,7 +6,7 @@
 - **Number of analyzed FSM cases:** 1,000 (pinned cohort)
 - **Files:** reference_fsm.json, faulty_fsm.json, oracle_suite.json, bug_metadata.json, case_features.json
 - **Seed:** 43 (Zenodo metadata); build plan uses seed **44** — see `plans/fsmrepairbench_v0_1k_plan.yaml`
-- **DOI:** [10.5281/zenodo.20724095](https://doi.org/10.5281/zenodo.20724095)
+- **DOI:** [10.5281/zenodo.20602577](https://doi.org/10.5281/zenodo.20602577)
 - **Notes:** some candidate cases failed due to unsupported mutation operators
 
 Build plan: `plans/fsmrepairbench_v0_1k_plan.yaml`. Per-case metrics and build status: `progress.csv`.

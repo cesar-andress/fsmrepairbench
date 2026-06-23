@@ -1,0 +1,89 @@
+{
+  "id": "synthetic_15909_3_2",
+  "name": "Synthetic FSM (custom)",
+  "description": "Synthetic FSM generated with seed=15909, states=3, events=2, branching_factor=1, deterministic=True, allow_dead_states=False",
+  "states": [
+    {
+      "id": "s15909_0",
+      "state_output": null,
+      "refusal": false,
+      "quiescence": false
+    },
+    {
+      "id": "s15909_1",
+      "state_output": null,
+      "refusal": false,
+      "quiescence": false
+    },
+    {
+      "id": "s15909_2",
+      "state_output": null,
+      "refusal": false,
+      "quiescence": false
+    }
+  ],
+  "initial_state": "s15909_0",
+  "events": [
+    "e15909_0",
+    "e15909_1"
+  ],
+  "transitions": [
+    {
+      "id": "t15909_1",
+      "source": "s15909_0",
+      "event": "e15909_0",
+      "target": "s15909_1",
+      "guard": "x_15909_0 > 0",
+      "action": "act15909_1",
+      "output": null,
+      "timeout": 1.0,
+      "delay": null,
+      "requirements": [],
+      "probability": null,
+      "is_nondeterministic": false,
+      "refusal": false,
+      "quiescence": false,
+      "discrete_time": null
+    },
+    {
+      "id": "t15909_2",
+      "source": "s15909_1",
+      "event": "e15909_1",
+      "target": "s15909_2",
+      "guard": "x_15909_1 > 0",
+      "action": "act15909_2",
+      "output": null,
+      "timeout": 2.0,
+      "delay": null,
+      "requirements": [],
+      "probability": null,
+      "is_nondeterministic": false,
+      "refusal": false,
+      "quiescence": false,
+      "discrete_time": null
+    },
+    {
+      "id": "t15909_3",
+      "source": "s15909_2",
+      "event": "e15909_1",
+      "target": "s15909_2",
+      "guard": "x_15909_2 > 0",
+      "action": "act15909_3",
+      "output": null,
+      "timeout": 3.0,
+      "delay": null,
+      "requirements": [],
+      "probability": null,
+      "is_nondeterministic": false,
+      "refusal": false,
+      "quiescence": false,
+      "discrete_time": null
+    }
+  ],
+  "variables": {},
+  "parent_fsm_id": null,
+  "reference_fsm_id": null,
+  "discrete_time_step": null,
+  "semantics_mode": null,
+  "cyclic_metadata": null
+}

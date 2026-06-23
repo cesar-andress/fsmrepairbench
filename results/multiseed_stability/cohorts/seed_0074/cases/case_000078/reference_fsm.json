@@ -1,0 +1,106 @@
+{
+  "id": "synthetic_1501_3_2",
+  "name": "Synthetic FSM (custom)",
+  "description": "Synthetic FSM generated with seed=1501, states=3, events=2, branching_factor=1, deterministic=True, allow_dead_states=False",
+  "states": [
+    {
+      "id": "s1501_0",
+      "state_output": null,
+      "refusal": false,
+      "quiescence": false
+    },
+    {
+      "id": "s1501_1",
+      "state_output": null,
+      "refusal": false,
+      "quiescence": false
+    },
+    {
+      "id": "s1501_2",
+      "state_output": null,
+      "refusal": false,
+      "quiescence": false
+    }
+  ],
+  "initial_state": "s1501_0",
+  "events": [
+    "e1501_0",
+    "e1501_1"
+  ],
+  "transitions": [
+    {
+      "id": "t1501_1",
+      "source": "s1501_0",
+      "event": "e1501_1",
+      "target": "s1501_1",
+      "guard": null,
+      "action": "act1501_1",
+      "output": null,
+      "timeout": null,
+      "delay": null,
+      "requirements": [],
+      "probability": null,
+      "is_nondeterministic": false,
+      "refusal": false,
+      "quiescence": false,
+      "discrete_time": null
+    },
+    {
+      "id": "t1501_2",
+      "source": "s1501_0",
+      "event": "e1501_0",
+      "target": "s1501_2",
+      "guard": null,
+      "action": "act1501_2",
+      "output": null,
+      "timeout": null,
+      "delay": null,
+      "requirements": [],
+      "probability": null,
+      "is_nondeterministic": false,
+      "refusal": false,
+      "quiescence": false,
+      "discrete_time": null
+    },
+    {
+      "id": "t1501_3",
+      "source": "s1501_1",
+      "event": "e1501_1",
+      "target": "s1501_2",
+      "guard": null,
+      "action": "act1501_3",
+      "output": null,
+      "timeout": null,
+      "delay": null,
+      "requirements": [],
+      "probability": null,
+      "is_nondeterministic": false,
+      "refusal": false,
+      "quiescence": false,
+      "discrete_time": null
+    },
+    {
+      "id": "t1501_4",
+      "source": "s1501_2",
+      "event": "e1501_1",
+      "target": "s1501_2",
+      "guard": null,
+      "action": "act1501_4",
+      "output": null,
+      "timeout": null,
+      "delay": null,
+      "requirements": [],
+      "probability": null,
+      "is_nondeterministic": false,
+      "refusal": false,
+      "quiescence": false,
+      "discrete_time": null
+    }
+  ],
+  "variables": {},
+  "parent_fsm_id": null,
+  "reference_fsm_id": null,
+  "discrete_time_step": null,
+  "semantics_mode": null,
+  "cyclic_metadata": null
+}

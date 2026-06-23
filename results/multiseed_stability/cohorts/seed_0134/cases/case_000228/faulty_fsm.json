@@ -1,0 +1,106 @@
+{
+  "id": "synthetic_4414_3_2__faulty__action_corruption__228134",
+  "name": "Synthetic FSM (custom) (faulty: action_corruption)",
+  "description": "Synthetic FSM generated with seed=4414, states=3, events=2, branching_factor=1, deterministic=True, allow_dead_states=False",
+  "states": [
+    {
+      "id": "s4414_0",
+      "state_output": null,
+      "refusal": false,
+      "quiescence": false
+    },
+    {
+      "id": "s4414_1",
+      "state_output": null,
+      "refusal": false,
+      "quiescence": false
+    },
+    {
+      "id": "s4414_2",
+      "state_output": null,
+      "refusal": false,
+      "quiescence": false
+    }
+  ],
+  "initial_state": "s4414_0",
+  "events": [
+    "e4414_0",
+    "e4414_1"
+  ],
+  "transitions": [
+    {
+      "id": "t4414_1",
+      "source": "s4414_0",
+      "event": "e4414_1",
+      "target": "s4414_1",
+      "guard": "x_4414_0 > 0",
+      "action": "act4414_1",
+      "output": "out_4414_0",
+      "timeout": null,
+      "delay": null,
+      "requirements": [],
+      "probability": null,
+      "is_nondeterministic": false,
+      "refusal": false,
+      "quiescence": false,
+      "discrete_time": null
+    },
+    {
+      "id": "t4414_2",
+      "source": "s4414_0",
+      "event": "e4414_1",
+      "target": "s4414_2",
+      "guard": "x_4414_1 > 0",
+      "action": "act4414_2",
+      "output": "out_4414_1",
+      "timeout": null,
+      "delay": null,
+      "requirements": [],
+      "probability": null,
+      "is_nondeterministic": false,
+      "refusal": false,
+      "quiescence": false,
+      "discrete_time": null
+    },
+    {
+      "id": "t4414_3",
+      "source": "s4414_1",
+      "event": "e4414_1",
+      "target": "s4414_2",
+      "guard": "x_4414_2 > 0",
+      "action": "wrong_act4414_3",
+      "output": "out_4414_2",
+      "timeout": null,
+      "delay": null,
+      "requirements": [],
+      "probability": null,
+      "is_nondeterministic": false,
+      "refusal": false,
+      "quiescence": false,
+      "discrete_time": null
+    },
+    {
+      "id": "t4414_4",
+      "source": "s4414_2",
+      "event": "e4414_1",
+      "target": "s4414_2",
+      "guard": "x_4414_3 > 0",
+      "action": "act4414_4",
+      "output": "out_4414_3",
+      "timeout": null,
+      "delay": null,
+      "requirements": [],
+      "probability": null,
+      "is_nondeterministic": false,
+      "refusal": false,
+      "quiescence": false,
+      "discrete_time": null
+    }
+  ],
+  "variables": {},
+  "parent_fsm_id": "synthetic_4414_3_2",
+  "reference_fsm_id": "synthetic_4414_3_2",
+  "discrete_time_step": null,
+  "semantics_mode": null,
+  "cyclic_metadata": null
+}

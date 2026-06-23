@@ -1,0 +1,123 @@
+{
+  "id": "synthetic_5403_3_2",
+  "name": "Synthetic FSM (custom)",
+  "description": "Synthetic FSM generated with seed=5403, states=3, events=2, branching_factor=2, deterministic=True, allow_dead_states=True",
+  "states": [
+    {
+      "id": "s5403_0",
+      "state_output": null,
+      "refusal": false,
+      "quiescence": false
+    },
+    {
+      "id": "s5403_1",
+      "state_output": null,
+      "refusal": false,
+      "quiescence": false
+    },
+    {
+      "id": "s5403_2",
+      "state_output": null,
+      "refusal": false,
+      "quiescence": false
+    }
+  ],
+  "initial_state": "s5403_0",
+  "events": [
+    "e5403_0",
+    "e5403_1"
+  ],
+  "transitions": [
+    {
+      "id": "t5403_1",
+      "source": "s5403_0",
+      "event": "e5403_0",
+      "target": "s5403_1",
+      "guard": "x_5403_0 > 0",
+      "action": "act5403_1",
+      "output": "out_5403_0",
+      "timeout": null,
+      "delay": null,
+      "requirements": [],
+      "probability": null,
+      "is_nondeterministic": false,
+      "refusal": false,
+      "quiescence": false,
+      "discrete_time": null
+    },
+    {
+      "id": "t5403_2",
+      "source": "s5403_1",
+      "event": "e5403_1",
+      "target": "s5403_2",
+      "guard": "x_5403_1 > 0",
+      "action": "act5403_2",
+      "output": "out_5403_1",
+      "timeout": null,
+      "delay": null,
+      "requirements": [],
+      "probability": null,
+      "is_nondeterministic": false,
+      "refusal": false,
+      "quiescence": false,
+      "discrete_time": null
+    },
+    {
+      "id": "t5403_3",
+      "source": "s5403_0",
+      "event": "e5403_1",
+      "target": "s5403_1",
+      "guard": "x_5403_2 > 0",
+      "action": "act5403_3",
+      "output": "out_5403_2",
+      "timeout": null,
+      "delay": null,
+      "requirements": [],
+      "probability": null,
+      "is_nondeterministic": false,
+      "refusal": false,
+      "quiescence": false,
+      "discrete_time": null
+    },
+    {
+      "id": "t5403_4",
+      "source": "s5403_1",
+      "event": "e5403_0",
+      "target": "s5403_1",
+      "guard": "x_5403_3 > 0",
+      "action": "act5403_4",
+      "output": "out_5403_3",
+      "timeout": null,
+      "delay": null,
+      "requirements": [],
+      "probability": null,
+      "is_nondeterministic": false,
+      "refusal": false,
+      "quiescence": false,
+      "discrete_time": null
+    },
+    {
+      "id": "t5403_5",
+      "source": "s5403_2",
+      "event": "e5403_1",
+      "target": "s5403_2",
+      "guard": "x_5403_4 > 0",
+      "action": "act5403_5",
+      "output": "out_5403_4",
+      "timeout": null,
+      "delay": null,
+      "requirements": [],
+      "probability": null,
+      "is_nondeterministic": false,
+      "refusal": false,
+      "quiescence": false,
+      "discrete_time": null
+    }
+  ],
+  "variables": {},
+  "parent_fsm_id": null,
+  "reference_fsm_id": null,
+  "discrete_time_step": null,
+  "semantics_mode": null,
+  "cyclic_metadata": null
+}

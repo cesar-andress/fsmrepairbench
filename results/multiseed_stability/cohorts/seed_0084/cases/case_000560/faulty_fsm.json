@@ -1,0 +1,61 @@
+{
+  "id": "synthetic_10715_3_2__faulty__unreachable_state_intro__560084",
+  "name": "Synthetic FSM (custom) (faulty: unreachable_state_intro)",
+  "description": "Synthetic FSM generated with seed=10715, states=3, events=2, branching_factor=1, deterministic=True, allow_dead_states=True",
+  "states": [
+    {
+      "id": "s10715_0",
+      "state_output": "out_10715_0",
+      "refusal": false,
+      "quiescence": false
+    },
+    {
+      "id": "s10715_1",
+      "state_output": "out_10715_1",
+      "refusal": false,
+      "quiescence": false
+    },
+    {
+      "id": "s10715_2",
+      "state_output": "out_10715_2",
+      "refusal": false,
+      "quiescence": false
+    },
+    {
+      "id": "unreachable_560084",
+      "state_output": null,
+      "refusal": false,
+      "quiescence": false
+    }
+  ],
+  "initial_state": "s10715_0",
+  "events": [
+    "e10715_0",
+    "e10715_1"
+  ],
+  "transitions": [
+    {
+      "id": "t10715_hub_2",
+      "source": "s10715_0",
+      "event": "e10715_0",
+      "target": "s10715_2",
+      "guard": null,
+      "action": null,
+      "output": null,
+      "timeout": null,
+      "delay": null,
+      "requirements": [],
+      "probability": null,
+      "is_nondeterministic": false,
+      "refusal": false,
+      "quiescence": false,
+      "discrete_time": null
+    }
+  ],
+  "variables": {},
+  "parent_fsm_id": "synthetic_10715_3_2",
+  "reference_fsm_id": "synthetic_10715_3_2",
+  "discrete_time_step": null,
+  "semantics_mode": null,
+  "cyclic_metadata": null
+}

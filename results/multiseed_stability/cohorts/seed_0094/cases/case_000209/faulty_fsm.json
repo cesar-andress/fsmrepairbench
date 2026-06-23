@@ -1,0 +1,106 @@
+{
+  "id": "synthetic_4051_3_2__faulty__action_corruption__209094",
+  "name": "Synthetic FSM (custom) (faulty: action_corruption)",
+  "description": "Synthetic FSM generated with seed=4051, states=3, events=2, branching_factor=1, deterministic=True, allow_dead_states=False",
+  "states": [
+    {
+      "id": "s4051_0",
+      "state_output": null,
+      "refusal": false,
+      "quiescence": false
+    },
+    {
+      "id": "s4051_1",
+      "state_output": null,
+      "refusal": false,
+      "quiescence": false
+    },
+    {
+      "id": "s4051_2",
+      "state_output": null,
+      "refusal": false,
+      "quiescence": false
+    }
+  ],
+  "initial_state": "s4051_0",
+  "events": [
+    "e4051_0",
+    "e4051_1"
+  ],
+  "transitions": [
+    {
+      "id": "t4051_1",
+      "source": "s4051_0",
+      "event": "e4051_1",
+      "target": "s4051_1",
+      "guard": "x_4051_0 > 0",
+      "action": "act4051_1",
+      "output": "out_4051_0",
+      "timeout": null,
+      "delay": null,
+      "requirements": [],
+      "probability": null,
+      "is_nondeterministic": false,
+      "refusal": false,
+      "quiescence": false,
+      "discrete_time": null
+    },
+    {
+      "id": "t4051_2",
+      "source": "s4051_0",
+      "event": "e4051_0",
+      "target": "s4051_2",
+      "guard": "x_4051_1 > 0",
+      "action": "act4051_2",
+      "output": "out_4051_1",
+      "timeout": null,
+      "delay": null,
+      "requirements": [],
+      "probability": null,
+      "is_nondeterministic": false,
+      "refusal": false,
+      "quiescence": false,
+      "discrete_time": null
+    },
+    {
+      "id": "t4051_3",
+      "source": "s4051_1",
+      "event": "e4051_1",
+      "target": "s4051_1",
+      "guard": "x_4051_2 > 0",
+      "action": "act4051_3",
+      "output": "out_4051_2",
+      "timeout": null,
+      "delay": null,
+      "requirements": [],
+      "probability": null,
+      "is_nondeterministic": false,
+      "refusal": false,
+      "quiescence": false,
+      "discrete_time": null
+    },
+    {
+      "id": "t4051_4",
+      "source": "s4051_2",
+      "event": "e4051_0",
+      "target": "s4051_2",
+      "guard": "x_4051_3 > 0",
+      "action": "wrong_act4051_4",
+      "output": "out_4051_3",
+      "timeout": null,
+      "delay": null,
+      "requirements": [],
+      "probability": null,
+      "is_nondeterministic": false,
+      "refusal": false,
+      "quiescence": false,
+      "discrete_time": null
+    }
+  ],
+  "variables": {},
+  "parent_fsm_id": "synthetic_4051_3_2",
+  "reference_fsm_id": "synthetic_4051_3_2",
+  "discrete_time_step": null,
+  "semantics_mode": null,
+  "cyclic_metadata": null
+}

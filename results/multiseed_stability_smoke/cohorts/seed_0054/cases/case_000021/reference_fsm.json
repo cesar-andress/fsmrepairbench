@@ -1,0 +1,106 @@
+{
+  "id": "synthetic_815_3_2",
+  "name": "Synthetic FSM (custom)",
+  "description": "Synthetic FSM generated with seed=815, states=3, events=2, branching_factor=1, deterministic=True, allow_dead_states=False",
+  "states": [
+    {
+      "id": "s815_0",
+      "state_output": null,
+      "refusal": false,
+      "quiescence": false
+    },
+    {
+      "id": "s815_1",
+      "state_output": null,
+      "refusal": false,
+      "quiescence": false
+    },
+    {
+      "id": "s815_2",
+      "state_output": null,
+      "refusal": false,
+      "quiescence": false
+    }
+  ],
+  "initial_state": "s815_0",
+  "events": [
+    "e815_0",
+    "e815_1"
+  ],
+  "transitions": [
+    {
+      "id": "t815_1",
+      "source": "s815_0",
+      "event": "e815_1",
+      "target": "s815_1",
+      "guard": "x_815_0 > 0",
+      "action": "act815_1",
+      "output": "out_815_0",
+      "timeout": null,
+      "delay": null,
+      "requirements": [],
+      "probability": null,
+      "is_nondeterministic": false,
+      "refusal": false,
+      "quiescence": false,
+      "discrete_time": null
+    },
+    {
+      "id": "t815_2",
+      "source": "s815_0",
+      "event": "e815_1",
+      "target": "s815_2",
+      "guard": "x_815_1 > 0",
+      "action": "act815_2",
+      "output": "out_815_1",
+      "timeout": null,
+      "delay": null,
+      "requirements": [],
+      "probability": null,
+      "is_nondeterministic": false,
+      "refusal": false,
+      "quiescence": false,
+      "discrete_time": null
+    },
+    {
+      "id": "t815_3",
+      "source": "s815_1",
+      "event": "e815_1",
+      "target": "s815_1",
+      "guard": "x_815_2 > 0",
+      "action": "act815_3",
+      "output": "out_815_2",
+      "timeout": null,
+      "delay": null,
+      "requirements": [],
+      "probability": null,
+      "is_nondeterministic": false,
+      "refusal": false,
+      "quiescence": false,
+      "discrete_time": null
+    },
+    {
+      "id": "t815_4",
+      "source": "s815_2",
+      "event": "e815_0",
+      "target": "s815_2",
+      "guard": "x_815_3 > 0",
+      "action": "act815_4",
+      "output": "out_815_3",
+      "timeout": null,
+      "delay": null,
+      "requirements": [],
+      "probability": null,
+      "is_nondeterministic": false,
+      "refusal": false,
+      "quiescence": false,
+      "discrete_time": null
+    }
+  ],
+  "variables": {},
+  "parent_fsm_id": null,
+  "reference_fsm_id": null,
+  "discrete_time_step": null,
+  "semantics_mode": null,
+  "cyclic_metadata": null
+}

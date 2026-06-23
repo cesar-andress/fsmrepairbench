@@ -1,0 +1,106 @@
+{
+  "id": "synthetic_4619_3_2",
+  "name": "Synthetic FSM (custom)",
+  "description": "Synthetic FSM generated with seed=4619, states=3, events=2, branching_factor=1, deterministic=True, allow_dead_states=False",
+  "states": [
+    {
+      "id": "s4619_0",
+      "state_output": null,
+      "refusal": false,
+      "quiescence": false
+    },
+    {
+      "id": "s4619_1",
+      "state_output": null,
+      "refusal": false,
+      "quiescence": false
+    },
+    {
+      "id": "s4619_2",
+      "state_output": null,
+      "refusal": false,
+      "quiescence": false
+    }
+  ],
+  "initial_state": "s4619_0",
+  "events": [
+    "e4619_0",
+    "e4619_1"
+  ],
+  "transitions": [
+    {
+      "id": "t4619_1",
+      "source": "s4619_0",
+      "event": "e4619_1",
+      "target": "s4619_1",
+      "guard": "x_4619_0 > 0",
+      "action": "act4619_1",
+      "output": "out_4619_0",
+      "timeout": null,
+      "delay": null,
+      "requirements": [],
+      "probability": null,
+      "is_nondeterministic": false,
+      "refusal": false,
+      "quiescence": false,
+      "discrete_time": null
+    },
+    {
+      "id": "t4619_2",
+      "source": "s4619_0",
+      "event": "e4619_0",
+      "target": "s4619_2",
+      "guard": "x_4619_1 > 0",
+      "action": "act4619_2",
+      "output": "out_4619_1",
+      "timeout": null,
+      "delay": null,
+      "requirements": [],
+      "probability": null,
+      "is_nondeterministic": false,
+      "refusal": false,
+      "quiescence": false,
+      "discrete_time": null
+    },
+    {
+      "id": "t4619_3",
+      "source": "s4619_1",
+      "event": "e4619_0",
+      "target": "s4619_2",
+      "guard": "x_4619_2 > 0",
+      "action": "act4619_3",
+      "output": "out_4619_2",
+      "timeout": null,
+      "delay": null,
+      "requirements": [],
+      "probability": null,
+      "is_nondeterministic": false,
+      "refusal": false,
+      "quiescence": false,
+      "discrete_time": null
+    },
+    {
+      "id": "t4619_4",
+      "source": "s4619_2",
+      "event": "e4619_0",
+      "target": "s4619_2",
+      "guard": "x_4619_3 > 0",
+      "action": "act4619_4",
+      "output": "out_4619_3",
+      "timeout": null,
+      "delay": null,
+      "requirements": [],
+      "probability": null,
+      "is_nondeterministic": false,
+      "refusal": false,
+      "quiescence": false,
+      "discrete_time": null
+    }
+  ],
+  "variables": {},
+  "parent_fsm_id": null,
+  "reference_fsm_id": null,
+  "discrete_time_step": null,
+  "semantics_mode": null,
+  "cyclic_metadata": null
+}

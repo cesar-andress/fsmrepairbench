@@ -1,0 +1,106 @@
+{
+  "id": "synthetic_4214_3_2",
+  "name": "Synthetic FSM (custom)",
+  "description": "Synthetic FSM generated with seed=4214, states=3, events=2, branching_factor=1, deterministic=True, allow_dead_states=False",
+  "states": [
+    {
+      "id": "s4214_0",
+      "state_output": null,
+      "refusal": false,
+      "quiescence": false
+    },
+    {
+      "id": "s4214_1",
+      "state_output": null,
+      "refusal": false,
+      "quiescence": false
+    },
+    {
+      "id": "s4214_2",
+      "state_output": null,
+      "refusal": false,
+      "quiescence": false
+    }
+  ],
+  "initial_state": "s4214_0",
+  "events": [
+    "e4214_0",
+    "e4214_1"
+  ],
+  "transitions": [
+    {
+      "id": "t4214_1",
+      "source": "s4214_0",
+      "event": "e4214_0",
+      "target": "s4214_1",
+      "guard": "x_4214_0 > 0",
+      "action": "act4214_1",
+      "output": "out_4214_0",
+      "timeout": null,
+      "delay": null,
+      "requirements": [],
+      "probability": null,
+      "is_nondeterministic": false,
+      "refusal": false,
+      "quiescence": false,
+      "discrete_time": null
+    },
+    {
+      "id": "t4214_2",
+      "source": "s4214_0",
+      "event": "e4214_1",
+      "target": "s4214_2",
+      "guard": "x_4214_1 > 0",
+      "action": "act4214_2",
+      "output": "out_4214_1",
+      "timeout": null,
+      "delay": null,
+      "requirements": [],
+      "probability": null,
+      "is_nondeterministic": false,
+      "refusal": false,
+      "quiescence": false,
+      "discrete_time": null
+    },
+    {
+      "id": "t4214_3",
+      "source": "s4214_1",
+      "event": "e4214_0",
+      "target": "s4214_1",
+      "guard": "x_4214_2 > 0",
+      "action": "act4214_3",
+      "output": "out_4214_2",
+      "timeout": null,
+      "delay": null,
+      "requirements": [],
+      "probability": null,
+      "is_nondeterministic": false,
+      "refusal": false,
+      "quiescence": false,
+      "discrete_time": null
+    },
+    {
+      "id": "t4214_4",
+      "source": "s4214_2",
+      "event": "e4214_0",
+      "target": "s4214_2",
+      "guard": "x_4214_3 > 0",
+      "action": "act4214_4",
+      "output": "out_4214_3",
+      "timeout": null,
+      "delay": null,
+      "requirements": [],
+      "probability": null,
+      "is_nondeterministic": false,
+      "refusal": false,
+      "quiescence": false,
+      "discrete_time": null
+    }
+  ],
+  "variables": {},
+  "parent_fsm_id": null,
+  "reference_fsm_id": null,
+  "discrete_time_step": null,
+  "semantics_mode": null,
+  "cyclic_metadata": null
+}

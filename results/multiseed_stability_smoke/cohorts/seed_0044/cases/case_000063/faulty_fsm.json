@@ -1,0 +1,92 @@
+{
+  "id": "synthetic_2327_3_2__faulty__guard_weaken__63044",
+  "name": "Synthetic FSM (custom) (faulty: guard_weaken)",
+  "description": "Synthetic FSM generated with seed=2327, states=3, events=2, branching_factor=1, deterministic=True, allow_dead_states=False",
+  "states": [
+    {
+      "id": "s2327_0",
+      "state_output": null,
+      "refusal": false,
+      "quiescence": false
+    },
+    {
+      "id": "s2327_1",
+      "state_output": null,
+      "refusal": false,
+      "quiescence": false
+    },
+    {
+      "id": "s2327_2",
+      "state_output": null,
+      "refusal": false,
+      "quiescence": false
+    }
+  ],
+  "initial_state": "s2327_0",
+  "events": [
+    "e2327_0",
+    "e2327_1"
+  ],
+  "transitions": [
+    {
+      "id": "t2327_1",
+      "source": "s2327_0",
+      "event": "e2327_0",
+      "target": "s2327_1",
+      "guard": "x_2327_0 > 0 and y_2327_0 < 10",
+      "action": "act2327_1",
+      "output": null,
+      "timeout": null,
+      "delay": null,
+      "requirements": [],
+      "probability": null,
+      "is_nondeterministic": false,
+      "refusal": false,
+      "quiescence": false,
+      "discrete_time": null
+    },
+    {
+      "id": "t2327_2",
+      "source": "s2327_1",
+      "event": "e2327_0",
+      "target": "s2327_2",
+      "guard": "x_2327_1 > 0 and y_2327_1 < 10",
+      "action": "act2327_2",
+      "output": null,
+      "timeout": null,
+      "delay": null,
+      "requirements": [],
+      "probability": null,
+      "is_nondeterministic": false,
+      "refusal": false,
+      "quiescence": false,
+      "discrete_time": null
+    },
+    {
+      "id": "t2327_3",
+      "source": "s2327_2",
+      "event": "e2327_0",
+      "target": "s2327_2",
+      "guard": "true",
+      "action": "act2327_3",
+      "output": null,
+      "timeout": null,
+      "delay": null,
+      "requirements": [],
+      "probability": null,
+      "is_nondeterministic": false,
+      "refusal": false,
+      "quiescence": false,
+      "discrete_time": null
+    }
+  ],
+  "variables": {
+    "x": "int",
+    "y": "int"
+  },
+  "parent_fsm_id": "synthetic_2327_3_2",
+  "reference_fsm_id": "synthetic_2327_3_2",
+  "discrete_time_step": null,
+  "semantics_mode": null,
+  "cyclic_metadata": null
+}

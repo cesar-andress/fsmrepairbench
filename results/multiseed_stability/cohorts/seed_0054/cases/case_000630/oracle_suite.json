@@ -1,0 +1,86 @@
+{
+  "id": "synthetic_11976_3_2_oracles",
+  "fsm_id": "synthetic_11976_3_2",
+  "scenarios": [
+    {
+      "id": "cover_transition_t11976_1",
+      "description": "Covers transition 't11976_1' (s11976_0 --e11976_1--> s11976_1).",
+      "steps": [
+        {
+          "event": "e11976_1",
+          "expected_state": "s11976_1",
+          "guard": "x_11976_0 > 0 and y_11976_0 < 10",
+          "accepting_states": [],
+          "probability_threshold": null,
+          "refusal_expected": false,
+          "quiescence_expected": false,
+          "discrete_time": null
+        }
+      ]
+    },
+    {
+      "id": "cover_transition_t11976_2",
+      "description": "Covers transition 't11976_2' (s11976_1 --e11976_1--> s11976_2).",
+      "steps": [
+        {
+          "event": "e11976_1",
+          "expected_state": "s11976_1",
+          "guard": "x_11976_0 > 0 and y_11976_0 < 10",
+          "accepting_states": [],
+          "probability_threshold": null,
+          "refusal_expected": false,
+          "quiescence_expected": false,
+          "discrete_time": null
+        },
+        {
+          "event": "e11976_1",
+          "expected_state": "s11976_2",
+          "guard": "x_11976_1 > 0 and y_11976_1 < 10",
+          "accepting_states": [],
+          "probability_threshold": null,
+          "refusal_expected": false,
+          "quiescence_expected": false,
+          "discrete_time": null
+        }
+      ]
+    },
+    {
+      "id": "cover_transition_t11976_3",
+      "description": "Covers transition 't11976_3' (s11976_2 --e11976_1--> s11976_2).",
+      "steps": [
+        {
+          "event": "e11976_1",
+          "expected_state": "s11976_1",
+          "guard": "x_11976_0 > 0 and y_11976_0 < 10",
+          "accepting_states": [],
+          "probability_threshold": null,
+          "refusal_expected": false,
+          "quiescence_expected": false,
+          "discrete_time": null
+        },
+        {
+          "event": "e11976_1",
+          "expected_state": "s11976_2",
+          "guard": "x_11976_1 > 0 and y_11976_1 < 10",
+          "accepting_states": [],
+          "probability_threshold": null,
+          "refusal_expected": false,
+          "quiescence_expected": false,
+          "discrete_time": null
+        },
+        {
+          "event": "e11976_1",
+          "expected_state": "s11976_2",
+          "guard": "x_11976_2 > 0 and y_11976_2 < 10",
+          "accepting_states": [],
+          "probability_threshold": null,
+          "refusal_expected": false,
+          "quiescence_expected": false,
+          "discrete_time": null
+        }
+      ]
+    }
+  ],
+  "semantics_mode": null,
+  "probability_threshold": null
+}

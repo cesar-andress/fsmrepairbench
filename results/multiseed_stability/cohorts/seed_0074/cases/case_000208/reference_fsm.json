@@ -1,0 +1,106 @@
+{
+  "id": "synthetic_4014_3_2",
+  "name": "Synthetic FSM (custom)",
+  "description": "Synthetic FSM generated with seed=4014, states=3, events=2, branching_factor=1, deterministic=True, allow_dead_states=False",
+  "states": [
+    {
+      "id": "s4014_0",
+      "state_output": null,
+      "refusal": false,
+      "quiescence": false
+    },
+    {
+      "id": "s4014_1",
+      "state_output": null,
+      "refusal": false,
+      "quiescence": false
+    },
+    {
+      "id": "s4014_2",
+      "state_output": null,
+      "refusal": false,
+      "quiescence": false
+    }
+  ],
+  "initial_state": "s4014_0",
+  "events": [
+    "e4014_0",
+    "e4014_1"
+  ],
+  "transitions": [
+    {
+      "id": "t4014_1",
+      "source": "s4014_0",
+      "event": "e4014_0",
+      "target": "s4014_1",
+      "guard": "x_4014_0 > 0",
+      "action": "act4014_1",
+      "output": "out_4014_0",
+      "timeout": null,
+      "delay": null,
+      "requirements": [],
+      "probability": null,
+      "is_nondeterministic": false,
+      "refusal": false,
+      "quiescence": false,
+      "discrete_time": null
+    },
+    {
+      "id": "t4014_2",
+      "source": "s4014_0",
+      "event": "e4014_1",
+      "target": "s4014_2",
+      "guard": "x_4014_1 > 0",
+      "action": "act4014_2",
+      "output": "out_4014_1",
+      "timeout": null,
+      "delay": null,
+      "requirements": [],
+      "probability": null,
+      "is_nondeterministic": false,
+      "refusal": false,
+      "quiescence": false,
+      "discrete_time": null
+    },
+    {
+      "id": "t4014_3",
+      "source": "s4014_1",
+      "event": "e4014_0",
+      "target": "s4014_2",
+      "guard": "x_4014_2 > 0",
+      "action": "act4014_3",
+      "output": "out_4014_2",
+      "timeout": null,
+      "delay": null,
+      "requirements": [],
+      "probability": null,
+      "is_nondeterministic": false,
+      "refusal": false,
+      "quiescence": false,
+      "discrete_time": null
+    },
+    {
+      "id": "t4014_4",
+      "source": "s4014_2",
+      "event": "e4014_1",
+      "target": "s4014_2",
+      "guard": "x_4014_3 > 0",
+      "action": "act4014_4",
+      "output": "out_4014_3",
+      "timeout": null,
+      "delay": null,
+      "requirements": [],
+      "probability": null,
+      "is_nondeterministic": false,
+      "refusal": false,
+      "quiescence": false,
+      "discrete_time": null
+    }
+  ],
+  "variables": {},
+  "parent_fsm_id": null,
+  "reference_fsm_id": null,
+  "discrete_time_step": null,
+  "semantics_mode": null,
+  "cyclic_metadata": null
+}

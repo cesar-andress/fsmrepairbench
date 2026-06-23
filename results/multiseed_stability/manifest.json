@@ -1,0 +1,99 @@
+{
+  "generated_at": "2026-06-23T04:25:36.367382+00:00",
+  "study": "multiseed_stability",
+  "plan_path": "plans/fsmrepairbench_v0_1k_plan.yaml",
+  "cohort_seeds": [
+    44,
+    54,
+    64,
+    74,
+    84,
+    94,
+    104,
+    114,
+    124,
+    134
+  ],
+  "repair_seed": 0,
+  "skip_build": false,
+  "skip_repair": false,
+  "aggregates": [
+    {
+      "metric": "detection_rate",
+      "n_seeds": 10,
+      "mean": 0.65,
+      "std": 0.0,
+      "min": 0.65,
+      "max": 0.65,
+      "ci95_low": 0.65,
+      "ci95_high": 0.65,
+      "stability": "stable"
+    },
+    {
+      "metric": "saturation_rate",
+      "n_seeds": 10,
+      "mean": 0.35,
+      "std": 0.0,
+      "min": 0.35,
+      "max": 0.35,
+      "ci95_low": 0.35,
+      "ci95_high": 0.35,
+      "stability": "stable"
+    },
+    {
+      "metric": "detectable_only_crr",
+      "n_seeds": 10,
+      "mean": 0.0,
+      "std": 0.0,
+      "min": 0.0,
+      "max": 0.0,
+      "ci95_low": 0.0,
+      "ci95_high": 0.0,
+      "stability": "stable"
+    },
+    {
+      "metric": "participation_rate",
+      "n_seeds": 10,
+      "mean": 0.333333,
+      "std": 0.0,
+      "min": 0.333333,
+      "max": 0.333333,
+      "ci95_low": 0.333333,
+      "ci95_high": 0.333333,
+      "stability": "stable"
+    },
+    {
+      "metric": "saturation_inflation_pp",
+      "n_seeds": 10,
+      "mean": 35.0,
+      "std": 0.0,
+      "min": 35.0,
+      "max": 35.0,
+      "ci95_low": 35.0,
+      "ci95_high": 35.0,
+      "stability": "stable"
+    },
+    {
+      "metric": "structural_gt_count",
+      "n_seeds": 10,
+      "mean": 450.0,
+      "std": 0.0,
+      "min": 450.0,
+      "max": 450.0,
+      "ci95_low": 450.0,
+      "ci95_high": 450.0,
+      "stability": "stable"
+    },
+    {
+      "metric": "spectrally_participating_count",
+      "n_seeds": 10,
+      "mean": 150.0,
+      "std": 0.0,
+      "min": 150.0,
+      "max": 150.0,
+      "ci95_low": 150.0,
+      "ci95_high": 150.0,
+      "stability": "stable"
+    }
+  ]
+}

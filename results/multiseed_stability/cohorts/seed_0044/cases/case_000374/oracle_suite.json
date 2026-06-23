@@ -1,0 +1,164 @@
+{
+  "id": "synthetic_7109_3_2_oracles",
+  "fsm_id": "synthetic_7109_3_2",
+  "scenarios": [
+    {
+      "id": "cover_transition_t7109_1",
+      "description": "Covers transition 't7109_1' (s7109_0 --e7109_0--> s7109_1).",
+      "steps": [
+        {
+          "event": "e7109_0",
+          "expected_state": "s7109_1",
+          "guard": "x_7109_0 > 0",
+          "accepting_states": [],
+          "probability_threshold": null,
+          "refusal_expected": false,
+          "quiescence_expected": false,
+          "discrete_time": null
+        }
+      ]
+    },
+    {
+      "id": "cover_transition_t7109_2",
+      "description": "Covers transition 't7109_2' (s7109_1 --e7109_0--> s7109_2).",
+      "steps": [
+        {
+          "event": "e7109_0",
+          "expected_state": "s7109_1",
+          "guard": "x_7109_0 > 0",
+          "accepting_states": [],
+          "probability_threshold": null,
+          "refusal_expected": false,
+          "quiescence_expected": false,
+          "discrete_time": null
+        },
+        {
+          "event": "e7109_0",
+          "expected_state": "s7109_2",
+          "guard": "x_7109_1 > 0",
+          "accepting_states": [],
+          "probability_threshold": null,
+          "refusal_expected": false,
+          "quiescence_expected": false,
+          "discrete_time": null
+        }
+      ]
+    },
+    {
+      "id": "cover_transition_t7109_3",
+      "description": "Covers transition 't7109_3' (s7109_0 --e7109_1--> s7109_0).",
+      "steps": [
+        {
+          "event": "e7109_1",
+          "expected_state": "s7109_0",
+          "guard": "x_7109_2 > 0",
+          "accepting_states": [],
+          "probability_threshold": null,
+          "refusal_expected": false,
+          "quiescence_expected": false,
+          "discrete_time": null
+        }
+      ]
+    },
+    {
+      "id": "cover_transition_t7109_4",
+      "description": "Covers transition 't7109_4' (s7109_1 --e7109_0--> s7109_1).",
+      "steps": [
+        {
+          "event": "e7109_0",
+          "expected_state": "s7109_1",
+          "guard": "x_7109_0 > 0",
+          "accepting_states": [],
+          "probability_threshold": null,
+          "refusal_expected": false,
+          "quiescence_expected": false,
+          "discrete_time": null
+        },
+        {
+          "event": "e7109_0",
+          "expected_state": "s7109_1",
+          "guard": "x_7109_3 > 0",
+          "accepting_states": [],
+          "probability_threshold": null,
+          "refusal_expected": false,
+          "quiescence_expected": false,
+          "discrete_time": null
+        }
+      ]
+    },
+    {
+      "id": "cover_transition_t7109_5",
+      "description": "Covers transition 't7109_5' (s7109_2 --e7109_0--> s7109_2).",
+      "steps": [
+        {
+          "event": "e7109_0",
+          "expected_state": "s7109_1",
+          "guard": "x_7109_0 > 0",
+          "accepting_states": [],
+          "probability_threshold": null,
+          "refusal_expected": false,
+          "quiescence_expected": false,
+          "discrete_time": null
+        },
+        {
+          "event": "e7109_0",
+          "expected_state": "s7109_2",
+          "guard": "x_7109_1 > 0",
+          "accepting_states": [],
+          "probability_threshold": null,
+          "refusal_expected": false,
+          "quiescence_expected": false,
+          "discrete_time": null
+        },
+        {
+          "event": "e7109_0",
+          "expected_state": "s7109_2",
+          "guard": "x_7109_4 > 0",
+          "accepting_states": [],
+          "probability_threshold": null,
+          "refusal_expected": false,
+          "quiescence_expected": false,
+          "discrete_time": null
+        }
+      ]
+    },
+    {
+      "id": "cover_transition_t7109_6",
+      "description": "Covers transition 't7109_6' (s7109_2 --e7109_1--> s7109_2).",
+      "steps": [
+        {
+          "event": "e7109_0",
+          "expected_state": "s7109_1",
+          "guard": "x_7109_0 > 0",
+          "accepting_states": [],
+          "probability_threshold": null,
+          "refusal_expected": false,
+          "quiescence_expected": false,
+          "discrete_time": null
+        },
+        {
+          "event": "e7109_0",
+          "expected_state": "s7109_2",
+          "guard": "x_7109_1 > 0",
+          "accepting_states": [],
+          "probability_threshold": null,
+          "refusal_expected": false,
+          "quiescence_expected": false,
+          "discrete_time": null
+        },
+        {
+          "event": "e7109_1",
+          "expected_state": "s7109_2",
+          "guard": "x_7109_5 > 0",
+          "accepting_states": [],
+          "probability_threshold": null,
+          "refusal_expected": false,
+          "quiescence_expected": false,
+          "discrete_time": null
+        }
+      ]
+    }
+  ],
+  "semantics_mode": null,
+  "probability_threshold": null
+}

@@ -1,0 +1,55 @@
+{
+  "id": "synthetic_9309_3_2",
+  "name": "Synthetic FSM (custom)",
+  "description": "Synthetic FSM generated with seed=9309, states=3, events=2, branching_factor=1, deterministic=True, allow_dead_states=True",
+  "states": [
+    {
+      "id": "s9309_0",
+      "state_output": "out_9309_0",
+      "refusal": false,
+      "quiescence": false
+    },
+    {
+      "id": "s9309_1",
+      "state_output": "out_9309_1",
+      "refusal": false,
+      "quiescence": false
+    },
+    {
+      "id": "s9309_2",
+      "state_output": "out_9309_2",
+      "refusal": false,
+      "quiescence": false
+    }
+  ],
+  "initial_state": "s9309_0",
+  "events": [
+    "e9309_0",
+    "e9309_1"
+  ],
+  "transitions": [
+    {
+      "id": "t9309_hub_1",
+      "source": "s9309_0",
+      "event": "e9309_1",
+      "target": "s9309_1",
+      "guard": null,
+      "action": null,
+      "output": null,
+      "timeout": null,
+      "delay": null,
+      "requirements": [],
+      "probability": null,
+      "is_nondeterministic": false,
+      "refusal": false,
+      "quiescence": false,
+      "discrete_time": null
+    }
+  ],
+  "variables": {},
+  "parent_fsm_id": null,
+  "reference_fsm_id": null,
+  "discrete_time_step": null,
+  "semantics_mode": null,
+  "cyclic_metadata": null
+}

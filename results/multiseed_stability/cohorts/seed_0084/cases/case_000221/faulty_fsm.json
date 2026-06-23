@@ -1,0 +1,106 @@
+{
+  "id": "synthetic_4245_3_2__faulty__action_corruption__221084",
+  "name": "Synthetic FSM (custom) (faulty: action_corruption)",
+  "description": "Synthetic FSM generated with seed=4245, states=3, events=2, branching_factor=1, deterministic=True, allow_dead_states=False",
+  "states": [
+    {
+      "id": "s4245_0",
+      "state_output": null,
+      "refusal": false,
+      "quiescence": false
+    },
+    {
+      "id": "s4245_1",
+      "state_output": null,
+      "refusal": false,
+      "quiescence": false
+    },
+    {
+      "id": "s4245_2",
+      "state_output": null,
+      "refusal": false,
+      "quiescence": false
+    }
+  ],
+  "initial_state": "s4245_0",
+  "events": [
+    "e4245_0",
+    "e4245_1"
+  ],
+  "transitions": [
+    {
+      "id": "t4245_1",
+      "source": "s4245_0",
+      "event": "e4245_1",
+      "target": "s4245_1",
+      "guard": "x_4245_0 > 0",
+      "action": "wrong_act4245_1",
+      "output": "out_4245_0",
+      "timeout": null,
+      "delay": null,
+      "requirements": [],
+      "probability": null,
+      "is_nondeterministic": false,
+      "refusal": false,
+      "quiescence": false,
+      "discrete_time": null
+    },
+    {
+      "id": "t4245_2",
+      "source": "s4245_0",
+      "event": "e4245_0",
+      "target": "s4245_2",
+      "guard": "x_4245_1 > 0",
+      "action": "act4245_2",
+      "output": "out_4245_1",
+      "timeout": null,
+      "delay": null,
+      "requirements": [],
+      "probability": null,
+      "is_nondeterministic": false,
+      "refusal": false,
+      "quiescence": false,
+      "discrete_time": null
+    },
+    {
+      "id": "t4245_3",
+      "source": "s4245_1",
+      "event": "e4245_0",
+      "target": "s4245_2",
+      "guard": "x_4245_2 > 0",
+      "action": "act4245_3",
+      "output": "out_4245_2",
+      "timeout": null,
+      "delay": null,
+      "requirements": [],
+      "probability": null,
+      "is_nondeterministic": false,
+      "refusal": false,
+      "quiescence": false,
+      "discrete_time": null
+    },
+    {
+      "id": "t4245_4",
+      "source": "s4245_2",
+      "event": "e4245_0",
+      "target": "s4245_2",
+      "guard": "x_4245_3 > 0",
+      "action": "act4245_4",
+      "output": "out_4245_3",
+      "timeout": null,
+      "delay": null,
+      "requirements": [],
+      "probability": null,
+      "is_nondeterministic": false,
+      "refusal": false,
+      "quiescence": false,
+      "discrete_time": null
+    }
+  ],
+  "variables": {},
+  "parent_fsm_id": "synthetic_4245_3_2",
+  "reference_fsm_id": "synthetic_4245_3_2",
+  "discrete_time_step": null,
+  "semantics_mode": null,
+  "cyclic_metadata": null
+}

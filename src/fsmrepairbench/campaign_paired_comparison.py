@@ -20,7 +20,7 @@ DEFAULT_DATASET_DIR = Path("data/fsmrepairbench_1k")
 DEFAULT_COHORT_MANIFEST = DEFAULT_DATASET_DIR / "coupling_campaign_250.txt"
 DEFAULT_OUTPUT_DIR = Path("results/campaign_paired_comparison")
 DEFAULT_PAPER_EXPORT_DIR = Path("../paper1/results/campaign_paired_comparison")
-ZENODO_DOI = "10.5281/zenodo.20724095"
+ZENODO_DOI = "10.5281/zenodo.20602577"
 C1_TOOL_ID = "baseline_missing_transition"
 RQ4_REPAIR_ENGINE = "missing-transition"
 

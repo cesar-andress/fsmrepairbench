@@ -1,0 +1,55 @@
+{
+  "id": "synthetic_8423_3_2__faulty__wrong_initial_state__443084",
+  "name": "Synthetic FSM (custom) (faulty: wrong_initial_state)",
+  "description": "Synthetic FSM generated with seed=8423, states=3, events=2, branching_factor=1, deterministic=True, allow_dead_states=True",
+  "states": [
+    {
+      "id": "s8423_0",
+      "state_output": "out_8423_0",
+      "refusal": false,
+      "quiescence": false
+    },
+    {
+      "id": "s8423_1",
+      "state_output": "out_8423_1",
+      "refusal": false,
+      "quiescence": false
+    },
+    {
+      "id": "s8423_2",
+      "state_output": "out_8423_2",
+      "refusal": false,
+      "quiescence": false
+    }
+  ],
+  "initial_state": "s8423_2",
+  "events": [
+    "e8423_0",
+    "e8423_1"
+  ],
+  "transitions": [
+    {
+      "id": "t8423_hub_1",
+      "source": "s8423_0",
+      "event": "e8423_1",
+      "target": "s8423_1",
+      "guard": null,
+      "action": null,
+      "output": null,
+      "timeout": null,
+      "delay": null,
+      "requirements": [],
+      "probability": null,
+      "is_nondeterministic": false,
+      "refusal": false,
+      "quiescence": false,
+      "discrete_time": null
+    }
+  ],
+  "variables": {},
+  "parent_fsm_id": "synthetic_8423_3_2",
+  "reference_fsm_id": "synthetic_8423_3_2",
+  "discrete_time_step": null,
+  "semantics_mode": null,
+  "cyclic_metadata": null
+}

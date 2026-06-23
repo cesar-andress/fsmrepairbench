@@ -1,0 +1,164 @@
+{
+  "id": "synthetic_15080_3_2_oracles",
+  "fsm_id": "synthetic_15080_3_2",
+  "scenarios": [
+    {
+      "id": "cover_transition_t15080_1",
+      "description": "Covers transition 't15080_1' (s15080_0 --e15080_0--> s15080_1).",
+      "steps": [
+        {
+          "event": "e15080_0",
+          "expected_state": "s15080_1",
+          "guard": "x_15080_0 > 0 and y_15080_0 < 10",
+          "accepting_states": [],
+          "probability_threshold": null,
+          "refusal_expected": false,
+          "quiescence_expected": false,
+          "discrete_time": null
+        }
+      ]
+    },
+    {
+      "id": "cover_transition_t15080_2",
+      "description": "Covers transition 't15080_2' (s15080_1 --e15080_0--> s15080_2).",
+      "steps": [
+        {
+          "event": "e15080_0",
+          "expected_state": "s15080_1",
+          "guard": "x_15080_0 > 0 and y_15080_0 < 10",
+          "accepting_states": [],
+          "probability_threshold": null,
+          "refusal_expected": false,
+          "quiescence_expected": false,
+          "discrete_time": null
+        },
+        {
+          "event": "e15080_0",
+          "expected_state": "s15080_2",
+          "guard": "x_15080_1 > 0 and y_15080_1 < 10",
+          "accepting_states": [],
+          "probability_threshold": null,
+          "refusal_expected": false,
+          "quiescence_expected": false,
+          "discrete_time": null
+        }
+      ]
+    },
+    {
+      "id": "cover_transition_t15080_3",
+      "description": "Covers transition 't15080_3' (s15080_0 --e15080_0--> s15080_0).",
+      "steps": [
+        {
+          "event": "e15080_0",
+          "expected_state": "s15080_0",
+          "guard": "x_15080_2 > 0 and y_15080_2 < 10",
+          "accepting_states": [],
+          "probability_threshold": null,
+          "refusal_expected": false,
+          "quiescence_expected": false,
+          "discrete_time": null
+        }
+      ]
+    },
+    {
+      "id": "cover_transition_t15080_4",
+      "description": "Covers transition 't15080_4' (s15080_1 --e15080_1--> s15080_2).",
+      "steps": [
+        {
+          "event": "e15080_0",
+          "expected_state": "s15080_1",
+          "guard": "x_15080_0 > 0 and y_15080_0 < 10",
+          "accepting_states": [],
+          "probability_threshold": null,
+          "refusal_expected": false,
+          "quiescence_expected": false,
+          "discrete_time": null
+        },
+        {
+          "event": "e15080_1",
+          "expected_state": "s15080_2",
+          "guard": "x_15080_3 > 0 and y_15080_3 < 10",
+          "accepting_states": [],
+          "probability_threshold": null,
+          "refusal_expected": false,
+          "quiescence_expected": false,
+          "discrete_time": null
+        }
+      ]
+    },
+    {
+      "id": "cover_transition_t15080_5",
+      "description": "Covers transition 't15080_5' (s15080_2 --e15080_1--> s15080_2).",
+      "steps": [
+        {
+          "event": "e15080_0",
+          "expected_state": "s15080_1",
+          "guard": "x_15080_0 > 0 and y_15080_0 < 10",
+          "accepting_states": [],
+          "probability_threshold": null,
+          "refusal_expected": false,
+          "quiescence_expected": false,
+          "discrete_time": null
+        },
+        {
+          "event": "e15080_0",
+          "expected_state": "s15080_2",
+          "guard": "x_15080_1 > 0 and y_15080_1 < 10",
+          "accepting_states": [],
+          "probability_threshold": null,
+          "refusal_expected": false,
+          "quiescence_expected": false,
+          "discrete_time": null
+        },
+        {
+          "event": "e15080_1",
+          "expected_state": "s15080_2",
+          "guard": "x_15080_4 > 0 and y_15080_4 < 10",
+          "accepting_states": [],
+          "probability_threshold": null,
+          "refusal_expected": false,
+          "quiescence_expected": false,
+          "discrete_time": null
+        }
+      ]
+    },
+    {
+      "id": "cover_transition_t15080_6",
+      "description": "Covers transition 't15080_6' (s15080_2 --e15080_1--> s15080_2).",
+      "steps": [
+        {
+          "event": "e15080_0",
+          "expected_state": "s15080_1",
+          "guard": "x_15080_0 > 0 and y_15080_0 < 10",
+          "accepting_states": [],
+          "probability_threshold": null,
+          "refusal_expected": false,
+          "quiescence_expected": false,
+          "discrete_time": null
+        },
+        {
+          "event": "e15080_0",
+          "expected_state": "s15080_2",
+          "guard": "x_15080_1 > 0 and y_15080_1 < 10",
+          "accepting_states": [],
+          "probability_threshold": null,
+          "refusal_expected": false,
+          "quiescence_expected": false,
+          "discrete_time": null
+        },
+        {
+          "event": "e15080_1",
+          "expected_state": "s15080_2",
+          "guard": "x_15080_5 > 0 and y_15080_5 < 10",
+          "accepting_states": [],
+          "probability_threshold": null,
+          "refusal_expected": false,
+          "quiescence_expected": false,
+          "discrete_time": null
+        }
+      ]
+    }
+  ],
+  "semantics_mode": null,
+  "probability_threshold": null
+}

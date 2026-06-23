@@ -1,0 +1,55 @@
+{
+  "id": "synthetic_8413_3_2",
+  "name": "Synthetic FSM (custom)",
+  "description": "Synthetic FSM generated with seed=8413, states=3, events=2, branching_factor=1, deterministic=True, allow_dead_states=True",
+  "states": [
+    {
+      "id": "s8413_0",
+      "state_output": "out_8413_0",
+      "refusal": false,
+      "quiescence": false
+    },
+    {
+      "id": "s8413_1",
+      "state_output": "out_8413_1",
+      "refusal": false,
+      "quiescence": false
+    },
+    {
+      "id": "s8413_2",
+      "state_output": "out_8413_2",
+      "refusal": false,
+      "quiescence": false
+    }
+  ],
+  "initial_state": "s8413_0",
+  "events": [
+    "e8413_0",
+    "e8413_1"
+  ],
+  "transitions": [
+    {
+      "id": "t8413_hub_1",
+      "source": "s8413_0",
+      "event": "e8413_1",
+      "target": "s8413_1",
+      "guard": null,
+      "action": null,
+      "output": null,
+      "timeout": null,
+      "delay": null,
+      "requirements": [],
+      "probability": null,
+      "is_nondeterministic": false,
+      "refusal": false,
+      "quiescence": false,
+      "discrete_time": null
+    }
+  ],
+  "variables": {},
+  "parent_fsm_id": null,
+  "reference_fsm_id": null,
+  "discrete_time_step": null,
+  "semantics_mode": null,
+  "cyclic_metadata": null
+}

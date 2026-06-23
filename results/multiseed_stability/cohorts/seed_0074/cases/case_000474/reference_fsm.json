@@ -1,0 +1,55 @@
+{
+  "id": "synthetic_9041_3_2",
+  "name": "Synthetic FSM (custom)",
+  "description": "Synthetic FSM generated with seed=9041, states=3, events=2, branching_factor=1, deterministic=True, allow_dead_states=True",
+  "states": [
+    {
+      "id": "s9041_0",
+      "state_output": "out_9041_0",
+      "refusal": false,
+      "quiescence": false
+    },
+    {
+      "id": "s9041_1",
+      "state_output": "out_9041_1",
+      "refusal": false,
+      "quiescence": false
+    },
+    {
+      "id": "s9041_2",
+      "state_output": "out_9041_2",
+      "refusal": false,
+      "quiescence": false
+    }
+  ],
+  "initial_state": "s9041_0",
+  "events": [
+    "e9041_0",
+    "e9041_1"
+  ],
+  "transitions": [
+    {
+      "id": "t9041_hub_2",
+      "source": "s9041_0",
+      "event": "e9041_1",
+      "target": "s9041_2",
+      "guard": null,
+      "action": null,
+      "output": null,
+      "timeout": null,
+      "delay": null,
+      "requirements": [],
+      "probability": null,
+      "is_nondeterministic": false,
+      "refusal": false,
+      "quiescence": false,
+      "discrete_time": null
+    }
+  ],
+  "variables": {},
+  "parent_fsm_id": null,
+  "reference_fsm_id": null,
+  "discrete_time_step": null,
+  "semantics_mode": null,
+  "cyclic_metadata": null
+}

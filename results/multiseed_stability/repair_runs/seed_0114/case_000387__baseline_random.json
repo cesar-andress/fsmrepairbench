@@ -1,0 +1,245 @@
+{
+  "case_id": "case_000387",
+  "tool_id": "baseline_random",
+  "tool_type": "baseline",
+  "model": "baseline_random",
+  "mutation_operator": "wrong_target",
+  "status": "completed",
+  "failure_class": "regression",
+  "input_format": "fsmrepairbench_case_v1",
+  "output_format": "fsmrepairbench_repair_result_v1",
+  "initial_bpr": 0.9230769230769231,
+  "final_bpr": 0.46153846153846156,
+  "delta_bpr": -0.46153846153846156,
+  "complete_repair": false,
+  "effective_repair": false,
+  "regression": true,
+  "patch_parse_failures": 0,
+  "patch_validation_failures": 0,
+  "patch_application_failures": 0,
+  "iterations_completed": 1,
+  "runtime_seconds": 0.0006,
+  "repair_result": {
+    "bug_id": "synthetic_7400_3_2__faulty__wrong_target__387114",
+    "passed": false,
+    "score": 0.46153846153846156,
+    "details": {
+      "model": "baseline_random",
+      "backend": "baseline",
+      "baseline_engine": "random",
+      "baseline_seed": 0,
+      "temperature": 0.0,
+      "max_iterations": 1,
+      "runtime_seconds": 0.0006,
+      "iterations": [
+        {
+          "iteration": 1,
+          "bpr_before": 0.9230769230769231,
+          "patch_valid": true,
+          "patch_applied": true,
+          "patch": {
+            "patch_id": "baseline_random_0_synthetic_7400_3_2__faulty__wrong_target__387114",
+            "target_fsm_id": "synthetic_7400_3_2__faulty__wrong_target__387114",
+            "operations": [
+              {
+                "op": "replace_transition_target",
+                "transition_id": "t7400_8",
+                "target": "s7400_0"
+              },
+              {
+                "op": "replace_transition_target",
+                "transition_id": "t7400_1",
+                "target": "s7400_0"
+              },
+              {
+                "op": "replace_guard",
+                "transition_id": "t7400_5",
+                "guard": "random_guard_t7400_5"
+              }
+            ]
+          },
+          "validation_errors": [],
+          "bpr_after": 0.46153846153846156
+        }
+      ],
+      "final_fsm": {
+        "id": "synthetic_7400_3_2__faulty__wrong_target__387114",
+        "name": "Synthetic FSM (custom) (faulty: wrong_target)",
+        "description": "Synthetic FSM generated with seed=7400, states=3, events=2, branching_factor=4, deterministic=True, allow_dead_states=False",
+        "states": [
+          {
+            "id": "s7400_0",
+            "state_output": null,
+            "refusal": false,
+            "quiescence": false
+          },
+          {
+            "id": "s7400_1",
+            "state_output": null,
+            "refusal": false,
+            "quiescence": false
+          },
+          {
+            "id": "s7400_2",
+            "state_output": null,
+            "refusal": false,
+            "quiescence": false
+          }
+        ],
+        "initial_state": "s7400_0",
+        "events": [
+          "e7400_0",
+          "e7400_1"
+        ],
+        "transitions": [
+          {
+            "id": "t7400_1",
+            "source": "s7400_0",
+            "event": "e7400_1",
+            "target": "s7400_0",
+            "guard": "x_7400_0 > 0",
+            "action": "act7400_1",
+            "output": "out_7400_0",
+            "timeout": null,
+            "delay": null,
+            "requirements": [],
+            "probability": null,
+            "is_nondeterministic": false,
+            "refusal": false,
+            "quiescence": false,
+            "discrete_time": null
+          },
+          {
+            "id": "t7400_2",
+            "source": "s7400_0",
+            "event": "e7400_1",
+            "target": "s7400_2",
+            "guard": "x_7400_1 > 0",
+            "action": "act7400_2",
+            "output": "out_7400_1",
+            "timeout": null,
+            "delay": null,
+            "requirements": [],
+            "probability": null,
+            "is_nondeterministic": false,
+            "refusal": false,
+            "quiescence": false,
+            "discrete_time": null
+          },
+          {
+            "id": "t7400_3",
+            "source": "s7400_0",
+            "event": "e7400_0",
+            "target": "s7400_2",
+            "guard": "x_7400_2 > 0",
+            "action": "act7400_3",
+            "output": "out_7400_2",
+            "timeout": null,
+            "delay": null,
+            "requirements": [],
+            "probability": null,
+            "is_nondeterministic": false,
+            "refusal": false,
+            "quiescence": false,
+            "discrete_time": null
+          },
+          {
+            "id": "t7400_4",
+            "source": "s7400_1",
+            "event": "e7400_1",
+            "target": "s7400_1",
+            "guard": "x_7400_3 > 0",
+            "action": "act7400_4",
+            "output": "out_7400_3",
+            "timeout": null,
+            "delay": null,
+            "requirements": [],
+            "probability": null,
+            "is_nondeterministic": false,
+            "refusal": false,
+            "quiescence": false,
+            "discrete_time": null
+          },
+          {
+            "id": "t7400_5",
+            "source": "s7400_1",
+            "event": "e7400_1",
+            "target": "s7400_2",
+            "guard": "random_guard_t7400_5",
+            "action": "act7400_5",
+            "output": "out_7400_4",
+            "timeout": null,
+            "delay": null,
+            "requirements": [],
+            "probability": null,
+            "is_nondeterministic": false,
+            "refusal": false,
+            "quiescence": false,
+            "discrete_time": null
+          },
+          {
+            "id": "t7400_6",
+            "source": "s7400_2",
+            "event": "e7400_0",
+            "target": "s7400_2",
+            "guard": "x_7400_5 > 0",
+            "action": "act7400_6",
+            "output": "out_7400_5",
+            "timeout": null,
+            "delay": null,
+            "requirements": [],
+            "probability": null,
+            "is_nondeterministic": false,
+            "refusal": false,
+            "quiescence": false,
+            "discrete_time": null
+          },
+          {
+            "id": "t7400_7",
+            "source": "s7400_2",
+            "event": "e7400_0",
+            "target": "s7400_2",
+            "guard": "x_7400_6 > 0",
+            "action": "act7400_7",
+            "output": "out_7400_6",
+            "timeout": null,
+            "delay": null,
+            "requirements": [],
+            "probability": null,
+            "is_nondeterministic": false,
+            "refusal": false,
+            "quiescence": false,
+            "discrete_time": null
+          },
+          {
+            "id": "t7400_8",
+            "source": "s7400_2",
+            "event": "e7400_1",
+            "target": "s7400_0",
+            "guard": "x_7400_7 > 0",
+            "action": "act7400_8",
+            "output": "out_7400_7",
+            "timeout": null,
+            "delay": null,
+            "requirements": [],
+            "probability": null,
+            "is_nondeterministic": false,
+            "refusal": false,
+            "quiescence": false,
+            "discrete_time": null
+          }
+        ],
+        "variables": {},
+        "parent_fsm_id": "synthetic_7400_3_2",
+        "reference_fsm_id": "synthetic_7400_3_2",
+        "discrete_time_step": null,
+        "semantics_mode": null,
+        "cyclic_metadata": null
+      },
+      "passed_steps": 6,
+      "total_steps": 13,
+      "passed_scenarios": 3,
+      "total_scenarios": 8
+    }
+  }
+}

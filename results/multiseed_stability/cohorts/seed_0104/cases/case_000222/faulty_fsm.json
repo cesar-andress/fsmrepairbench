@@ -1,0 +1,106 @@
+{
+  "id": "synthetic_4282_3_2__faulty__action_corruption__222104",
+  "name": "Synthetic FSM (custom) (faulty: action_corruption)",
+  "description": "Synthetic FSM generated with seed=4282, states=3, events=2, branching_factor=1, deterministic=True, allow_dead_states=False",
+  "states": [
+    {
+      "id": "s4282_0",
+      "state_output": null,
+      "refusal": false,
+      "quiescence": false
+    },
+    {
+      "id": "s4282_1",
+      "state_output": null,
+      "refusal": false,
+      "quiescence": false
+    },
+    {
+      "id": "s4282_2",
+      "state_output": null,
+      "refusal": false,
+      "quiescence": false
+    }
+  ],
+  "initial_state": "s4282_0",
+  "events": [
+    "e4282_0",
+    "e4282_1"
+  ],
+  "transitions": [
+    {
+      "id": "t4282_1",
+      "source": "s4282_0",
+      "event": "e4282_1",
+      "target": "s4282_1",
+      "guard": "x_4282_0 > 0",
+      "action": "wrong_act4282_1",
+      "output": "out_4282_0",
+      "timeout": null,
+      "delay": null,
+      "requirements": [],
+      "probability": null,
+      "is_nondeterministic": false,
+      "refusal": false,
+      "quiescence": false,
+      "discrete_time": null
+    },
+    {
+      "id": "t4282_2",
+      "source": "s4282_0",
+      "event": "e4282_1",
+      "target": "s4282_2",
+      "guard": "x_4282_1 > 0",
+      "action": "act4282_2",
+      "output": "out_4282_1",
+      "timeout": null,
+      "delay": null,
+      "requirements": [],
+      "probability": null,
+      "is_nondeterministic": false,
+      "refusal": false,
+      "quiescence": false,
+      "discrete_time": null
+    },
+    {
+      "id": "t4282_3",
+      "source": "s4282_1",
+      "event": "e4282_0",
+      "target": "s4282_2",
+      "guard": "x_4282_2 > 0",
+      "action": "act4282_3",
+      "output": "out_4282_2",
+      "timeout": null,
+      "delay": null,
+      "requirements": [],
+      "probability": null,
+      "is_nondeterministic": false,
+      "refusal": false,
+      "quiescence": false,
+      "discrete_time": null
+    },
+    {
+      "id": "t4282_4",
+      "source": "s4282_2",
+      "event": "e4282_1",
+      "target": "s4282_2",
+      "guard": "x_4282_3 > 0",
+      "action": "act4282_4",
+      "output": "out_4282_3",
+      "timeout": null,
+      "delay": null,
+      "requirements": [],
+      "probability": null,
+      "is_nondeterministic": false,
+      "refusal": false,
+      "quiescence": false,
+      "discrete_time": null
+    }
+  ],
+  "variables": {},
+  "parent_fsm_id": "synthetic_4282_3_2",
+  "reference_fsm_id": "synthetic_4282_3_2",
+  "discrete_time_step": null,
+  "semantics_mode": null,
+  "cyclic_metadata": null
+}

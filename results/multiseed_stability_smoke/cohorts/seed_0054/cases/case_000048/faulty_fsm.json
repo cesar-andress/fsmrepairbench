@@ -1,0 +1,78 @@
+{
+  "id": "synthetic_1779_3_2__faulty__dead_state_intro__48054",
+  "name": "Synthetic FSM (custom) (faulty: dead_state_intro)",
+  "description": "Synthetic FSM generated with seed=1779, states=3, events=2, branching_factor=1, deterministic=True, allow_dead_states=True",
+  "states": [
+    {
+      "id": "s1779_0",
+      "state_output": "out_1779_0",
+      "refusal": false,
+      "quiescence": false
+    },
+    {
+      "id": "s1779_1",
+      "state_output": "out_1779_1",
+      "refusal": false,
+      "quiescence": false
+    },
+    {
+      "id": "s1779_2",
+      "state_output": "out_1779_2",
+      "refusal": false,
+      "quiescence": false
+    },
+    {
+      "id": "dead_48054",
+      "state_output": null,
+      "refusal": false,
+      "quiescence": false
+    }
+  ],
+  "initial_state": "s1779_0",
+  "events": [
+    "e1779_0",
+    "e1779_1"
+  ],
+  "transitions": [
+    {
+      "id": "t1779_1",
+      "source": "s1779_0",
+      "event": "e1779_0",
+      "target": "s1779_1",
+      "guard": null,
+      "action": "act1779_1",
+      "output": null,
+      "timeout": null,
+      "delay": null,
+      "requirements": [],
+      "probability": null,
+      "is_nondeterministic": false,
+      "refusal": false,
+      "quiescence": false,
+      "discrete_time": null
+    },
+    {
+      "id": "t1779_2",
+      "source": "s1779_1",
+      "event": "e1779_0",
+      "target": "s1779_2",
+      "guard": null,
+      "action": "act1779_2",
+      "output": null,
+      "timeout": null,
+      "delay": null,
+      "requirements": [],
+      "probability": null,
+      "is_nondeterministic": false,
+      "refusal": false,
+      "quiescence": false,
+      "discrete_time": null
+    }
+  ],
+  "variables": {},
+  "parent_fsm_id": "synthetic_1779_3_2",
+  "reference_fsm_id": "synthetic_1779_3_2",
+  "discrete_time_step": null,
+  "semantics_mode": null,
+  "cyclic_metadata": null
+}

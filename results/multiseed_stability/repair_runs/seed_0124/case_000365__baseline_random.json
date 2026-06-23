@@ -1,0 +1,205 @@
+{
+  "case_id": "case_000365",
+  "tool_id": "baseline_random",
+  "tool_type": "baseline",
+  "model": "baseline_random",
+  "mutation_operator": "wrong_target",
+  "status": "completed",
+  "failure_class": "regression",
+  "input_format": "fsmrepairbench_case_v1",
+  "output_format": "fsmrepairbench_repair_result_v1",
+  "initial_bpr": 0.08333333333333333,
+  "final_bpr": 0.0,
+  "delta_bpr": -0.08333333333333333,
+  "complete_repair": false,
+  "effective_repair": false,
+  "regression": true,
+  "patch_parse_failures": 0,
+  "patch_validation_failures": 0,
+  "patch_application_failures": 0,
+  "iterations_completed": 1,
+  "runtime_seconds": 0.0007,
+  "repair_result": {
+    "bug_id": "synthetic_7036_3_2__faulty__wrong_target__365124",
+    "passed": false,
+    "score": 0.0,
+    "details": {
+      "model": "baseline_random",
+      "backend": "baseline",
+      "baseline_engine": "random",
+      "baseline_seed": 0,
+      "temperature": 0.0,
+      "max_iterations": 1,
+      "runtime_seconds": 0.0007,
+      "iterations": [
+        {
+          "iteration": 1,
+          "bpr_before": 0.08333333333333333,
+          "patch_valid": true,
+          "patch_applied": true,
+          "patch": {
+            "patch_id": "baseline_random_0_synthetic_7036_3_2__faulty__wrong_target__365124",
+            "target_fsm_id": "synthetic_7036_3_2__faulty__wrong_target__365124",
+            "operations": [
+              {
+                "op": "replace_initial_state",
+                "initial_state": "s7036_1"
+              },
+              {
+                "op": "replace_transition_target",
+                "transition_id": "t7036_4",
+                "target": "s7036_0"
+              }
+            ]
+          },
+          "validation_errors": [],
+          "bpr_after": 0.0
+        }
+      ],
+      "final_fsm": {
+        "id": "synthetic_7036_3_2__faulty__wrong_target__365124",
+        "name": "Synthetic FSM (custom) (faulty: wrong_target)",
+        "description": "Synthetic FSM generated with seed=7036, states=3, events=2, branching_factor=4, deterministic=True, allow_dead_states=False",
+        "states": [
+          {
+            "id": "s7036_0",
+            "state_output": null,
+            "refusal": false,
+            "quiescence": false
+          },
+          {
+            "id": "s7036_1",
+            "state_output": null,
+            "refusal": false,
+            "quiescence": false
+          },
+          {
+            "id": "s7036_2",
+            "state_output": null,
+            "refusal": false,
+            "quiescence": false
+          }
+        ],
+        "initial_state": "s7036_1",
+        "events": [
+          "e7036_0",
+          "e7036_1"
+        ],
+        "transitions": [
+          {
+            "id": "t7036_1",
+            "source": "s7036_0",
+            "event": "e7036_1",
+            "target": "s7036_2",
+            "guard": "x_7036_0 > 0",
+            "action": "act7036_1",
+            "output": "out_7036_0",
+            "timeout": null,
+            "delay": null,
+            "requirements": [],
+            "probability": null,
+            "is_nondeterministic": false,
+            "refusal": false,
+            "quiescence": false,
+            "discrete_time": null
+          },
+          {
+            "id": "t7036_2",
+            "source": "s7036_1",
+            "event": "e7036_1",
+            "target": "s7036_2",
+            "guard": "x_7036_1 > 0",
+            "action": "act7036_2",
+            "output": "out_7036_1",
+            "timeout": null,
+            "delay": null,
+            "requirements": [],
+            "probability": null,
+            "is_nondeterministic": false,
+            "refusal": false,
+            "quiescence": false,
+            "discrete_time": null
+          },
+          {
+            "id": "t7036_3",
+            "source": "s7036_0",
+            "event": "e7036_0",
+            "target": "s7036_0",
+            "guard": "x_7036_2 > 0",
+            "action": "act7036_3",
+            "output": "out_7036_2",
+            "timeout": null,
+            "delay": null,
+            "requirements": [],
+            "probability": null,
+            "is_nondeterministic": false,
+            "refusal": false,
+            "quiescence": false,
+            "discrete_time": null
+          },
+          {
+            "id": "t7036_4",
+            "source": "s7036_1",
+            "event": "e7036_1",
+            "target": "s7036_0",
+            "guard": "x_7036_3 > 0",
+            "action": "act7036_4",
+            "output": "out_7036_3",
+            "timeout": null,
+            "delay": null,
+            "requirements": [],
+            "probability": null,
+            "is_nondeterministic": false,
+            "refusal": false,
+            "quiescence": false,
+            "discrete_time": null
+          },
+          {
+            "id": "t7036_5",
+            "source": "s7036_2",
+            "event": "e7036_0",
+            "target": "s7036_2",
+            "guard": "x_7036_4 > 0",
+            "action": "act7036_5",
+            "output": "out_7036_4",
+            "timeout": null,
+            "delay": null,
+            "requirements": [],
+            "probability": null,
+            "is_nondeterministic": false,
+            "refusal": false,
+            "quiescence": false,
+            "discrete_time": null
+          },
+          {
+            "id": "t7036_6",
+            "source": "s7036_2",
+            "event": "e7036_1",
+            "target": "s7036_2",
+            "guard": "x_7036_5 > 0",
+            "action": "act7036_6",
+            "output": "out_7036_5",
+            "timeout": null,
+            "delay": null,
+            "requirements": [],
+            "probability": null,
+            "is_nondeterministic": false,
+            "refusal": false,
+            "quiescence": false,
+            "discrete_time": null
+          }
+        ],
+        "variables": {},
+        "parent_fsm_id": "synthetic_7036_3_2",
+        "reference_fsm_id": "synthetic_7036_3_2",
+        "discrete_time_step": null,
+        "semantics_mode": null,
+        "cyclic_metadata": null
+      },
+      "passed_steps": 0,
+      "total_steps": 12,
+      "passed_scenarios": 0,
+      "total_scenarios": 6
+    }
+  }
+}

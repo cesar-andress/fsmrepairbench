@@ -1,0 +1,106 @@
+{
+  "id": "synthetic_1857_3_2",
+  "name": "Synthetic FSM (custom)",
+  "description": "Synthetic FSM generated with seed=1857, states=3, events=2, branching_factor=1, deterministic=True, allow_dead_states=False",
+  "states": [
+    {
+      "id": "s1857_0",
+      "state_output": null,
+      "refusal": false,
+      "quiescence": false
+    },
+    {
+      "id": "s1857_1",
+      "state_output": null,
+      "refusal": false,
+      "quiescence": false
+    },
+    {
+      "id": "s1857_2",
+      "state_output": null,
+      "refusal": false,
+      "quiescence": false
+    }
+  ],
+  "initial_state": "s1857_0",
+  "events": [
+    "e1857_0",
+    "e1857_1"
+  ],
+  "transitions": [
+    {
+      "id": "t1857_1",
+      "source": "s1857_0",
+      "event": "e1857_1",
+      "target": "s1857_1",
+      "guard": null,
+      "action": "act1857_1",
+      "output": null,
+      "timeout": null,
+      "delay": null,
+      "requirements": [],
+      "probability": null,
+      "is_nondeterministic": false,
+      "refusal": false,
+      "quiescence": false,
+      "discrete_time": null
+    },
+    {
+      "id": "t1857_2",
+      "source": "s1857_0",
+      "event": "e1857_0",
+      "target": "s1857_2",
+      "guard": null,
+      "action": "act1857_2",
+      "output": null,
+      "timeout": null,
+      "delay": null,
+      "requirements": [],
+      "probability": null,
+      "is_nondeterministic": false,
+      "refusal": false,
+      "quiescence": false,
+      "discrete_time": null
+    },
+    {
+      "id": "t1857_3",
+      "source": "s1857_1",
+      "event": "e1857_1",
+      "target": "s1857_2",
+      "guard": null,
+      "action": "act1857_3",
+      "output": null,
+      "timeout": null,
+      "delay": null,
+      "requirements": [],
+      "probability": null,
+      "is_nondeterministic": false,
+      "refusal": false,
+      "quiescence": false,
+      "discrete_time": null
+    },
+    {
+      "id": "t1857_4",
+      "source": "s1857_2",
+      "event": "e1857_0",
+      "target": "s1857_2",
+      "guard": null,
+      "action": "act1857_4",
+      "output": null,
+      "timeout": null,
+      "delay": null,
+      "requirements": [],
+      "probability": null,
+      "is_nondeterministic": false,
+      "refusal": false,
+      "quiescence": false,
+      "discrete_time": null
+    }
+  ],
+  "variables": {},
+  "parent_fsm_id": null,
+  "reference_fsm_id": null,
+  "discrete_time_step": null,
+  "semantics_mode": null,
+  "cyclic_metadata": null
+}

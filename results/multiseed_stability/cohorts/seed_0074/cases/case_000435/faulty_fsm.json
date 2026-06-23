@@ -1,0 +1,55 @@
+{
+  "id": "synthetic_8277_3_2__faulty__wrong_initial_state__435074",
+  "name": "Synthetic FSM (custom) (faulty: wrong_initial_state)",
+  "description": "Synthetic FSM generated with seed=8277, states=3, events=2, branching_factor=1, deterministic=True, allow_dead_states=True",
+  "states": [
+    {
+      "id": "s8277_0",
+      "state_output": "out_8277_0",
+      "refusal": false,
+      "quiescence": false
+    },
+    {
+      "id": "s8277_1",
+      "state_output": "out_8277_1",
+      "refusal": false,
+      "quiescence": false
+    },
+    {
+      "id": "s8277_2",
+      "state_output": "out_8277_2",
+      "refusal": false,
+      "quiescence": false
+    }
+  ],
+  "initial_state": "s8277_1",
+  "events": [
+    "e8277_0",
+    "e8277_1"
+  ],
+  "transitions": [
+    {
+      "id": "t8277_hub_2",
+      "source": "s8277_0",
+      "event": "e8277_1",
+      "target": "s8277_2",
+      "guard": null,
+      "action": null,
+      "output": null,
+      "timeout": null,
+      "delay": null,
+      "requirements": [],
+      "probability": null,
+      "is_nondeterministic": false,
+      "refusal": false,
+      "quiescence": false,
+      "discrete_time": null
+    }
+  ],
+  "variables": {},
+  "parent_fsm_id": "synthetic_8277_3_2",
+  "reference_fsm_id": "synthetic_8277_3_2",
+  "discrete_time_step": null,
+  "semantics_mode": null,
+  "cyclic_metadata": null
+}

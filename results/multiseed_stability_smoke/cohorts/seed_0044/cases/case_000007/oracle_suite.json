@@ -1,0 +1,66 @@
+{
+  "id": "synthetic_264_3_2_oracles",
+  "fsm_id": "synthetic_264_3_2",
+  "scenarios": [
+    {
+      "id": "cover_transition_t264_1",
+      "description": "Covers transition 't264_1' (s264_0 --e264_0--> s264_1).",
+      "steps": [
+        {
+          "event": "e264_0",
+          "expected_state": "s264_1",
+          "guard": null,
+          "accepting_states": [],
+          "probability_threshold": null,
+          "refusal_expected": false,
+          "quiescence_expected": false,
+          "discrete_time": null
+        }
+      ]
+    },
+    {
+      "id": "cover_transition_t264_2",
+      "description": "Covers transition 't264_2' (s264_0 --e264_1--> s264_2).",
+      "steps": [
+        {
+          "event": "e264_1",
+          "expected_state": "s264_2",
+          "guard": null,
+          "accepting_states": [],
+          "probability_threshold": null,
+          "refusal_expected": false,
+          "quiescence_expected": false,
+          "discrete_time": null
+        }
+      ]
+    },
+    {
+      "id": "cover_transition_t264_4",
+      "description": "Covers transition 't264_4' (s264_2 --e264_0--> s264_2).",
+      "steps": [
+        {
+          "event": "e264_1",
+          "expected_state": "s264_2",
+          "guard": null,
+          "accepting_states": [],
+          "probability_threshold": null,
+          "refusal_expected": false,
+          "quiescence_expected": false,
+          "discrete_time": null
+        },
+        {
+          "event": "e264_0",
+          "expected_state": "s264_2",
+          "guard": null,
+          "accepting_states": [],
+          "probability_threshold": null,
+          "refusal_expected": false,
+          "quiescence_expected": false,
+          "discrete_time": null
+        }
+      ]
+    }
+  ],
+  "semantics_mode": null,
+  "probability_threshold": null
+}

@@ -1,0 +1,218 @@
+{
+  "case_id": "case_000362",
+  "tool_id": "baseline_random",
+  "tool_type": "baseline",
+  "model": "baseline_random",
+  "mutation_operator": "wrong_target",
+  "status": "completed",
+  "failure_class": "regression",
+  "input_format": "fsmrepairbench_case_v1",
+  "output_format": "fsmrepairbench_repair_result_v1",
+  "initial_bpr": 0.9285714285714286,
+  "final_bpr": 0.8571428571428571,
+  "delta_bpr": -0.07142857142857151,
+  "complete_repair": false,
+  "effective_repair": false,
+  "regression": true,
+  "patch_parse_failures": 0,
+  "patch_validation_failures": 0,
+  "patch_application_failures": 0,
+  "iterations_completed": 1,
+  "runtime_seconds": 0.0004,
+  "repair_result": {
+    "bug_id": "synthetic_6995_3_2__faulty__wrong_target__362134",
+    "passed": false,
+    "score": 0.8571428571428571,
+    "details": {
+      "model": "baseline_random",
+      "backend": "baseline",
+      "baseline_engine": "random",
+      "baseline_seed": 0,
+      "temperature": 0.0,
+      "max_iterations": 1,
+      "runtime_seconds": 0.0004,
+      "iterations": [
+        {
+          "iteration": 1,
+          "bpr_before": 0.9285714285714286,
+          "patch_valid": true,
+          "patch_applied": true,
+          "patch": {
+            "patch_id": "baseline_random_0_synthetic_6995_3_2__faulty__wrong_target__362134",
+            "target_fsm_id": "synthetic_6995_3_2__faulty__wrong_target__362134",
+            "operations": [
+              {
+                "op": "replace_transition_source",
+                "transition_id": "t6995_7",
+                "source": "s6995_0"
+              }
+            ]
+          },
+          "validation_errors": [],
+          "bpr_after": 0.8571428571428571
+        }
+      ],
+      "final_fsm": {
+        "id": "synthetic_6995_3_2__faulty__wrong_target__362134",
+        "name": "Synthetic FSM (custom) (faulty: wrong_target)",
+        "description": "Synthetic FSM generated with seed=6995, states=3, events=2, branching_factor=4, deterministic=True, allow_dead_states=False",
+        "states": [
+          {
+            "id": "s6995_0",
+            "state_output": null,
+            "refusal": false,
+            "quiescence": false
+          },
+          {
+            "id": "s6995_1",
+            "state_output": null,
+            "refusal": false,
+            "quiescence": false
+          },
+          {
+            "id": "s6995_2",
+            "state_output": null,
+            "refusal": false,
+            "quiescence": false
+          }
+        ],
+        "initial_state": "s6995_0",
+        "events": [
+          "e6995_0",
+          "e6995_1"
+        ],
+        "transitions": [
+          {
+            "id": "t6995_1",
+            "source": "s6995_0",
+            "event": "e6995_1",
+            "target": "s6995_1",
+            "guard": "x_6995_0 > 0",
+            "action": "act6995_1",
+            "output": "out_6995_0",
+            "timeout": null,
+            "delay": null,
+            "requirements": [],
+            "probability": null,
+            "is_nondeterministic": false,
+            "refusal": false,
+            "quiescence": false,
+            "discrete_time": null
+          },
+          {
+            "id": "t6995_2",
+            "source": "s6995_1",
+            "event": "e6995_1",
+            "target": "s6995_2",
+            "guard": "x_6995_1 > 0",
+            "action": "act6995_2",
+            "output": "out_6995_1",
+            "timeout": null,
+            "delay": null,
+            "requirements": [],
+            "probability": null,
+            "is_nondeterministic": false,
+            "refusal": false,
+            "quiescence": false,
+            "discrete_time": null
+          },
+          {
+            "id": "t6995_3",
+            "source": "s6995_0",
+            "event": "e6995_0",
+            "target": "s6995_1",
+            "guard": "x_6995_2 > 0",
+            "action": "act6995_3",
+            "output": "out_6995_2",
+            "timeout": null,
+            "delay": null,
+            "requirements": [],
+            "probability": null,
+            "is_nondeterministic": false,
+            "refusal": false,
+            "quiescence": false,
+            "discrete_time": null
+          },
+          {
+            "id": "t6995_4",
+            "source": "s6995_1",
+            "event": "e6995_1",
+            "target": "s6995_2",
+            "guard": "x_6995_3 > 0",
+            "action": "act6995_4",
+            "output": "out_6995_3",
+            "timeout": null,
+            "delay": null,
+            "requirements": [],
+            "probability": null,
+            "is_nondeterministic": false,
+            "refusal": false,
+            "quiescence": false,
+            "discrete_time": null
+          },
+          {
+            "id": "t6995_5",
+            "source": "s6995_1",
+            "event": "e6995_0",
+            "target": "s6995_2",
+            "guard": "x_6995_4 > 0",
+            "action": "act6995_5",
+            "output": "out_6995_4",
+            "timeout": null,
+            "delay": null,
+            "requirements": [],
+            "probability": null,
+            "is_nondeterministic": false,
+            "refusal": false,
+            "quiescence": false,
+            "discrete_time": null
+          },
+          {
+            "id": "t6995_6",
+            "source": "s6995_2",
+            "event": "e6995_1",
+            "target": "s6995_2",
+            "guard": "x_6995_5 > 0",
+            "action": "act6995_6",
+            "output": "out_6995_5",
+            "timeout": null,
+            "delay": null,
+            "requirements": [],
+            "probability": null,
+            "is_nondeterministic": false,
+            "refusal": false,
+            "quiescence": false,
+            "discrete_time": null
+          },
+          {
+            "id": "t6995_7",
+            "source": "s6995_0",
+            "event": "e6995_0",
+            "target": "s6995_2",
+            "guard": "x_6995_6 > 0",
+            "action": "act6995_7",
+            "output": "out_6995_6",
+            "timeout": null,
+            "delay": null,
+            "requirements": [],
+            "probability": null,
+            "is_nondeterministic": false,
+            "refusal": false,
+            "quiescence": false,
+            "discrete_time": null
+          }
+        ],
+        "variables": {},
+        "parent_fsm_id": "synthetic_6995_3_2",
+        "reference_fsm_id": "synthetic_6995_3_2",
+        "discrete_time_step": null,
+        "semantics_mode": null,
+        "cyclic_metadata": null
+      },
+      "passed_steps": 12,
+      "total_steps": 14,
+      "passed_scenarios": 5,
+      "total_scenarios": 7
+    }
+  }
+}

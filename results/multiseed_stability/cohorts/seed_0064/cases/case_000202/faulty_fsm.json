@@ -1,0 +1,89 @@
+{
+  "id": "synthetic_3902_3_2__faulty__action_corruption__202064",
+  "name": "Synthetic FSM (custom) (faulty: action_corruption)",
+  "description": "Synthetic FSM generated with seed=3902, states=3, events=2, branching_factor=1, deterministic=True, allow_dead_states=False",
+  "states": [
+    {
+      "id": "s3902_0",
+      "state_output": null,
+      "refusal": false,
+      "quiescence": false
+    },
+    {
+      "id": "s3902_1",
+      "state_output": null,
+      "refusal": false,
+      "quiescence": false
+    },
+    {
+      "id": "s3902_2",
+      "state_output": null,
+      "refusal": false,
+      "quiescence": false
+    }
+  ],
+  "initial_state": "s3902_0",
+  "events": [
+    "e3902_0",
+    "e3902_1"
+  ],
+  "transitions": [
+    {
+      "id": "t3902_1",
+      "source": "s3902_0",
+      "event": "e3902_1",
+      "target": "s3902_1",
+      "guard": "x_3902_0 > 0",
+      "action": "act3902_1",
+      "output": "out_3902_0",
+      "timeout": null,
+      "delay": null,
+      "requirements": [],
+      "probability": null,
+      "is_nondeterministic": false,
+      "refusal": false,
+      "quiescence": false,
+      "discrete_time": null
+    },
+    {
+      "id": "t3902_2",
+      "source": "s3902_1",
+      "event": "e3902_1",
+      "target": "s3902_2",
+      "guard": "x_3902_1 > 0",
+      "action": "act3902_2",
+      "output": "out_3902_1",
+      "timeout": null,
+      "delay": null,
+      "requirements": [],
+      "probability": null,
+      "is_nondeterministic": false,
+      "refusal": false,
+      "quiescence": false,
+      "discrete_time": null
+    },
+    {
+      "id": "t3902_3",
+      "source": "s3902_2",
+      "event": "e3902_0",
+      "target": "s3902_2",
+      "guard": "x_3902_2 > 0",
+      "action": "wrong_act3902_3",
+      "output": "out_3902_2",
+      "timeout": null,
+      "delay": null,
+      "requirements": [],
+      "probability": null,
+      "is_nondeterministic": false,
+      "refusal": false,
+      "quiescence": false,
+      "discrete_time": null
+    }
+  ],
+  "variables": {},
+  "parent_fsm_id": "synthetic_3902_3_2",
+  "reference_fsm_id": "synthetic_3902_3_2",
+  "discrete_time_step": null,
+  "semantics_mode": null,
+  "cyclic_metadata": null
+}

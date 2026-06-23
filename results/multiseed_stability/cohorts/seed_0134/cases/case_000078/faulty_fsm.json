@@ -1,0 +1,106 @@
+{
+  "id": "synthetic_9480_3_2__faulty__nondeterminism_intro__78134",
+  "name": "Synthetic FSM (custom) (faulty: nondeterminism_intro)",
+  "description": "Synthetic FSM generated with seed=9480, states=3, events=2, branching_factor=1, deterministic=True, allow_dead_states=False",
+  "states": [
+    {
+      "id": "s9480_0",
+      "state_output": null,
+      "refusal": false,
+      "quiescence": false
+    },
+    {
+      "id": "s9480_1",
+      "state_output": null,
+      "refusal": false,
+      "quiescence": false
+    },
+    {
+      "id": "s9480_2",
+      "state_output": null,
+      "refusal": false,
+      "quiescence": false
+    }
+  ],
+  "initial_state": "s9480_0",
+  "events": [
+    "e9480_0",
+    "e9480_1"
+  ],
+  "transitions": [
+    {
+      "id": "t9480_1",
+      "source": "s9480_0",
+      "event": "e9480_0",
+      "target": "s9480_1",
+      "guard": null,
+      "action": "act9480_1",
+      "output": null,
+      "timeout": null,
+      "delay": null,
+      "requirements": [],
+      "probability": null,
+      "is_nondeterministic": false,
+      "refusal": false,
+      "quiescence": false,
+      "discrete_time": null
+    },
+    {
+      "id": "t9480_2",
+      "source": "s9480_1",
+      "event": "e9480_1",
+      "target": "s9480_2",
+      "guard": null,
+      "action": "act9480_2",
+      "output": null,
+      "timeout": null,
+      "delay": null,
+      "requirements": [],
+      "probability": null,
+      "is_nondeterministic": false,
+      "refusal": false,
+      "quiescence": false,
+      "discrete_time": null
+    },
+    {
+      "id": "t9480_3",
+      "source": "s9480_2",
+      "event": "e9480_1",
+      "target": "s9480_2",
+      "guard": null,
+      "action": "act9480_3",
+      "output": null,
+      "timeout": null,
+      "delay": null,
+      "requirements": [],
+      "probability": null,
+      "is_nondeterministic": false,
+      "refusal": false,
+      "quiescence": false,
+      "discrete_time": null
+    },
+    {
+      "id": "t9480_2__nd__78134",
+      "source": "s9480_1",
+      "event": "e9480_1",
+      "target": "s9480_1",
+      "guard": null,
+      "action": "act9480_2",
+      "output": null,
+      "timeout": null,
+      "delay": null,
+      "requirements": [],
+      "probability": null,
+      "is_nondeterministic": false,
+      "refusal": false,
+      "quiescence": false,
+      "discrete_time": null
+    }
+  ],
+  "variables": {},
+  "parent_fsm_id": "synthetic_9480_3_2",
+  "reference_fsm_id": "synthetic_9480_3_2",
+  "discrete_time_step": null,
+  "semantics_mode": null,
+  "cyclic_metadata": null
+}

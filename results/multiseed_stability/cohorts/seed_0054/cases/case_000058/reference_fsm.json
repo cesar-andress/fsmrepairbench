@@ -1,0 +1,106 @@
+{
+  "id": "synthetic_1141_3_2",
+  "name": "Synthetic FSM (custom)",
+  "description": "Synthetic FSM generated with seed=1141, states=3, events=2, branching_factor=1, deterministic=True, allow_dead_states=False",
+  "states": [
+    {
+      "id": "s1141_0",
+      "state_output": null,
+      "refusal": false,
+      "quiescence": false
+    },
+    {
+      "id": "s1141_1",
+      "state_output": null,
+      "refusal": false,
+      "quiescence": false
+    },
+    {
+      "id": "s1141_2",
+      "state_output": null,
+      "refusal": false,
+      "quiescence": false
+    }
+  ],
+  "initial_state": "s1141_0",
+  "events": [
+    "e1141_0",
+    "e1141_1"
+  ],
+  "transitions": [
+    {
+      "id": "t1141_1",
+      "source": "s1141_0",
+      "event": "e1141_0",
+      "target": "s1141_1",
+      "guard": null,
+      "action": "act1141_1",
+      "output": null,
+      "timeout": null,
+      "delay": null,
+      "requirements": [],
+      "probability": null,
+      "is_nondeterministic": false,
+      "refusal": false,
+      "quiescence": false,
+      "discrete_time": null
+    },
+    {
+      "id": "t1141_2",
+      "source": "s1141_0",
+      "event": "e1141_1",
+      "target": "s1141_2",
+      "guard": null,
+      "action": "act1141_2",
+      "output": null,
+      "timeout": null,
+      "delay": null,
+      "requirements": [],
+      "probability": null,
+      "is_nondeterministic": false,
+      "refusal": false,
+      "quiescence": false,
+      "discrete_time": null
+    },
+    {
+      "id": "t1141_3",
+      "source": "s1141_1",
+      "event": "e1141_1",
+      "target": "s1141_2",
+      "guard": null,
+      "action": "act1141_3",
+      "output": null,
+      "timeout": null,
+      "delay": null,
+      "requirements": [],
+      "probability": null,
+      "is_nondeterministic": false,
+      "refusal": false,
+      "quiescence": false,
+      "discrete_time": null
+    },
+    {
+      "id": "t1141_4",
+      "source": "s1141_2",
+      "event": "e1141_1",
+      "target": "s1141_2",
+      "guard": null,
+      "action": "act1141_4",
+      "output": null,
+      "timeout": null,
+      "delay": null,
+      "requirements": [],
+      "probability": null,
+      "is_nondeterministic": false,
+      "refusal": false,
+      "quiescence": false,
+      "discrete_time": null
+    }
+  ],
+  "variables": {},
+  "parent_fsm_id": null,
+  "reference_fsm_id": null,
+  "discrete_time_step": null,
+  "semantics_mode": null,
+  "cyclic_metadata": null
+}

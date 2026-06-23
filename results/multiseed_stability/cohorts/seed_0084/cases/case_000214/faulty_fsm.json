@@ -1,0 +1,106 @@
+{
+  "id": "synthetic_4126_3_2__faulty__action_corruption__214084",
+  "name": "Synthetic FSM (custom) (faulty: action_corruption)",
+  "description": "Synthetic FSM generated with seed=4126, states=3, events=2, branching_factor=1, deterministic=True, allow_dead_states=False",
+  "states": [
+    {
+      "id": "s4126_0",
+      "state_output": null,
+      "refusal": false,
+      "quiescence": false
+    },
+    {
+      "id": "s4126_1",
+      "state_output": null,
+      "refusal": false,
+      "quiescence": false
+    },
+    {
+      "id": "s4126_2",
+      "state_output": null,
+      "refusal": false,
+      "quiescence": false
+    }
+  ],
+  "initial_state": "s4126_0",
+  "events": [
+    "e4126_0",
+    "e4126_1"
+  ],
+  "transitions": [
+    {
+      "id": "t4126_1",
+      "source": "s4126_0",
+      "event": "e4126_1",
+      "target": "s4126_1",
+      "guard": "x_4126_0 > 0",
+      "action": "wrong_act4126_1",
+      "output": "out_4126_0",
+      "timeout": null,
+      "delay": null,
+      "requirements": [],
+      "probability": null,
+      "is_nondeterministic": false,
+      "refusal": false,
+      "quiescence": false,
+      "discrete_time": null
+    },
+    {
+      "id": "t4126_2",
+      "source": "s4126_0",
+      "event": "e4126_1",
+      "target": "s4126_2",
+      "guard": "x_4126_1 > 0",
+      "action": "act4126_2",
+      "output": "out_4126_1",
+      "timeout": null,
+      "delay": null,
+      "requirements": [],
+      "probability": null,
+      "is_nondeterministic": false,
+      "refusal": false,
+      "quiescence": false,
+      "discrete_time": null
+    },
+    {
+      "id": "t4126_3",
+      "source": "s4126_1",
+      "event": "e4126_0",
+      "target": "s4126_2",
+      "guard": "x_4126_2 > 0",
+      "action": "act4126_3",
+      "output": "out_4126_2",
+      "timeout": null,
+      "delay": null,
+      "requirements": [],
+      "probability": null,
+      "is_nondeterministic": false,
+      "refusal": false,
+      "quiescence": false,
+      "discrete_time": null
+    },
+    {
+      "id": "t4126_4",
+      "source": "s4126_2",
+      "event": "e4126_0",
+      "target": "s4126_2",
+      "guard": "x_4126_3 > 0",
+      "action": "act4126_4",
+      "output": "out_4126_3",
+      "timeout": null,
+      "delay": null,
+      "requirements": [],
+      "probability": null,
+      "is_nondeterministic": false,
+      "refusal": false,
+      "quiescence": false,
+      "discrete_time": null
+    }
+  ],
+  "variables": {},
+  "parent_fsm_id": "synthetic_4126_3_2",
+  "reference_fsm_id": "synthetic_4126_3_2",
+  "discrete_time_step": null,
+  "semantics_mode": null,
+  "cyclic_metadata": null
+}

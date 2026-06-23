@@ -1,0 +1,89 @@
+{
+  "id": "synthetic_3054_3_2__faulty__timeout_corruption__82044",
+  "name": "Synthetic FSM (custom) (faulty: timeout_corruption)",
+  "description": "Synthetic FSM generated with seed=3054, states=3, events=2, branching_factor=1, deterministic=True, allow_dead_states=False",
+  "states": [
+    {
+      "id": "s3054_0",
+      "state_output": null,
+      "refusal": false,
+      "quiescence": false
+    },
+    {
+      "id": "s3054_1",
+      "state_output": null,
+      "refusal": false,
+      "quiescence": false
+    },
+    {
+      "id": "s3054_2",
+      "state_output": null,
+      "refusal": false,
+      "quiescence": false
+    }
+  ],
+  "initial_state": "s3054_0",
+  "events": [
+    "e3054_0",
+    "e3054_1"
+  ],
+  "transitions": [
+    {
+      "id": "t3054_1",
+      "source": "s3054_0",
+      "event": "e3054_1",
+      "target": "s3054_1",
+      "guard": "x_3054_0 > 0",
+      "action": "act3054_1",
+      "output": null,
+      "timeout": 2.0,
+      "delay": null,
+      "requirements": [],
+      "probability": null,
+      "is_nondeterministic": false,
+      "refusal": false,
+      "quiescence": false,
+      "discrete_time": null
+    },
+    {
+      "id": "t3054_2",
+      "source": "s3054_1",
+      "event": "e3054_0",
+      "target": "s3054_2",
+      "guard": "x_3054_1 > 0",
+      "action": "act3054_2",
+      "output": null,
+      "timeout": 2.0,
+      "delay": null,
+      "requirements": [],
+      "probability": null,
+      "is_nondeterministic": false,
+      "refusal": false,
+      "quiescence": false,
+      "discrete_time": null
+    },
+    {
+      "id": "t3054_3",
+      "source": "s3054_2",
+      "event": "e3054_1",
+      "target": "s3054_2",
+      "guard": "x_3054_2 > 0",
+      "action": "act3054_3",
+      "output": null,
+      "timeout": 3.0,
+      "delay": null,
+      "requirements": [],
+      "probability": null,
+      "is_nondeterministic": false,
+      "refusal": false,
+      "quiescence": false,
+      "discrete_time": null
+    }
+  ],
+  "variables": {},
+  "parent_fsm_id": "synthetic_3054_3_2",
+  "reference_fsm_id": "synthetic_3054_3_2",
+  "discrete_time_step": null,
+  "semantics_mode": null,
+  "cyclic_metadata": null
+}

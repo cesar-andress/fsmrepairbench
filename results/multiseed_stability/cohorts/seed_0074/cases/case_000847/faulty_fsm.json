@@ -1,0 +1,106 @@
+{
+  "id": "synthetic_16089_3_2__faulty__timeout_corruption__847074",
+  "name": "Synthetic FSM (custom) (faulty: timeout_corruption)",
+  "description": "Synthetic FSM generated with seed=16089, states=3, events=2, branching_factor=1, deterministic=True, allow_dead_states=False",
+  "states": [
+    {
+      "id": "s16089_0",
+      "state_output": null,
+      "refusal": false,
+      "quiescence": false
+    },
+    {
+      "id": "s16089_1",
+      "state_output": null,
+      "refusal": false,
+      "quiescence": false
+    },
+    {
+      "id": "s16089_2",
+      "state_output": null,
+      "refusal": false,
+      "quiescence": false
+    }
+  ],
+  "initial_state": "s16089_0",
+  "events": [
+    "e16089_0",
+    "e16089_1"
+  ],
+  "transitions": [
+    {
+      "id": "t16089_1",
+      "source": "s16089_0",
+      "event": "e16089_0",
+      "target": "s16089_1",
+      "guard": "x_16089_0 > 0",
+      "action": "act16089_1",
+      "output": null,
+      "timeout": 2.0,
+      "delay": null,
+      "requirements": [],
+      "probability": null,
+      "is_nondeterministic": false,
+      "refusal": false,
+      "quiescence": false,
+      "discrete_time": null
+    },
+    {
+      "id": "t16089_2",
+      "source": "s16089_0",
+      "event": "e16089_1",
+      "target": "s16089_2",
+      "guard": "x_16089_1 > 0",
+      "action": "act16089_2",
+      "output": null,
+      "timeout": 2.0,
+      "delay": null,
+      "requirements": [],
+      "probability": null,
+      "is_nondeterministic": false,
+      "refusal": false,
+      "quiescence": false,
+      "discrete_time": null
+    },
+    {
+      "id": "t16089_3",
+      "source": "s16089_1",
+      "event": "e16089_0",
+      "target": "s16089_2",
+      "guard": "x_16089_2 > 0",
+      "action": "act16089_3",
+      "output": null,
+      "timeout": 3.0,
+      "delay": null,
+      "requirements": [],
+      "probability": null,
+      "is_nondeterministic": false,
+      "refusal": false,
+      "quiescence": false,
+      "discrete_time": null
+    },
+    {
+      "id": "t16089_4",
+      "source": "s16089_2",
+      "event": "e16089_0",
+      "target": "s16089_2",
+      "guard": "x_16089_3 > 0",
+      "action": "act16089_4",
+      "output": null,
+      "timeout": 4.0,
+      "delay": null,
+      "requirements": [],
+      "probability": null,
+      "is_nondeterministic": false,
+      "refusal": false,
+      "quiescence": false,
+      "discrete_time": null
+    }
+  ],
+  "variables": {},
+  "parent_fsm_id": "synthetic_16089_3_2",
+  "reference_fsm_id": "synthetic_16089_3_2",
+  "discrete_time_step": null,
+  "semantics_mode": null,
+  "cyclic_metadata": null
+}

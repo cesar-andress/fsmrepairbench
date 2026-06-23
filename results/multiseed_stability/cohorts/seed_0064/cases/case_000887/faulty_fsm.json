@@ -1,0 +1,89 @@
+{
+  "id": "synthetic_16860_3_2__faulty__delay_corruption__887064",
+  "name": "Synthetic FSM (custom) (faulty: delay_corruption)",
+  "description": "Synthetic FSM generated with seed=16860, states=3, events=2, branching_factor=2, deterministic=True, allow_dead_states=True",
+  "states": [
+    {
+      "id": "s16860_0",
+      "state_output": null,
+      "refusal": false,
+      "quiescence": false
+    },
+    {
+      "id": "s16860_1",
+      "state_output": null,
+      "refusal": false,
+      "quiescence": false
+    },
+    {
+      "id": "s16860_2",
+      "state_output": null,
+      "refusal": false,
+      "quiescence": false
+    }
+  ],
+  "initial_state": "s16860_0",
+  "events": [
+    "e16860_0",
+    "e16860_1"
+  ],
+  "transitions": [
+    {
+      "id": "t16860_1",
+      "source": "s16860_0",
+      "event": "e16860_0",
+      "target": "s16860_1",
+      "guard": "x_16860_0 > 0",
+      "action": "act16860_1",
+      "output": null,
+      "timeout": 1.0,
+      "delay": null,
+      "requirements": [],
+      "probability": null,
+      "is_nondeterministic": false,
+      "refusal": false,
+      "quiescence": false,
+      "discrete_time": null
+    },
+    {
+      "id": "t16860_2",
+      "source": "s16860_0",
+      "event": "e16860_1",
+      "target": "s16860_0",
+      "guard": "x_16860_1 > 0",
+      "action": "act16860_2",
+      "output": null,
+      "timeout": 2.0,
+      "delay": null,
+      "requirements": [],
+      "probability": null,
+      "is_nondeterministic": false,
+      "refusal": false,
+      "quiescence": false,
+      "discrete_time": null
+    },
+    {
+      "id": "t16860_3",
+      "source": "s16860_1",
+      "event": "e16860_0",
+      "target": "s16860_2",
+      "guard": "x_16860_2 > 0",
+      "action": "act16860_3",
+      "output": null,
+      "timeout": 3.0,
+      "delay": 1.5,
+      "requirements": [],
+      "probability": null,
+      "is_nondeterministic": false,
+      "refusal": false,
+      "quiescence": false,
+      "discrete_time": null
+    }
+  ],
+  "variables": {},
+  "parent_fsm_id": "synthetic_16860_3_2",
+  "reference_fsm_id": "synthetic_16860_3_2",
+  "discrete_time_step": null,
+  "semantics_mode": null,
+  "cyclic_metadata": null
+}

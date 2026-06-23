@@ -1,0 +1,123 @@
+{
+  "id": "synthetic_4826_3_2",
+  "name": "Synthetic FSM (custom)",
+  "description": "Synthetic FSM generated with seed=4826, states=3, events=2, branching_factor=2, deterministic=True, allow_dead_states=True",
+  "states": [
+    {
+      "id": "s4826_0",
+      "state_output": null,
+      "refusal": false,
+      "quiescence": false
+    },
+    {
+      "id": "s4826_1",
+      "state_output": null,
+      "refusal": false,
+      "quiescence": false
+    },
+    {
+      "id": "s4826_2",
+      "state_output": null,
+      "refusal": false,
+      "quiescence": false
+    }
+  ],
+  "initial_state": "s4826_0",
+  "events": [
+    "e4826_0",
+    "e4826_1"
+  ],
+  "transitions": [
+    {
+      "id": "t4826_1",
+      "source": "s4826_0",
+      "event": "e4826_0",
+      "target": "s4826_1",
+      "guard": "x_4826_0 > 0",
+      "action": "act4826_1",
+      "output": "out_4826_0",
+      "timeout": null,
+      "delay": null,
+      "requirements": [],
+      "probability": null,
+      "is_nondeterministic": false,
+      "refusal": false,
+      "quiescence": false,
+      "discrete_time": null
+    },
+    {
+      "id": "t4826_2",
+      "source": "s4826_0",
+      "event": "e4826_0",
+      "target": "s4826_2",
+      "guard": "x_4826_1 > 0",
+      "action": "act4826_2",
+      "output": "out_4826_1",
+      "timeout": null,
+      "delay": null,
+      "requirements": [],
+      "probability": null,
+      "is_nondeterministic": false,
+      "refusal": false,
+      "quiescence": false,
+      "discrete_time": null
+    },
+    {
+      "id": "t4826_3",
+      "source": "s4826_1",
+      "event": "e4826_1",
+      "target": "s4826_2",
+      "guard": "x_4826_2 > 0",
+      "action": "act4826_3",
+      "output": "out_4826_2",
+      "timeout": null,
+      "delay": null,
+      "requirements": [],
+      "probability": null,
+      "is_nondeterministic": false,
+      "refusal": false,
+      "quiescence": false,
+      "discrete_time": null
+    },
+    {
+      "id": "t4826_4",
+      "source": "s4826_1",
+      "event": "e4826_0",
+      "target": "s4826_2",
+      "guard": "x_4826_3 > 0",
+      "action": "act4826_4",
+      "output": "out_4826_3",
+      "timeout": null,
+      "delay": null,
+      "requirements": [],
+      "probability": null,
+      "is_nondeterministic": false,
+      "refusal": false,
+      "quiescence": false,
+      "discrete_time": null
+    },
+    {
+      "id": "t4826_6",
+      "source": "s4826_2",
+      "event": "e4826_0",
+      "target": "s4826_2",
+      "guard": "x_4826_5 > 0",
+      "action": "act4826_6",
+      "output": "out_4826_5",
+      "timeout": null,
+      "delay": null,
+      "requirements": [],
+      "probability": null,
+      "is_nondeterministic": false,
+      "refusal": false,
+      "quiescence": false,
+      "discrete_time": null
+    }
+  ],
+  "variables": {},
+  "parent_fsm_id": null,
+  "reference_fsm_id": null,
+  "discrete_time_step": null,
+  "semantics_mode": null,
+  "cyclic_metadata": null
+}

@@ -1,0 +1,106 @@
+{
+  "id": "synthetic_4055_3_2__faulty__action_corruption__211064",
+  "name": "Synthetic FSM (custom) (faulty: action_corruption)",
+  "description": "Synthetic FSM generated with seed=4055, states=3, events=2, branching_factor=1, deterministic=True, allow_dead_states=False",
+  "states": [
+    {
+      "id": "s4055_0",
+      "state_output": null,
+      "refusal": false,
+      "quiescence": false
+    },
+    {
+      "id": "s4055_1",
+      "state_output": null,
+      "refusal": false,
+      "quiescence": false
+    },
+    {
+      "id": "s4055_2",
+      "state_output": null,
+      "refusal": false,
+      "quiescence": false
+    }
+  ],
+  "initial_state": "s4055_0",
+  "events": [
+    "e4055_0",
+    "e4055_1"
+  ],
+  "transitions": [
+    {
+      "id": "t4055_1",
+      "source": "s4055_0",
+      "event": "e4055_0",
+      "target": "s4055_1",
+      "guard": "x_4055_0 > 0",
+      "action": "act4055_1",
+      "output": "out_4055_0",
+      "timeout": null,
+      "delay": null,
+      "requirements": [],
+      "probability": null,
+      "is_nondeterministic": false,
+      "refusal": false,
+      "quiescence": false,
+      "discrete_time": null
+    },
+    {
+      "id": "t4055_2",
+      "source": "s4055_0",
+      "event": "e4055_0",
+      "target": "s4055_2",
+      "guard": "x_4055_1 > 0",
+      "action": "act4055_2",
+      "output": "out_4055_1",
+      "timeout": null,
+      "delay": null,
+      "requirements": [],
+      "probability": null,
+      "is_nondeterministic": false,
+      "refusal": false,
+      "quiescence": false,
+      "discrete_time": null
+    },
+    {
+      "id": "t4055_3",
+      "source": "s4055_1",
+      "event": "e4055_0",
+      "target": "s4055_2",
+      "guard": "x_4055_2 > 0",
+      "action": "wrong_act4055_3",
+      "output": "out_4055_2",
+      "timeout": null,
+      "delay": null,
+      "requirements": [],
+      "probability": null,
+      "is_nondeterministic": false,
+      "refusal": false,
+      "quiescence": false,
+      "discrete_time": null
+    },
+    {
+      "id": "t4055_4",
+      "source": "s4055_2",
+      "event": "e4055_1",
+      "target": "s4055_2",
+      "guard": "x_4055_3 > 0",
+      "action": "act4055_4",
+      "output": "out_4055_3",
+      "timeout": null,
+      "delay": null,
+      "requirements": [],
+      "probability": null,
+      "is_nondeterministic": false,
+      "refusal": false,
+      "quiescence": false,
+      "discrete_time": null
+    }
+  ],
+  "variables": {},
+  "parent_fsm_id": "synthetic_4055_3_2",
+  "reference_fsm_id": "synthetic_4055_3_2",
+  "discrete_time_step": null,
+  "semantics_mode": null,
+  "cyclic_metadata": null
+}

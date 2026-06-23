@@ -1,0 +1,126 @@
+{
+  "id": "synthetic_13032_3_2__faulty__guard_strengthen__685074",
+  "name": "Synthetic FSM (custom) (faulty: guard_strengthen)",
+  "description": "Synthetic FSM generated with seed=13032, states=3, events=2, branching_factor=2, deterministic=True, allow_dead_states=True",
+  "states": [
+    {
+      "id": "s13032_0",
+      "state_output": null,
+      "refusal": false,
+      "quiescence": false
+    },
+    {
+      "id": "s13032_1",
+      "state_output": null,
+      "refusal": false,
+      "quiescence": false
+    },
+    {
+      "id": "s13032_2",
+      "state_output": null,
+      "refusal": false,
+      "quiescence": false
+    }
+  ],
+  "initial_state": "s13032_0",
+  "events": [
+    "e13032_0",
+    "e13032_1"
+  ],
+  "transitions": [
+    {
+      "id": "t13032_1",
+      "source": "s13032_0",
+      "event": "e13032_1",
+      "target": "s13032_1",
+      "guard": "(x_13032_0 > 0 and y_13032_0 < 10) and strict_check",
+      "action": "act13032_1",
+      "output": null,
+      "timeout": null,
+      "delay": null,
+      "requirements": [],
+      "probability": null,
+      "is_nondeterministic": false,
+      "refusal": false,
+      "quiescence": false,
+      "discrete_time": null
+    },
+    {
+      "id": "t13032_2",
+      "source": "s13032_1",
+      "event": "e13032_1",
+      "target": "s13032_2",
+      "guard": "x_13032_1 > 0 and y_13032_1 < 10",
+      "action": "act13032_2",
+      "output": null,
+      "timeout": null,
+      "delay": null,
+      "requirements": [],
+      "probability": null,
+      "is_nondeterministic": false,
+      "refusal": false,
+      "quiescence": false,
+      "discrete_time": null
+    },
+    {
+      "id": "t13032_3",
+      "source": "s13032_0",
+      "event": "e13032_1",
+      "target": "s13032_1",
+      "guard": "x_13032_2 > 0 and y_13032_2 < 10",
+      "action": "act13032_3",
+      "output": null,
+      "timeout": null,
+      "delay": null,
+      "requirements": [],
+      "probability": null,
+      "is_nondeterministic": false,
+      "refusal": false,
+      "quiescence": false,
+      "discrete_time": null
+    },
+    {
+      "id": "t13032_4",
+      "source": "s13032_1",
+      "event": "e13032_1",
+      "target": "s13032_2",
+      "guard": "x_13032_3 > 0 and y_13032_3 < 10",
+      "action": "act13032_4",
+      "output": null,
+      "timeout": null,
+      "delay": null,
+      "requirements": [],
+      "probability": null,
+      "is_nondeterministic": false,
+      "refusal": false,
+      "quiescence": false,
+      "discrete_time": null
+    },
+    {
+      "id": "t13032_5",
+      "source": "s13032_2",
+      "event": "e13032_1",
+      "target": "s13032_2",
+      "guard": "x_13032_4 > 0 and y_13032_4 < 10",
+      "action": "act13032_5",
+      "output": null,
+      "timeout": null,
+      "delay": null,
+      "requirements": [],
+      "probability": null,
+      "is_nondeterministic": false,
+      "refusal": false,
+      "quiescence": false,
+      "discrete_time": null
+    }
+  ],
+  "variables": {
+    "x": "int",
+    "y": "int"
+  },
+  "parent_fsm_id": "synthetic_13032_3_2",
+  "reference_fsm_id": "synthetic_13032_3_2",
+  "discrete_time_step": null,
+  "semantics_mode": null,
+  "cyclic_metadata": null
+}

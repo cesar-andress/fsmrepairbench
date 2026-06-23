@@ -1,0 +1,106 @@
+{
+  "id": "synthetic_264_3_2__faulty__nondeterminism_intro__7044",
+  "name": "Synthetic FSM (custom) (faulty: nondeterminism_intro)",
+  "description": "Synthetic FSM generated with seed=264, states=3, events=2, branching_factor=1, deterministic=False, allow_dead_states=True",
+  "states": [
+    {
+      "id": "s264_0",
+      "state_output": null,
+      "refusal": false,
+      "quiescence": false
+    },
+    {
+      "id": "s264_1",
+      "state_output": null,
+      "refusal": false,
+      "quiescence": false
+    },
+    {
+      "id": "s264_2",
+      "state_output": null,
+      "refusal": false,
+      "quiescence": false
+    }
+  ],
+  "initial_state": "s264_0",
+  "events": [
+    "e264_0",
+    "e264_1"
+  ],
+  "transitions": [
+    {
+      "id": "t264_1",
+      "source": "s264_0",
+      "event": "e264_0",
+      "target": "s264_1",
+      "guard": null,
+      "action": "act264_1",
+      "output": null,
+      "timeout": null,
+      "delay": null,
+      "requirements": [],
+      "probability": null,
+      "is_nondeterministic": false,
+      "refusal": false,
+      "quiescence": false,
+      "discrete_time": null
+    },
+    {
+      "id": "t264_2",
+      "source": "s264_0",
+      "event": "e264_1",
+      "target": "s264_2",
+      "guard": null,
+      "action": "act264_2",
+      "output": null,
+      "timeout": null,
+      "delay": null,
+      "requirements": [],
+      "probability": null,
+      "is_nondeterministic": false,
+      "refusal": false,
+      "quiescence": false,
+      "discrete_time": null
+    },
+    {
+      "id": "t264_4",
+      "source": "s264_2",
+      "event": "e264_0",
+      "target": "s264_2",
+      "guard": null,
+      "action": "act264_4",
+      "output": null,
+      "timeout": null,
+      "delay": null,
+      "requirements": [],
+      "probability": null,
+      "is_nondeterministic": false,
+      "refusal": false,
+      "quiescence": false,
+      "discrete_time": null
+    },
+    {
+      "id": "t264_4__nd__7044",
+      "source": "s264_2",
+      "event": "e264_0",
+      "target": "s264_1",
+      "guard": null,
+      "action": "act264_4",
+      "output": null,
+      "timeout": null,
+      "delay": null,
+      "requirements": [],
+      "probability": null,
+      "is_nondeterministic": false,
+      "refusal": false,
+      "quiescence": false,
+      "discrete_time": null
+    }
+  ],
+  "variables": {},
+  "parent_fsm_id": "synthetic_264_3_2",
+  "reference_fsm_id": "synthetic_264_3_2",
+  "discrete_time_step": null,
+  "semantics_mode": null,
+  "cyclic_metadata": null
+}

@@ -1,0 +1,55 @@
+{
+  "id": "synthetic_11351_3_2",
+  "name": "Synthetic FSM (custom)",
+  "description": "Synthetic FSM generated with seed=11351, states=3, events=2, branching_factor=1, deterministic=True, allow_dead_states=True",
+  "states": [
+    {
+      "id": "s11351_0",
+      "state_output": "out_11351_0",
+      "refusal": false,
+      "quiescence": false
+    },
+    {
+      "id": "s11351_1",
+      "state_output": "out_11351_1",
+      "refusal": false,
+      "quiescence": false
+    },
+    {
+      "id": "s11351_2",
+      "state_output": "out_11351_2",
+      "refusal": false,
+      "quiescence": false
+    }
+  ],
+  "initial_state": "s11351_0",
+  "events": [
+    "e11351_0",
+    "e11351_1"
+  ],
+  "transitions": [
+    {
+      "id": "t11351_hub_2",
+      "source": "s11351_0",
+      "event": "e11351_0",
+      "target": "s11351_2",
+      "guard": null,
+      "action": null,
+      "output": null,
+      "timeout": null,
+      "delay": null,
+      "requirements": [],
+      "probability": null,
+      "is_nondeterministic": false,
+      "refusal": false,
+      "quiescence": false,
+      "discrete_time": null
+    }
+  ],
+  "variables": {},
+  "parent_fsm_id": null,
+  "reference_fsm_id": null,
+  "discrete_time_step": null,
+  "semantics_mode": null,
+  "cyclic_metadata": null
+}

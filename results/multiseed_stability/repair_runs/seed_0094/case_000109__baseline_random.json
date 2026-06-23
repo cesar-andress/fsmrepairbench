@@ -1,0 +1,121 @@
+{
+  "case_id": "case_000109",
+  "tool_id": "baseline_random",
+  "tool_type": "baseline",
+  "model": "baseline_random",
+  "mutation_operator": "wrong_source",
+  "status": "completed",
+  "failure_class": "no_improvement",
+  "input_format": "fsmrepairbench_case_v1",
+  "output_format": "fsmrepairbench_repair_result_v1",
+  "initial_bpr": 0.0,
+  "final_bpr": 0.0,
+  "delta_bpr": 0.0,
+  "complete_repair": false,
+  "effective_repair": false,
+  "regression": false,
+  "patch_parse_failures": 0,
+  "patch_validation_failures": 0,
+  "patch_application_failures": 0,
+  "iterations_completed": 1,
+  "runtime_seconds": 0.0002,
+  "repair_result": {
+    "bug_id": "synthetic_2149_3_2__faulty__wrong_source__109094",
+    "passed": false,
+    "score": 0.0,
+    "details": {
+      "model": "baseline_random",
+      "backend": "baseline",
+      "baseline_engine": "random",
+      "baseline_seed": 0,
+      "temperature": 0.0,
+      "max_iterations": 1,
+      "runtime_seconds": 0.0002,
+      "iterations": [
+        {
+          "iteration": 1,
+          "bpr_before": 0.0,
+          "patch_valid": true,
+          "patch_applied": true,
+          "patch": {
+            "patch_id": "baseline_random_0_synthetic_2149_3_2__faulty__wrong_source__109094",
+            "target_fsm_id": "synthetic_2149_3_2__faulty__wrong_source__109094",
+            "operations": [
+              {
+                "op": "replace_guard",
+                "transition_id": "t2149_hub_2",
+                "guard": "random_guard_t2149_hub_2"
+              },
+              {
+                "op": "replace_transition_source",
+                "transition_id": "t2149_hub_2",
+                "source": "s2149_0"
+              }
+            ]
+          },
+          "validation_errors": [],
+          "bpr_after": 0.0
+        }
+      ],
+      "final_fsm": {
+        "id": "synthetic_2149_3_2__faulty__wrong_source__109094",
+        "name": "Synthetic FSM (custom) (faulty: wrong_source)",
+        "description": "Synthetic FSM generated with seed=2149, states=3, events=2, branching_factor=1, deterministic=True, allow_dead_states=True",
+        "states": [
+          {
+            "id": "s2149_0",
+            "state_output": null,
+            "refusal": false,
+            "quiescence": false
+          },
+          {
+            "id": "s2149_1",
+            "state_output": null,
+            "refusal": false,
+            "quiescence": false
+          },
+          {
+            "id": "s2149_2",
+            "state_output": null,
+            "refusal": false,
+            "quiescence": false
+          }
+        ],
+        "initial_state": "s2149_0",
+        "events": [
+          "e2149_0",
+          "e2149_1"
+        ],
+        "transitions": [
+          {
+            "id": "t2149_hub_2",
+            "source": "s2149_0",
+            "event": "e2149_1",
+            "target": "s2149_2",
+            "guard": "random_guard_t2149_hub_2",
+            "action": null,
+            "output": null,
+            "timeout": null,
+            "delay": null,
+            "requirements": [],
+            "probability": null,
+            "is_nondeterministic": false,
+            "refusal": false,
+            "quiescence": false,
+            "discrete_time": null
+          }
+        ],
+        "variables": {},
+        "parent_fsm_id": "synthetic_2149_3_2",
+        "reference_fsm_id": "synthetic_2149_3_2",
+        "discrete_time_step": null,
+        "semantics_mode": null,
+        "cyclic_metadata": null
+      },
+      "passed_steps": 0,
+      "total_steps": 1,
+      "passed_scenarios": 0,
+      "total_scenarios": 1
+    }
+  }
+}

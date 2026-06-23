@@ -1,0 +1,140 @@
+{
+  "id": "synthetic_7544_3_2__faulty__wrong_target__399054",
+  "name": "Synthetic FSM (custom) (faulty: wrong_target)",
+  "description": "Synthetic FSM generated with seed=7544, states=3, events=2, branching_factor=4, deterministic=True, allow_dead_states=False",
+  "states": [
+    {
+      "id": "s7544_0",
+      "state_output": null,
+      "refusal": false,
+      "quiescence": false
+    },
+    {
+      "id": "s7544_1",
+      "state_output": null,
+      "refusal": false,
+      "quiescence": false
+    },
+    {
+      "id": "s7544_2",
+      "state_output": null,
+      "refusal": false,
+      "quiescence": false
+    }
+  ],
+  "initial_state": "s7544_0",
+  "events": [
+    "e7544_0",
+    "e7544_1"
+  ],
+  "transitions": [
+    {
+      "id": "t7544_1",
+      "source": "s7544_0",
+      "event": "e7544_0",
+      "target": "s7544_1",
+      "guard": "x_7544_0 > 0",
+      "action": "act7544_1",
+      "output": "out_7544_0",
+      "timeout": null,
+      "delay": null,
+      "requirements": [],
+      "probability": null,
+      "is_nondeterministic": false,
+      "refusal": false,
+      "quiescence": false,
+      "discrete_time": null
+    },
+    {
+      "id": "t7544_2",
+      "source": "s7544_1",
+      "event": "e7544_1",
+      "target": "s7544_2",
+      "guard": "x_7544_1 > 0",
+      "action": "act7544_2",
+      "output": "out_7544_1",
+      "timeout": null,
+      "delay": null,
+      "requirements": [],
+      "probability": null,
+      "is_nondeterministic": false,
+      "refusal": false,
+      "quiescence": false,
+      "discrete_time": null
+    },
+    {
+      "id": "t7544_3",
+      "source": "s7544_0",
+      "event": "e7544_1",
+      "target": "s7544_2",
+      "guard": "x_7544_2 > 0",
+      "action": "act7544_3",
+      "output": "out_7544_2",
+      "timeout": null,
+      "delay": null,
+      "requirements": [],
+      "probability": null,
+      "is_nondeterministic": false,
+      "refusal": false,
+      "quiescence": false,
+      "discrete_time": null
+    },
+    {
+      "id": "t7544_4",
+      "source": "s7544_1",
+      "event": "e7544_0",
+      "target": "s7544_2",
+      "guard": "x_7544_3 > 0",
+      "action": "act7544_4",
+      "output": "out_7544_3",
+      "timeout": null,
+      "delay": null,
+      "requirements": [],
+      "probability": null,
+      "is_nondeterministic": false,
+      "refusal": false,
+      "quiescence": false,
+      "discrete_time": null
+    },
+    {
+      "id": "t7544_5",
+      "source": "s7544_2",
+      "event": "e7544_1",
+      "target": "s7544_2",
+      "guard": "x_7544_4 > 0",
+      "action": "act7544_5",
+      "output": "out_7544_4",
+      "timeout": null,
+      "delay": null,
+      "requirements": [],
+      "probability": null,
+      "is_nondeterministic": false,
+      "refusal": false,
+      "quiescence": false,
+      "discrete_time": null
+    },
+    {
+      "id": "t7544_6",
+      "source": "s7544_2",
+      "event": "e7544_0",
+      "target": "s7544_2",
+      "guard": "x_7544_5 > 0",
+      "action": "act7544_6",
+      "output": "out_7544_5",
+      "timeout": null,
+      "delay": null,
+      "requirements": [],
+      "probability": null,
+      "is_nondeterministic": false,
+      "refusal": false,
+      "quiescence": false,
+      "discrete_time": null
+    }
+  ],
+  "variables": {},
+  "parent_fsm_id": "synthetic_7544_3_2",
+  "reference_fsm_id": "synthetic_7544_3_2",
+  "discrete_time_step": null,
+  "semantics_mode": null,
+  "cyclic_metadata": null
+}

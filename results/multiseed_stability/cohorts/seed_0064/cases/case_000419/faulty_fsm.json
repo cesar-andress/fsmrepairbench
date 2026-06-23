@@ -1,0 +1,55 @@
+{
+  "id": "synthetic_7995_3_2__faulty__wrong_initial_state__419064",
+  "name": "Synthetic FSM (custom) (faulty: wrong_initial_state)",
+  "description": "Synthetic FSM generated with seed=7995, states=3, events=2, branching_factor=1, deterministic=True, allow_dead_states=True",
+  "states": [
+    {
+      "id": "s7995_0",
+      "state_output": "out_7995_0",
+      "refusal": false,
+      "quiescence": false
+    },
+    {
+      "id": "s7995_1",
+      "state_output": "out_7995_1",
+      "refusal": false,
+      "quiescence": false
+    },
+    {
+      "id": "s7995_2",
+      "state_output": "out_7995_2",
+      "refusal": false,
+      "quiescence": false
+    }
+  ],
+  "initial_state": "s7995_2",
+  "events": [
+    "e7995_0",
+    "e7995_1"
+  ],
+  "transitions": [
+    {
+      "id": "t7995_hub_2",
+      "source": "s7995_0",
+      "event": "e7995_1",
+      "target": "s7995_2",
+      "guard": null,
+      "action": null,
+      "output": null,
+      "timeout": null,
+      "delay": null,
+      "requirements": [],
+      "probability": null,
+      "is_nondeterministic": false,
+      "refusal": false,
+      "quiescence": false,
+      "discrete_time": null
+    }
+  ],
+  "variables": {},
+  "parent_fsm_id": "synthetic_7995_3_2",
+  "reference_fsm_id": "synthetic_7995_3_2",
+  "discrete_time_step": null,
+  "semantics_mode": null,
+  "cyclic_metadata": null
+}

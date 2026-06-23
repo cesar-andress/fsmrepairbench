@@ -1,0 +1,55 @@
+{
+  "id": "synthetic_16921_3_2__faulty__delay_corruption__890074",
+  "name": "Synthetic FSM (custom) (faulty: delay_corruption)",
+  "description": "Synthetic FSM generated with seed=16921, states=3, events=2, branching_factor=2, deterministic=True, allow_dead_states=True",
+  "states": [
+    {
+      "id": "s16921_0",
+      "state_output": null,
+      "refusal": false,
+      "quiescence": false
+    },
+    {
+      "id": "s16921_1",
+      "state_output": null,
+      "refusal": false,
+      "quiescence": false
+    },
+    {
+      "id": "s16921_2",
+      "state_output": null,
+      "refusal": false,
+      "quiescence": false
+    }
+  ],
+  "initial_state": "s16921_0",
+  "events": [
+    "e16921_0",
+    "e16921_1"
+  ],
+  "transitions": [
+    {
+      "id": "t16921_2",
+      "source": "s16921_0",
+      "event": "e16921_0",
+      "target": "s16921_0",
+      "guard": "x_16921_1 > 0",
+      "action": "act16921_2",
+      "output": null,
+      "timeout": 2.0,
+      "delay": 1.5,
+      "requirements": [],
+      "probability": null,
+      "is_nondeterministic": false,
+      "refusal": false,
+      "quiescence": false,
+      "discrete_time": null
+    }
+  ],
+  "variables": {},
+  "parent_fsm_id": "synthetic_16921_3_2",
+  "reference_fsm_id": "synthetic_16921_3_2",
+  "discrete_time_step": null,
+  "semantics_mode": null,
+  "cyclic_metadata": null
+}

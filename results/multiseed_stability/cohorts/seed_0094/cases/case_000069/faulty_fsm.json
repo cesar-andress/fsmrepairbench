@@ -1,0 +1,106 @@
+{
+  "id": "synthetic_9287_3_2__faulty__nondeterminism_intro__69094",
+  "name": "Synthetic FSM (custom) (faulty: nondeterminism_intro)",
+  "description": "Synthetic FSM generated with seed=9287, states=3, events=2, branching_factor=1, deterministic=True, allow_dead_states=False",
+  "states": [
+    {
+      "id": "s9287_0",
+      "state_output": null,
+      "refusal": false,
+      "quiescence": false
+    },
+    {
+      "id": "s9287_1",
+      "state_output": null,
+      "refusal": false,
+      "quiescence": false
+    },
+    {
+      "id": "s9287_2",
+      "state_output": null,
+      "refusal": false,
+      "quiescence": false
+    }
+  ],
+  "initial_state": "s9287_0",
+  "events": [
+    "e9287_0",
+    "e9287_1"
+  ],
+  "transitions": [
+    {
+      "id": "t9287_1",
+      "source": "s9287_0",
+      "event": "e9287_1",
+      "target": "s9287_1",
+      "guard": null,
+      "action": "act9287_1",
+      "output": null,
+      "timeout": null,
+      "delay": null,
+      "requirements": [],
+      "probability": null,
+      "is_nondeterministic": false,
+      "refusal": false,
+      "quiescence": false,
+      "discrete_time": null
+    },
+    {
+      "id": "t9287_2",
+      "source": "s9287_1",
+      "event": "e9287_1",
+      "target": "s9287_2",
+      "guard": null,
+      "action": "act9287_2",
+      "output": null,
+      "timeout": null,
+      "delay": null,
+      "requirements": [],
+      "probability": null,
+      "is_nondeterministic": false,
+      "refusal": false,
+      "quiescence": false,
+      "discrete_time": null
+    },
+    {
+      "id": "t9287_3",
+      "source": "s9287_2",
+      "event": "e9287_0",
+      "target": "s9287_2",
+      "guard": null,
+      "action": "act9287_3",
+      "output": null,
+      "timeout": null,
+      "delay": null,
+      "requirements": [],
+      "probability": null,
+      "is_nondeterministic": false,
+      "refusal": false,
+      "quiescence": false,
+      "discrete_time": null
+    },
+    {
+      "id": "t9287_3__nd__69094",
+      "source": "s9287_2",
+      "event": "e9287_0",
+      "target": "s9287_0",
+      "guard": null,
+      "action": "act9287_3",
+      "output": null,
+      "timeout": null,
+      "delay": null,
+      "requirements": [],
+      "probability": null,
+      "is_nondeterministic": false,
+      "refusal": false,
+      "quiescence": false,
+      "discrete_time": null
+    }
+  ],
+  "variables": {},
+  "parent_fsm_id": "synthetic_9287_3_2",
+  "reference_fsm_id": "synthetic_9287_3_2",
+  "discrete_time_step": null,
+  "semantics_mode": null,
+  "cyclic_metadata": null
+}

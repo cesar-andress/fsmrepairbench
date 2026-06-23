@@ -1,0 +1,245 @@
+{
+  "case_id": "case_000361",
+  "tool_id": "baseline_random",
+  "tool_type": "baseline",
+  "model": "baseline_random",
+  "mutation_operator": "wrong_target",
+  "status": "completed",
+  "failure_class": "regression",
+  "input_format": "fsmrepairbench_case_v1",
+  "output_format": "fsmrepairbench_repair_result_v1",
+  "initial_bpr": 0.9285714285714286,
+  "final_bpr": 0.35714285714285715,
+  "delta_bpr": -0.5714285714285714,
+  "complete_repair": false,
+  "effective_repair": false,
+  "regression": true,
+  "patch_parse_failures": 0,
+  "patch_validation_failures": 0,
+  "patch_application_failures": 0,
+  "iterations_completed": 1,
+  "runtime_seconds": 0.0006,
+  "repair_result": {
+    "bug_id": "synthetic_6948_3_2__faulty__wrong_target__361104",
+    "passed": false,
+    "score": 0.35714285714285715,
+    "details": {
+      "model": "baseline_random",
+      "backend": "baseline",
+      "baseline_engine": "random",
+      "baseline_seed": 0,
+      "temperature": 0.0,
+      "max_iterations": 1,
+      "runtime_seconds": 0.0006,
+      "iterations": [
+        {
+          "iteration": 1,
+          "bpr_before": 0.9285714285714286,
+          "patch_valid": true,
+          "patch_applied": true,
+          "patch": {
+            "patch_id": "baseline_random_0_synthetic_6948_3_2__faulty__wrong_target__361104",
+            "target_fsm_id": "synthetic_6948_3_2__faulty__wrong_target__361104",
+            "operations": [
+              {
+                "op": "replace_transition_target",
+                "transition_id": "t6948_8",
+                "target": "s6948_0"
+              },
+              {
+                "op": "replace_transition_target",
+                "transition_id": "t6948_1",
+                "target": "s6948_0"
+              },
+              {
+                "op": "replace_guard",
+                "transition_id": "t6948_5",
+                "guard": "random_guard_t6948_5"
+              }
+            ]
+          },
+          "validation_errors": [],
+          "bpr_after": 0.35714285714285715
+        }
+      ],
+      "final_fsm": {
+        "id": "synthetic_6948_3_2__faulty__wrong_target__361104",
+        "name": "Synthetic FSM (custom) (faulty: wrong_target)",
+        "description": "Synthetic FSM generated with seed=6948, states=3, events=2, branching_factor=4, deterministic=True, allow_dead_states=False",
+        "states": [
+          {
+            "id": "s6948_0",
+            "state_output": null,
+            "refusal": false,
+            "quiescence": false
+          },
+          {
+            "id": "s6948_1",
+            "state_output": null,
+            "refusal": false,
+            "quiescence": false
+          },
+          {
+            "id": "s6948_2",
+            "state_output": null,
+            "refusal": false,
+            "quiescence": false
+          }
+        ],
+        "initial_state": "s6948_0",
+        "events": [
+          "e6948_0",
+          "e6948_1"
+        ],
+        "transitions": [
+          {
+            "id": "t6948_1",
+            "source": "s6948_0",
+            "event": "e6948_0",
+            "target": "s6948_0",
+            "guard": "x_6948_0 > 0",
+            "action": "act6948_1",
+            "output": "out_6948_0",
+            "timeout": null,
+            "delay": null,
+            "requirements": [],
+            "probability": null,
+            "is_nondeterministic": false,
+            "refusal": false,
+            "quiescence": false,
+            "discrete_time": null
+          },
+          {
+            "id": "t6948_2",
+            "source": "s6948_0",
+            "event": "e6948_0",
+            "target": "s6948_2",
+            "guard": "x_6948_1 > 0",
+            "action": "act6948_2",
+            "output": "out_6948_1",
+            "timeout": null,
+            "delay": null,
+            "requirements": [],
+            "probability": null,
+            "is_nondeterministic": false,
+            "refusal": false,
+            "quiescence": false,
+            "discrete_time": null
+          },
+          {
+            "id": "t6948_3",
+            "source": "s6948_1",
+            "event": "e6948_1",
+            "target": "s6948_1",
+            "guard": "x_6948_2 > 0",
+            "action": "act6948_3",
+            "output": "out_6948_2",
+            "timeout": null,
+            "delay": null,
+            "requirements": [],
+            "probability": null,
+            "is_nondeterministic": false,
+            "refusal": false,
+            "quiescence": false,
+            "discrete_time": null
+          },
+          {
+            "id": "t6948_4",
+            "source": "s6948_1",
+            "event": "e6948_1",
+            "target": "s6948_2",
+            "guard": "x_6948_3 > 0",
+            "action": "act6948_4",
+            "output": "out_6948_3",
+            "timeout": null,
+            "delay": null,
+            "requirements": [],
+            "probability": null,
+            "is_nondeterministic": false,
+            "refusal": false,
+            "quiescence": false,
+            "discrete_time": null
+          },
+          {
+            "id": "t6948_5",
+            "source": "s6948_1",
+            "event": "e6948_0",
+            "target": "s6948_2",
+            "guard": "random_guard_t6948_5",
+            "action": "act6948_5",
+            "output": "out_6948_4",
+            "timeout": null,
+            "delay": null,
+            "requirements": [],
+            "probability": null,
+            "is_nondeterministic": false,
+            "refusal": false,
+            "quiescence": false,
+            "discrete_time": null
+          },
+          {
+            "id": "t6948_6",
+            "source": "s6948_2",
+            "event": "e6948_0",
+            "target": "s6948_2",
+            "guard": "x_6948_5 > 0",
+            "action": "act6948_6",
+            "output": "out_6948_5",
+            "timeout": null,
+            "delay": null,
+            "requirements": [],
+            "probability": null,
+            "is_nondeterministic": false,
+            "refusal": false,
+            "quiescence": false,
+            "discrete_time": null
+          },
+          {
+            "id": "t6948_7",
+            "source": "s6948_2",
+            "event": "e6948_0",
+            "target": "s6948_1",
+            "guard": "x_6948_6 > 0",
+            "action": "act6948_7",
+            "output": "out_6948_6",
+            "timeout": null,
+            "delay": null,
+            "requirements": [],
+            "probability": null,
+            "is_nondeterministic": false,
+            "refusal": false,
+            "quiescence": false,
+            "discrete_time": null
+          },
+          {
+            "id": "t6948_8",
+            "source": "s6948_2",
+            "event": "e6948_1",
+            "target": "s6948_0",
+            "guard": "x_6948_7 > 0",
+            "action": "act6948_8",
+            "output": "out_6948_7",
+            "timeout": null,
+            "delay": null,
+            "requirements": [],
+            "probability": null,
+            "is_nondeterministic": false,
+            "refusal": false,
+            "quiescence": false,
+            "discrete_time": null
+          }
+        ],
+        "variables": {},
+        "parent_fsm_id": "synthetic_6948_3_2",
+        "reference_fsm_id": "synthetic_6948_3_2",
+        "discrete_time_step": null,
+        "semantics_mode": null,
+        "cyclic_metadata": null
+      },
+      "passed_steps": 5,
+      "total_steps": 14,
+      "passed_scenarios": 2,
+      "total_scenarios": 8
+    }
+  }
+}
